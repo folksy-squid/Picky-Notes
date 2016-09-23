@@ -1,9 +1,10 @@
 var express = require('express');
-
 var app = express();
 
+// add middleware
 require('./config/middleware.js')(app, express);
 
+// set port depending on prod or dev
 var port = process.env.NODE_ENV === 'production' ? 80 : 3000;
 
 app.listen(port, function() {
