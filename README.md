@@ -1,5 +1,6 @@
 # Picky Notes
 
+
 > Pithy project description
 
 ## Team
@@ -27,6 +28,7 @@
 - Node v6.6
 - Redis 2.6.x
 - Postgresql 9.1.x
+
 
 ## Development
 
