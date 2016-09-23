@@ -1,7 +1,9 @@
 # Picky Notes
 
-> Collaborative note taking application that reinforces active learning through note comparison
 
+> Pithy project description
+
+> Collaborative note taking application that reinforces active learning through note comparison
 ## Team
 
   - __Product Owner__: Sean Ng
@@ -27,6 +29,7 @@
 - Node v6.6
 - Redis v3.2.x
 - Postgresql v9.5.x
+
 
 ## Development
 
