@@ -1,9 +1,7 @@
 # Picky Notes
 
-
-> Pithy project description
-
 > Collaborative note taking application that reinforces active learning through note comparison
+
 ## Team
 
   - __Product Owner__: Sean Ng
