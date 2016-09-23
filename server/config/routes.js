@@ -4,7 +4,7 @@ module.exports = function(app, express) {
     res.send('Facebook OAuth');
   });
 
-  app.get('auth/facebook/callback', function(req, res) {
+  app.get('/auth/facebook/callback', function(req, res) {
     res.send('Callback for Facebook OAuth');
   });
 
