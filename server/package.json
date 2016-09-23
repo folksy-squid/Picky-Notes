@@ -1,0 +1,19 @@
+{
+  "name": "picky-notes",
+  "version": "1.0.0",
+  "description": "pick your notes",
+  "main": "server/index.js",
+  "scripts": {
+    "test": "npm test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/folksy-squid/Picky-Notes.git"
+  },
+  "author": "Derek Liu, Kunal Rathi, Marco Chan, Sean Ng",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/folksy-squid/Picky-Notes/issues"
+  },
+  "homepage": "https://github.com/folksy-squid/Picky-Notes#readme"
+}
