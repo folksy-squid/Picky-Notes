@@ -1,6 +1,6 @@
 # Picky Notes
 
-> Pithy project description
+> Collaborative note taking application that reinforces active learning through note comparison
 
 ## Team
 
@@ -25,8 +25,8 @@
 ## Requirements
 
 - Node v6.6
-- Redis 2.6.x
-- Postgresql 9.1.x
+- Redis v3.2.x
+- Postgresql v9.5.x
 
 ## Development
 
