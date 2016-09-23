@@ -2,9 +2,10 @@
   "name": "picky-notes",
   "version": "1.0.0",
   "description": "pick your notes",
-  "main": "server/index.js",
+  "main": "server/server.js",
   "scripts": {
-    "test": "npm test"
+    "start": "node server/server.js",
+    "test": "mocha specs/**/*.js"
   },
   "repository": {
     "type": "git",
