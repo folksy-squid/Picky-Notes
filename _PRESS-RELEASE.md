@@ -32,13 +32,13 @@ Once the project moves into development, the press release can be used as a touc
   > The application allows users to take notes separately during the lecture, and then pick from their favorite set of notes from other members of the group at the end of the lecture to create a custom page of notes.
 
 ## Quote from You ##
-  > "I went from almost failing my course to passing in flying colors thanks to this app."
+  > "Picky Notes will make lecture note taking great again"
 
 ## How to Get Started ##
   > As easy as downloading the app.
 
 ## Customer Quote ##
-  > Provide a quote from a hypothetical customer that describes how they experienced the benefit.
+  > "I went from almost failing my course to passing in flying colors. Thank you Picky Notes!"
 
 ## Closing and Call to Action ##
   > Wrap it up and give pointers where the reader should go next.
