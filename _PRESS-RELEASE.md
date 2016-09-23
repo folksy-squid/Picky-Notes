@@ -35,10 +35,10 @@ Once the project moves into development, the press release can be used as a touc
   > "I went from almost failing my course to passing in flying colors thanks to this app."
 
 ## How to Get Started ##
-  > As easy as downloading the app.
+  > Just go to "www.pickynotes.com", create an account, find some friends, create a room, and start picking each others notes!
 
 ## Customer Quote ##
-  > Provide a quote from a hypothetical customer that describes how they experienced the benefit.
+  > "Before Picky Notes, I was always embarrassed to  pick others' notes. Now, I can pick my notes however I choose!"
 
 ## Closing and Call to Action ##
-  > Wrap it up and give pointers where the reader should go next.
+  > Head to www.pickynotes.com and start picking notes today!
