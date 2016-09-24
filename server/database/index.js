@@ -13,8 +13,8 @@ Room.belongsToMany(User, {foreignKey: 'studentId', as: 'students', through: 'Use
 Room.hasMany(Note, {as: 'notes'});
 Note.belongsTo(Room, {as: 'room', onDelete: 'cascade'});
 
-Note.belongsTo(User, {foreignKey: 'edittingUserId', as: 'edittingUser', onDelete: 'cascade'});
-Note.belongsTo(User, {foreignKey: 'originalUserId', as: 'originalUser', onDelete: 'cascade'});
+Note.belongsTo(User, {foreignKey: 'editingUserId', as: 'editingUser', onDelete: 'cascade'});
+Note.belongsTo(User, {foreignKey: 'originalUserId', as: 'originalUser'});
 
 Room.hasMany(Note, {as: 'notes'});
 Note.belongsTo(Room, {as: 'room', onDelete: 'cascade'});
@@ -39,7 +39,7 @@ db.sync()
     })
     .then((note) => {
       note.setOriginalUser(user);
-      note.setEdittingUser(user);
+      note.setEditingUser(user);
       room.setHost(user);
       room.addNote(note);
     });
