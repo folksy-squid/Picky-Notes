@@ -46,4 +46,4 @@ Note.belongsTo(User, {foreignKey: 'originalUserId', as: 'originalUser'});
 //   console.log(err);
 // }));
 
-module.exports = db;
+module.exports = {db, User, Room, Note};
