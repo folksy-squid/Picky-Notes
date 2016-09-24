@@ -2,11 +2,9 @@ module.exports = (db, Sequelize, User) => {
   var Note = db.define('note', {
     content: {
       type: Sequelize.TEXT,
-      allowNull: false
     },
     audioTimestamp: {
       type: Sequelize.DATE,
-      allowNull: false
     },
     show: {
       type: Sequelize.BOOLEAN,
