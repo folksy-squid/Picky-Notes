@@ -9,40 +9,47 @@ module.exports = function(app, express) {
   });
 
   // User Creation
-  app.route('/api/users')
-    .post((req, res) => {
-      res.send('Create a new user');
+  app.post('/api/users/', (req, res) => {
+    res.send('Create a new user');
+  });
+
+  // User Info Update
+  app.route('/api/users/:userId')
+    .get((req, res) => {
+      res.send('Retrieve the info for user #' + req.params.userId);
     })
     .put((req, res) => {
-      res.send('Update user info');
+      res.send('Update the info for user #' + req.params.userId);
     })
     .delete((req, res) => {
-      res.send('Delete the user');
+      res.send('Delete user #' + req.params.userId);
     });
 
   // Room Creation
   app.post('/api/rooms', (req, res) => {
-    res.send('Create a room');
+    // create and return hash for room path Url
+    res.send('Create a room path url');
   });
 
   // Note Creation
-  app.post('/api/notes/new', (req, res) => {
+  app.post('/api/notes/create', (req, res) => {
+    // pass the notes in cache (redis) to database (postgres)
     res.send('End of lecture, and create all new notes for each user');
   });
 
   // Note Editing
-  app.route('/api/notes')
+  app.route('/api/notes/:userId/:roomId')
     .get((req, res) => {
-      /*
-       * /api/notes/?userId=id&roomId=id // compare all notes for user
-       * /api/notes/?userId=id&roomId=id&filter=show // get all notes for that lecture
-       */
-      res.send('Compare all notes for the user/room');
+      if (req.query.filter === 'show') {
+        res.send('Show filtered notes for user #' + req.params.userId + ' inside room #' + req.params.roomId);
+      } else {
+        res.send('Compare all notes for user #' + req.params.userId + ' inside room #' + req.params.roomId);
+      }
     })
     .put((req, res) => {
-      res.send('Edit existing notes (save button)');
+      res.send('Edit existing notes (save button) for user #' + req.params.userId + ' inside room #' + req.params.roomId);
     })
     .post((req, res) => {
-      res.send('Add new notes (save button)');
+      res.send('Add new notes (save button) for user #' + req.params.userId + ' inside room #' + req.params.roomId);
     });
 };
