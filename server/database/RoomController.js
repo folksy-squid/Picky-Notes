@@ -9,7 +9,7 @@ module.exports = (db, Sequelize, User) => {
     lecturer: Sequelize.TEXT,
     audioUrl: {
       type: Sequelize.TEXT,
-      default: 'audio url'
+      defaultValue: 'audio url'
     }
   });
 

@@ -8,7 +8,7 @@ module.exports = (db, Sequelize, User) => {
     },
     show: {
       type: Sequelize.BOOLEAN,
-      default: false
+      defaultValue: false
     },
     // edittingUserId: {
     //   type: Sequelize.BOOLEAN,

@@ -16,3 +16,7 @@ const createNewRoom = ({topic, className, lecturer, hostId}, cb) => {
     cb(pathUrl);
   });
 };
+
+module.exports = {
+  createNewRoom
+};
