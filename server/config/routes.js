@@ -1,4 +1,4 @@
-module.exports = function(app, express) {
+module.exports = (app, express) => {
 
   // Facebook OAuth
   app.get('/auth/facebook', (req, res) => {
