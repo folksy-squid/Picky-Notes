@@ -5,7 +5,8 @@ module.exports = (app, express) => {
     res.send('Facebook OAuth');
   });
   app.get('/auth/facebook/callback', (req, res) => {
-    res.send('Callback for Facebook OAuth');
+    // res.send('Callback for Facebook OAuth');
+    res.redirect('/api/users');
   });
 
   // User Creation
