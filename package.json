@@ -16,5 +16,10 @@
   "bugs": {
     "url": "https://github.com/folksy-squid/Picky-Notes/issues"
   },
-  "homepage": "https://github.com/folksy-squid/Picky-Notes#readme"
+  "homepage": "https://github.com/folksy-squid/Picky-Notes#readme",
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "express": "^4.14.0",
+    "morgan": "^1.7.0"
+  }
 }
