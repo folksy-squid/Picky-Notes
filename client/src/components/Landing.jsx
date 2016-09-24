@@ -7,9 +7,10 @@ export default class Landing extends Component {
 
   render() {
     return (
-      <div>
-        Landing
+      <div className="landing">
+        <h1>Picky Notes</h1>
+        <a href="auth/facebook">Login</a>
       </div>
-    )
+    );
   }
 }
