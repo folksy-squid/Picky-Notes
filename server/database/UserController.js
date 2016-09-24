@@ -1,5 +1,5 @@
 module.exports = (db, Sequelize) => {
-  var User = db.define('user', {
+  const User = db.define('user', {
     facebookId: {
       type: Sequelize.STRING, 
       primaryKey: true

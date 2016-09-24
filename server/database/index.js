@@ -1,9 +1,9 @@
 const Sequelize = require('sequelize');
 const db = new Sequelize('postgres://ubuntu:password@localhost:5432/notepicker');
 
-var {User} = require('./UserController')(db, Sequelize);
-var {Room} = require('./RoomController')(db, Sequelize, User);
-var {Note} = require('./NoteController')(db, Sequelize, User);
+const {User} = require('./UserController')(db, Sequelize);
+const {Room} = require('./RoomController')(db, Sequelize, User);
+const {Note} = require('./NoteController')(db, Sequelize, User);
 
 Room.belongsTo(User, {foreignKey: 'hostFacebookId', as: 'host', onDelete: 'cascade', constraints: false});
 
@@ -38,7 +38,6 @@ db.sync()
       audioTimestamp: new Date()
     })
     .then((note) => {
-      // console.log(user);
       note.setOriginalUser(user);
       note.setEdittingUser(user);
       room.setHost(user);
@@ -50,4 +49,4 @@ db.sync()
   console.log(err);
 }));
 
-module.exports = {db: db};
+module.exports = {db};

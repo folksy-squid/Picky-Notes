@@ -1,5 +1,5 @@
 module.exports = (db, Sequelize, User) => {
-  var Note = db.define('note', {
+  const Note = db.define('note', {
     content: {
       type: Sequelize.TEXT,
     },
@@ -21,6 +21,6 @@ module.exports = (db, Sequelize, User) => {
   });
 
   return {
-    Note: Note
+    Note
   };
 };

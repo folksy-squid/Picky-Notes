@@ -1,5 +1,5 @@
 module.exports = (db, Sequelize, User) => {
-  var Room = db.define('room', {
+  const Room = db.define('room', {
     name: Sequelize.STRING,
     pathUrl: {
       type: Sequelize.STRING,
