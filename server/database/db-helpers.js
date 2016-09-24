@@ -12,8 +12,8 @@ const createNewRoom = ({topic, className, lecturer, hostId}, cb) => {
     lecturer: lecturer,
     hostId: hostId
   })
-  .then(() => {
-    cb(pathUrl);
+  .then((roomInfo) => {
+    cb(roomInfo);
   });
 };
 

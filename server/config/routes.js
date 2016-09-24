@@ -32,8 +32,21 @@ module.exports = (app, express, db) => {
   app.post('/api/rooms', (req, res) => {
     // create and return hash for room path Url
     // { topic, className, lecturer, hostId }
-    dbhelpers.createNewRoom(req.body, function(pathUrl) {
-      res.send(pathUrl);
+    dbhelpers.createNewRoom(req.body, function(roomInfo) {
+      /*** Example Data sent back to Client ***
+      {
+        "audioUrl": "audio url",
+        "id": 10,
+        "pathUrl": "65ad3",
+        "topic": "Data Structures",
+        "class": "Hack Reactor",
+        "lecturer": "Fred",
+        "hostId": 1,
+        "updatedAt": "2016-09-24T22:58:19.623Z",
+        "createdAt": "2016-09-24T22:58:19.623Z"
+      }
+      ******************************************/
+      res.send(roomInfo);
     });
   });
 
