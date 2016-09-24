@@ -1,5 +1,5 @@
-var bodyParser = require('body-parser');
-var morgan = require('morgan');
+const bodyParser = require('body-parser');
+const morgan = require('morgan');
 
 module.exports = (app, express) => {
   app.use(morgan('dev'));
