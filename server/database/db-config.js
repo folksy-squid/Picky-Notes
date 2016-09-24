@@ -1,5 +1,5 @@
 const Sequelize = require('sequelize');
-const db = new Sequelize('postgres://ubuntu:password@localhost:5432/notepicker');
+const db = new Sequelize('postgres://ubuntu:password@localhost:5432/notepicker', { logging: false });
 
 const {User} = require('./UserController')(db, Sequelize);
 const {Room} = require('./RoomController')(db, Sequelize, User);
