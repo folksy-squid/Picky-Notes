@@ -1,5 +1,5 @@
-var express = require('express');
-var app = express();
+const express = require('express');
+const app = express();
 
 // add middleware
 require('./config/middleware.js')(app, express);
@@ -8,7 +8,7 @@ require('./config/middleware.js')(app, express);
 require('./config/routes.js')(app, express);
 
 // set port depending on prod or dev
-var port = process.env.NODE_ENV === 'production' ? 80 : 3000;
+const port = process.env.NODE_ENV === 'production' ? 80 : 3000;
 
 app.listen(port, () => {
   console.log('Server listening on port ' + port);
