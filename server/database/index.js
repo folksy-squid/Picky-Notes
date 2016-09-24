@@ -1,55 +1,53 @@
 const Sequelize = require('sequelize');
-var db = new Sequelize('postgres://ubuntu:password@localhost:5432/notepicker');
-var {User} = require('./UserController')(db, Sequelize);
-var {Room} = require('./RoomController')(db, Sequelize, User);
-var {Note} = require('./NoteController')(db, Sequelize, User);
+const db = new Sequelize('postgres://ubuntu:password@localhost:5432/notepicker');
 
-Room.belongsTo(User, {foreignKey: 'hostFacebookId', as: 'host', onDelete: 'cascade', constraints: false});
+const {User} = require('./UserController')(db, Sequelize);
+const {Room} = require('./RoomController')(db, Sequelize, User);
+const {Note} = require('./NoteController')(db, Sequelize, User);
 
-User.belongsToMany(Room, {foreignKey: 'lectureRoomId', as: 'lectureRooms', through: 'UserRoom'});
-Room.belongsToMany(User, {foreignKey: 'studentId', as: 'students', through: 'UserRoom'});
+User.hasMany(Room, {as: 'hostedRooms', onDelete: 'cascade'});
+Room.belongsTo(User, {as: 'host'});
+
+User.belongsToMany(Room, {through: 'UserRoom'});
+Room.belongsToMany(User, {as: 'students', through: 'UserRoom'});
+
+Note.belongsTo(User, {as: 'originalUser', onDelete: 'cascade'});
 
 Room.hasMany(Note, {as: 'notes'});
-Note.belongsTo(Room, {as: 'room', onDelete: 'cascade'});
+Note.belongsTo(Room);
 
 Note.belongsTo(User, {foreignKey: 'edittingUserId', as: 'edittingUser', onDelete: 'cascade'});
-Note.belongsTo(User, {foreignKey: 'originalUserId', as: 'originalUser', onDelete: 'cascade'});
 
-Room.hasMany(Note, {as: 'notes'});
-Note.belongsTo(Room, {as: 'room', onDelete: 'cascade'});
-
-db.sync()
-  .then(
-  User.create({
+db.sync({force: true})
+.then(
+User.findOrCreate({
+  where: {
     facebookId: '10206128224638462',
-    name: 'Kunal Rathi',
-    email: 'volcanic.phoenix@gmail.com',
-    pictureUrl: 'https://scontent-sjc2-1.xx.fbcdn.net/v/t1.0-1/p320x320/735019_3760102334957_1830986009_n.jpg?oh=95f952f6a491fa054cbb85122e45395f&oe=587471E6',
-    gender: 'Male'    
+  }
 })
 .then((user) => {
-  Room.create({
-    pathUrl: 'awBzD',
+  Room.findOrCreate({
+    where: {
+      pathUrl: 'awBzD',      
+    }
   })
   .then((room) => {
-    Note.create({
-      content: 'a note',
-      audioTimestamp: new Date()
-    })
-    .then((note) => {
-      // console.log(user);
-      note.setOriginalUser(user);
-      note.setEdittingUser(user);
-      room.setHost(user);
-      room.addNote(note);
+    console.log(user[0]);
+    Note.findOrCreate({
+      where: {
+        content: 'a note',
+        audioTimestamp: new Date(),
+        edittingUserId: user[0].dataValues.facebookId
+      }
+    }).then((note) => {
+      user.addRoom(room[0]);
+      room.addNote(note[0]);
     });
   });
 })
 .catch((err) => {
   console.log(err);
-})
-);
 
-
+}));
 
 module.exports = {db: db};

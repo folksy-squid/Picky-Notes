@@ -14,6 +14,4 @@ module.exports = (db, Sequelize, User) => {
   return {
     Room: Room,
   };
-
-
 };
