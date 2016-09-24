@@ -8,7 +8,7 @@ const rootEl = document.getElementById('root');
 const render = () => ReactDOM.render(
   <App />,
   rootEl
-)
+);
 
 render();
 store.subscribe(render);
