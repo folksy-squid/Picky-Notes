@@ -10,7 +10,7 @@ require('./config/routes.js')(app, express);
 // set port depending on prod or dev
 var port = process.env.NODE_ENV === 'production' ? 80 : 3000;
 
-app.listen(port, function() {
+app.listen(port, () => {
   console.log('Server listening on port ' + port);
 });
 
