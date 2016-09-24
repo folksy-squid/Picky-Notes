@@ -1,4 +1,6 @@
-module.exports = (app, express) => {
+const dbhelpers = require ('../database/db-helpers');
+
+module.exports = (app, express, db) => {
 
   // Facebook OAuth
   app.get('/auth/facebook', (req, res) => {
@@ -29,7 +31,10 @@ module.exports = (app, express) => {
   // Room Creation
   app.post('/api/rooms', (req, res) => {
     // create and return hash for room path Url
-    res.send('Create a room path url');
+    // { topic, className, lecturer, hostId }
+    dbhelpers.createNewRoom(req.body, function(pathUrl) {
+      res.send(pathUrl);
+    });
   });
 
   // Note Creation
