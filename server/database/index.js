@@ -5,7 +5,7 @@ const {User} = require('./UserController')(db, Sequelize);
 const {Room} = require('./RoomController')(db, Sequelize, User);
 const {Note} = require('./NoteController')(db, Sequelize, User);
 
-Room.belongsTo(User, {foreignKey: 'hostFacebookId', as: 'host', onDelete: 'cascade', constraints: false});
+Room.belongsTo(User, {foreignKey: 'hostId', as: 'host', constraints: false});
 
 User.belongsToMany(Room, {foreignKey: 'lectureRoomId', as: 'lectureRooms', through: 'UserRoom'});
 Room.belongsToMany(User, {foreignKey: 'studentId', as: 'students', through: 'UserRoom'});
@@ -15,9 +15,6 @@ Note.belongsTo(Room, {as: 'room', onDelete: 'cascade'});
 
 Note.belongsTo(User, {foreignKey: 'editingUserId', as: 'editingUser', onDelete: 'cascade'});
 Note.belongsTo(User, {foreignKey: 'originalUserId', as: 'originalUser'});
-
-Room.hasMany(Note, {as: 'notes'});
-Note.belongsTo(Room, {as: 'room', onDelete: 'cascade'});
 
 db.sync()
   .then(
