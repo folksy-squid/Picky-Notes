@@ -7,10 +7,13 @@ module.exports = (db, Sequelize, User) => {
     },
     audioUrl: {
       type: Sequelize.STRING,
-      default: null
+      default: 'audio url'
     }
   });
+
   return {
     Room: Room,
   };
+
+
 };
