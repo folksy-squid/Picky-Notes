@@ -1,1 +1,3 @@
-console.log('Reducer #1');
+export default (state = {}, action) => {
+  return state;
+};
