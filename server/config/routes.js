@@ -53,7 +53,11 @@ module.exports = (app, express, db) => {
   // Note Creation
   app.post('/api/notes/create', (req, res) => {
     // pass the notes in cache (redis) to database (postgres)
-    res.send('End of lecture, and create all new notes for each user');
+    // {content, audioTimestamp, show, roomId, editingUserId, originalUserId}
+    // res.send('End of lecture, and create all new notes for each user');
+    dbhelpers.createNewNote(req.body, (newNote) => {
+      res.send(newNote);
+    });
   });
 
   // Note Editing
