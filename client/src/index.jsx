@@ -16,7 +16,8 @@ const browserHistory = ReactRouter.browserHistory;
 /*<-// Imports and Declarations -> */
 
 const render = () => ReactDOM.render((
-  <Router history={browserHistory} >
+  <Landing></Landing>
+  /*<Router history={browserHistory} >
     <Route path='/' component={App} >
       <IndexRoute component={Landing} />
       <Route path='/main' component={Main}>
@@ -29,7 +30,7 @@ const render = () => ReactDOM.render((
       <Route path='/lecture' component={Lecture} />
       <Route path='/compile' component={Compile} />
     </Route>
-  </Router>
+  </Router>*/
   ),
   document.getElementById('root')
 );

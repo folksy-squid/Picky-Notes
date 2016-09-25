@@ -1,6 +1,6 @@
 const Link = ReactRouter.Link;
 
-export default class Landing extends Component {
+export default class Landing extends React.Component {
   constructor(props) {
     super(props);
   }
@@ -9,7 +9,7 @@ export default class Landing extends Component {
     return (
       <div className="landing">
         <h1>Picky Notes</h1>
-        <a href="auth/facebook">Login</a>
+        <a href="auth/facebook"><i class="fa fa-facebook" aria-hidden="true"></i>Login</a>
       </div>
     );
   }
