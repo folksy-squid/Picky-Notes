@@ -29,7 +29,7 @@ const render = () => ReactDOM.render((
       <Route path='/lecture' component={Lecture} />
       <Route path='/compile' component={Compile} />
     </Route>
-  </Router>
+  </Router>*/
   ),
   document.getElementById('root')
 );
