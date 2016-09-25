@@ -17,6 +17,33 @@ const createNewRoom = ({topic, className, lecturer, hostId}, cb) => {
   });
 };
 
+const createNewNote = ({content, roomId, originalUserId}, cb) => {
+  // content, audioTimestamp, show, roomId, editingUserId, originalUserId
+
+  User.findOne({
+    where: { id: originalUserId }
+  })
+  .then((user) => {
+    Room.findOne({
+      where: { id: roomId }
+    })
+    .then((room) => {
+      Note.create({
+        content: content,
+        audioTimestamp: Date(),
+        show: true
+      })
+      .then((note) => {
+        note.setOriginalUser(user);
+        note.setEditingUser(user);
+        note.setRoom(room);
+        cb(note);
+      });
+    });
+  });
+};
+
 module.exports = {
-  createNewRoom
+  createNewRoom,
+  createNewNote
 };
