@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 export default class App extends React.Component {
 
   constructor(props) {
@@ -8,7 +9,6 @@ export default class App extends React.Component {
       user: {}
     };
   }
-
 
   componentWillMount() {   //  Retrieve the data, check if user logged in
 
