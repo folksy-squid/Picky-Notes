@@ -25,6 +25,13 @@ From within the root directory:
 npm install
 npm install -g webpack
 ```
+After psql has been installed:
+
+```
+psql -d postgres;
+CREATE USER ubuntu WITH PASSWORD 'password';
+CREATE DATABASE notepicker;
+```
 
 ## Usage
 
