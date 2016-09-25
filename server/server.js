@@ -14,9 +14,10 @@ const port = process.env.NODE_ENV === 'production' ? 80 : 3000;
 
 app.listen(port, () => {
   console.log('Server listening on port ' + port);
-  db.sync().then(() => {
-    console.log('Database is synced');
-  });
+  db.sync();
+  // .then(() => {
+  //   console.log('Database is synced');
+  // });
 });
 
 module.exports = app;
