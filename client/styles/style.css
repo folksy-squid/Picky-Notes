@@ -1,1 +1,19 @@
-hi
+@import 'https://fonts.googleapis.com/css?family=Crafty+Girls';
+
+.landing {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.landing > h1 {
+  font-size: 4em;
+  font-family: 'Crafty Girls', cursive;
+}
+
+.landing > a {
+  font-size: 3em;
+  text-decoration: none;
+  color: #333;
+}
