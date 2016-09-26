@@ -4,9 +4,6 @@
   "description": "pick your notes",
   "main": "server/server.js",
   "scripts": {
-    "build:webpack": "NODE_ENV=production webpack --config webpack.config.js",
-    "build": "npm run clean && npm run build:webpack",
-    "clean": "rm -rf client/dist",
     "start": "node server/server.js",
     "test": "mocha specs/**/*.js",
     "dev": "nodemon server/server.js & webpack --watch"
