@@ -1,9 +1,19 @@
+var path = require('path');
+var webpack = require('webpack');
+
 module.exports = {
-  entry: './client/src/index.jsx',
+  entry: [
+    'webpack-hot-middleware/client',
+    './client/src/index.jsx'
+  ],
   output: {
-    path: './client/dist',
+    path: path.join(__dirname, '/client/dist'),
     filename: 'index.bundle.js',
   },
+  plugins: [
+    new webpack.HotModuleReplacementPlugin(),
+    new webpack.NoErrorsPlugin()
+  ],
   module: {
     loaders: [{
       test: /\.jsx?$/,
