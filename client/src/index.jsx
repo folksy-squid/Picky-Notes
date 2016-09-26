@@ -1,29 +1,29 @@
 /*jshint esversion: 6 */
 
+/* <- Import modules -> */
+import React from 'react';
+import { render } from 'react-dom';
+import { Provider } from 'react-redux'
+import { Router, Route, IndexRoute } from 'react-router';
+
 /* <- Import components -> */
-import Connection from './Connection'
-import Landing from './components/Landing';
-import Main from './components/Main';
-import Lecture from './components/Lecture';
-import Compile from './components/Compile';
-import NewRoom from './components/NewRoom';
-import JoinRoom from './components/JoinRoom';
-import Lobby from './components/Lobby';
-import Notebook from './components/Notebook';
-import Review from './components/Review';
+import Landing from './components/Landing.jsx';
+import Lecture from './components/Lecture.jsx';
+import Compile from './components/Compile.jsx';
+import NewRoom from './components/NewRoom.jsx';
+import JoinRoom from './components/JoinRoom.jsx';
+import Lobby from './components/Lobby.jsx';
+import Notebook from './components/Notebook.jsx';
+import Review from './components/Review.jsx';
+import Main from './components/Main.jsx';
+import Connection from './Connection.js'
 
 /* <- Import store -> */
-import store, {history} from './store';
-
-/* <- Declarations -> */
-const Router = ReactRouter.Router;
-const Route = ReactRouter.Route;
-const IndexRoute = ReactRouter.IndexRoute;
-const Provider = ReactRedux.Provider;
+import store, { history } from './store';
 
 /* <- Set up router -> */
-const render = () => ReactDOM.render((
-  <Provider store={store}>
+render(
+  (<Provider store={store}>
     <Router history={history} >
       <Route path='/' component={Connection} >
         <IndexRoute component={Landing} />
@@ -42,5 +42,3 @@ const render = () => ReactDOM.render((
   ),
   document.getElementById('root')
 );
-
-render();

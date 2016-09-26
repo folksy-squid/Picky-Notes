@@ -1,9 +1,9 @@
 /*jshint esversion: 6 */
 
 /* <- Imports and Declarations -> */
-const browserHistory = ReactRouter.browserHistory;
-const syncHistoryWithStore = ReactRouterRedux.syncHistoryWithStore;
-const compose = Redux.compose;
+import {compose, createStore} from 'redux';
+import {browserHistory} from 'react-router';
+import {syncHistoryWithStore} from 'react-router-redux';
 import reducers from './reducers';
 
 /* <- Set up store -> */

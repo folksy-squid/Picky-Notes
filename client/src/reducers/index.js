@@ -1,6 +1,6 @@
 /* jshint esversion: 6 */
-const combineReducers = Redux.combineReducers;
-const routerReducer = ReactRouterRedux.routerReducer;
+import {combineReducers} from 'redux';
+import {routerReducer} from 'react-router-redux';
 
 import reducer1 from './reducer1.js';
 import reducer2 from './reducer2.js';

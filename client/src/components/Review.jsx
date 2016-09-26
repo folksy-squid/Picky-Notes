@@ -1,6 +1,7 @@
-const Link = ReactRouter.Link
+import React from 'react';
+import { Link } from 'react-router';
 
-export default class Review extends React.Component {
+class Review extends React.Component {
   constructor (props) {
     super(props)
   }
@@ -8,3 +9,5 @@ export default class Review extends React.Component {
 
   }
 }
+
+export default Review;

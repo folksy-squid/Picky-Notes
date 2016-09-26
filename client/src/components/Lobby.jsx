@@ -1,6 +1,7 @@
-const Link = ReactRouter.Link;
+import React from 'react';
+import { Link } from 'react-router';
 
-export default class Lobby extends React.Component {
+class Lobby extends React.Component {
   constructor(props) {
     super(props);
     this.socket = null;
@@ -25,3 +26,5 @@ export default class Lobby extends React.Component {
     );
   }
 }
+
+export default Lobby;

@@ -1,9 +1,8 @@
 /*jshint esversion: 6 */
-
-const bindActionCreators = Redux.bindActionCreators;
-const connect = ReactRedux.connect;
+import {bindActionCreators} from 'redux';
+import {connect} from 'react-redux';
 import * as actionCreators from './actions/actionCreators';
-import App from './components/App';
+import App from './components/App.jsx';
 
 function mapStateToProps(state) {
   return {
