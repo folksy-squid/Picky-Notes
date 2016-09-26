@@ -1,14 +1,24 @@
 const dbhelpers = require ('../database/db-helpers');
+const passport = require('./passport');
 
 module.exports = (app, express, db) => {
-
   // Facebook OAuth
-  app.get('/auth/facebook', (req, res) => {
-    res.send('Facebook OAuth');
-  });
-  app.get('/auth/facebook/callback', (req, res) => {
-    // res.send('Callback for Facebook OAuth');
-    res.redirect('/api/users');
+  app.get('/auth/facebook',
+    passport.authenticate('facebook', {
+      scope: ['public_profile', 'email', 'user_about_me', 'user_friends']
+    }));
+
+  app.get('/auth/facebook/callback',
+    passport.authenticate('facebook', { failureRedirect: '/login' }),
+      (req, res) => {
+        res.cookie('authenticate', req.session.passport);
+        res.redirect('/');
+      }
+  );
+
+  app.get('/logout', function(req, res) {
+    req.logout();
+    res.redirect('/');
   });
 
   // User Creation
@@ -75,4 +85,7 @@ module.exports = (app, express, db) => {
     .post((req, res) => {
       res.send('Add new notes (save button) for user #' + req.params.userId + ' inside room #' + req.params.roomId);
     });
+  app.get('*', function (request, response) {
+    response.sendFile(path.resolve(__dirname, '../client', 'index.html'));
+  });
 };
