@@ -23,7 +23,10 @@ module.exports = (app, express, db) => {
 
   // User Creation
   app.post('/api/users/', (req, res) => {
-    res.send('Create a new user');
+    dbhelpers.createNewUser(req.body, (user) => {
+      res.send(user);
+    });
+    // res.send('Create a new user');
   });
 
   // User Info Update
