@@ -6,7 +6,9 @@ class JoinRoom extends React.Component {
     super(props)
   }
   render(){
-
+    return (
+      <div>'this is the joinroom view'</div>
+    )
   }
 }
 
