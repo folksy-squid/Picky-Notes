@@ -53,23 +53,17 @@ const joinRoom = (userId, pathUrl, cb) => {
 const createNewNote = ({content, roomId, originalUserId}, cb) => {
   // content, audioTimestamp, show, roomId, editingUserId, originalUserId
 
-  // User.findById(originalUserId)
-  // .then((user) => {
-  //   Room.findById(roomId)
-  //   .then((room) => {
-      Note.create({
-        content: content,
-        audioTimestamp: Date(),
-        show: true,
-        originalUserId: originalUserId,
-        editingUserId: originalUserId,
-        roomId: roomId
-      })
-      .then((note) => {
-        cb(note);
-      });
-  //   });
-  // });
+  Note.create({
+    content: content,
+    audioTimestamp: Date(),
+    show: true,
+    originalUserId: originalUserId,
+    editingUserId: originalUserId,
+    roomId: roomId
+  })
+  .then((note) => {
+    cb(note);
+  });
 };
 
 const showAllNotes = ({userId, roomId}, cb) => {
