@@ -13,8 +13,6 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators(actionCreators, dispatch);
 }
 
-const Connection = function (view){
-  return connect(mapStateToProps, mapDispatchToProps)(view);
-};
+const Connection = (view)=> connect(mapStateToProps, mapDispatchToProps)(view);
 
 export default Connection;
