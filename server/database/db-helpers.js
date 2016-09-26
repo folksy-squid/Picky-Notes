@@ -37,6 +37,23 @@ const createNewRoom = ({topic, className, lecturer, hostId}, cb) => {
   });
 };
 
+const joinRoom = ({userId}, pathUrl, cb) => {
+  User.findOne({
+    where: { id: userId }
+  })
+  .then((user) => {
+    console.log(user.dataValues);
+    Room.findOne({
+      where: { pathUrl: pathUrl }
+    })
+    .then((room) => {
+      console.log(room.dataValues);
+      user.addLectureRoom(room);
+      cb(room);
+    });
+  });
+};
+
 const createNewNote = ({content, roomId, originalUserId}, cb) => {
   // content, audioTimestamp, show, roomId, editingUserId, originalUserId
 
@@ -70,5 +87,6 @@ const showAllNotes = () => {
 module.exports = {
   createNewUser,
   createNewRoom,
+  joinRoom,
   createNewNote
 };
