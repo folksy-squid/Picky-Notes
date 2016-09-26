@@ -28,3 +28,9 @@
   margin-left: 4px;
   font-family: helvetica;
 }
+
+.lectureTitle {
+  display: flex;
+  justify-content: space-around;
+  font-size: 2.8em;
+}

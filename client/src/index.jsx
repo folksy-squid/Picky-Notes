@@ -4,6 +4,7 @@
 import reducers from './reducers';
 import App from './components/App.jsx';
 import Landing from './components/Landing.jsx';
+import Lobby from './components/Lobby.jsx';
 
 // Declare Redux Methods
 const store = Redux.createStore(reducers);
@@ -16,8 +17,7 @@ const browserHistory = ReactRouter.browserHistory;
 /*<-// Imports and Declarations -> */
 
 const render = () => ReactDOM.render((
-  <Landing></Landing>
-  /*<Router history={browserHistory} >
+  <Router history={browserHistory} >
     <Route path='/' component={App} >
       <IndexRoute component={Landing} />
       <Route path='/main' component={Main}>
@@ -30,7 +30,7 @@ const render = () => ReactDOM.render((
       <Route path='/lecture' component={Lecture} />
       <Route path='/compile' component={Compile} />
     </Route>
-  </Router>*/
+  </Router>
   ),
   document.getElementById('root')
 );
