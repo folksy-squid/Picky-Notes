@@ -3,10 +3,14 @@ export default class App extends React.Component {
   constructor(props) {
     super(props);
     // REDUX?
-    this.state = {
-      isAuth: false,
-      user: {}
-    };
+    // this.state = {
+    //   isAuth: false,
+    //   user: {}
+    // };
+  }
+
+  getUser(data) {
+
   }
 
   componentWillMount() {   //  Retrieve the data, check if user logged in
@@ -14,6 +18,7 @@ export default class App extends React.Component {
     var context = this;
 
     $.get('/checkLogin').then(function(data) {
+      context.getUser(data)
       context.setState({
         isAuth: data === 'authenticated'
       });
