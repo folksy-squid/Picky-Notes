@@ -16,7 +16,7 @@ import Lobby from './components/Lobby.jsx';
 import Notebook from './components/Notebook.jsx';
 import Review from './components/Review.jsx';
 import Main from './components/Main.jsx';
-import Connection from './Connection.js'
+import App from './components/App.jsx'
 
 /* <- Import store -> */
 import store, { history } from './store';
@@ -25,7 +25,7 @@ import store, { history } from './store';
 render(
   (<Provider store={store}>
     <Router history={history} >
-      <Route path='/' component={Connection} >
+      <Route path='/' component={App} >
         <IndexRoute component={Landing} />
         <Route path='/main' component={Main}>
           <Route path='/notebook' component={Notebook} />
