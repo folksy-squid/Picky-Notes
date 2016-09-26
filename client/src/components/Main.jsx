@@ -6,7 +6,7 @@ class Main extends React.Component {
     super(props)
   }
   render(){
-
+    <div>'THIS IS THE MAIN PAGE'</div>
   }
 }
 

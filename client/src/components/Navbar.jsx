@@ -2,15 +2,15 @@ import React from 'react';
 import { Link } from 'react-router';
 
 class Navbar extends React.Component {
+  //hello from the other side
   render() {
     return (
-      <nav id="navbar">
-        <a className="navbar-brand">Picky Notes</a>
-        <button className="navbar-toggler hidden-lg-up" type="button" data-toggle="collapse" data-target="#nav-content">
-        ☰
-        </button>
-        <div className="collapse navbar-toggleable-md col-sm-10" id="nav-content">
+      <nav className="navbar navbar-static-top">
+        <div className="container-fluid">
           <ul className="nav navbar-nav">
+            <a className="navbar-brand">Picky Notes</a>
+          </ul>
+          <ul className="nav navbar-nav navbar-right">
             <li className="nav-item">
               <Link className="nav-link" to="/join">Join Room</Link>
             </li>
