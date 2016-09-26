@@ -77,7 +77,10 @@ module.exports = (app, express, db) => {
   app.route('/api/notes/:userId/:roomId')
     .get((req, res) => {
       if (req.query.filter === 'show') {
-        res.send('Show filtered notes for user #' + req.params.userId + ' inside room #' + req.params.roomId);
+        dbhelpers.showFilteredNotes(req.params, (allNotes) => {
+          res.send(allNotes);
+        });
+        // res.send('Show filtered notes for user #' + req.params.userId + ' inside room #' + req.params.roomId);
       } else {
         dbhelpers.showAllNotes(req.params, (allNotes) => {
           res.send(allNotes);
