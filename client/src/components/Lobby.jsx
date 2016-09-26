@@ -1,7 +1,7 @@
-import React from 'react';
 import { Link } from 'react-router';
+import ParticipantList from './ParticipantList.jsx';
 
-class Lobby extends React.Component {
+export default class Lobby extends React.Component {
   constructor(props) {
     super(props);
     this.socket = null;
@@ -22,9 +22,8 @@ class Lobby extends React.Component {
           <span>*Lecture Title* </span>
           <span>By *Lecturers Name*</span>
         </div>
+        <ParticipantList participants={[{name: 'Kunal'}, {name: 'Marco'}, {name: 'Derek'}, {name: 'Sean'}]}/>
       </div>
     );
   }
 }
-
-export default Lobby;

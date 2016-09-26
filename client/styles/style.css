@@ -34,3 +34,11 @@
   justify-content: space-around;
   font-size: 2.8em;
 }
+
+.participants {
+  font-size: 1.3em;
+}
+
+.participants i {
+  margin-right: 4px;
+}
