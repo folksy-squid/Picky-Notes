@@ -71,14 +71,29 @@ const createNewNote = ({content, roomId, originalUserId}, cb) => {
       .then((note) => {
         note.setOriginalUser(user);
         note.setEditingUser(user); // alternately, can "Add Note/Notes to User"
-        note.setRoom(room); // alternately, can "Add Note/Notes to Room"
+        // note.setRoom(room); // alternately, can "Add Note/Notes to Room"
+        room.addNote(note);
         cb(note);
       });
     });
   });
 };
 
-const showAllNotes = () => {
+const showAllNotes = ({userId, roomId}, cb) => {
+  Note.findAll({
+    // attributes: ['id', 'content', 'show'],
+    include: {
+      model: Room,
+      where: { id: roomId },
+      attributes: []
+    }
+  })
+  .then((allNotes) => {
+    cb(allNotes);
+  });
+};
+
+const showFilteredNotes = ({userId, roomId}, cb) => {
 
 };
 
@@ -86,5 +101,7 @@ module.exports = {
   createNewUser,
   createNewRoom,
   joinRoom,
-  createNewNote
+  createNewNote,
+  showAllNotes,
+  showFilteredNotes
 };
