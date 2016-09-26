@@ -10,8 +10,8 @@ Room.belongsTo(User, {foreignKey: 'hostId', as: 'host', constraints: false});
 User.belongsToMany(Room, {foreignKey: 'studentId', through: 'UserRoom'});
 Room.belongsToMany(User, {foreignKey: 'lectureRoomId', through: 'UserRoom'});
 
-Room.hasMany(Note, {as: 'notes'});
-Note.belongsTo(Room, {as: 'room', onDelete: 'cascade'});
+Room.hasMany(Note);
+Note.belongsTo(Room, {onDelete: 'cascade'});
 
 Note.belongsTo(User, {foreignKey: 'editingUserId', as: 'editingUser', onDelete: 'cascade'});
 Note.belongsTo(User, {foreignKey: 'originalUserId', as: 'originalUser'});
