@@ -28,13 +28,16 @@
     "chai": "^3.5.0",
     "mocha": "^3.0.2",
     "supertest": "^2.0.0",
-    "webpack": "^1.13.2"
+    "webpack": "^1.13.2",
+    "webpack-dev-middleware": "^1.8.2",
+    "webpack-hot-middleware": "^2.12.2"
   },
   "dependencies": {
     "body-parser": "^1.15.2",
     "express": "^4.14.0",
     "js-md5": "^0.4.1",
     "morgan": "^1.7.0",
+    "path": "^0.12.7",
     "pg": "^6.1.0",
     "react": "^15.3.2",
     "react-dom": "^15.3.2",
