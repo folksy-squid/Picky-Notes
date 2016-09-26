@@ -5,16 +5,16 @@ const {User} = require('./UserController')(db, Sequelize);
 const {Room} = require('./RoomController')(db, Sequelize, User);
 const {Note} = require('./NoteController')(db, Sequelize, User);
 
-Room.belongsTo(User, {foreignKey: 'hostId', as: 'host', constraints: false});
+Room.belongsTo(User, {foreignKey: 'host_id', as: 'host', constraints: false});
 
-User.belongsToMany(Room, {foreignKey: 'lectureRoomId', as: 'lectureRooms', through: 'UserRoom'});
-Room.belongsToMany(User, {foreignKey: 'studentId', as: 'students', through: 'UserRoom'});
+User.belongsToMany(Room, {foreignKey: 'lecture_room_id', as: 'lectureRooms', through: 'user_room'});
+Room.belongsToMany(User, {foreignKey: 'student_id', as: 'students', through: 'user_room'});
 
 Room.hasMany(Note, {as: 'notes'});
 Note.belongsTo(Room, {as: 'room', onDelete: 'cascade'});
 
-Note.belongsTo(User, {foreignKey: 'editingUserId', as: 'editingUser', onDelete: 'cascade'});
-Note.belongsTo(User, {foreignKey: 'originalUserId', as: 'originalUser'});
+Note.belongsTo(User, {foreignKey: 'editing_user_id', as: 'editingUser', onDelete: 'cascade'});
+Note.belongsTo(User, {foreignKey: 'original_user_id', as: 'originalUser'});
 
 // db.sync()
 //   .then(
