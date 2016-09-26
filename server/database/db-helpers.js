@@ -68,6 +68,7 @@ const showAllNotes = () => {
 };
 
 module.exports = {
+  createNewUser,
   createNewRoom,
   createNewNote
 };
