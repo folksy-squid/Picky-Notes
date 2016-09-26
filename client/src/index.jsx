@@ -1,16 +1,16 @@
 /*jshint esversion: 6 */
 
 /* <- Import components -> */
-import App from './components/App.jsx';
-import Landing from './components/Landing.jsx';
-import Main from './components/Main.jsx';
-import Lecture from './components/Lecture.jsx';
-import Compile from './components/Compile.jsx';
-import NewRoom from './components/NewRoom.jsx';
-import JoinRoom from './components/JoinRoom.jsx';
-import Lobby from './components/Lobby.jsx';
-import Notebook from './components/Notebook.jsx';
-import Review from './components/Review.jsx';
+import Connection from './Connection'
+import Landing from './components/Landing';
+import Main from './components/Main';
+import Lecture from './components/Lecture';
+import Compile from './components/Compile';
+import NewRoom from './components/NewRoom';
+import JoinRoom from './components/JoinRoom';
+import Lobby from './components/Lobby';
+import Notebook from './components/Notebook';
+import Review from './components/Review';
 
 /* <- Import store -> */
 import store, {history} from './store';
@@ -25,7 +25,7 @@ const Provider = ReactRedux.Provider;
 const render = () => ReactDOM.render((
   <Provider store={store}>
     <Router history={history} >
-      <Route path='/' component={App} >
+      <Route path='/' component={Connection} >
         <IndexRoute component={Landing} />
         <Route path='/main' component={Main}>
           <Route path='/notebook' component={Notebook} />
