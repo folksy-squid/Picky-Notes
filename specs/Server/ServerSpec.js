@@ -143,6 +143,11 @@ describe('Server Side Socket Connection', () => {
       expect(ioServer.sockets.adapter.rooms).to.have.property('TESTT');
       client.disconnect();
       done();
+    };
+    ioServer.on('connection', handler);
+    var client = ioClient.connect(socketURL, options);
+    client.on('disconnect', () => {
+      ioServer.removeListener('connection', handler);
     });
   });
 
