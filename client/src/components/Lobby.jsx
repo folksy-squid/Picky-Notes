@@ -1,4 +1,7 @@
-export default class Lobby extends React.Component {
+import React from 'react';
+import { Link } from 'react-router';
+
+class Lobby extends React.Component {
   constructor(props) {
     super(props);
     this.socket = null;
@@ -17,9 +20,11 @@ export default class Lobby extends React.Component {
       <div>
         <div className="lectureTitle">
           <span>*Lecture Title* </span>
-          <span>By *Lecturer's Name*</span>
+          <span>By *Lecturers Name*</span>
         </div>
       </div>
     );
   }
 }
+
+export default Lobby;
