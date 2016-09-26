@@ -41,12 +41,12 @@ describe('Note Creation', () => {
       .post('/api/notes/create')
       .send({
         content: 'This is marvelous',
-        roomId: 11,
+        roomId: 1,
         originalUserId: 1
       })
       .expect((res) => {
         expect(res.body.content).to.equal('This is marvelous');
-        expect(res.body.roomId).to.equal(11);
+        expect(res.body.roomId).to.equal(1);
         expect(res.body.originalUserId).to.equal(1);
         expect(res.body.editingUserId).to.equal(1);
         expect(res.body.show).to.be.true;
