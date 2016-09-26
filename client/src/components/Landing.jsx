@@ -9,7 +9,7 @@ export default class Landing extends React.Component {
     return (
       <div className="landing">
         <h1>Picky Notes</h1>
-        <a href="auth/facebook"><i class="fa fa-facebook" aria-hidden="true"></i>Login</a>
+        <a href="auth/facebook"><i className="fa fa-facebook" aria-hidden="true"></i><span>Login</span></a>
       </div>
     );
   }
