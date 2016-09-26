@@ -3,7 +3,7 @@
 /* <- Import modules -> */
 import React from 'react';
 import { render } from 'react-dom';
-import { Provider } from 'react-redux'
+import { Provider } from 'react-redux';
 import { Router, Route, IndexRoute } from 'react-router';
 
 /* <- Import components -> */
@@ -16,8 +16,7 @@ import Lobby from './components/Lobby.jsx';
 import Notebook from './components/Notebook.jsx';
 import Review from './components/Review.jsx';
 import Main from './components/Main.jsx';
-import App from './components/App.jsx'
-
+import App from './components/App.jsx';
 /* <- Import store -> */
 import store, { history } from './store';
 
