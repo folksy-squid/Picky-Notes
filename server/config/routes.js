@@ -48,7 +48,7 @@ module.exports = (app, express, db) => {
   app.post('/api/rooms', (req, res) => {
     // create and return hash for room path Url
     // { topic, className, lecturer, hostId }
-    dbhelpers.createNewRoom(req.body, function(roomInfo) {
+    dbhelpers.createNewRoom(req.body, (roomInfo) => {
       /*** Example Data sent back to Client ***
       {
         "audioUrl": "audio url",
