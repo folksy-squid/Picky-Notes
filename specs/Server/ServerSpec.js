@@ -108,7 +108,6 @@ describe('/api/notes/', () => {
     })
     .then(() => done());
   });
-
   afterEach(() => Room.destroy({ where: { id: 12345 } }));
 
   describe('Note Creation', () => {
