@@ -46,7 +46,7 @@ const joinRoom = (userId, pathUrl, cb) => {
       where: { pathUrl: pathUrl }
     })
     .then((currentRoom) => {
-      currentUser.addLectureRoom(currentRoom);
+      currentUser.addRoom(currentRoom);
       cb(currentRoom);
     });
   });
