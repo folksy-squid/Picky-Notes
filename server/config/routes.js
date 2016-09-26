@@ -54,8 +54,8 @@ module.exports = (app, express, db) => {
     dbhelpers.createNewRoom(req.body, (roomInfo) => { res.send(roomInfo); });
   });
 
-  // Have user join the room at 'pathUrl'
   app.post('/api/rooms/:pathUrl', (req, res) => {
+  // Have user join the room at 'pathUrl'
     dbhelpers.joinRoom(req.body.userId, req.params.pathUrl, (currentRoom) => { res.send(currentRoom); });
   });
 
@@ -71,17 +71,20 @@ module.exports = (app, express, db) => {
   app.route('/api/notes/:userId/:roomId')
     .get((req, res) => {
       if (req.query.filter === 'show') {
-        dbhelpers.showFilteredNotes(req.params, (allNotes) => { res.send(allNotes); });
         // res.send('Show filtered notes for user #' + req.params.userId + ' inside room #' + req.params.roomId);
+        dbhelpers.showFilteredNotes(req.params, (allNotes) => { res.send(allNotes); });
       } else {
-        dbhelpers.showAllNotes(req.params, (allNotes) => { res.send(allNotes); });
         // res.send('Compare all notes for user #' + req.params.userId + ' inside room #' + req.params.roomId);
+        dbhelpers.showAllNotes(req.params, (allNotes) => { res.send(allNotes); });
       }
     })
     .put((req, res) => {
+      // accepts in req.body an array of notes to update
+      // [{id, show, content}]
       res.send('Edit existing notes (save button) for user #' + req.params.userId + ' inside room #' + req.params.roomId);
     })
     .post((req, res) => {
+      // potentially instead of using this endpoint, reuse /api/notes/create?
       res.send('Add new notes (save button) for user #' + req.params.userId + ' inside room #' + req.params.roomId);
     });
 };
