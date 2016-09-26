@@ -1,5 +1,12 @@
-// store your actions in here!
+/*jshint esversion: 6 */
 
+// store your actions in here!
+export function createUser (user) {
+  return {
+    type: 'CREATE_USER',
+    user
+  };
+}
 
 export function addNote (timestamp, text) {
   return {
