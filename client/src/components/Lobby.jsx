@@ -13,6 +13,7 @@ export default class Lobby extends React.Component {
   }
 
   componentDidMount() {
+    this.socket.disconnect();
     new Clipboard(this.refs.copyButton, {
       text: (trigger) => {
         return this.refs.shareLink.innerText;
