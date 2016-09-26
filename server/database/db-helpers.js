@@ -48,7 +48,7 @@ const joinRoom = ({userId}, pathUrl, cb) => {
     })
     .then((room) => {
       console.log(room.dataValues);
-      user.addLectureRoom(room);
+      user.addRoom(room);
       cb(room);
     });
   });
