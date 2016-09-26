@@ -38,9 +38,7 @@ const createNewRoom = ({topic, className, lecturer, hostId}, cb) => {
 };
 
 const joinRoom = (userId, pathUrl, cb) => {
-  User.findOne({
-    where: { id: userId }
-  })
+  User.findById(userId)
   .then((currentUser) => {
     Room.findOne({
       where: { pathUrl: pathUrl }
@@ -55,33 +53,28 @@ const joinRoom = (userId, pathUrl, cb) => {
 const createNewNote = ({content, roomId, originalUserId}, cb) => {
   // content, audioTimestamp, show, roomId, editingUserId, originalUserId
 
-  User.findOne({
-    where: { id: originalUserId }
-  })
-  .then((user) => {
-    Room.findOne({
-      where: { id: roomId }
-    })
-    .then((room) => {
+  // User.findById(originalUserId)
+  // .then((user) => {
+  //   Room.findById(roomId)
+  //   .then((room) => {
       Note.create({
         content: content,
         audioTimestamp: Date(),
-        show: true
+        show: true,
+        originalUserId: originalUserId,
+        editingUserId: originalUserId,
+        roomId: roomId
       })
       .then((note) => {
-        note.setOriginalUser(user);
-        note.setEditingUser(user); // alternately, can "Add Note/Notes to User"
-        // note.setRoom(room); // alternately, can "Add Note/Notes to Room"
-        room.addNote(note);
         cb(note);
       });
-    });
-  });
+  //   });
+  // });
 };
 
 const showAllNotes = ({userId, roomId}, cb) => {
   Note.findAll({
-    // attributes: ['id', 'content', 'show'],
+    where: { editingUserId: userId },
     include: {
       model: Room,
       where: { id: roomId },
@@ -94,7 +87,20 @@ const showAllNotes = ({userId, roomId}, cb) => {
 };
 
 const showFilteredNotes = ({userId, roomId}, cb) => {
-
+  Note.findAll({
+    where: {
+      editingUserId: userId,
+      show: true
+    },
+    include: {
+      model: Room,
+      where: { id: roomId },
+      attributes: []
+    }
+  })
+  .then((allNotes) => {
+    cb(allNotes);
+  });
 };
 
 module.exports = {
