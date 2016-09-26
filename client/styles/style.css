@@ -42,3 +42,49 @@
 .participants i {
   margin-right: 4px;
 }
+
+.clipboard {
+  display: table;
+  font-size: 12px;
+}
+
+.shareLink {
+    box-sizing: border-box;
+    box-shadow: inset 0 1px 2px rgba(0,0,0,0.075);
+    border: 1px solid #ddd;
+    border-radius: 3px;  
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    padding: 6px 8px;
+    line-height: 20px;
+    padding-bottom: 3px;
+    padding-top: 3px;
+    width: 100%;
+    display: table-cell;    
+}
+
+.buttonCell {
+  display: table-cell;
+  vertical-align: middle;
+}
+
+.copyButton {
+    cursor: pointer;
+    border-radius: 3px;
+    border: 1px solid #d5d5d5;
+    background-image: linear-gradient(#fcfcfc, #eee);
+    color: #333;
+    line-height: 20px;
+    font-size: 16px;
+    padding: 3px 10px;
+    border-bottom-left-radius: 0;
+    border-top-left-radius: 0;
+    margin-left: -1px;
+}
+
+.copyButton:hover {
+  text-decoration: none;
+  background-color: #ddd;
+  background-image: linear-gradient(#eee, #ddd);
+  border-color: #ccc;
+}
