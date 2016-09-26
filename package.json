@@ -4,11 +4,9 @@
   "description": "pick your notes",
   "main": "server/server.js",
   "scripts": {
-    "build:webpack": "NODE_ENV=production webpack --config webpack.config.js",
-    "build": "npm run clean && npm run build:webpack",
-    "clean": "rm -rf client/dist",
     "start": "node server/server.js",
-    "test": "mocha specs/**/*.js"
+    "test": "mocha specs/**/*.js",
+    "dev": "nodemon server/server.js & webpack --watch"
   },
   "repository": {
     "type": "git",
@@ -27,6 +25,7 @@
     "babel-preset-react": "^6.11.1",
     "chai": "^3.5.0",
     "mocha": "^3.0.2",
+    "nodemon": "^1.10.2",
     "supertest": "^2.0.0",
     "webpack": "^1.13.2",
     "webpack-dev-middleware": "^1.8.2",

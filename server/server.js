@@ -1,13 +1,10 @@
 const express = require('express');
-const webpack = require('webpack');
-const webpackConfig = require('../webpack.config.js');
 const {db} = require('./database/db-config');
 
 const app = express();
-const compiler = webpack(webpackConfig);
 
 // add middleware
-require('./config/middleware.js')(app, express, compiler, webpackConfig);
+require('./config/middleware.js')(app, express);
 
 // add routes
 require('./config/routes.js')(app, express);
