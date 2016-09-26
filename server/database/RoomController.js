@@ -1,13 +1,13 @@
 module.exports = (db, Sequelize, User) => {
   const Room = db.define('room', {
-    pathUrl: {
+    path_url: {
       type: Sequelize.TEXT,
       allowNull: false
     },
     topic: Sequelize.TEXT,
     class: Sequelize.TEXT,
     lecturer: Sequelize.TEXT,
-    audioUrl: {
+    audio_url: {
       type: Sequelize.TEXT,
       defaultValue: 'audio url'
     }
