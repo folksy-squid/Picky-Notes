@@ -3,7 +3,7 @@ module.exports = (db, Sequelize, User) => {
     content: {
       type: Sequelize.TEXT,
     },
-    audio_timestamp: {
+    audioTimestamp: {
       type: Sequelize.DATE,
     },
     show: {
