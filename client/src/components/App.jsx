@@ -2,57 +2,17 @@ export default class App extends React.Component {
 
   constructor(props) {
     super(props);
-    // REDUX?
-    // this.state = {
-    //   isAuth: false,
-    //   user: {}
-    // };
   }
 
-  getUser(data) {
-
-  }
-
-  componentWillMount() {   //  Retrieve the data, check if user logged in
-
+  render() {
     var context = this;
-
-    $.get('/checkLogin').then(function(data) {
-      context.getUser(data)
-      context.setState({
-        isAuth: data === 'authenticated'
-      });
-    }).catch(function(err) {
-      // REDUX?
-      context.setState({
-        isAuth: false
-      });
-    });
-
-    $.ajax({
-      method: 'GET',
-      url: 'api/user_data',
-      success: function(user) {
-        context.setUser(user);
-      }
-    });
-
-  }
-
-  checkAuthState () {
-    // REDUX?
-    return this.state.isAuth;
-  }
-
-  render() {   //  Depending on authentication, serves different nav-bar
-    var context = this;
-    var checkAuthState = this.checkAuthState;
-    var children = React.Children.map(this.props.children, function(child) {
-      return React.cloneElement(child, {
-        auth: checkAuthState,
-        user: context.state.user
-      });
-    });
+    // var children = React.Children.map(this.props.children, function(child) {
+    //   return React.cloneElement(child, {
+    //     auth: context.checkAuthState,
+    //     user: context.getUser
+    //   });
+    // });
+    var children = React.cloneElement(this.props.children, this.props)
     return (
       <div>
         <Navbar/>
