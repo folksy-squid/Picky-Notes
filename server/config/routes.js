@@ -56,6 +56,13 @@ module.exports = (app, express, db) => {
     });
   });
 
+  // Have user join the room at 'pathUrl'
+  app.post('/:pathUrl', (req, res) => {
+    dbhelpers.joinRoom(req.body, req.params.pathUrl, (currentRoom) => {
+      res.send(currentRoom);
+    });
+  });
+
   // Note Creation
   app.post('/api/notes/create', (req, res) => {
     // pass the notes in cache (redis) to database (postgres)
