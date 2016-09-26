@@ -1,17 +1,10 @@
 var bluebird = require('bluebird');
-var redis = require('redis');
-var client = redis.createClient();
+var Redis = require('ioredis');
+var redis = new Redis();
 
-bluebird.promisifyAll(redis.RedisClient.prototype);
-bluebird.promisifyAll(redis.Multi.prototype);
-
-client.on('error', function(err) {
-  console.log('Error', err);
-});
-
-client.setAsync('newNote', 'a new thing')
-  .then(() => client.getAsync('newNote'))
+redis.set('newNote', 'a new thing')
+  .then(() => redis.get('newNote'))
   .then((data) => {
     console.log(data);
-    client.quit();
+    redis.quit();
   });
