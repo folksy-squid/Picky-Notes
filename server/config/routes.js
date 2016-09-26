@@ -89,7 +89,10 @@ module.exports = (app, express, db) => {
       if (req.query.filter === 'show') {
         res.send('Show filtered notes for user #' + req.params.userId + ' inside room #' + req.params.roomId);
       } else {
-        res.send('Compare all notes for user #' + req.params.userId + ' inside room #' + req.params.roomId);
+        dbhelpers.showAllNotes(req.params, (allNotes) => {
+          res.send(allNotes);
+        });
+        // res.send('Compare all notes for user #' + req.params.userId + ' inside room #' + req.params.roomId);
       }
     })
     .put((req, res) => {
