@@ -37,19 +37,17 @@ const createNewRoom = ({topic, className, lecturer, hostId}, cb) => {
   });
 };
 
-const joinRoom = ({userId}, pathUrl, cb) => {
+const joinRoom = (userId, pathUrl, cb) => {
   User.findOne({
     where: { id: userId }
   })
-  .then((user) => {
-    console.log(user.dataValues);
+  .then((currentUser) => {
     Room.findOne({
       where: { pathUrl: pathUrl }
     })
-    .then((room) => {
-      console.log(room.dataValues);
-      user.addRoom(room);
-      cb(room);
+    .then((currentRoom) => {
+      currentUser.addLectureRoom(currentRoom);
+      cb(currentRoom);
     });
   });
 };
