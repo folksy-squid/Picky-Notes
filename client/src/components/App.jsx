@@ -1,4 +1,5 @@
 import React from 'react';
+import Connection from '../Connection.js'
 import { Link } from 'react-router';
 import Navbar from './Navbar.jsx'
 
@@ -18,4 +19,4 @@ class App extends React.Component {
   }
 }
 
-export default App;
+export default Connection(App);

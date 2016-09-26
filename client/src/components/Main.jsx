@@ -1,4 +1,5 @@
 import React from 'react';
+import Connection from '../Connection.js'
 import { Link } from 'react-router';
 
 class Main extends React.Component {
@@ -16,4 +17,4 @@ class Main extends React.Component {
   }
 }
 
-export default Main;
+export default Connection(Main);
