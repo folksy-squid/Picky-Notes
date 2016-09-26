@@ -17,7 +17,7 @@ export default class Lobby extends React.Component {
       <div>
         <div className="lectureTitle">
           <span>*Lecture Title* </span>
-          <span>By *Lecture's Name*</span>
+          <span>By *Lecturer's Name*</span>
         </div>
       </div>
     );
