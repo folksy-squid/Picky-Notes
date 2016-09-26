@@ -1,8 +1,18 @@
 var request = require('supertest');
 var express = require('express');
 var expect = require('chai').expect;
-var app = require('../../server/server');
+<<<<<<< 47eb8883a37b5d356c35b157e7ab18498a1a0022
+var server = require('../../server/server');
+var app = server.app;
+var ioServer = server.io;
 var {db, User, Room, Note} = require('../../server/database/db-config');
+
+var ioClient = require('socket.io-client');
+var socketURL = 'http://0.0.0.0:3000';
+var options = {
+  transports: ['websocket'],
+  'force new connection': true
+};
 
 before((done) => {
   db.sync()
@@ -116,3 +126,15 @@ describe('/api/notes/', () => {
     });
   });
 });
+
+
+describe('Socket Connection', () => {
+  it('should establish a connection between the client and the server', (done) => {
+    ioServer.on('connection', (socket) => {
+      socket.disconnect();
+      done();
+    });
+    ioClient.connect(socketURL, options);
+  });
+});
+

@@ -31,4 +31,4 @@ if (!module.parent) {
 }
 
 
-module.exports = app;
+module.exports = {app, io};
