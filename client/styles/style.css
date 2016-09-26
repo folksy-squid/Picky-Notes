@@ -1,5 +1,11 @@
 @import 'https://fonts.googleapis.com/css?family=Crafty+Girls';
 
+/*
+  =================================
+    Landing
+  =================================
+*/
+
 .landing {
   display: flex;
   flex-direction: column;
@@ -29,11 +35,29 @@
   font-family: helvetica;
 }
 
+/*
+  =================================
+    Lobby
+  =================================
+*/
+
+.lobby {
+  display: flex;
+  justify-content: space-around;
+  flex-direction: column;
+}
+
 .lectureTitle {
   display: flex;
   justify-content: space-around;
   font-size: 2.8em;
 }
+
+/*
+  =================================
+    ParticipantList
+  =================================
+*/
 
 .participants {
   font-size: 1.3em;
@@ -43,6 +67,11 @@
   margin-right: 4px;
 }
 
+/*
+  =================================
+    Shareable Link
+  =================================
+*/
 .clipboard {
   display: table;
   font-size: 12px;

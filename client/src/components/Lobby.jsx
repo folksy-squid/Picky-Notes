@@ -12,7 +12,6 @@ export default class Lobby extends React.Component {
   }
 
   componentDidMount() {
-    this.socket.disconnect();
     new Clipboard(this.refs.copyButton, {
       text: (trigger) => {
         return this.refs.shareLink.innerText;
@@ -22,7 +21,7 @@ export default class Lobby extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className="lobby">
         <div className="lectureTitle">
           <span>*Lecture Title* </span>
           <span>By *Lecturers Name*</span>
