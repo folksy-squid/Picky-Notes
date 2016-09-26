@@ -1,5 +1,5 @@
 module.exports = {
-  entry: './client/src/index.js',
+  entry: './client/src/index.jsx',
   output: {
     path: './client/dist',
     filename: 'index.bundle.js',
@@ -13,5 +13,6 @@ module.exports = {
         presets: ['react', 'es2015']
       }
     }]
-  }
+  },
+  devtool: 'source-map'
 };

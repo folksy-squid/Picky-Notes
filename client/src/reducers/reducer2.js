@@ -1,1 +1,3 @@
-console.log('Reducer #2');
+module.exports = (state = {}, action) => {
+  return state;
+};

@@ -1,1 +1,36 @@
-hi
+@import 'https://fonts.googleapis.com/css?family=Crafty+Girls';
+
+.landing {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.landing > h1 {
+  font-size: 4em;
+  font-family: 'Crafty Girls', cursive;
+}
+
+.landing > a {
+  background: #4267b2;
+  color: white;
+  text-decoration: none;
+  padding: 4px 8px;
+  border-radius: 3px;
+}
+
+.landing > a:hover {
+  background: #365899;
+}
+
+.landing > a > span {
+  margin-left: 4px;
+  font-family: helvetica;
+}
+
+.lectureTitle {
+  display: flex;
+  justify-content: space-around;
+  font-size: 2.8em;
+}
