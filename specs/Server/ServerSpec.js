@@ -127,14 +127,17 @@ describe('/api/notes/', () => {
   });
 });
 
-
 describe('Socket Connection', () => {
   it('should establish a connection between the client and the server', (done) => {
     ioServer.on('connection', (socket) => {
       socket.disconnect();
       done();
+    };
+    ioServer.on('connection', handler);
+    var client = ioClient.connect(socketURL, options);
+    client.on('disconnect', () => {
+      ioServer.removeListener('connection', handler);
     });
-    ioClient.connect(socketURL, options);
   });
 });
 
