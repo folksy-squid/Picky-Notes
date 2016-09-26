@@ -67,7 +67,7 @@ module.exports = (app, express, db) => {
   });
 
   // Have user join the room at 'pathUrl'
-  app.post('/:pathUrl', (req, res) => {
+  app.post('/api/rooms/:pathUrl', (req, res) => {
     dbhelpers.joinRoom(req.body.userId, req.params.pathUrl, (currentRoom) => {
       res.send(currentRoom);
     });
