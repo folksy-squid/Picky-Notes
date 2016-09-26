@@ -23,10 +23,13 @@ module.exports = (app, express, db) => {
 
   // User Creation
   app.post('/api/users/', (req, res) => {
-    dbhelpers.createNewUser(req.body, (user) => {
-      res.send(user);
+    dbhelpers.createNewUser(req.body, (user, created) => {
+      if (!created) {
+        res.send('User already exists!'); // dummy response, can change this
+      } else {
+        res.send(user); // if new user, send back user data
+      }
     });
-    // res.send('Create a new user');
   });
 
   // User Info Update
