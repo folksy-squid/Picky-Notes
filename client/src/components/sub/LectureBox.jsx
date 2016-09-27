@@ -26,7 +26,7 @@ class LectureBox extends React.Component {
         </li>
       </ul>
     { this.toggleView() ? (
-      <NoteList notes={}/>
+      <NoteList notes={} page={}/>
       <Input page={}/> ) : <div></div> }
     </div>
     )

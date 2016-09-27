@@ -1,7 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router';
+import Connection from '../Connection.js'
+import LectureTitle from './sub/LectureTitle.jsx'
+import LectureBox from './sub/LectureBox.jsx'
+import ParticipantList from './sub/ParticipantList.jsx'
 
-const class Lecture extends React.Component {
+class Lecture extends React.Component {
   constructor (props) {
     super(props)
   }
@@ -29,4 +33,4 @@ const class Lecture extends React.Component {
   }
 }
 
-export default Lecture;
+export default Connection(Lecture);

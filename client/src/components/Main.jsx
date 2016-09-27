@@ -5,16 +5,16 @@ import { Link } from 'react-router';
 
 class Main extends React.Component {
   constructor (props) {
-    super(props)
-    console.log('mains props:', props)
+    super(props);
+    console.log('mains props:', props);
   }
-  render(){
+  render() {
     return (
-      <div>
+      <div className="main">
         <Navbar/>
         {this.props.children}
       </div>
-    )
+    );
   }
 }
 
