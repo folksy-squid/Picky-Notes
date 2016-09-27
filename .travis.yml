@@ -3,6 +3,7 @@ node_js:
   - '6.6'
 services:
   - postgresql
+  - redis-server
 env:
   - NODE_ENV="test"
 install: ./database-setup.bash
