@@ -1,7 +1,7 @@
 const dbhelpers = require ('../database/db-helpers');
 const passport = require('./passport');
 
-module.exports = (app, express, db) => {
+module.exports = (app, express) => {
   // Facebook OAuth
   app.get('/auth/facebook',
     passport.authenticate('facebook', {
@@ -23,7 +23,13 @@ module.exports = (app, express, db) => {
 
   // User Creation
   app.post('/api/users/', (req, res) => {
-    res.send('Create a new user');
+    dbhelpers.createNewUser(req.body, (user, created) => {
+      if (!created) {
+        res.send('User already exists!'); // dummy response, can change this
+      } else {
+        res.send(user); // if new user, send back user data
+      }
+    });
   });
 
   // User Info Update
@@ -42,22 +48,25 @@ module.exports = (app, express, db) => {
   app.post('/api/rooms', (req, res) => {
     // create and return hash for room path Url
     // { topic, className, lecturer, hostId }
-    dbhelpers.createNewRoom(req.body, function(roomInfo) {
-      /*** Example Data sent back to Client ***
-      {
-        "audioUrl": "audio url",
-        "id": 10,
-        "pathUrl": "65ad3",
-        "topic": "Data Structures",
-        "class": "Hack Reactor",
-        "lecturer": "Fred",
-        "hostId": 1,
-        "updatedAt": "2016-09-24T22:58:19.623Z",
-        "createdAt": "2016-09-24T22:58:19.623Z"
-      }
-      ******************************************/
-      res.send(roomInfo);
-    });
+    /*** Example Data sent back to Client ***
+    {
+      "audioUrl": "audio url",
+      "id": 10,
+      "pathUrl": "65ad3",
+      "topic": "Data Structures",
+      "class": "Hack Reactor",
+      "lecturer": "Fred",
+      "hostId": 1,
+      "updatedAt": "2016-09-24T22:58:19.623Z",
+      "createdAt": "2016-09-24T22:58:19.623Z"
+    }
+    ******************************************/
+    dbhelpers.createNewRoom(req.body, (roomInfo) => res.send(roomInfo));
+  });
+
+  app.post('/api/rooms/:pathUrl', (req, res) => {
+  // Have user join the room at 'pathUrl'
+    dbhelpers.joinRoom(req.body.userId, req.params.pathUrl, (currentRoom) => res.send(currentRoom));
   });
 
   // Note Creation
@@ -65,24 +74,27 @@ module.exports = (app, express, db) => {
     // pass the notes in cache (redis) to database (postgres)
     // {content, audioTimestamp, show, roomId, editingUserId, originalUserId}
     // res.send('End of lecture, and create all new notes for each user');
-    dbhelpers.createNewNote(req.body, (newNote) => {
-      res.send(newNote);
-    });
+    dbhelpers.createNewNote(req.body, (newNote) => res.send(newNote));
   });
 
   // Note Editing
   app.route('/api/notes/:userId/:roomId')
     .get((req, res) => {
       if (req.query.filter === 'show') {
-        res.send('Show filtered notes for user #' + req.params.userId + ' inside room #' + req.params.roomId);
+        // res.send('Show filtered notes for user #' + req.params.userId + ' inside room #' + req.params.roomId);
+        dbhelpers.showFilteredNotes(req.params, (allNotes) => res.send(allNotes));
       } else {
-        res.send('Compare all notes for user #' + req.params.userId + ' inside room #' + req.params.roomId);
+        // res.send('Compare all notes for user #' + req.params.userId + ' inside room #' + req.params.roomId);
+        dbhelpers.showAllNotes(req.params, (allNotes) => res.send(allNotes));
       }
     })
     .put((req, res) => {
+      // accepts in req.body an array of notes to update
+      // [{id, show, content}]
       res.send('Edit existing notes (save button) for user #' + req.params.userId + ' inside room #' + req.params.roomId);
     })
     .post((req, res) => {
+      // potentially instead of using this endpoint, reuse /api/notes/create?
       res.send('Add new notes (save button) for user #' + req.params.userId + ' inside room #' + req.params.roomId);
     });
   app.get('*', function (request, response) {
