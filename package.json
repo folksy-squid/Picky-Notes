@@ -32,6 +32,7 @@
     "webpack-hot-middleware": "^2.12.2"
   },
   "dependencies": {
+    "bluebird": "^3.4.6",
     "body-parser": "^1.15.2",
     "express": "^4.14.0",
     "js-md5": "^0.4.1",
@@ -47,6 +48,8 @@
     "react-router-redux": "^4.0.6",
     "redux": "^3.6.0",
     "sequelize": "^3.24.3",
-    "socket.io": "^1.4.8"
+    "socket.io": "^1.4.8",
+    "redis": "^2.6.2",
+    "sequelize": "^3.24.3"
   }
 }
