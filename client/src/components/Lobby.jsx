@@ -10,16 +10,25 @@ export default class Lobby extends React.Component {
 
   componentWillMount() {
     this.socket = io();
+    this.socket.on('room not found', () => {
+      this.socket.disconnect();
+      this.socket = null;
+    });
+    this.socket.on('user joined', console.log.bind(console));
+    this.socket.emit('join room', '*User\'s Name*', 'LGKRP');
   }
 
   componentDidMount() {
-    this.socket.disconnect();
     new Clipboard(this.refs.copyButton, {
       text: (trigger) => {
         return this.refs.shareLink.innerText;
       }
     });
   }
+
+  // componentWillUnmount() {
+  //   this.socket.disconnect();
+  // }
 
   render() {
     return (

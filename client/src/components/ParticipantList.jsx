@@ -1,3 +1,4 @@
+import React from 'react';
 export default ({participants}) => (
   <div className="participants">
     {participants.map(({name}, i)=>
