@@ -1,4 +1,4 @@
-module.exports = (db, Sequelize, User) => {
+module.exports = (db, Sequelize) => {
   const Note = db.define('note', {
     content: {
       type: Sequelize.TEXT,

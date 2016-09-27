@@ -1,9 +1,9 @@
 const Sequelize = require('sequelize');
 const db = new Sequelize('postgres://ubuntu:password@localhost:5432/pickynotes', { logging: false });
 
-const {User} = require('./UserController')(db, Sequelize);
-const {Room} = require('./RoomController')(db, Sequelize, User);
-const {Note} = require('./NoteController')(db, Sequelize, User);
+const {User} = require('./controllers/UserController')(db, Sequelize);
+const {Room} = require('./controllers/RoomController')(db, Sequelize);
+const {Note} = require('./controllers/NoteController')(db, Sequelize);
 
 Room.belongsTo(User, {foreignKey: 'hostId', as: 'host', constraints: false});
 
@@ -23,7 +23,7 @@ Note.belongsTo(User, {foreignKey: 'originalUserId', as: 'originalUser'});
 //     name: 'Kunal Rathi',
 //     email: 'volcanic.phoenix@gmail.com',
 //     pictureUrl: 'https://scontent-sjc2-1.xx.fbcdn.net/v/t1.0-1/p320x320/735019_3760102334957_1830986009_n.jpg?oh=95f952f6a491fa054cbb85122e45395f&oe=587471E6',
-//     gender: 'Male'    
+//     gender: 'Male'
 // })
 // .then((user) => {
 //   Room.create({

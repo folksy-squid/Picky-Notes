@@ -1,7 +1,7 @@
 module.exports = (db, Sequelize) => {
   const User = db.define('user', {
     facebookId: {
-      type: Sequelize.TEXT, 
+      type: Sequelize.TEXT,
       unique: true
     },
     name: {
@@ -9,7 +9,7 @@ module.exports = (db, Sequelize) => {
       allowNull: false
     },
     email: {
-      type: Sequelize.TEXT, 
+      type: Sequelize.TEXT,
       allowNull: false
     },
     pictureUrl: Sequelize.TEXT,
