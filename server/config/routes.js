@@ -1,7 +1,7 @@
 const dbhelpers = require ('../database/db-helpers');
 const passport = require('./passport');
 
-module.exports = (app, express, db) => {
+module.exports = (app, express) => {
   // Facebook OAuth
   app.get('/auth/facebook',
     passport.authenticate('facebook', {
