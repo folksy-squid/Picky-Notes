@@ -58,7 +58,6 @@ render(
         <Route path='/compile' component={Compile} />
       </Route>
     </Router>
-  </Provider>
-  ),
+  </Provider>),
   document.getElementById('root')
 );
