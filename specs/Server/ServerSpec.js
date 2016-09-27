@@ -1,10 +1,7 @@
 var request = require('supertest');
 var express = require('express');
 var expect = require('chai').expect;
-<<<<<<< 47eb8883a37b5d356c35b157e7ab18498a1a0022
-var server = require('../../server/server');
-var app = server.app;
-var ioServer = server.io;
+var {app, ioServer} = require('../../server/server');
 var {db, User, Room, Note} = require('../../server/database/db-config');
 
 var ioClient = require('socket.io-client');
