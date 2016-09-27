@@ -199,7 +199,6 @@ describe('Server Side Socket Connection', () => {
     };
     ioServer.on('connection', (socket) => {
       socket.on('new note', (note) => {
-        console.log('new noooote');
         expect(note).to.eql(exampleNote);
         done();
       });
