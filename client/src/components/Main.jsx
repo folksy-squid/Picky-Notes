@@ -1,5 +1,6 @@
 import React from 'react';
 import Connection from '../Connection.js'
+import Navbar from './Navbar.jsx'
 import { Link } from 'react-router';
 
 class Main extends React.Component {
@@ -10,7 +11,7 @@ class Main extends React.Component {
   render(){
     return (
       <div>
-        'THIS IS THE MAIN PAGE'
+        <Navbar/>
         {this.props.children}
       </div>
     )
