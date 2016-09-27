@@ -26,30 +26,15 @@ after((done) => {
   .then(() => done());
 });
 
-xdescribe('test', () => {
+describe('test', () => {
   it('should pass this test', () => expect(true).to.equal.true);
 });
 
-xdescribe('/api/rooms/', () => {
+describe('/api/rooms/', () => {
 
   var hash1, hash2;
 
   beforeEach((done) => {
-
-
-// before((done) => {
-//   db.sync({force: true})
-//   .then(() => {
-//     return User.create({
-//       facebookId: '10206128224638462',
-//       name: 'Kunal Rathi',
-//       email: 'volcanic.phoenix@gmail.com',
-//       pictureUrl: 'https://scontent-sjc2-1.xx.fbcdn.net/v/t1.0-1/p320x320/735019_3760102334957_1830986009_n.jpg?oh=95f952f6a491fa054cbb85122e45395f&oe=587471E6',
-//       gender: 'Male'
-//     });
-//   })
-//   .then(() => done());
-// });
     request(app)
       .post('/api/rooms')
       .send({
@@ -64,7 +49,7 @@ xdescribe('/api/rooms/', () => {
 
   afterEach(() => Room.destroy({ where: { hostId: 9999 } }));
 
-  xdescribe('Room Creation', () => {
+  describe('Room Creation', () => {
 
     it('should create a entry in the database', () => {
       Room.findOne({ where: { hostId: 9999 } })
