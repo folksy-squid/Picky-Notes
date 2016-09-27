@@ -21,22 +21,7 @@ if (!module.parent) {
     // });
   });
 
-  // listen for incoming sockets on this server
-  var io = require('socket.io').listen(listen);
-
-
-  io.on('connection', (socket) => {
-    console.log('a user connected');
-    
-    // listen to room 'KUNAL'
-    socket.on('join room', (name, room) => {
-      socket.join(room);
-      io.in(room).emit('user joined', `${name} has joined room: ${room}`);
-    });
-    
-    socket.on('disconnect', () => console.log('a user disconnected'));
-  });
+  const io = require('./sockets/io.js')(listen);
 }
-
 
 module.exports = {app, io};
