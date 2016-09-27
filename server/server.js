@@ -12,16 +12,14 @@ require('./config/routes.js')(app, express);
 // set port depending on prod or dev
 const port = process.env.NODE_ENV === 'production' ? 80 : 3000;
 
-if (!module.parent) {
-  const listen = app.listen(port, () => {
-    console.log('Server listening on port ' + port);
-    db.sync();
-    // .then(() => {
-    //   console.log('Database is synced');
-    // });
-  });
+const listen = app.listen(port, () => {
+  console.log('Server listening on port ' + port);
+  db.sync();
+  // .then(() => {
+  //   console.log('Database is synced');
+  // });
+});
 
-  const io = require('./sockets/io.js')(listen);
-}
+const ioServer = require('./sockets/io.js')(listen);
 
-module.exports = {app, io};
+module.exports = {app, ioServer};
