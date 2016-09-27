@@ -16,7 +16,7 @@ const createNewUser = ({facebookId, name, email, pictureUrl, gender}, cb) => {
   })
   // created is true  if new user
   // created is false if user already exists
-  .spread((user, created) => { cb(user, created); });
+  .spread((user, created) => cb(user, created));
 };
 
 const createNewRoom = ({topic, className, lecturer, hostId}, cb) => {
@@ -30,7 +30,7 @@ const createNewRoom = ({topic, className, lecturer, hostId}, cb) => {
     lecturer: lecturer,
     hostId: hostId
   })
-  .then((roomInfo) => { cb(roomInfo); });
+  .then((roomInfo) => cb(roomInfo));
 };
 
 const joinRoom = (userId, pathUrl, cb) => {
@@ -69,7 +69,7 @@ const showAllNotes = ({userId, roomId}, cb) => {
       attributes: []
     }
   })
-  .then((allNotes) => { cb(allNotes); });
+  .then((allNotes) => cb(allNotes));
 };
 
 const showFilteredNotes = ({userId, roomId}, cb) => {
@@ -84,7 +84,7 @@ const showFilteredNotes = ({userId, roomId}, cb) => {
       attributes: []
     }
   })
-  .then((allNotes) => { cb(allNotes); });
+  .then((allNotes) => cb(allNotes));
 };
 
 module.exports = {
