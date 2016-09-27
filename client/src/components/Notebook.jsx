@@ -1,5 +1,7 @@
 import React from 'react';
 import Connection from '../Connection.js'
+import EntryList from './sub/EntryList.jsx'
+import SearchBar from './sub/SearchBar.jsx'
 import { Link } from 'react-router';
 
 class Notebook extends React.Component {
@@ -17,7 +19,7 @@ class Notebook extends React.Component {
             <h3>My Notebook</h3>
           </div>
           <div class="col-xs-7">
-            <Searchbar />
+            <SearchBar />
           </div>
         </div>
         <div class="row">

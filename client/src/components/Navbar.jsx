@@ -2,7 +2,6 @@ import React from 'react';
 import { Link } from 'react-router';
 
 class Navbar extends React.Component {
-  //hello from the other side
   render() {
     return (
       <nav className="navbar navbar-static-top">
