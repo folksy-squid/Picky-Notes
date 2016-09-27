@@ -61,12 +61,12 @@ module.exports = (app, express, db) => {
       "createdAt": "2016-09-24T22:58:19.623Z"
     }
     ******************************************/
-    dbhelpers.createNewRoom(req.body, (roomInfo) => { res.send(roomInfo); });
+    dbhelpers.createNewRoom(req.body, (roomInfo) => res.send(roomInfo));
   });
 
   app.post('/api/rooms/:pathUrl', (req, res) => {
   // Have user join the room at 'pathUrl'
-    dbhelpers.joinRoom(req.body.userId, req.params.pathUrl, (currentRoom) => { res.send(currentRoom); });
+    dbhelpers.joinRoom(req.body.userId, req.params.pathUrl, (currentRoom) => res.send(currentRoom));
   });
 
   // Note Creation
@@ -82,10 +82,10 @@ module.exports = (app, express, db) => {
     .get((req, res) => {
       if (req.query.filter === 'show') {
         // res.send('Show filtered notes for user #' + req.params.userId + ' inside room #' + req.params.roomId);
-        dbhelpers.showFilteredNotes(req.params, (allNotes) => { res.send(allNotes); });
+        dbhelpers.showFilteredNotes(req.params, (allNotes) => res.send(allNotes));
       } else {
         // res.send('Compare all notes for user #' + req.params.userId + ' inside room #' + req.params.roomId);
-        dbhelpers.showAllNotes(req.params, (allNotes) => { res.send(allNotes); });
+        dbhelpers.showAllNotes(req.params, (allNotes) => res.send(allNotes));
       }
     })
     .put((req, res) => {
