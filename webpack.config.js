@@ -1,5 +1,7 @@
 var path = require('path');
 
+
+// Add spec files to compile
 module.exports = {
   entry: './client/src/index.jsx',
   output: {
