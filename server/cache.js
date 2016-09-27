@@ -1,1 +1,1 @@
-const r = require('./cache/cache-config').redis;
+const {cache} = require('./cache/cache-config');

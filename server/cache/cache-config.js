@@ -1,6 +1,8 @@
 var Redis = require('ioredis');
-var redis = new Redis();
+var cache = new Redis(6379, '127.0.0.1');
+var pub = new Redis(6379, '127.0.0.1');
 
 module.exports = {
-  redis
+  cache,
+  pub
 };
