@@ -1,6 +1,6 @@
 const dbhelpers = require ('../database/db-helpers');
 
-module.exports = (app, express, db) => {
+module.exports = (app, express) => {
 
   // Facebook OAuth
   app.get('/auth/facebook', (req, res) => {
