@@ -1,6 +1,6 @@
 import React from 'react';
-import Connection from '../Connection.js'
-import Entry from './Entry.jsx'
+import Connection from '../../Connection.js';
+import Entry from './Entry.jsx';
 
 // See below example for rendering with map.
 
@@ -16,7 +16,7 @@ const EntryList = (props) => (
   <div className="container-fluid">
     <Entry />
   </div>
-)
+);
 
 
 export default Connection(EntryList);

@@ -8,6 +8,7 @@ class Note extends React.Component {
 
   saveNote(note){
     // this can be invoked when in the compiled view
+    // send it to the redis cache
   }
 
   playNote(note){

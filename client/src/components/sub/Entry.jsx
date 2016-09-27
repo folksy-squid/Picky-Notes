@@ -1,12 +1,12 @@
 import React from 'react';
-import Connection from '../Connection.js'
+import Connection from '../../Connection.js';
 import { Link } from 'react-router';
 
 class Entry extends React.Component {
   constructor (props) {
-    super(props)
+    super(props);
   }
-  render(){
+  render() {
     // Render an Entry component for each entry
     // (use map)
     return (
@@ -14,7 +14,7 @@ class Entry extends React.Component {
         'Here lies an Entry Component'
         (insert a sneaky preview of your note)
       </div>
-    )
+    );
   }
 }
 

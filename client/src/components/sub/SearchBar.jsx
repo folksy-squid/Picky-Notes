@@ -1,5 +1,5 @@
 import React from 'react';
-import Connection from '../Connection.js'
+import Connection from '../../Connection.js';
 import { Link } from 'react-router';
 
 const SearchBar = (props) => (
@@ -9,6 +9,6 @@ const SearchBar = (props) => (
     </div>
     <button type="submit" className="btn btn-default">Go</button>
   </form>
-)
+);
 
 export default Connection(SearchBar);
