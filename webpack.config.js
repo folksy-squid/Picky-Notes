@@ -1,6 +1,8 @@
 var path = require('path');
 var webpack = require('webpack');
 
+
+// Add spec files to compile
 module.exports = {
   entry: './client/src/index.jsx',
   output: {
