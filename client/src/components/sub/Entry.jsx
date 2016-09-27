@@ -10,7 +10,7 @@ class Entry extends React.Component {
     // Render an Entry component for each entry
     // (use map)
     return (
-      <div class="col-sm-6 col-md-4">
+      <div className="col-sm-6 col-md-4">
         'Here lies an Entry Component'
         (insert a sneaky preview of your note)
       </div>

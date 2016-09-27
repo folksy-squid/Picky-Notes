@@ -13,16 +13,16 @@ class Notebook extends React.Component {
 
   render(){
     return (
-      <div class="container">
-        <div class="row">
-          <div class="col-xs-5">
+      <div className="container">
+        <div className="row">
+          <div className="col-xs-5">
             <h3>My Notebook</h3>
           </div>
-          <div class="col-xs-7">
+          <div className="col-xs-7">
             <SearchBar />
           </div>
         </div>
-        <div class="row">
+        <div className="row">
           <EntryList />
         </div>
       </div>
