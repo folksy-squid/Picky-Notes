@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router';
+import LectureTitle from './sub/LectureTitle.jsx'
 import ParticipantList from './ParticipantList.jsx';
 
 export default class Lobby extends React.Component {
@@ -33,10 +34,7 @@ export default class Lobby extends React.Component {
   render() {
     return (
       <div className="lobby">
-        <div className="lectureTitle">
-          <span>*Lecture Title* </span>
-          <span>By *Lecturers Name*</span>
-        </div>
+        <LectureTitle />
         <ParticipantList participants={[{name: 'Kunal'}, {name: 'Marco'}, {name: 'Derek'}, {name: 'Sean'}]}/>
         <div className="clipboard">
           <input ref="shareLink" className="shareLink" value="https://github.com/zenorocha/clipboard.js.git" readOnly/>

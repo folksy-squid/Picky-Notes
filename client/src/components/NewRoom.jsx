@@ -8,7 +8,7 @@ class NewRoom extends React.Component {
   }
   render(){
     return (
-      <div class="container">
+      <div className="container">
         <h2>New Room</h2>
         <div>
           <form>

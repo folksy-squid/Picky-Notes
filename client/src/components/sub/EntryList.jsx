@@ -13,7 +13,7 @@ import Entry from './Entry.jsx'
 */
 
 const EntryList = (props) => (
-  <div class="container-fluid">
+  <div className="container-fluid">
     <Entry />
   </div>
 )
