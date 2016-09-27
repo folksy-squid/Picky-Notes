@@ -43,8 +43,7 @@ const authCheck = (nextState, replace) => {
 
 render(
   (
-    <Lobby></Lobby>
-    /*<Provider store={store}>
+    <Provider store={store}>
     <Router history={history} >
       <Route path='/' component={App} >
         <IndexRoute component={Landing} onEnter={authCheck}/>
@@ -59,7 +58,7 @@ render(
         <Route path='/compile' component={Compile} />
       </Route>
     </Router>
-  </Provider>*/
+  </Provider>
   ),
   document.getElementById('root')
 );
