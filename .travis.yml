@@ -4,4 +4,4 @@ node_js:
 services:
   - postgresql
 
-script: ./database-setup.bash
+install: ./database-setup.bash
