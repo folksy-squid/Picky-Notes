@@ -64,7 +64,7 @@ module.exports = (app, express) => {
     // pass the notes in cache (redis) to database (postgres)
     // {content, audioTimestamp, show, roomId, editingUserId, originalUserId}
     // res.send('End of lecture, and create all new notes for each user');
-    dbhelpers.createNewNote(req.body, (newNote) => { res.send(newNote); });
+    dbhelpers.createNewNote(req.body, (newNote) => res.send(newNote));
   });
 
   // Note Editing
