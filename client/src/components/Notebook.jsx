@@ -11,7 +11,19 @@ class Notebook extends React.Component {
 
   render(){
     return (
-      <div>'this is the notebook page'</div>
+      <div class="container">
+        <div class="row">
+          <div class="col-xs-5">
+            <h3>My Notebook</h3>
+          </div>
+          <div class="col-xs-7">
+            <Searchbar />
+          </div>
+        </div>
+        <div class="row">
+          <EntryList />
+        </div>
+      </div>
     )
   }
 }
