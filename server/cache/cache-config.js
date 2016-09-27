@@ -1,4 +1,3 @@
-var bluebird = require('bluebird');
 var Redis = require('ioredis');
 var redis = new Redis();
 
