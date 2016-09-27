@@ -15,7 +15,7 @@ class JoinRoom extends React.Component {
         <div>
         <form className="" role="join">
           <div className="form-group">
-            <input type="text" name="access-code" className="form-control" placeholder="Access Code">
+            <input type="text" name="access-code" className="form-control" placeholder="Access Code" />
             <span className="input-group-btn">
               <button className="btn btn-default" type="button">Join</button>
             </span>
