@@ -19,27 +19,27 @@ import Main from './components/Main.jsx';
 import App from './components/App.jsx';
 /* <- Import store -> */
 import store, { history } from './store';
-import * as action from './actions/actionCreators.js'
+import * as action from './actions/actionCreators.js';
 
 const getUserFromCookie = (cookie) => {
   let slicedCookie = cookie.slice(17);
   let decoded = window.decodeURIComponent(slicedCookie);
   return JSON.parse(decoded).user;
-}
+};
 
 const authCheck = (nextState, replace) => {
   console.log('authcheck being called');
   if (document.cookie) {
     let user = getUserFromCookie(document.cookie);
     // if redux store does not have user
-    store.dispatch(action.createUser(user))
+    store.dispatch(action.createUser(user));
 
     replace({
       pathname: '/notebook',
       state: { nextPathname: nextState.location.pathname }
-    })
+    });
   }
-}
+};
 
 render(
   (<Provider store={store}>

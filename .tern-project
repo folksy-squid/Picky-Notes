@@ -1,4 +1,5 @@
 {
+  "ecmaVersion": 7,
   "libs": ["browser", "jquery", "ecmascript"],
   "loadEagerly": [],
   "plugins": {
@@ -8,7 +9,6 @@
     "modules": {},
     "node": {},
     "requirejs": {},
-    "webpack": {},
-    "jsx": {}
+    "webpack": {}
   }
 }

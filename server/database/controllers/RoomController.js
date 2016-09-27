@@ -1,4 +1,4 @@
-module.exports = (db, Sequelize, User) => {
+module.exports = (db, Sequelize) => {
   const Room = db.define('room', {
     pathUrl: {
       type: Sequelize.TEXT,

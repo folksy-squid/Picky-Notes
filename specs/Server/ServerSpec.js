@@ -26,11 +26,11 @@ after((done) => {
   .then(() => done());
 });
 
-xdescribe('test', () => {
+describe('test', () => {
   it('should pass this test', () => expect(true).to.equal.true);
 });
 
-xdescribe('/api/rooms/', () => {
+describe('/api/rooms/', () => {
 
   var hash1, hash2;
 
@@ -49,7 +49,7 @@ xdescribe('/api/rooms/', () => {
 
   afterEach(() => Room.destroy({ where: { hostId: 9999 } }));
 
-  xdescribe('Room Creation', () => {
+  describe('Room Creation', () => {
 
     it('should create a entry in the database', () => {
       Room.findOne({ where: { hostId: 9999 } })
@@ -93,7 +93,6 @@ describe('/api/notes/', () => {
     })
     .then(() => done());
   });
-
   afterEach(() => Room.destroy({ where: { id: 12345 } }));
 
   describe('Note Creation', () => {
