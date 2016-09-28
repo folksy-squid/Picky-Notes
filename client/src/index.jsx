@@ -41,9 +41,7 @@ const authCheck = (nextState, replace) => {
   }
 };
 
-render(
-  (
-    <Provider store={store}>
+render((<Provider store={store}>
     <Router history={history} >
       <Route path='/' component={App} >
         <IndexRoute component={Landing} onEnter={authCheck}/>
