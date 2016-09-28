@@ -1,4 +1,4 @@
-const {joinRoom} = require('./io-helpers');
+const {joinRoom, addNote} = require('./io-helpers');
 const {findRoom} = require('../database/db-helpers');
 
 module.exports = (listen) => {
@@ -48,12 +48,10 @@ module.exports = (listen) => {
 
     socket.on('new note', (note) => {
       if (note) {
-
-        /* redis ==> add note to "userId:pathUrl" List of notes*/
-        // note = { userId, content, pathUrl, timeStamp }
-        // userId:pathUrl
-        // save notes into redis
+        addNote(socket, note, () => socket.emit('add note success'));
+        return;
       }
+      socket.emit('add note error', 'Note does not exist you asshat');
     });
 
     //socket.on('disconnect', () => console.log('a user disconnected'));

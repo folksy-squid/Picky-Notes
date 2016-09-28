@@ -9,11 +9,17 @@ const test = () => {
   });
 };
 
-const addUserToCacheRoom = (pathUrl, userId, cb) => {
+const addUserToCache = (pathUrl, userId, cb) => {
   cache.sadd(pathUrl, userId)
   .then(() => cb());
 };
 
+const addNoteToCache = (pathUrl, userId, note, cb) => {
+  cache.rpush(`${userId}:${pathUrl}`, JSON.stringify(note))
+  .then(() => cb());
+};
+
 module.exports = {
-  addUserToCacheRoom
+  addUserToCache,
+  addNoteToCache
 };
