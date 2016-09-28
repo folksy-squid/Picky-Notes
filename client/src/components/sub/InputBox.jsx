@@ -1,8 +1,9 @@
-import Connection from '../../Connection.js'
+import React from 'react';
+import Connection from '../../Connection.js';
 
-class Input extends React.Component {
+class InputBox extends React.Component {
   constructor (props) {
-    super(props)
+    super(props);
   }
 
   // view will alter depending on the page it's on.
@@ -18,11 +19,10 @@ class Input extends React.Component {
         <input>
           'this is the input box for Lecture'
         </input>)
-      )
     }
 
     return view;
   }
 }
 
-export default Connection(Input)
+export default Connection(InputBox);
