@@ -14,6 +14,8 @@ module.exports = (listen) => {
         // console.log(socket.adapter.rooms);
         // console.log(io.sockets.adapter.rooms[room]);
         // io.in(room).emit('user joined', room);
+
+        /* redis ==> add userId to "roomId" Set */
       } else {
         socket.emit('join room error', `Room '${room}' was not found`);
       }
@@ -47,6 +49,10 @@ module.exports = (listen) => {
 
     socket.on('new note', (note) => {
       if (note) {
+
+        /* redis ==> add note to "userId:roomId" List of notes*/
+        // note = { userId, content, roomId, timeStamp }
+        // userId:roomId
         // save notes into redis
       }
     });
