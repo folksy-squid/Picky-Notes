@@ -150,7 +150,9 @@ describe('Server Side Socket Connection', () => {
     roomCreator.emit('create room', 'TESTT', 12345);
 
     var joiner = ioClient.connect(socketURL, options);
-    joiner.emit('join room', 'TESTT', 12345);
+    roomCreator.on('create room success', () => {
+      joiner.emit('join room', 'TESTT', 12345);
+    });
     joiner.on('join room success', () => {
       expect(ioServer.sockets.adapter.rooms['TESTT'].length).to.equal(2);
       roomCreator.disconnect();
@@ -187,7 +189,11 @@ describe('Server Side Socket Connection', () => {
         roomCreator.emit('lecture end');
       });
 
-      joiner.on('lecture ended', () => done());
+      joiner.on('lecture ended', () => {
+        roomCreator.disconnect();
+        joiner.disconnect();
+        done();
+      });
     });
   });
 
