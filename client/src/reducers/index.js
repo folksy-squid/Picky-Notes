@@ -2,13 +2,13 @@
 import {combineReducers} from 'redux';
 import {routerReducer} from 'react-router-redux';
 
-import reducer1 from './reducer1.js';
-import reducer2 from './reducer2.js';
-import user from './user.js';
+import noteReducers from './noteReducers.js';
+import userReducers from './userReducers.js';
+import roomReducers from './roomReducers.js';
 
 export default combineReducers({
-  user,
-  reducer1,
-  reducer2,
+  user: userReducers,
+  note: noteReducers,
+  room: roomReducers,
   routing: routerReducer
 });
