@@ -8,3 +8,12 @@ const test = () => {
     cache.quit();
   });
 };
+
+const addUserToCacheRoom = (pathUrl, userId, cb) => {
+  cache.sadd(pathUrl, userId)
+  .then(() => cb());
+};
+
+module.exports = {
+  addUserToCacheRoom
+};

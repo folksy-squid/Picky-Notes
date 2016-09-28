@@ -1,4 +1,4 @@
-const {createRoom, joinRoom} = require('./io-helpers');
+const {joinRoom} = require('./io-helpers');
 const {findRoom} = require('../database/db-helpers');
 
 module.exports = (listen) => {
@@ -13,8 +13,7 @@ module.exports = (listen) => {
       if (pathUrl.length === 5 && userId) {
         // verify if room at pathUrl exists in database
         findRoom(pathUrl, (found) => {
-          if (true) {
-            createRoom();
+          if (found) {
             joinRoom(socket, pathUrl, userId, () => socket.emit('create room success'));
           }
         });
