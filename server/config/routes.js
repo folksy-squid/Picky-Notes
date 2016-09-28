@@ -1,5 +1,6 @@
 const dbhelpers = require ('../database/db-helpers');
 const passport = require('./passport');
+const path = require('path');
 
 module.exports = (app, express) => {
   // Facebook OAuth
@@ -98,6 +99,6 @@ module.exports = (app, express) => {
       res.send('Add new notes (save button) for user #' + req.params.userId + ' inside room #' + req.params.roomId);
     });
   app.get('*', function (request, response) {
-    response.sendFile(path.resolve(__dirname, '../client', 'index.html'));
+    response.sendFile(path.resolve(__dirname, '../../client', 'index.html'));
   });
 };
