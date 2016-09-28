@@ -1,8 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router';
-import Connection from '../Connection.js'
-import ParticipantList from './ParticipantList.jsx'
-import LectureBox from './sub/LectureBox.jsx'
+import Connection from '../Connection.js';
+import ParticipantList from './ParticipantList.jsx';
+import LectureBox from './sub/LectureBox.jsx';
 
 class Compile extends React.Component {
   constructor (props) {

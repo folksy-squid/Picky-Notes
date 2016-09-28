@@ -1,15 +1,15 @@
 import React from 'react';
 import { Link } from 'react-router';
-import Connection from '../Connection.js'
-import LectureTitle from './sub/LectureTitle.jsx'
-import LectureBox from './sub/LectureBox.jsx'
-import ParticipantList from './ParticipantList.jsx'
+import Connection from '../Connection.js';
+import LectureTitle from './sub/LectureTitle.jsx';
+import LectureBox from './sub/LectureBox.jsx';
+import ParticipantList from './ParticipantList.jsx';
 
 class Lecture extends React.Component {
   constructor (props) {
-    super(props)
+    super(props);
   }
-  render(){
+  render() {
     return (
       <div className="container-fluid">
         <div className="row">
@@ -29,7 +29,7 @@ class Lecture extends React.Component {
           </div>
         </div>
       </div>
-    )
+    );
   }
 }
 
