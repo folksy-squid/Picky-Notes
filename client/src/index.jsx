@@ -32,21 +32,21 @@ const authCheck = (nextState, replace) => {
     let user = getUserFromCookie(document.cookie);
 
     // if redux store does not have user,
-    if (store.getState().user.length === 0) {
+    console.log('auth-checking.', store.getState().user)
+    if (!store.getState().user.information) {
+      console.log('creating user')
       store.dispatch(createUser(user));
     }
 
     if (nextState.location.pathname === '/'){
       replace({
-        pathname: '/notebook',
-        state: { nextPathname: nextState.location.pathname }
+        pathname: '/notebook'
       });
     }
   } else {
     if (nextState.location.pathname !== '/'){
       replace({
-        pathname: '/',
-        state: { nextPathname: nextState.location.pathname }
+        pathname: '/'
       })
     }
   }
