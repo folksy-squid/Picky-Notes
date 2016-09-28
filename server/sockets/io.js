@@ -15,10 +15,13 @@ module.exports = (listen) => {
         findRoom(pathUrl, (found) => {
           if (found) {
             joinRoom(socket, pathUrl, userId, () => socket.emit('create room success'));
+          } else {
+            socket.emit('create room error', `Room '${pathUrl}' not found`);
           }
         });
+      } else {
+        socket.emit('create room error', `Room '${pathUrl}' is invalid`);
       }
-      socket.emit('create room error', `Room '${pathUrl}' is invalid`);
     });
 
     socket.on('join room', (pathUrl, userId) => {

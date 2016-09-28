@@ -6,7 +6,8 @@ const joinRoom = (socket, pathUrl, userId, cb) => {
   socket.userId = userId;
   socket.join(pathUrl);
   /* redis ==> add userId to "pathUrl" Set */
-  addUserToCache(pathUrl, userId, () => console.log('added user to cache'));
+  // addUserToCache(pathUrl, userId, () => console.log('added user to cache'));
+  addUserToCache(pathUrl, userId);
   cb();
 };
 
@@ -16,7 +17,8 @@ const addNote = (socket, note, cb) => {
 
   /* redis ==> add note to "userId:pathUrl" List of notes*/
   // note = { userId, content, pathUrl, timeStamp }
-  addNoteToCache(pathUrl, userId, note, () => console.log('added note to cache'));
+  // addNoteToCache(pathUrl, userId, note, () => console.log('added note to cache'));
+  addNoteToCache(pathUrl, userId, note);
   cb();
 };
 
