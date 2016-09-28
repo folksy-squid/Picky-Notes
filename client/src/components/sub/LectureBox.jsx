@@ -1,6 +1,7 @@
+import React from 'react';
 import Connection from '../../Connection.js'
 import NoteList from './NoteList.jsx'
-import Input from './Input.jsx'
+import InputBox from './InputBox.jsx'
 
 class LectureBox extends React.Component {
   constructor (props) {
@@ -26,8 +27,10 @@ class LectureBox extends React.Component {
         </li>
       </ul>
     { this.toggleView() ? (
-      <NoteList notes={} page={}/>
-      <Input page={}/> ) : <div></div> }
+      <div>
+        <NoteList notes={'note'} page={'page'} />
+        <InputBox page={'page'} />
+      </div>) : <div></div> }
     </div>
     )
   }
