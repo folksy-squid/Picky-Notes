@@ -30,7 +30,7 @@ After psql has been installed:
 ```
 psql -d postgres;
 CREATE USER ubuntu WITH PASSWORD 'password';
-CREATE DATABASE notepicker;
+CREATE DATABASE pickynotes;
 ```
 
 ## Usage

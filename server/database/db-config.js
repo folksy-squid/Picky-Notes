@@ -1,9 +1,9 @@
 const Sequelize = require('sequelize');
 const db = new Sequelize('postgres://ubuntu:password@localhost:5432/pickynotes', { logging: false });
 
-const {User} = require('./UserController')(db, Sequelize);
-const {Room} = require('./RoomController')(db, Sequelize, User);
-const {Note} = require('./NoteController')(db, Sequelize, User);
+const {User} = require('./controllers/UserController')(db, Sequelize);
+const {Room} = require('./controllers/RoomController')(db, Sequelize, User);
+const {Note} = require('./controllers/NoteController')(db, Sequelize, User);
 
 Room.belongsTo(User, {foreignKey: 'hostId', as: 'host', constraints: false});
 
