@@ -1,5 +1,5 @@
-const {joinRoom} = require('./io-helpers');
-const {findRoomId} = require('../database/db-helpers');
+const {createRoom, joinRoom} = require('./io-helpers');
+const {findRoom} = require('../database/db-helpers');
 
 module.exports = (listen) => {
   const io = require('socket.io').listen(listen);
@@ -9,47 +9,39 @@ module.exports = (listen) => {
     //console.log('a user connected');
 
     socket.on('create room', (pathUrl, userId) => {
-      // verify if pathUrl and userId is valid
+      // verify if pathUrl and userId are valid
       if (pathUrl.length === 5 && userId) {
-        // find roomId with pathUrl
-        var roomId = pathUrl; // temp
+        // verify if room at pathUrl exists in database
+        findRoom(pathUrl, (found) => {
+          if (true) {
+            createRoom();
+            joinRoom(socket, pathUrl, userId, () => socket.emit('create room success'));
+          }
+        });
       }
-
-      if (roomId) {
-        joinRoom(socket, roomId, userId, () => socket.emit('create room success'));
-      } else {
-        socket.emit('create room error', `Room '${pathUrl}' is invalid`);
-      }
+      socket.emit('create room error', `Room '${pathUrl}' is invalid`);
     });
 
     socket.on('join room', (pathUrl, userId) => {
-      // verify if pathUrl and userId is valid
-      if (pathUrl.length === 5 && userId) {
-        // find roomId with pathUrl
-        findRoomId(pathUrl, (roomId) => {
-          console.log(roomId);
-        });
-        var roomId = pathUrl; // temp
+      // verify if pathUrl and userId are valid and if room at pathUrl exists
+      if (pathUrl.length === 5 && userId && rooms[pathUrl]) {
+        joinRoom(socket, pathUrl, userId, () => socket.emit('join room success'));
+        return;
       }
-
-      if (roomId && rooms[roomId]) {
-        joinRoom(socket, roomId, userId, () => socket.emit('join room success'));
-      } else {
-        socket.emit('join room error', `Room '${pathUrl}' was not found`);
-      }
+      socket.emit('join room error', `Room '${pathUrl}' was not found`);
     });
 
-    socket.on('lecture start', (roomId) => {
-      if (socket.roomId) {
-        io.in(socket.roomId).emit('lecture started');
+    socket.on('lecture start', (pathUrl) => {
+      if (socket.pathUrl) {
+        io.in(socket.pathUrl).emit('lecture started');
       } else {
         socket.emit('lecture start error', 'You do not belong to a room');
       }
     });
 
-    socket.on('lecture end', (roomId) => {
-      if (socket.roomId) {
-        io.in(socket.roomId).emit('lecture ended');
+    socket.on('lecture end', (pathUrl) => {
+      if (socket.pathUrl) {
+        io.in(socket.pathUrl).emit('lecture ended');
       } else {
         socket.emit('lecture end error', 'You do not belong to a room');
       }
@@ -58,9 +50,9 @@ module.exports = (listen) => {
     socket.on('new note', (note) => {
       if (note) {
 
-        /* redis ==> add note to "userId:roomId" List of notes*/
-        // note = { userId, content, roomId, timeStamp }
-        // userId:roomId
+        /* redis ==> add note to "userId:pathUrl" List of notes*/
+        // note = { userId, content, pathUrl, timeStamp }
+        // userId:pathUrl
         // save notes into redis
       }
     });
