@@ -32,6 +32,7 @@
     "socket.io-client": "^1.4.8",
     "react-addons-test-utils": "^15.3.2",
     "socket.io-client": "^1.4.8",
+    "react-addons-test-utils": "^15.3.2",
     "supertest": "^2.0.0",
     "webpack": "^1.13.2",
     "webpack-dev-middleware": "^1.8.2",
