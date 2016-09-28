@@ -8,7 +8,7 @@ class Compile extends React.Component {
   constructor (props) {
     super(props);
   }
-  render(){
+  render() {
     return (
     <div class="container-fluid">
       <div class="row">
@@ -25,7 +25,7 @@ class Compile extends React.Component {
         </div>
       </div>
     </div>
-    )
+    );
   }
 }
 
