@@ -8,10 +8,10 @@ import reducers from './reducers';
 
 /* <- Set up store -> */
 const defaultState = {
-  user: {}
+
 };
 
-const store = createStore(reducers, defaultState);
+const store = createStore(reducers);
 
 /* <- Export store -> */
 export const history = syncHistoryWithStore(browserHistory, store);
