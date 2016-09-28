@@ -6,12 +6,6 @@ export function createUser (user) {
   };
 }
 
-export function getUser () {
-  return {
-    type: 'GET_USER'
-  };
-}
-
 export function logOut () {
   return {
     type: 'DELETE_USER'
