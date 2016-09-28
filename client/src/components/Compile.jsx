@@ -6,7 +6,7 @@ import LectureBox from './sub/LectureBox.jsx'
 
 class Compile extends React.Component {
   constructor (props) {
-    super(props)
+    super(props);
   }
   render(){
     return (

@@ -1,11 +1,12 @@
 import React from 'react';
-import Connection from '../Connection.js'
+import Connection from '../Connection.js';
 import { Link } from 'react-router';
+
 
 class App extends React.Component {
   constructor(props) {
     super(props);
-    console.log('apps props:', this.props)
+    console.log('apps props:', this.props);
   }
 
   render() {
@@ -16,5 +17,4 @@ class App extends React.Component {
     );
   }
 }
-
 export default Connection(App);
