@@ -7,16 +7,16 @@ class NewRoom extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
-      subject: undefined,
+      topic: undefined,
       class: undefined,
       lecturer: undefined
     }
   }
 
   handleInput(e){
-    if (e.target.id === 'subject'){
+    if (e.target.id === 'topic'){
       this.setState({
-        subject: e.target.value
+        topic: e.target.value
       })
     }
     if (e.target.id === 'class'){
@@ -32,10 +32,9 @@ class NewRoom extends React.Component {
   }
 
   buttonClicked(el) {
-    console.log(this.props.getState())
-    // send ajax request with state.
     var data = {
-      subject: this.state.subject,
+      hostId: this.props.getState().user.information[0].id,
+      topic: this.state.topic,
       className: this.state.className,
       lecturer: this.state.lecturer
     };
@@ -48,9 +47,9 @@ class NewRoom extends React.Component {
         <h2 className="new-room-title">New Room</h2>
         <form className="form-horizontal">
           <div className="form-group">
-            <label className="control-label col-sm-2">Subject:</label>
+            <label className="control-label col-sm-2">Topic:</label>
             <div className="col-sm-10">
-              <input type="text" className="form-control" id="subject" placeholder="(i.e. The Battle of Waterloo)" onChange={this.handleInput.bind(this)}>
+              <input type="text" className="form-control" id="topic" placeholder="(i.e. The Battle of Waterloo)" onChange={this.handleInput.bind(this)}>
               </input>
             </div>
           </div>
