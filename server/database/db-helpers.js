@@ -87,15 +87,9 @@ const showFilteredNotes = ({userId, roomId}, cb) => {
   .then((allNotes) => cb(allNotes));
 };
 
-const findRoomId = ({pathUrl}, cb) => {
-  Room.findOne({
-    attribute: ['id'],
-    where: {pathUrl: pathUrl}
-  })
-  .then((found) => {
-    cb(found);
-  });
-
+const findRoom = (pathUrl, cb) => {
+  Room.count({ where: {pathUrl: pathUrl} })
+  .then((count) => { cb(count); });
 };
 
 module.exports = {
@@ -105,5 +99,5 @@ module.exports = {
   createNewNote,
   showAllNotes,
   showFilteredNotes,
-  findRoomId
+  findRoom
 };
