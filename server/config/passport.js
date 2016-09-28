@@ -9,7 +9,6 @@ var FacebookStrategy = require('passport-facebook').Strategy;
 /****** REQUIRE DATABASE ******/
 var {db, User} = require('../database/db-config.js');
 /****************** PASSPORT CONFIG ***************/
-console.log(User);
 passport.use(new FacebookStrategy({
   clientID: keys.facebook.FACEBOOK_APP_ID,
   clientSecret: keys.facebook.FACEBOOK_APP_SECRET,
@@ -23,7 +22,6 @@ passport.use(new FacebookStrategy({
     pictureUrl: profile.photos[0].value,
     gender: profile.gender
   };
-  console.log(newUser);
   User.findOrCreate({
     where: newUser
   })
