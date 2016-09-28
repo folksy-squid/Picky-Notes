@@ -1,3 +1,4 @@
+/*jshint esversion: 6 */
 var request = require('supertest');
 var express = require('express');
 var expect = require('chai').expect;
@@ -124,7 +125,6 @@ describe('/api/notes/', () => {
   });
 });
 
-
 describe('Server Side Socket Connection', () => {
   it('should connect to incoming sockets', (done) => {
     var client = ioClient.connect(socketURL, options);
@@ -137,7 +137,6 @@ describe('Server Side Socket Connection', () => {
 
   it('should create rooms', (done) => {
     var client = ioClient.connect(socketURL, options);
-    
     client.emit('create room', 'TESTT');
     client.on('create room success', () => {
       expect(ioServer.sockets.adapter.rooms).to.have.property('TESTT');
@@ -152,7 +151,6 @@ describe('Server Side Socket Connection', () => {
 
     var joiner = ioClient.connect(socketURL, options);
     joiner.emit('join room', 'TESTT');
-    
     joiner.on('join room success', () => {
       expect(ioServer.sockets.adapter.rooms['TESTT'].length).to.equal(2);
       roomCreator.disconnect();
@@ -209,4 +207,3 @@ describe('Server Side Socket Connection', () => {
     roomCreator.emit('new note', exampleNote);
   });
 });
-

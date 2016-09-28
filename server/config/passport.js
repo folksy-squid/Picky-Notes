@@ -1,10 +1,8 @@
-
-
 if (process.env.NODE_ENV === 'test') {
-  var keys = {facebook: {FACEBOOK_APP_ID: 'haha', FACEBOOK_APP_SECRET: 'no secrets for you'}};
+   var keys = {facebook: {FACEBOOK_APP_ID: 'haha', FACEBOOK_APP_SECRET: 'no secrets for you'}};
 } else {
-  var keys = require('../../keys.js');
-}
+   var keys = require('../../keys.js');
+};
 var passport = require('passport');
 var FacebookStrategy = require('passport-facebook').Strategy;
 
@@ -18,20 +16,23 @@ passport.use(new FacebookStrategy({
   callbackURL: 'http://localhost:3000/auth/facebook/callback',
   profileFields: ['id', 'name', 'picture.type(large)', 'email', 'gender']
 }, function(accessToken, refreshToken, profile, done) {
-  console.log(profile);
+  let newUser = {
+    facebookId: profile.id,
+    name: profile._json.first_name + ' ' + profile._json.last_name,
+    email: profile.emails[0].value,
+    pictureUrl: profile.photos[0].value,
+    gender: profile.gender
+  };
+  console.log(newUser);
   User.findOrCreate({
-    where: {
-      facebookId: profile.id,
-      name: profile._json.first_name + ' ' + profile._json.last_name,
-      email: profile.emails[0].value,
-      pictureUrl: profile.photos[0].value,
-      gender: profile.gender
-    }
+    where: newUser
   })
   .then( (user) => {
+    console.log('this is the user', user);
     done(null, user);
   })
   .catch( (err) => {
+    console.log(err);
     done(err);
   });
 

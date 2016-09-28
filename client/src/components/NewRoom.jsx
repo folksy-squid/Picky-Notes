@@ -1,4 +1,5 @@
 import React from 'react';
+import Connection from '../Connection.js'
 import { Link } from 'react-router';
 
 class NewRoom extends React.Component {
@@ -7,9 +8,18 @@ class NewRoom extends React.Component {
   }
   render(){
     return (
-      <div>'this is NewRoom.jsx'</div>
+      <div className="container">
+        <h2>New Room</h2>
+        <div>
+          <form>
+            <input type="text" name="subject" placeholder="Subject" />
+            <input type="text" name="class" placeholder="Class" />
+            <input type="text" name="lecturer" placeholder ="Lecturer (optional)" />
+          </form>
+        </div>
+      </div>
     )
   }
 }
 
-export default NewRoom;
+export default Connection(NewRoom);
