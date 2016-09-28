@@ -137,7 +137,7 @@ describe('Server Side Socket Connection', () => {
 
   it('should create rooms', (done) => {
     var client = ioClient.connect(socketURL, options);
-    client.emit('create room', 'TESTT');
+    client.emit('create room', 'TESTT', 12345);
     client.on('create room success', () => {
       expect(ioServer.sockets.adapter.rooms).to.have.property('TESTT');
       client.disconnect();
@@ -147,10 +147,10 @@ describe('Server Side Socket Connection', () => {
 
   it('should put users in a room', (done) => {
     var roomCreator = ioClient.connect(socketURL, options);
-    roomCreator.emit('create room', 'TESTT');
+    roomCreator.emit('create room', 'TESTT', 12345);
 
     var joiner = ioClient.connect(socketURL, options);
-    joiner.emit('join room', 'TESTT');
+    joiner.emit('join room', 'TESTT', 12345);
     joiner.on('join room success', () => {
       expect(ioServer.sockets.adapter.rooms['TESTT'].length).to.equal(2);
       roomCreator.disconnect();
@@ -161,11 +161,11 @@ describe('Server Side Socket Connection', () => {
 
   it('should notify members of a room when a lecture starts', (done) => {
     var roomCreator = ioClient.connect(socketURL, options);
-    roomCreator.emit('create room', 'TESTT');
+    roomCreator.emit('create room', 'TESTT', 12345);
 
     roomCreator.on('create room success', () => {
       var joiner = ioClient.connect(socketURL, options);
-      joiner.emit('join room', 'TESTT');
+      joiner.emit('join room', 'TESTT', 12345);
 
       joiner.on('join room success', () => {
         roomCreator.emit('lecture start');
@@ -177,11 +177,11 @@ describe('Server Side Socket Connection', () => {
 
   it('should notify members of a room when a lecture ends', (done) => {
     var roomCreator = ioClient.connect(socketURL, options);
-    roomCreator.emit('create room', 'TESTT');
+    roomCreator.emit('create room', 'TESTT', 12345);
 
     roomCreator.on('create room success', () => {
       var joiner = ioClient.connect(socketURL, options);
-      joiner.emit('join room', 'TESTT');
+      joiner.emit('join room', 'TESTT', 12345);
 
       joiner.on('join room success', () => {
         roomCreator.emit('lecture end');
@@ -203,7 +203,7 @@ describe('Server Side Socket Connection', () => {
     });
 
     var roomCreator = ioClient.connect(socketURL, options);
-    roomCreator.emit('create room', 'TESTT');
+    roomCreator.emit('create room', 'TESTT', 12345);
     roomCreator.emit('new note', exampleNote);
   });
 });
