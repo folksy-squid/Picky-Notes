@@ -6,8 +6,12 @@ import store from './store';
 
 const mapStateToProps = (state) => (state, store);
 
-const mapDispatchToProps = (dispatch) => bindActionCreators(actions, dispatch);
 
-const Connection = (view)=> connect(mapStateToProps, mapDispatchToProps)(view);
+const mapDispatchToProps = (dispatch) =>
+  bindActionCreators(actions, dispatch);
 
+const Connection = (view)=>
+  connect(mapStateToProps, mapDispatchToProps)(view);
+
+export {mapStateToProps};
 export default Connection;
