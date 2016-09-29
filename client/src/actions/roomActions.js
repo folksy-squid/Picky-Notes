@@ -1,19 +1,20 @@
 /*jshint esversion: 6 */
 
-export function createRoom (data, cb) {
+export function createRoom (data, user, createRoom) {
   console.log('called createRoom');
   return {
     type: 'CREATE_ROOM',
     data,
-    cb
+    user,
+    createRoom
   };
 }
 
-export function joinSocketRoom (pathUrl, userId, cb) {
+export function joinSocketRoom (pathUrl, user, joinedRoom) {
   return {
     type: 'JOIN_SOCKET_ROOM',
     pathUrl,
-    userId,
-    cb
+    user,
+    joinedRoom,
   };
 }
