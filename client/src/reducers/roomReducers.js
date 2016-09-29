@@ -12,6 +12,8 @@ export default (state = {}, action) => {
       success: function(res, status){
         console.log('the response: ', res);
         state.roomInfo = res
+        // create a socket connection that uses a separate reducer
+        // because we need to make sure the same socket exists across all
       },
       error: function( res, status ){
         console.log(res);
