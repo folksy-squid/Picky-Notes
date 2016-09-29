@@ -11,7 +11,7 @@ export default (state = {}, action) => {
       data: action.data,
       success: function(res, status){
         console.log('the response: ', res);
-        // state.roomInfo = res
+        state.roomInfo = res
       },
       error: function( res, status ){
         console.log(res);
