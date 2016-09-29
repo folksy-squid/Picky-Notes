@@ -96,6 +96,34 @@ h2.new-room-title {
   margin-right: 4px;
 }
 
+.participant0 {
+  color: darkblue;
+}
+
+.participant1 {
+  color: darkred;
+}
+
+.participant2 {
+  color: green;
+}
+
+.participant3 {
+  color: purple;
+}
+
+.participant4 {
+  color: orange;
+}
+
+.participant5 {
+  color: lightblue;
+}
+
+.participant6 {
+  color: pink;
+}
+
 /*
   =================================
     Shareable Link
