@@ -6,3 +6,12 @@ export function createRoom (data) {
     data
   };
 }
+
+export function joinSocketRoom (pathUrl, userId, cb) {
+  return {
+    type: 'JOIN_SOCKET_ROOM',
+    pathUrl,
+    userId,
+    cb
+  };
+}
