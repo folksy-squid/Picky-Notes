@@ -29,7 +29,7 @@ before((done) => {
         gender: 'Male'
       })
       .then(() => done());
-    } )
+    } );
   });
 });
 
