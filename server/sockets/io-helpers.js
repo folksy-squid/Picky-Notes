@@ -18,8 +18,7 @@ const addNote = (socket, note, cb) => {
   /* redis ==> add note to "userId:pathUrl" List of notes*/
   // note = { userId, content, pathUrl, timeStamp }
   // addNoteToCache(pathUrl, userId, note, () => console.log('added note to cache'));
-  addNoteToCache(pathUrl, userId, note);
-  cb();
+  addNoteToCache(pathUrl, userId, note, cb);
 };
 
 module.exports = {

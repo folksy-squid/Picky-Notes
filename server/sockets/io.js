@@ -51,7 +51,7 @@ module.exports = (listen) => {
 
     socket.on('new note', (note) => {
       if (note) {
-        addNote(socket, note, () => socket.emit('add note success'));
+        addNote(socket, note, (result) => socket.emit('add note success', result));
         return;
       }
       socket.emit('add note error', 'Note does not exist you asshat');

@@ -16,9 +16,10 @@ const addUserToCache = (pathUrl, userId, cb) => {
 
 const addNoteToCache = (pathUrl, userId, note, cb) => {
   cache.rpush(`${userId}:${pathUrl}`, JSON.stringify(note))
+  .then(() => cache.lrange(`${userId}:${pathUrl}`, -1, -1))
+  .then((note) => cb && cb(JSON.parse(note[0])));
   // .then(() => cache.lrange(`${userId}:${pathUrl}`, 0, -1))
-  // .then((data) => console.log(data))
-  .then(() => cb && cb());
+  // .then((data) => console.log(data));
 };
 
 /************************* DEV *************************/
