@@ -1,9 +1,11 @@
 /*jshint esversion: 6 */
 
-export function createRoom (data) {
+export function createRoom (data, cb) {
+  console.log('called createRoom');
   return {
     type: 'CREATE_ROOM',
-    data
+    data,
+    cb
   };
 }
 
