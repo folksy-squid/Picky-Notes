@@ -98,9 +98,7 @@ module.exports = (app, express) => {
       // potentially instead of using this endpoint, reuse /api/notes/create?
       res.send('Add new notes (save button) for user #' + req.params.userId + ' inside room #' + req.params.roomId);
     });
-<<<<<<< HEAD
-  app.get('*', function (request, response) {
-=======
+
 
   app.get('*/index.bundle.js', function (request, response) {
     response.sendFile(path.resolve(__dirname, '../../client', 'dist/index.bundle.js'));
@@ -111,7 +109,6 @@ module.exports = (app, express) => {
   });
 
   app.get('*', function(request, response) {
->>>>>>> fixed routing on wildcard
     response.sendFile(path.resolve(__dirname, '../../client', 'index.html'));
   });
 };
