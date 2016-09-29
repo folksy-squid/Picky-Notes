@@ -3,7 +3,7 @@ import { Link } from 'react-router';
 import Connection from '../Connection.js';
 import LectureTitle from './sub/LectureTitle.jsx';
 import LectureBox from './sub/LectureBox.jsx';
-import ParticipantList from './ParticipantList.jsx';
+import ParticipantList from './sub/ParticipantList.jsx';
 
 class Lecture extends React.Component {
   constructor (props) {

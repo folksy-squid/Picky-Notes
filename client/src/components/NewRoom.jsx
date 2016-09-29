@@ -1,19 +1,16 @@
 import React from 'react';
 import {mapStateToProps} from '../Connection.js';
-import { Link } from 'react-router';
-import {createRoom} from '../actions/roomActions';
 import {connect} from 'react-redux';
+import {createRoom} from '../actions/roomActions';
 import {Router} from 'react-router';
-
-
 class NewRoom extends React.Component {
   constructor (props) {
-    super(props)
+    super(props);
     this.state = {
       topic: undefined,
-      class: undefined,
+      className: undefined,
       lecturer: undefined
-    }
+    };
   }
   static get contextTypes() {
     return {
@@ -21,48 +18,50 @@ class NewRoom extends React.Component {
     };
   }
 
-  handleInput(e){
-    if (e.target.id === 'topic'){
+  handleInput(e) {
+    if (e.target.id === 'topic') {
       this.setState({
         topic: e.target.value
-      })
+      });
     }
-    if (e.target.id === 'class'){
+    if (e.target.id === 'class') {
       this.setState({
         className: e.target.value
-      })
+      });
     }
-    if (e.target.id === 'lecturer'){
+    if (e.target.id === 'lecturer') {
       this.setState({
         lecturer: e.target.value
-      })
+      });
     }
   }
 
-  buttonClicked(el) {
-    var context = this;
-    var cb = function(err, success){
-      if (err){
-        context.setState({error: true});
-      } else {
+  formSubmit(el) {
+    el.preventDefault();
+    if (this.state.topic && this.state.className && this.state.lecturer) {
+      var context = this;
+      var createdRoom = function(success) {
         context.context.router.push(`/lobby/${success}`);
-      }
+      };
+      var data = {
+        hostId: this.props.getState().user.information[0].id,
+        topic: this.state.topic,
+        className: this.state.className,
+        lecturer: this.state.lecturer
+      };
+      var user = this.props.getState().user.information[0];
+      console.log('button was clicked');
+      this.props.dispatch(createRoom(data, user, createdRoom));
+    } else {
+      this.setState({error: true});
     }
-    var data = {
-      hostId: this.props.getState().user.information[0].id,
-      topic: this.state.topic,
-      className: this.state.className,
-      lecturer: this.state.lecturer
-    };
-    console.log('button was clicked')
-    this.props.dispatch(createRoom(data, cb));
   }
 
-  render(){
+  render() {
     return (
       <div className="container new-room">
         <h2 className="new-room-title">New Room</h2>
-        <form className="form-horizontal">
+        <form onSubmit={this.formSubmit.bind(this)} className="form-horizontal">
           <div className="form-group">
             <label className="control-label col-sm-2">Topic:</label>
             <div className="col-sm-10">
@@ -86,7 +85,7 @@ class NewRoom extends React.Component {
           </div>
           <div className="form-group">
             <div className="col-sm-offset-2 col-sm-10">
-              <button type="button" onClick={this.buttonClicked.bind(this)} className="btn btn-default create-room">Create</button>
+              <button type="submit" className="btn btn-default create-room">Create</button>
             </div>
           </div>
         </form>
