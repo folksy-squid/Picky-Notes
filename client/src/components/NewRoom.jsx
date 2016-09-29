@@ -74,7 +74,7 @@ class NewRoom extends React.Component {
           </div>
         </form>
       </div>
-    )
+    );
   }
 }
 
