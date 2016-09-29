@@ -25,16 +25,25 @@ export default class Lobby extends React.Component {
 
   render() {
     return (
-      <div className="lobby">
+      <div className="container lobby">
         <LectureTitle />
-        <ParticipantList />
-        <div>{this.props.params.roomId}</div>
-        <div className="clipboard">
-          <input ref="shareLink" className="shareLink" value="https://github.com/zenorocha/clipboard.js.git" readOnly/>
-          <div className="buttonCell">
-            <button ref="copyButton" className="copyButton" data-clipboard-target=".shareLink">
-              <i className="ion ion-clipboard"></i>
+        <div className="row">
+          <div className="col-sm-9">
+            <ChatBox />
+          </div>
+          <div className="col-sm-3">
+            <button className="btn btn-lg btn-success">
+              Start Lecture
             </button>
+            <div className="clipboard">
+              <input ref="shareLink" className="shareLink" value="https://github.com/zenorocha/clipboard.js.git" readOnly/>
+              <div className="buttonCell">
+                <button ref="copyButton" className="copyButton" data-clipboard-target=".shareLink">
+                  <i className="ion ion-clipboard"></i>
+                </button>
+              </div>
+            </div>
+            <ParticipantList />
           </div>
         </div>
       </div>
