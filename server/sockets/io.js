@@ -24,13 +24,15 @@ module.exports = (listen) => {
       }
     });
 
+
     socket.on('join room', (pathUrl, userId) => {
       // verify if pathUrl and userId are valid and if room at pathUrl exists
       if (pathUrl.length === 5 && userId && rooms[pathUrl]) {
         joinRoom(socket, pathUrl, userId, () => socket.emit('join room success'));
         return;
+      } else {
+        socket.emit('join room error', `Room '${pathUrl}' was not found`);
       }
-      socket.emit('join room error', `Room '${pathUrl}' was not found`);
     });
 
     socket.on('lecture start', (pathUrl) => {

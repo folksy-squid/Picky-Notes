@@ -1,14 +1,14 @@
 import React from 'react';
 import { Link } from 'react-router';
-import Connection from '../Connection.js'
-import ParticipantList from './ParticipantList.jsx'
-import LectureBox from './sub/LectureBox.jsx'
+import Connection from '../Connection.js';
+import ParticipantList from './ParticipantList.jsx';
+import LectureBox from './sub/LectureBox.jsx';
 
 class Compile extends React.Component {
   constructor (props) {
-    super(props)
+    super(props);
   }
-  render(){
+  render() {
     return (
     <div class="container-fluid">
       <div class="row">
@@ -25,7 +25,7 @@ class Compile extends React.Component {
         </div>
       </div>
     </div>
-    )
+    );
   }
 }
 
