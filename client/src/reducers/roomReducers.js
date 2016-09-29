@@ -58,6 +58,20 @@ export default (state = {}, action) => {
     state.socket = null;
   }
 
+  var createSocketRoom = (hostId, pathUrl) => {
+    var socket = io();
+    socket.emit('create room', pathUrl, hostId);
+    return socket;
+  };
+
+  if (action.type === 'JOIN_SOCKET_ROOM'){
+
+  }
+
+  if (action.type === 'DELETE_SOCKET_ROOM'){
+
+  }
+
 
   return state;
 };
