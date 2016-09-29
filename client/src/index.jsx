@@ -60,7 +60,8 @@ render((<Provider store={store}>
           <Route path='/notebook' component={Notebook} />
           <Route path='/new' component={NewRoom} />
           <Route path='/join' component={JoinRoom} />
-          <Route path='/lobby' component={Lobby} />
+          <Route path='/lobby' component={Lobby}/>
+          <Route path="/lobby/:roomId" component={Lobby}/>
           <Route path='/review' component={Review} />
         </Route>
         <Route path='/lecture' component={Lecture} onEnter={authCheck}/>
