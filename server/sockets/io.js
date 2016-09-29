@@ -1,4 +1,4 @@
-const {joinRoom, addNote} = require('./io-helpers');
+const {joinRoom, addNote, isAllReady} = require('./io-helpers');
 const {findRoom} = require('../database/db-helpers');
 
 module.exports = (listen) => {
@@ -53,13 +53,9 @@ module.exports = (listen) => {
 
     socket.on('user ready', () => {
       socket.ready = true;
-
-      for (var socketId in rooms[socket.pathUrl].sockets) {
-        if (io.sockets.connected[socketId].ready === false) {
-          return;
-        }
+      if (isAllReady(socket.pathUrl, rooms, io)) {
+        io.in(socket.pathUrl).emit('all ready');
       }
-      io.in(socket.pathUrl).emit('all ready');
     });
 
     socket.on('new note', (note) => {
