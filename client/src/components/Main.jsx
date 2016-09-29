@@ -6,7 +6,6 @@ import { Link } from 'react-router';
 class Main extends React.Component {
   constructor (props) {
     super(props);
-    console.log('mains props:', props);
   }
   render() {
     return (
@@ -18,4 +17,4 @@ class Main extends React.Component {
   }
 }
 
-export default Connection(Main);
+export default Main;
