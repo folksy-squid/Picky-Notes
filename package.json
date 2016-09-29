@@ -5,7 +5,7 @@
   "main": "server/server.js",
   "scripts": {
     "start": "node server/server.js",
-    "test": "mocha specs/**/*.js",
+    "test": "mocha specs/server/*.js",
     "dev": "nodemon server/server.js & webpack --watch"
   },
   "repository": {
