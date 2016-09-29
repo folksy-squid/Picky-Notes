@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router';
 import Connection from '../Connection.js';
-import ParticipantList from './ParticipantList.jsx';
+import ParticipantList from './sub/ParticipantList.jsx';
 import LectureBox from './sub/LectureBox.jsx';
 
 class Compile extends React.Component {

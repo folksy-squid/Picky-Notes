@@ -16,8 +16,7 @@
 - Redis v3.2.x
 - Postgresql v9.5.x
 
-
-## Installation
+##Installation
 
 From within the root directory:
 

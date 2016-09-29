@@ -1,16 +1,14 @@
 import React from 'react';
 import { Link } from 'react-router';
 import LectureTitle from './sub/LectureTitle.jsx';
-import ParticipantList from './ParticipantList.jsx';
+import ParticipantList from './sub/ParticipantList.jsx';
 
 export default class Lobby extends React.Component {
   constructor(props) {
     super(props);
-    this.socket = null;
   }
 
   componentWillMount() {
-
   }
 
   componentDidMount() {
@@ -29,7 +27,7 @@ export default class Lobby extends React.Component {
     return (
       <div className="lobby">
         <LectureTitle />
-        <ParticipantList participants={[{name: 'Kunal'}, {name: 'Marco'}, {name: 'Derek'}, {name: 'Sean'}]}/>
+        <ParticipantList />
         <div>{this.props.params.roomId}</div>
         <div className="clipboard">
           <input ref="shareLink" className="shareLink" value="https://github.com/zenorocha/clipboard.js.git" readOnly/>
