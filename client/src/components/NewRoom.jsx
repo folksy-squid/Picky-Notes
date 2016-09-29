@@ -1,7 +1,10 @@
 import React from 'react';
-import Connection from '../Connection.js'
+import {mapStateToProps} from '../Connection.js';
 import { Link } from 'react-router';
-import {createRoom} from '../actions/roomActions'
+import {createRoom} from '../actions/roomActions';
+import {connect} from 'react-redux';
+import {Router} from 'react-router';
+
 
 class NewRoom extends React.Component {
   constructor (props) {
@@ -11,6 +14,11 @@ class NewRoom extends React.Component {
       class: undefined,
       lecturer: undefined
     }
+  }
+  static get contextTypes() {
+    return {
+      router: React.PropTypes.object.isRequired,
+    };
   }
 
   handleInput(e){
@@ -32,13 +40,22 @@ class NewRoom extends React.Component {
   }
 
   buttonClicked(el) {
+    var context = this;
+    var cb = function(err, success){
+      if (err){
+        context.setState({error: true});
+      } else {
+        context.context.router.push(`/lobby/${success}`);
+      }
+    }
     var data = {
       hostId: this.props.getState().user.information[0].id,
       topic: this.state.topic,
       className: this.state.className,
       lecturer: this.state.lecturer
     };
-    this.props.dispatch(this.props.createRoom(data))
+    console.log('button was clicked')
+    this.props.dispatch(createRoom(data, cb));
   }
 
   render(){
@@ -74,8 +91,8 @@ class NewRoom extends React.Component {
           </div>
         </form>
       </div>
-    )
+    );
   }
 }
 
-export default Connection(NewRoom);
+export default connect(mapStateToProps)(NewRoom);
