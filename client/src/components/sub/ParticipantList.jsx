@@ -5,8 +5,20 @@ import {connect} from 'react-redux';
 class ParticipantList extends React.Component {
   constructor(props) {
     super(props);
+    var getCurrentView = function(){
+      var pathname = props.getState().routing.locationBeforeTransitions.pathname.slice(0, 6);
+      if (pathname === "/lobby") {
+        return 'lobby';
+      } else if (pathname === "/lectu") {
+        return 'lecture';
+      } else if (pathname === "/compi") {
+        return 'compile';
+      }
+    };
+
     this.state = {
-      participants: [this.props.getState().user.information[0]]
+      participants: props.getState().room.participants || [props.getState().user.information[0]],
+      view: getCurrentView()
     };
   }
 
