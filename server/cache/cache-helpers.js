@@ -24,7 +24,15 @@ const addNoteToCache = (pathUrl, userId, note, cb) => {
 
 /************************* DEV *************************/
 
-const deleteNotesFromUser = (pathUrl, userId) => {};
+const deleteAllNotes = (pathUrl) => {
+  var pipeline = cache.pipeline();
+  getUsersFromRoom(pathUrl)
+  .then((allUserIds) => {
+    allUserIds.forEach((userId) => {
+      cache.del(`${userId}:${pathUrl}`);
+    });
+  });
+};
 
 const getUsersFromRoom = pathUrl => cache.smembers(pathUrl);
 
@@ -41,7 +49,7 @@ const getNotesFromRoom = pathUrl => {
       pipeline.lrange(`${userId}:${pathUrl}`, 0, -1);
     });
     pipeline.exec()
-    .then((results) => console.log(results));
+    .then((results) => console.log(results[0][1]));
   });
   // iterate through users in room
   // do something
@@ -50,5 +58,6 @@ const getNotesFromRoom = pathUrl => {
 
 module.exports = {
   addUserToCache,
-  addNoteToCache
+  addNoteToCache,
+  getNotesFromRoom,
 };
