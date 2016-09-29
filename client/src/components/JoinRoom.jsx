@@ -20,26 +20,21 @@ class JoinRoom extends React.Component {
   }
   submitInput(e) {
     e.preventDefault();
-    this.refs.joinRoomInput.value = '';
-    console.log(this.state.value);
-    this.socket = io();
-    this.socket.on('user info', () => {
-      this.socket.emit(this.props.User)
-    });
-    this.socket.emit('join room', this.state.value);
-    this.socket.on('room not found', () => {
-      this.socket.disconnect();
-      this.socket = null;
-    });
+    var context = this;
+    var pathUrl = this.state.value;
+    var userId = this.props.getState().user.information[0].id;
 
-    this.socket.on('join room success', () => {
-      console.log('i have successfully joined a room');
-      this.context.router.push(`/lobby/${this.state.value}`);
-    });
-    this.socket.on('join room error', (err) => {
-      this.setState({error: true});
-      console.log('i have errored out', err);
-    });
+    var cb = function(err, success){
+      if (err){
+        context.setState({error: true});
+      } else {
+        context.context.router.push(`/lobby/${this.state.value}`);
+      }
+    }
+
+    this.props.dispatch(this.props.joinSocketRoom(pathUrl, userId, cb))
+
+    this.refs.joinRoomInput.value = '';
 
   }
   render() {
