@@ -28,7 +28,7 @@ class JoinRoom extends React.Component {
       if (err){
         context.setState({error: true});
       } else {
-        context.context.router.push(`/lobby/${this.state.value}`);
+        context.context.router.push(`/lobby/${context.state.value}`);
       }
     }
 
