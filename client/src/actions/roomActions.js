@@ -15,6 +15,6 @@ export function joinSocketRoom (pathUrl, user, joinedRoom) {
     type: 'JOIN_SOCKET_ROOM',
     pathUrl,
     user,
-    joinedRoom,
+    joinedRoom
   };
 }

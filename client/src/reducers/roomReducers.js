@@ -42,21 +42,23 @@ export default (state = {}, action) => {
 
   if (action.type === 'JOIN_SOCKET_ROOM'){
     var socket = io();
+    console.log('joining room');
     socket.emit('join room', action.pathUrl, action.user);
 
     socket.on('join room error', () => {
       console.log('we have failed to join a room');
       socket.disconnect();
       state.socket = null;
-      action.cb('error');
+      action.joinedRoom('error');
     });
 
-    socket.on('join room success', (name) => {
+    socket.on('join room success', (participants, roomInfo) => {
       console.log(`${name} has successfully joined a room`);
       state.socket = socket;
       action.joinedRoom(null, 'success');
-
-      // get the users from the socket and save it to our store
+      // get users and roomInfo from the socket and save it to our store
+      // state.participants = participants;
+      // state.roomInfo = roomInfo
     });
   }
 
