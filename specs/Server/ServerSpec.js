@@ -195,7 +195,11 @@ describe('Server Side Socket Connection', () => {
         roomCreator.emit('lecture start');
       });
 
-      joiner.on('lecture started', () => done());
+      joiner.on('lecture started', () => {
+        roomCreator.disconnect();
+        joiner.disconnect();
+        done();
+      });
     });
   });
 
@@ -226,6 +230,31 @@ describe('Server Side Socket Connection', () => {
     var roomCreator = ioClient.connect(socketURL, options);
     roomCreator.emit('create room', 'TESTT', 12345);
     roomCreator.emit('new note', exampleNote);
-    roomCreator.on('add note success', () => done());
+    roomCreator.on('add note success', () => {
+      roomCreator.disconnect();
+      done();
+    });
+  });
+
+  it('should emit "all ready" when all sockets are ready', (done) => {
+    var roomCreator = ioClient.connect(socketURL, options);
+    roomCreator.emit('create room', 'TESTT', 12345);
+
+    var joiner = ioClient.connect(socketURL, options);
+    roomCreator.on('create room success', () => {
+      joiner.emit('join room', 'TESTT', 12345);
+    });
+    
+    joiner.on('all ready', () => {
+      roomCreator.disconnect();
+      joiner.disconnect();
+      done();
+    });
+
+    joiner.on('join room success', () => {
+      expect(ioServer.sockets.adapter.rooms['TESTT'].length).to.equal(2);
+      roomCreator.emit('user ready');
+      joiner.emit('user ready');
+    });
   });
 });
