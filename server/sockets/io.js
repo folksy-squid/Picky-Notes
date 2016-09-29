@@ -23,6 +23,7 @@ module.exports = (listen) => {
         socket.emit('create room error', `Room '${pathUrl}' is invalid`);
       }
     });
+    
 
     socket.on('join room', (pathUrl, userId) => {
       // verify if pathUrl and userId are valid and if room at pathUrl exists
