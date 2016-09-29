@@ -1,11 +1,12 @@
 /*jshint esversion: 6 */
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import * as actionCreators from './actions/actionCreators';
+import * as actions from './actions/index.js';
+import store from './store';
 
-const mapStateToProps = (state) => ({ notes: state.notes });
+const mapStateToProps = (state) => (state, store);
 
-const mapDispatchToProps = (dispatch) => bindActionCreators(actionCreators, dispatch);
+const mapDispatchToProps = (dispatch) => bindActionCreators(actions, dispatch);
 
 const Connection = (view)=> connect(mapStateToProps, mapDispatchToProps)(view);
 

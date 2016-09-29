@@ -1,7 +1,16 @@
 import React from 'react';
+import Connection from '../Connection.js'
 import { Link } from 'react-router';
 
 class Navbar extends React.Component {
+  constructor(props){
+    super(props);
+  }
+
+  logout() {
+    this.props.dispatch(this.props.logOut());
+  }
+
   render() {
     return (
       <nav className="navbar navbar-static-top">
@@ -20,7 +29,7 @@ class Navbar extends React.Component {
               <Link className="nav-link " to="/notebook">My Notebook</Link>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="/logout">Logout</a>
+              <Link className="nav-link" onClick={this.logout.bind(this)} to="/">Logout</Link>
             </li>
           </ul>
         </div>
@@ -29,4 +38,4 @@ class Navbar extends React.Component {
   }
 }
 
-export default Navbar;
+export default Connection(Navbar);
