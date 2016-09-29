@@ -1,15 +1,14 @@
 if (process.env.NODE_ENV === 'test') {
-   var keys = {facebook: {FACEBOOK_APP_ID: 'haha', FACEBOOK_APP_SECRET: 'no secrets for you'}};
+  var keys = {facebook: {FACEBOOK_APP_ID: 'haha', FACEBOOK_APP_SECRET: 'no secrets for you'}};
 } else {
-   var keys = require('../../keys.js');
-};
+  var keys = require('../../keys.js');
+}
 var passport = require('passport');
 var FacebookStrategy = require('passport-facebook').Strategy;
 
 /****** REQUIRE DATABASE ******/
 var {db, User} = require('../database/db-config.js');
 /****************** PASSPORT CONFIG ***************/
-console.log(User);
 passport.use(new FacebookStrategy({
   clientID: keys.facebook.FACEBOOK_APP_ID,
   clientSecret: keys.facebook.FACEBOOK_APP_SECRET,
@@ -23,7 +22,6 @@ passport.use(new FacebookStrategy({
     pictureUrl: profile.photos[0].value,
     gender: profile.gender
   };
-  console.log(newUser);
   User.findOrCreate({
     where: newUser
   })

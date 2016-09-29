@@ -1,4 +1,4 @@
-const dbhelpers = require ('../database/db-helpers');
+const {createNewUser, createNewRoom, joinRoom, createNewNote, showAllNotes, showFilteredNotes} = require ('../database/db-helpers');
 const passport = require('./passport');
 const path = require('path');
 
@@ -24,7 +24,7 @@ module.exports = (app, express) => {
 
   // User Creation
   app.post('/api/users/', (req, res) => {
-    dbhelpers.createNewUser(req.body, (user, created) => {
+    createNewUser(req.body, (user, created) => {
       if (!created) {
         res.send('User already exists!'); // dummy response, can change this
       } else {
@@ -62,12 +62,12 @@ module.exports = (app, express) => {
       "createdAt": "2016-09-24T22:58:19.623Z"
     }
     ******************************************/
-    dbhelpers.createNewRoom(req.body, (roomInfo) => res.send(roomInfo));
+    createNewRoom(req.body, (roomInfo) => res.send(roomInfo));
   });
 
   app.post('/api/rooms/:pathUrl', (req, res) => {
   // Have user join the room at 'pathUrl'
-    dbhelpers.joinRoom(req.body.userId, req.params.pathUrl, (currentRoom) => res.send(currentRoom));
+    joinRoom(req.body.userId, req.params.pathUrl, (currentRoom) => res.send(currentRoom));
   });
 
   // Note Creation
@@ -75,7 +75,7 @@ module.exports = (app, express) => {
     // pass the notes in cache (redis) to database (postgres)
     // {content, audioTimestamp, show, roomId, editingUserId, originalUserId}
     // res.send('End of lecture, and create all new notes for each user');
-    dbhelpers.createNewNote(req.body, (newNote) => res.send(newNote));
+    createNewNote(req.body, (newNote) => res.send(newNote));
   });
 
   // Note Editing
@@ -83,10 +83,10 @@ module.exports = (app, express) => {
     .get((req, res) => {
       if (req.query.filter === 'show') {
         // res.send('Show filtered notes for user #' + req.params.userId + ' inside room #' + req.params.roomId);
-        dbhelpers.showFilteredNotes(req.params, (allNotes) => res.send(allNotes));
+        showFilteredNotes(req.params, (allNotes) => res.send(allNotes));
       } else {
         // res.send('Compare all notes for user #' + req.params.userId + ' inside room #' + req.params.roomId);
-        dbhelpers.showAllNotes(req.params, (allNotes) => res.send(allNotes));
+        showAllNotes(req.params, (allNotes) => res.send(allNotes));
       }
     })
     .put((req, res) => {

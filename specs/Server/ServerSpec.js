@@ -126,6 +126,22 @@ describe('/api/notes/', () => {
 });
 
 describe('Server Side Socket Connection', () => {
+
+  before((done) => {
+    Room.create({
+      id: 12345,
+      pathUrl: 'TESTT',
+      topic: 'All About Testing',
+      class: 'Tests Tests Tests',
+      lecturer: 'Mr. Tester',
+      audioUrl: 'http:www.test.com/test.mp3',
+      hostId: 9999
+    })
+    .then(()=>done());
+  });
+
+  after(() => Room.destroy({ where: { id: 12345 } }));
+
   it('should connect to incoming sockets', (done) => {
     var client = ioClient.connect(socketURL, options);
 
@@ -137,7 +153,7 @@ describe('Server Side Socket Connection', () => {
 
   it('should create rooms', (done) => {
     var client = ioClient.connect(socketURL, options);
-    client.emit('create room', 'TESTT');
+    client.emit('create room', 'TESTT', 12345);
     client.on('create room success', () => {
       expect(ioServer.sockets.adapter.rooms).to.have.property('TESTT');
       client.disconnect();
@@ -147,10 +163,12 @@ describe('Server Side Socket Connection', () => {
 
   it('should put users in a room', (done) => {
     var roomCreator = ioClient.connect(socketURL, options);
-    roomCreator.emit('create room', 'TESTT');
+    roomCreator.emit('create room', 'TESTT', 12345);
 
     var joiner = ioClient.connect(socketURL, options);
-    joiner.emit('join room', 'TESTT');
+    roomCreator.on('create room success', () => {
+      joiner.emit('join room', 'TESTT', 12345);
+    });
     joiner.on('join room success', () => {
       expect(ioServer.sockets.adapter.rooms['TESTT'].length).to.equal(2);
       roomCreator.disconnect();
@@ -161,11 +179,11 @@ describe('Server Side Socket Connection', () => {
 
   it('should notify members of a room when a lecture starts', (done) => {
     var roomCreator = ioClient.connect(socketURL, options);
-    roomCreator.emit('create room', 'TESTT');
+    roomCreator.emit('create room', 'TESTT', 12345);
 
     roomCreator.on('create room success', () => {
       var joiner = ioClient.connect(socketURL, options);
-      joiner.emit('join room', 'TESTT');
+      joiner.emit('join room', 'TESTT', 12345);
 
       joiner.on('join room success', () => {
         roomCreator.emit('lecture start');
@@ -177,17 +195,21 @@ describe('Server Side Socket Connection', () => {
 
   it('should notify members of a room when a lecture ends', (done) => {
     var roomCreator = ioClient.connect(socketURL, options);
-    roomCreator.emit('create room', 'TESTT');
+    roomCreator.emit('create room', 'TESTT', 12345);
 
     roomCreator.on('create room success', () => {
       var joiner = ioClient.connect(socketURL, options);
-      joiner.emit('join room', 'TESTT');
+      joiner.emit('join room', 'TESTT', 12345);
 
       joiner.on('join room success', () => {
         roomCreator.emit('lecture end');
       });
 
-      joiner.on('lecture ended', () => done());
+      joiner.on('lecture ended', () => {
+        roomCreator.disconnect();
+        joiner.disconnect();
+        done();
+      });
     });
   });
 
@@ -195,15 +217,9 @@ describe('Server Side Socket Connection', () => {
     var exampleNote = {
       content: 'Picky Notes is a collaborative note taking app.',
     };
-    ioServer.on('connection', (socket) => {
-      socket.on('new note', (note) => {
-        expect(note).to.eql(exampleNote);
-        done();
-      });
-    });
-
     var roomCreator = ioClient.connect(socketURL, options);
-    roomCreator.emit('create room', 'TESTT');
+    roomCreator.emit('create room', 'TESTT', 12345);
     roomCreator.emit('new note', exampleNote);
+    roomCreator.on('add note success', () => done());
   });
 });
