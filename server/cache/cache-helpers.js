@@ -1,4 +1,4 @@
-const {cache} = require('./cache-config');
+const cache = require('./cache-config');
 
 const test = () => {
   cache.set('newNote', 'a new thing')
@@ -45,6 +45,7 @@ const getNotesFromRoom = (pathUrl, cb) => {
   var pipeline = cache.pipeline();
   getUsersFromRoom(pathUrl)
   .then((allUserIds) => {
+    console.log(allUserIds)
     allUserIds.forEach((userId) => {
       pipeline.lrange(`${userId}:${pathUrl}`, 0, -1);
     });

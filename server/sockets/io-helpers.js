@@ -33,7 +33,7 @@ const isAllReady = (pathUrl, rooms, connected) => {
 
 const saveAllNotes = (pathUrl, rooms, connected) => {
   getNotesFromRoom(pathUrl, (allNotes) => {
-    
+    console.log(allNotes)
   });
 };
 

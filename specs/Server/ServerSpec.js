@@ -4,6 +4,8 @@ var express = require('express');
 var expect = require('chai').expect;
 var {app, ioServer} = require('../../server/server');
 var {db, User, Room, Note} = require('../../server/database/db-config');
+var cache = require('../../server/cache/cache-config');
+var cacheHelpers = require('../../server/cache/cache-helpers')
 
 var ioClient = require('socket.io-client');
 var socketURL = 'http://0.0.0.0:3000';
@@ -37,6 +39,8 @@ after((done) => {
   Note.destroy({ where: { originalUserId: 9999 } })
   .then(() => Room.destroy({ where: { hostId: 9999 } }))
   .then(() => User.destroy({ where: { id: 9999 } }))
+  .then(() => cache.del('TESTT'))
+  .then(() => cache.del('9999:TESTT'))
   .then(() => done());
 });
 
