@@ -51,6 +51,17 @@ module.exports = (listen) => {
       }
     });
 
+    socket.on('user ready', () => {
+      socket.ready = true;
+
+      for (var socketId in rooms[socket.pathUrl].sockets) {
+        if (io.sockets.connected[socketId].ready === false) {
+          return;
+        }
+      }
+      io.in(socket.pathUrl).emit('all ready');
+    });
+
     socket.on('new note', (note) => {
       if (note) {
         addNote(socket, note, (result) => socket.emit('add note success', result));
