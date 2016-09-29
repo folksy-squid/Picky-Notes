@@ -126,6 +126,22 @@ describe('/api/notes/', () => {
 });
 
 describe('Server Side Socket Connection', () => {
+
+  before((done) => {
+    Room.create({
+      id: 12345,
+      pathUrl: 'TESTT',
+      topic: 'All About Testing',
+      class: 'Tests Tests Tests',
+      lecturer: 'Mr. Tester',
+      audioUrl: 'http:www.test.com/test.mp3',
+      hostId: 9999
+    })
+    .then(()=>done());
+  });
+
+  after(() => Room.destroy({ where: { id: 12345 } }));
+
   it('should connect to incoming sockets', (done) => {
     var client = ioClient.connect(socketURL, options);
 
@@ -201,15 +217,9 @@ describe('Server Side Socket Connection', () => {
     var exampleNote = {
       content: 'Picky Notes is a collaborative note taking app.',
     };
-    ioServer.on('connection', (socket) => {
-      socket.on('new note', (note) => {
-        expect(note).to.eql(exampleNote);
-        done();
-      });
-    });
-
     var roomCreator = ioClient.connect(socketURL, options);
     roomCreator.emit('create room', 'TESTT', 12345);
     roomCreator.emit('new note', exampleNote);
+    roomCreator.on('add note success', () => done());
   });
 });
