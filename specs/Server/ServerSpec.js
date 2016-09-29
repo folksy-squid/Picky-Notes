@@ -159,7 +159,7 @@ describe('Server Side Socket Connection', () => {
 
   it('should create rooms', (done) => {
     var client = ioClient.connect(socketURL, options);
-    client.emit('create room', 'TESTT', 12345);
+    client.emit('create room', 'TESTT', 9999);
     client.on('create room success', () => {
       expect(ioServer.sockets.adapter.rooms).to.have.property('TESTT');
       client.disconnect();
@@ -169,11 +169,11 @@ describe('Server Side Socket Connection', () => {
 
   it('should put users in a room', (done) => {
     var roomCreator = ioClient.connect(socketURL, options);
-    roomCreator.emit('create room', 'TESTT', 12345);
+    roomCreator.emit('create room', 'TESTT', 9999);
 
     var joiner = ioClient.connect(socketURL, options);
     roomCreator.on('create room success', () => {
-      joiner.emit('join room', 'TESTT', 12345);
+      joiner.emit('join room', 'TESTT', 9999);
     });
     joiner.on('join room success', () => {
       expect(ioServer.sockets.adapter.rooms['TESTT'].length).to.equal(2);
@@ -185,11 +185,11 @@ describe('Server Side Socket Connection', () => {
 
   it('should notify members of a room when a lecture starts', (done) => {
     var roomCreator = ioClient.connect(socketURL, options);
-    roomCreator.emit('create room', 'TESTT', 12345);
+    roomCreator.emit('create room', 'TESTT', 9999);
 
     roomCreator.on('create room success', () => {
       var joiner = ioClient.connect(socketURL, options);
-      joiner.emit('join room', 'TESTT', 12345);
+      joiner.emit('join room', 'TESTT', 9999);
 
       joiner.on('join room success', () => {
         roomCreator.emit('lecture start');
@@ -205,11 +205,11 @@ describe('Server Side Socket Connection', () => {
 
   it('should notify members of a room when a lecture ends', (done) => {
     var roomCreator = ioClient.connect(socketURL, options);
-    roomCreator.emit('create room', 'TESTT', 12345);
+    roomCreator.emit('create room', 'TESTT', 9999);
 
     roomCreator.on('create room success', () => {
       var joiner = ioClient.connect(socketURL, options);
-      joiner.emit('join room', 'TESTT', 12345);
+      joiner.emit('join room', 'TESTT', 9999);
 
       joiner.on('join room success', () => {
         roomCreator.emit('lecture end');
@@ -228,7 +228,7 @@ describe('Server Side Socket Connection', () => {
       content: 'Picky Notes is a collaborative note taking app.',
     };
     var roomCreator = ioClient.connect(socketURL, options);
-    roomCreator.emit('create room', 'TESTT', 12345);
+    roomCreator.emit('create room', 'TESTT', 9999);
     roomCreator.emit('new note', exampleNote);
     roomCreator.on('add note success', () => {
       roomCreator.disconnect();
@@ -238,11 +238,11 @@ describe('Server Side Socket Connection', () => {
 
   it('should emit "all ready" when all sockets are ready', (done) => {
     var roomCreator = ioClient.connect(socketURL, options);
-    roomCreator.emit('create room', 'TESTT', 12345);
+    roomCreator.emit('create room', 'TESTT', 9999);
 
     var joiner = ioClient.connect(socketURL, options);
     roomCreator.on('create room success', () => {
-      joiner.emit('join room', 'TESTT', 12345);
+      joiner.emit('join room', 'TESTT', 9999);
     });
     
     joiner.on('all ready', () => {
@@ -256,5 +256,36 @@ describe('Server Side Socket Connection', () => {
       roomCreator.emit('user ready');
       joiner.emit('user ready');
     });
+  });
+
+  it('should save all notes from cache and retrieve from database', (done) => {
+    var roomCreator = ioClient.connect(socketURL, options);
+    roomCreator.emit('create room', 'TESTT', 9999);
+
+    var joiner = ioClient.connect(socketURL, options);
+    
+    roomCreator.on('create room success', () => {
+      joiner.emit('join room', 'TESTT', 9999);
+    });
+    
+    joiner.on('all ready', () => {
+      roomCreator.disconnect();
+      joiner.disconnect();
+      done();
+    });
+
+    joiner.on('join room success', () => {
+      roomCreator.emit('new note', {content: 'I am an awesome note', audioTimeStamp: 1});      
+    });
+
+    roomCreator.on('add note success', () => {
+      joiner.emit('new note', {content: 'I am an awesome note', audioTimeStamp: 2});
+    });
+    
+    joiner.on('add note success', () => {
+      roomCreator.emit('user ready');
+      joiner.emit('user ready');
+    });
+
   });
 });

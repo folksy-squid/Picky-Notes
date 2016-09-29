@@ -1,5 +1,5 @@
 // require Redis
-const {addUserToCache, addNoteToCache} = require('../cache/cache-helpers');
+const {addUserToCache, addNoteToCache, getNotesFromRoom} = require('../cache/cache-helpers');
 
 const joinRoom = (socket, pathUrl, userId, cb) => {
   socket.pathUrl = pathUrl;
@@ -22,18 +22,25 @@ const addNote = (socket, note, cb) => {
   addNoteToCache(pathUrl, userId, note, cb);
 };
 
-const isAllReady = (pathUrl, rooms, io) => {
+const isAllReady = (pathUrl, rooms, connected) => {
   for (var socketId in rooms[pathUrl].sockets) {
-    if (io.sockets.connected[socketId].ready === false) {
+    if (connected[socketId].ready === false) {
       return false;
     }
   }
   return true;
 };
 
+const saveAllNotes = (pathUrl, rooms, connected) => {
+  getNotesFromRoom(pathUrl, (allNotes) => {
+    
+  });
+};
+
 
 module.exports = {
   joinRoom,
   addNote,
-  isAllReady
+  isAllReady,
+  saveAllNotes,
 };
