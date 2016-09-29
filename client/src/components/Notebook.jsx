@@ -15,10 +15,10 @@ class Notebook extends React.Component {
     return (
       <div className="container">
         <div className="row">
-          <div className="col-xs-5">
+          <div className="col-sm-8">
             <h3>My Notebook</h3>
           </div>
-          <div className="col-xs-7">
+          <div className="col-sm-4">
             <SearchBar />
           </div>
         </div>
