@@ -5,7 +5,7 @@
   "main": "server/server.js",
   "scripts": {
     "start": "node server/server.js",
-    "test": "mocha specs/Server/*.js",
+    "test": "mocha specs/Server/*.js & mocha specs/Client/helpers.js specs/Client/ComponentSpec.js",
     "dev": "nodemon server/server.js & webpack --watch"
   },
   "repository": {
@@ -29,8 +29,6 @@
     "enzyme": "^2.4.1",
     "jsdom": "^9.5.0",
     "mocha": "^3.1.0",
-
-
     "nodemon": "^1.10.2",
     "react-addons-test-utils": "^15.3.2",
     "sinon": "^1.17.6",
