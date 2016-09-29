@@ -4,7 +4,6 @@ export default (state = {}, action) => {
 
   if (action.type === 'CREATE_ROOM'){
     // ajax call passing in action.data and then setting state in the success
-    console.log(action.data);
     $.ajax({
       method: 'POST',
       url: '/api/rooms',
@@ -18,23 +17,41 @@ export default (state = {}, action) => {
         console.log(res);
       }
     });
-    console.log('data:', action.data);
   }
-
-  var createSocketRoom = (hostId, pathUrl) => {
-    var socket = io();
-    socket.emit('create room', pathUrl, hostId);
-    return socket;
-  };
 
   if (action.type === 'JOIN_SOCKET_ROOM'){
+    var socket = io();
+    socket.emit('join room', action.pathUrl, action.userId);
 
+    socket.on('join room error', () => {
+      socket.disconnect();
+      state.socket = null;
+      action.cb('error');
+    });
+
+    socket.on('join room success', () => {
+      state.socket = socket;
+      action.cb(null, 'success');
+    });
   }
 
-  if (action.type === 'DELETE_SOCKET_ROOM'){
-
+  if (action.type === 'LEAVE_SOCKET_ROOM'){
+    state.socket.disconnect();
+    state.socket = null;
   }
 
 
   return state;
+};
+
+const createSocketRoom = (hostId, pathUrl) => {
+  // this is if server is localhost
+  var socket = io();
+  // if server is not localhost,
+  // then set up io to know where the server is
+  socket.emit('create room', pathUrl, hostId);
+  socket.on('create room success', function(){
+    console.log('successfully created socket room');
+    return socket;
+  });
 };
