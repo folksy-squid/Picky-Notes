@@ -18,6 +18,7 @@ describe('<App />', () => {
     var spy = sinon.spy(App.prototype, 'componentDidMount');
     const wrapper = mount(<App store={store}/>);
     assert.isTrue(App.prototype.componentDidMount.calledOnce);
+    expect(wrapper.find(Navbar).length).to.equal(1);
     App.prototype.componentDidMount.restore();
   });
 });
@@ -26,12 +27,13 @@ describe('<Main />', () => {
   it('should have a single child', () => {
     const wrapper = shallow(<Main/>);
     expect(wrapper.find(Navbar).length).to.equal(1);
+
     // expect(wrapper.children).to.equal(true);
   });
 });
 
 describe('<Navbar />', () => {
-  const wrapper = render(<Navbar store={store}/>);
+  const wrapper = render(<Navbar/>);
   it('should have a Navbar', () => {
     expect(wrapper.find(<nav/>)).to.exist;
   });
