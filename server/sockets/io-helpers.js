@@ -1,5 +1,6 @@
 // require Redis
 const {addUserToCache, addNoteToCache, getNotesFromRoom} = require('../cache/cache-helpers');
+const {findRoom, createRoomNotes} = require('../database/db-helpers');
 
 const joinRoom = (socket, pathUrl, userId, cb) => {
   socket.pathUrl = pathUrl;
@@ -31,9 +32,18 @@ const isAllReady = (pathUrl, rooms, connected) => {
   return true;
 };
 
-const saveAllNotes = (pathUrl, rooms, connected) => {
-  getNotesFromRoom(pathUrl, (allNotes) => {
-    console.log(allNotes)
+const saveAllNotes = (pathUrl, cb) => {
+  // get roomId
+  findRoom(pathUrl, (room) => {
+    if (room) {
+
+      getNotesFromRoom(pathUrl, (allNotes) => {
+        // save all notes with roomId into database;
+        createRoomNotes(allNotes, room.id, cb);
+      });
+    } else {
+      // socket.emit('create notes error', 'notes error');
+    }
   });
 };
 
