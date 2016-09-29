@@ -1,8 +1,14 @@
 import React from 'react';
-import Connection from '../../Connection.js';
 
-const LectureTitle = (props) => (
-  <h3 className="lectureTitle">Lecture Title by Professor Name</h3>
-);
+const LectureTitle = (props) => {
+  var roomInfo = props.getState().room.roomInfo;
+  var lecturer = roomInfo.lecturer;
+  var topic = roomInfo.topic;
+  var createdAt = moment(roomInfo.createdAt)
 
-export default Connection(LectureTitle);
+  return (
+    <h3 className="lectureTitle">{topic} by {lecturer}</h3>
+  )
+};
+
+export default LectureTitle;
