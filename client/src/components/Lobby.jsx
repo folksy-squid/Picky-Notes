@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router';
-import LectureTitle from './sub/LectureTitle.jsx'
+import LectureTitle from './sub/LectureTitle.jsx';
 import ParticipantList from './ParticipantList.jsx';
 
 export default class Lobby extends React.Component {
@@ -15,8 +15,14 @@ export default class Lobby extends React.Component {
       this.socket.disconnect();
       this.socket = null;
     });
-    this.socket.on('user joined', console.log.bind(console));
-    this.socket.emit('join room', '*User\'s Name*', 'LGKRP');
+
+    this.socket.on('join room success', () => {
+      console.log("i have successfully joined a room");
+    });
+    this.socket.on('join room error', (err) => {
+      console.log("i have errored out", err);
+    });
+    this.socket.emit('join room', this.props.params.roomId);
   }
 
   componentDidMount() {
@@ -36,6 +42,7 @@ export default class Lobby extends React.Component {
       <div className="lobby">
         <LectureTitle />
         <ParticipantList participants={[{name: 'Kunal'}, {name: 'Marco'}, {name: 'Derek'}, {name: 'Sean'}]}/>
+        <div>{this.props.params.roomId}</div>
         <div className="clipboard">
           <input ref="shareLink" className="shareLink" value="https://github.com/zenorocha/clipboard.js.git" readOnly/>
           <div className="buttonCell">
