@@ -10,19 +10,7 @@ export default class Lobby extends React.Component {
   }
 
   componentWillMount() {
-    this.socket = io();
-    this.socket.on('room not found', () => {
-      this.socket.disconnect();
-      this.socket = null;
-    });
 
-    this.socket.on('join room success', () => {
-      console.log("i have successfully joined a room");
-    });
-    this.socket.on('join room error', (err) => {
-      console.log("i have errored out", err);
-    });
-    this.socket.emit('join room', this.props.params.roomId);
   }
 
   componentDidMount() {
