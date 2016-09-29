@@ -40,7 +40,7 @@ const getUsersFromRoom = pathUrl => cache.smembers(pathUrl);
 //   cache.lrange(`${userId}:${pathUrl}`, 0, -1)
 //   .then((notes) => notes.map( note => JSON.parse(note) ));
 
-const getNotesFromRoom = pathUrl => {
+const getNotesFromRoom = (pathUrl, cb) => {
   // getUsersFromRoom
   var pipeline = cache.pipeline();
   getUsersFromRoom(pathUrl)
@@ -49,7 +49,7 @@ const getNotesFromRoom = pathUrl => {
       pipeline.lrange(`${userId}:${pathUrl}`, 0, -1);
     });
     pipeline.exec()
-    .then((results) => console.log(results[0][1]));
+    .then((results) => cb(results[0][1].map(note => JSON.parse(note))));
   });
   // iterate through users in room
   // do something
