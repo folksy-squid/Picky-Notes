@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router';
-import LectureTitle from './sub/LectureTitle.jsx'
+import LectureTitle from './sub/LectureTitle.jsx';
 import ParticipantList from './ParticipantList.jsx';
 
 export default class Lobby extends React.Component {
@@ -10,13 +10,7 @@ export default class Lobby extends React.Component {
   }
 
   componentWillMount() {
-    this.socket = io();
-    this.socket.on('room not found', () => {
-      this.socket.disconnect();
-      this.socket = null;
-    });
-    this.socket.on('user joined', console.log.bind(console));
-    this.socket.emit('join room', '*User\'s Name*', 'LGKRP');
+
   }
 
   componentDidMount() {
@@ -36,6 +30,7 @@ export default class Lobby extends React.Component {
       <div className="lobby">
         <LectureTitle />
         <ParticipantList participants={[{name: 'Kunal'}, {name: 'Marco'}, {name: 'Derek'}, {name: 'Sean'}]}/>
+        <div>{this.props.params.roomId}</div>
         <div className="clipboard">
           <input ref="shareLink" className="shareLink" value="https://github.com/zenorocha/clipboard.js.git" readOnly/>
           <div className="buttonCell">

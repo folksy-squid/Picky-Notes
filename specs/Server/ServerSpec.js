@@ -15,15 +15,21 @@ var options = {
 before((done) => {
   db.sync()
   .then(() => {
-    User.create({
-      id: 9999,
-      facebookId: 12345,
-      name: 'Testing McTesty',
-      email: 'test@email.com',
-      pictureUrl: 'https://www.test.com/picture.jpg',
-      gender: 'Male'
-    })
-    .then(() => done());
+    User.destroy({
+      where: {
+        id: 9999
+      }
+    }).then(() => {
+      User.create({
+        id: 9999,
+        facebookId: 12345,
+        name: 'Testing McTesty',
+        email: 'test@email.com',
+        pictureUrl: 'https://www.test.com/picture.jpg',
+        gender: 'Male'
+      })
+      .then(() => done());
+    } );
   });
 });
 
