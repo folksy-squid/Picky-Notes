@@ -45,12 +45,14 @@ export default (state = {}, action) => {
     socket.emit('join room', action.pathUrl, action.userId);
 
     socket.on('join room error', () => {
+      console.log('we have failed to join a room');
       socket.disconnect();
       state.socket = null;
       action.cb('error');
     });
 
     socket.on('join room success', () => {
+      console.log('we have successfully joined a room', socket);
       state.socket = socket;
       action.cb(null, 'success');
     });
