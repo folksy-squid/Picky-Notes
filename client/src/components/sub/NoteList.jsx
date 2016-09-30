@@ -23,13 +23,12 @@ class NoteList extends React.Component {
     }
   }
 
+/*<Note note={note} view={this.state.view} key={i} />*/
   render(){
-
     return (
       <div className="note-list">
         'this is the notelist..'
-        {this.state.notes.map((note, i)=>
-          <Note {/*{note={note}*/} {/*view={this.state.view}*/} {/*key={i}*/} />
+        {this.state.notes.map((note, i)=>(<Note />)
         )}
       </div>
     )
