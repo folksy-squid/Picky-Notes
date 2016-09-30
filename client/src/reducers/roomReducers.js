@@ -36,11 +36,6 @@ export default (state = {}, action) => {
     });
   }
 
-  if (action.type === 'LEAVE_SOCKET_ROOM'){
-    state.socket.disconnect();
-    state.socket = null;
-  }
-
   if (action.type === 'JOIN_SOCKET_ROOM'){
     var socket = io();
     console.log('joining room');
