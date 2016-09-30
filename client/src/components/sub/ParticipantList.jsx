@@ -3,8 +3,7 @@ import {mapStateToProps} from '../../Connection.js';
 import {connect} from 'react-redux';
 import {addParticipant} from '../../actions/roomActions';
 
-var getCurrentView = function(){
-  var pathname = props.getState().routing.locationBeforeTransitions.pathname.slice(0, 6);
+var getCurrentView = function(pathname){
   if (pathname === "/lobby") {
     return 'lobby';
   } else if (pathname === "/lectu") {

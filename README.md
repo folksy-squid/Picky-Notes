@@ -36,6 +36,7 @@ CREATE DATABASE pickynotes;
 
 ```
 webpack
+redis-server
 npm start
 ```
 
