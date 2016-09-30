@@ -2,20 +2,21 @@
 const {addUserToCache, addNoteToCache, getNotesFromRoom, deleteAllNotesAndRoom} = require('../cache/cache-helpers');
 const {findRoom, createRoomNotes} = require('../database/db-helpers');
 
-const joinRoom = (socket, pathUrl, userId, cb) => {
+const joinRoom = (socket, pathUrl, user, cb) => {
   socket.pathUrl = pathUrl;
-  socket.userId = userId;
+  socket.user = user;
+  socket.userId = user.id;
   socket.ready = false;
   socket.join(pathUrl);
   /* redis ==> add userId to "pathUrl" Set */
   // addUserToCache(pathUrl, userId, () => console.log('added user to cache'));
-  addUserToCache(pathUrl, userId);
-  cb();
+  addUserToCache(pathUrl, user.id);
+  cb(user);
 };
 
 const addNote = (socket, note, cb) => {
   const pathUrl = socket.pathUrl;
-  const userId = socket.userId;
+  const userId = socket.user.id;
 
   /* redis ==> add note to "userId:pathUrl" List of notes*/
   // note = { userId, content, pathUrl, timeStamp }

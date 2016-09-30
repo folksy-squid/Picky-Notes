@@ -1,14 +1,31 @@
 {
   "ecmaVersion": 7,
-  "libs": ["browser", "jquery", "ecmascript"],
-  "loadEagerly": [],
+  "libs": [
+    "browser",
+    "jquery"
+  ],
   "plugins": {
     "commonjs": {},
-    "doc_comment": {},
+    "doc_comment": {
+      "fullDocs": true,
+      "strong": false
+    },
     "es_modules": {},
-    "modules": {},
-    "node": {},
-    "requirejs": {},
+    "modules": {
+      "dontLoad": "",
+      "load": "",
+      "modules": ""
+    },
+    "node": {
+      "dontLoad": "",
+      "load": "",
+      "modules": ""
+    },
+    "requirejs": {
+      "baseURL": "",
+      "paths": "",
+      "override": ""
+    },
     "webpack": {}
   }
 }

@@ -1,16 +1,19 @@
 /*jshint esversion: 6 */
-const createSocketRoom = (hostId, pathUrl, cb) => {
+const createSocketRoom = (state, host, pathUrl, createRoom) => {
   // this is if server is localhost
   var socket = io();
   // if server is not localhost,
   // then set up io to know where the server is
-  socket.emit('create room', pathUrl, hostId);
+  socket.emit('create room', pathUrl, host);
   socket.on('create room success', function(){
     console.log('successfully created socket room');
-    cb(null, pathUrl);
-    return socket;
+    createRoom(pathUrl);
   });
+  console.log('this is your socket', socket);
+  return socket;
 };
+
+
 
 
 export default (state = {}, action) => {
@@ -21,13 +24,11 @@ export default (state = {}, action) => {
       url: '/api/rooms',
       contentType: 'application/json',
       data: JSON.stringify(action.data),
-      success: function(res, status){
+      success: function(res, status) {
         console.log('the response: ', res);
-        return {
-          ...state,
-          socket: createSocketRoom(action.data.hostId, res.pathUrl, action.cb),
-          roomInfo: res
-        }
+        state.participants = [action.user];
+        state.socket = createSocketRoom(state, action.user, res.pathUrl, action.createRoom);
+        state.roomInfo = res;
       },
       error: function( res, status ) {
         console.log(res);
@@ -37,27 +38,32 @@ export default (state = {}, action) => {
 
   if (action.type === 'JOIN_SOCKET_ROOM'){
     var socket = io();
-    socket.emit('join room', action.pathUrl, action.userId);
+    console.log('joining room');
+    socket.emit('join room', action.pathUrl, action.user);
 
     socket.on('join room error', () => {
-      console.log('we have failed to join a room');
+      console.log('join room error');
       socket.disconnect();
       state.socket = null;
-      action.cb('error');
+      action.joinedRoom('error');
     });
 
-    socket.on('join room success', () => {
-      console.log('we have successfully joined a room', socket);
+    socket.on('join room success', (participants, roomInfo) => {
+      console.log(`join room success, ${JSON.stringify(participants)} are here`);
       state.socket = socket;
-      action.cb(null, 'success');
+      state.roomInfo = roomInfo;
+      state.participants = participants;
+      action.joinedRoom(null, 'success');
     });
   }
 
-  if (action.type === 'LEAVE_SOCKET_ROOM'){
+  if (action.type === 'LEAVE_SOCKET_ROOM') {
     state.socket.disconnect();
     state.socket = null;
   }
-
+  if (action.type === 'ADD_PARTICIPANT') {
+    state.participants.push(action.participant);
+  }
 
   return state;
 };

@@ -20,13 +20,13 @@ class Navbar extends React.Component {
           </ul>
           <ul className="nav navbar-nav navbar-right">
             <li className="nav-item">
+              <Link className="nav-link " to="/notebook">My Notebook</Link>
+            </li>
+            <li className="nav-item">
               <Link className="nav-link" to="/join">Join Room</Link>
             </li>
             <li className="nav-item">
               <Link className="nav-link " to="/new">New Room</Link>
-            </li>
-            <li className="nav-item">
-              <Link className="nav-link " to="/notebook">My Notebook</Link>
             </li>
             <li className="nav-item">
               <Link className="nav-link" onClick={this.logout.bind(this)} to="/">Logout</Link>

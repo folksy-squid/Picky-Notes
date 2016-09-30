@@ -1,16 +1,20 @@
 import React from 'react';
 import { Link } from 'react-router';
 import LectureTitle from './sub/LectureTitle.jsx';
-import ParticipantList from './ParticipantList.jsx';
+import ParticipantList from './sub/ParticipantList.jsx';
+import ChatBox from './sub/ChatBox.jsx'
+import Connection from '../Connection.js'
 
-export default class Lobby extends React.Component {
+class Lobby extends React.Component {
   constructor(props) {
     super(props);
-    this.socket = null;
+    console.log(props)
+    this.state = {
+      pathUrl: props.getState().room.roomInfo.pathUrl
+    }
   }
 
   componentWillMount() {
-
   }
 
   componentDidMount() {
@@ -27,19 +31,34 @@ export default class Lobby extends React.Component {
 
   render() {
     return (
-      <div className="lobby">
+      <div className="container lobby">
         <LectureTitle />
-        <ParticipantList participants={[{name: 'Kunal'}, {name: 'Marco'}, {name: 'Derek'}, {name: 'Sean'}]}/>
-        <div>{this.props.params.roomId}</div>
-        <div className="clipboard">
-          <input ref="shareLink" className="shareLink" value="https://github.com/zenorocha/clipboard.js.git" readOnly/>
-          <div className="buttonCell">
-            <button ref="copyButton" className="copyButton" data-clipboard-target=".shareLink">
-              <i className="ion ion-clipboard"></i>
+        <div className="row">
+          <div className="col-sm-9">
+            <ChatBox />
+          </div>
+          <div className="col-sm-3">
+            <button className="btn btn-lg btn-success">
+              Start Lecture
             </button>
+            <div className="panel-item">
+              <div className="clipboard">
+                <input ref="shareLink" className="shareLink" value={this.state.pathUrl} readOnly/>
+                <div className="buttonCell">
+                  <button ref="copyButton" className="copyButton" data-clipboard-target=".shareLink">
+                    <i className="ion ion-clipboard"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div className="panel-item">
+              <ParticipantList />
+            </div>
           </div>
         </div>
       </div>
     );
   }
 }
+
+export default Connection(Lobby);

@@ -24,6 +24,11 @@ before((done) => {
     .then(() => cache.del('9999:TESTT'))
     .then(() => cache.del('6666:TESTT'))
     .then(() => {
+    User.destroy({
+      where: {
+        id: 9999
+      }
+    }).then(() => {
       User.create({
         id: 9999,
         facebookId: 12345,
@@ -32,16 +37,9 @@ before((done) => {
         pictureUrl: 'https://www.test.com/picture.jpg',
         gender: 'Male'
       })
-      .then(() => User.create({
-        id: 6666,
-        facebookId: 54321,
-        name: 'Mr. Testy',
-        email: 'testy@email.com',
-        pictureUrl: 'https://www.test.com/testy.jpg',
-        gender: 'Male'
-      }))
       .then(() => done());
-    } );
+    });
+    });
   });
 });
 
@@ -258,7 +256,7 @@ describe('Server Side Socket Connection', () => {
     roomCreator.on('create room success', () => {
       joiner.emit('join room', 'TESTT', 6666);
     });
-    
+
     joiner.on('all ready', () => {
       roomCreator.disconnect();
       joiner.disconnect();
@@ -277,11 +275,11 @@ describe('Server Side Socket Connection', () => {
     roomCreator.emit('create room', 'TESTT', 9999);
 
     var joiner = ioClient.connect(socketURL, options);
-    
+
     roomCreator.on('create room success', () => {
       joiner.emit('join room', 'TESTT', 6666);
     });
-    
+
     joiner.on('all notes saved', () => {
       roomCreator.disconnect();
       joiner.disconnect();
@@ -289,13 +287,13 @@ describe('Server Side Socket Connection', () => {
     });
 
     joiner.on('join room success', () => {
-      roomCreator.emit('new note', {content: 'room creator\'s note'});      
+      roomCreator.emit('new note', {content: 'room creator\'s note'});
     });
 
     roomCreator.on('add note success', () => {
       joiner.emit('new note', {content: 'joiner\'s note'});
     });
-    
+
     joiner.on('add note success', () => {
       roomCreator.emit('user ready');
       joiner.emit('user ready');

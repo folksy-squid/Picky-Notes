@@ -1,3 +1,4 @@
+/*jshint esversion: 6 */
 const Sequelize = require('sequelize');
 const db = new Sequelize('postgres://ubuntu:password@localhost:5432/pickynotes', { logging: false });
 

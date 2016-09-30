@@ -3,19 +3,39 @@ const {findRoom} = require('../database/db-helpers');
 
 module.exports = (listen) => {
   const io = require('socket.io').listen(listen);
-  const rooms = io.sockets.adapter.rooms; 
+  const rooms = io.sockets.adapter.rooms;
   const connected = io.sockets.connected;
 
   io.on('connection', (socket) => {
+    var getClientNames = (roomId, cb) => {
+      var res = [];
+      var roomIds = rooms[roomId].sockets;
+      console.log('room ids', roomIds);
+      if (roomIds) {
+        for (var id in roomIds) {
+          var sockets = io.sockets;
+          console.log('id', id);
+          console.log('sockets', sockets);
+          socketUser = connected[id].user;
+          console.log('socketuser!!!:', socketUser);
+          res.push(socketUser);
+        }
+        console.log('res!!!::', res);
+      }
+      cb(res);
+      return;
+    };
+
+      //console.log('a user connected');
     //console.log('a user connected');
 
-    socket.on('create room', (pathUrl, userId) => {
+    socket.on('create room', (pathUrl, user) => {
       // verify if pathUrl and userId are valid
-      if (pathUrl.length === 5 && userId) {
+      if (pathUrl.length === 5 && user) {
         // verify if room at pathUrl exists in database
         findRoom(pathUrl, (found) => {
           if (found) {
-            joinRoom(socket, pathUrl, userId, () => socket.emit('create room success'));
+            joinRoom(socket, pathUrl, user, (user) => socket.emit('create room success', user.name));
           } else {
             socket.emit('create room error', `Room '${pathUrl}' not found`);
           }
@@ -25,11 +45,20 @@ module.exports = (listen) => {
       }
     });
 
-
-    socket.on('join room', (pathUrl, userId) => {
+    socket.on('join room', (pathUrl, user) => {
       // verify if pathUrl and userId are valid and if room at pathUrl exists
-      if (pathUrl.length === 5 && userId && rooms[pathUrl]) {
-        joinRoom(socket, pathUrl, userId, () => socket.emit('join room success'));
+      if (pathUrl.length === 5 && user && rooms[pathUrl]) {
+        joinRoom(socket, pathUrl, user, (user) => {
+          if (socket.pathUrl) {
+            findRoom(socket.pathUrl, (found) => {
+              getClientNames(socket.pathUrl, (participants) => {
+                console.log('these are participants', participants);
+                socket.emit('join room success', participants, found.dataValues);
+              });
+            })
+            io.in(socket.pathUrl).emit('new user joined room', user);
+          }
+        });
         return;
       } else {
         socket.emit('join room error', `Room '${pathUrl}' was not found`);

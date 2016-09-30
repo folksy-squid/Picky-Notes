@@ -1,6 +1,9 @@
 import React from 'react';
 import Connection from '../Connection.js';
 import { Link, Router } from 'react-router';
+import {mapStateToProps} from '../Connection.js';
+import {joinSocketRoom} from '../actions/roomActions';
+import {connect} from 'react-redux';
 
 class JoinRoom extends React.Component {
   constructor (props) {
@@ -19,26 +22,22 @@ class JoinRoom extends React.Component {
     this.setState({value: e.target.value});
   }
   submitInput(e) {
+    console.log("submitting input");
     e.preventDefault();
-    var context = this;
+    var realm = this;
     var pathUrl = this.state.value;
-    var userId = this.props.getState().user.information[0].id;
+    var user = this.props.getState().user.information[0];
+    var joinedRoom = (err, success) => {
+      if (err) {
 
-    var cb = function(err, success){
-      if (err){
-        context.setState({error: true});
       } else {
-        context.context.router.push(`/lobby/${context.state.value}`);
+        realm.context.router.push(`/lobby/${realm.state.value}`);
       }
-    }
-
-    this.props.dispatch(this.props.joinSocketRoom(pathUrl, userId, cb))
-
+    };
+    this.props.dispatch(joinSocketRoom(pathUrl, user, joinedRoom));
     this.refs.joinRoomInput.value = '';
-
   }
   render() {
-    var context = this;
     return (
       <div className="container">
         <h2>Join Room</h2>
@@ -49,9 +48,9 @@ class JoinRoom extends React.Component {
             <span className="input-group-btn">
               <button className="btn btn-default">Join</button>
             </span>
-            {(context.state.error) ?
+            {(this.state.error) ?
               (<div className="alert alert-danger">
-                <a dataDismiss="alert">&times;</a>
+                <a data-dismiss="alert">&times;</a>
                 <strong>Error!</strong> Invalid Access Code. Try again!
               </div>) : ''}
           </div>
@@ -62,4 +61,4 @@ class JoinRoom extends React.Component {
   }
 }
 
-export default Connection(JoinRoom);
+export default connect(mapStateToProps)(JoinRoom);

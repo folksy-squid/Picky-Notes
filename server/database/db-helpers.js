@@ -1,3 +1,4 @@
+/*jshint esversion: 6 */
 const md5 = require('js-md5');
 const {User, Room, Note} = require('./db-config');
 
@@ -101,7 +102,7 @@ const showFilteredNotes = ({userId, roomId}, cb) => {
 
 const findRoom = (pathUrl, cb) => {
   Room.findOne({ where: {pathUrl: pathUrl} })
-  .then((room) => { cb(room.dataValues); });
+  .then((room) => { cb(room); });
 };
 
 module.exports = {
