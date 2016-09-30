@@ -3,7 +3,7 @@ const {findRoom} = require('../database/db-helpers');
 
 module.exports = (listen) => {
   const io = require('socket.io').listen(listen);
-  const rooms = io.sockets.adapter.rooms;
+  const rooms = io.sockets.adapter.rooms; 
   const connected = io.sockets.connected;
 
   io.on('connection', (socket) => {
@@ -54,9 +54,12 @@ module.exports = (listen) => {
 
     socket.on('user ready', () => {
       socket.ready = true;
+      io.in(socket.pathUrl).emit('user ready', socket.userId);
       if (isAllReady(socket.pathUrl, rooms, connected)) {
-        saveAllNotes(socket.pathUrl);
         io.in(socket.pathUrl).emit('all ready');
+        saveAllNotes(socket.pathUrl, () => {
+          io.in(socket.pathUrl).emit('all notes saved');
+        });
       }
     });
 

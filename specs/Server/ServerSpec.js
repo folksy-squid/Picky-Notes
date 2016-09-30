@@ -17,11 +17,13 @@ var options = {
 before((done) => {
   db.sync()
   .then(() => {
-    User.destroy({
-      where: {
-        id: 9999
-      }
-    }).then(() => {
+    User.destroy({where: { id: 9999 } })
+    .then(() => User.destroy({where: { id: 6666 } }))
+    .then(() => Room.destroy({ where: { hostId: 9999 } }))
+    .then(() => cache.del('TESTT'))
+    .then(() => cache.del('9999:TESTT'))
+    .then(() => cache.del('6666:TESTT'))
+    .then(() => {
       User.create({
         id: 9999,
         facebookId: 12345,
@@ -30,19 +32,27 @@ before((done) => {
         pictureUrl: 'https://www.test.com/picture.jpg',
         gender: 'Male'
       })
+      .then(() => User.create({
+        id: 6666,
+        facebookId: 54321,
+        name: 'Mr. Testy',
+        email: 'testy@email.com',
+        pictureUrl: 'https://www.test.com/testy.jpg',
+        gender: 'Male'
+      }))
       .then(() => done());
     } );
   });
 });
 
-after((done) => {
-  Note.destroy({ where: { originalUserId: 9999 } })
-  .then(() => Room.destroy({ where: { hostId: 9999 } }))
-  .then(() => User.destroy({ where: { id: 9999 } }))
-  .then(() => cache.del('TESTT'))
-  .then(() => cache.del('9999:TESTT'))
-  .then(() => done());
-});
+// after((done) => {
+//   Note.destroy({ where: { originalUserId: 9999 } })
+//   .then(() => Room.destroy({ where: { hostId: 9999 } }))
+//   .then(() => User.destroy({ where: { id: 9999 } }))
+//   .then(() => cache.del('TESTT'))
+//   .then(() => cache.del('9999:TESTT'))
+//   .then(() => done());
+// });
 
 describe('test', () => {
   it('should pass this test', () => expect(true).to.equal.true);
@@ -150,7 +160,7 @@ describe('Server Side Socket Connection', () => {
     .then(()=>done());
   });
 
-  after(() => Room.destroy({ where: { id: 12345 } }));
+  //after(() => Room.destroy({ where: { id: 12345 } }));
 
   it('should connect to incoming sockets', (done) => {
     var client = ioClient.connect(socketURL, options);
@@ -177,7 +187,7 @@ describe('Server Side Socket Connection', () => {
 
     var joiner = ioClient.connect(socketURL, options);
     roomCreator.on('create room success', () => {
-      joiner.emit('join room', 'TESTT', 9999);
+      joiner.emit('join room', 'TESTT', 6666);
     });
     joiner.on('join room success', () => {
       expect(ioServer.sockets.adapter.rooms['TESTT'].length).to.equal(2);
@@ -193,7 +203,7 @@ describe('Server Side Socket Connection', () => {
 
     roomCreator.on('create room success', () => {
       var joiner = ioClient.connect(socketURL, options);
-      joiner.emit('join room', 'TESTT', 9999);
+      joiner.emit('join room', 'TESTT', 6666);
 
       joiner.on('join room success', () => {
         roomCreator.emit('lecture start');
@@ -213,7 +223,7 @@ describe('Server Side Socket Connection', () => {
 
     roomCreator.on('create room success', () => {
       var joiner = ioClient.connect(socketURL, options);
-      joiner.emit('join room', 'TESTT', 9999);
+      joiner.emit('join room', 'TESTT', 6666);
 
       joiner.on('join room success', () => {
         roomCreator.emit('lecture end');
@@ -246,7 +256,7 @@ describe('Server Side Socket Connection', () => {
 
     var joiner = ioClient.connect(socketURL, options);
     roomCreator.on('create room success', () => {
-      joiner.emit('join room', 'TESTT', 9999);
+      joiner.emit('join room', 'TESTT', 6666);
     });
     
     joiner.on('all ready', () => {
@@ -269,21 +279,21 @@ describe('Server Side Socket Connection', () => {
     var joiner = ioClient.connect(socketURL, options);
     
     roomCreator.on('create room success', () => {
-      joiner.emit('join room', 'TESTT', 9999);
+      joiner.emit('join room', 'TESTT', 6666);
     });
     
-    joiner.on('all ready', () => {
+    joiner.on('all notes saved', () => {
       roomCreator.disconnect();
       joiner.disconnect();
       done();
     });
 
     joiner.on('join room success', () => {
-      roomCreator.emit('new note', {content: 'I am an awesome note', audioTimeStamp: 1});      
+      roomCreator.emit('new note', {content: 'room creator\'s note'});      
     });
 
     roomCreator.on('add note success', () => {
-      joiner.emit('new note', {content: 'I am an awesome note', audioTimeStamp: 2});
+      joiner.emit('new note', {content: 'joiner\'s note'});
     });
     
     joiner.on('add note success', () => {

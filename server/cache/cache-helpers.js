@@ -28,13 +28,14 @@ const addNoteToCache = (pathUrl, userId, note, cb) => {
 
 /************************* DEV *************************/
 
-const deleteAllNotes = (pathUrl) => {
-  var pipeline = cache.pipeline();
+const deleteAllNotesAndRoom = (pathUrl) => {
   getUsersFromRoom(pathUrl)
   .then((allUserIds) => {
+    cache.del(pathUrl);
     allUserIds.forEach((userId) => {
       cache.del(`${userId}:${pathUrl}`);
     });
+
   });
 };
 
@@ -70,4 +71,5 @@ module.exports = {
   addUserToCache,
   addNoteToCache,
   getNotesFromRoom,
+  deleteAllNotesAndRoom,
 };
