@@ -1,25 +1,25 @@
 import React from 'react';
 import {mapStateToProps} from '../../Connection.js';
 import {connect} from 'react-redux';
-import {addParticipant} from '../../actions/roomActions';
+import {addParticipant, removeParticipant} from '../../actions/roomActions';
+
+var getCurrentView = function(pathname){
+  if (pathname === "/lobby") {
+    return 'lobby';
+  } else if (pathname === "/lectu") {
+    return 'lecture';
+  } else if (pathname === "/compi") {
+    return 'compile';
+  }
+};
 
 class ParticipantList extends React.Component {
   constructor(props) {
     super(props);
-    var getCurrentView = function(){
-      var pathname = props.getState().routing.locationBeforeTransitions.pathname.slice(0, 6);
-      if (pathname === "/lobby") {
-        return 'lobby';
-      } else if (pathname === "/lectu") {
-        return 'lecture';
-      } else if (pathname === "/compi") {
-        return 'compile';
-      }
-    };
-
+    var pathname = props.getState().routing.locationBeforeTransitions.pathname.slice(0, 6);
     this.state = {
       participants: props.getState().room.participants,
-      view: getCurrentView()
+      view: getCurrentView(pathname)
     };
   }
 
@@ -31,6 +31,11 @@ class ParticipantList extends React.Component {
     socket.on('new user joined room', (user) => {
       console.log('new user joined room');
       this.props.dispatch(addParticipant(user));
+      this.setState({participants: this.props.getState().room.participants});
+    });
+    socket.on('user disconnected', (user) => {
+      console.log('a user has disconnected');
+      this.props.dispatch(removeParticipant(user));
       this.setState({participants: this.props.getState().room.participants});
     });
     // var participants = this.props.getState().room.participants;
@@ -47,7 +52,7 @@ class ParticipantList extends React.Component {
 
   render() {
     var participantLength = this.state.participants.length;
-    var classColor = (i) => 'participant'+i;
+    var classColor = (i) => 'participant' + i;
     return (
       <div className="participants">
         <h4>
@@ -55,7 +60,7 @@ class ParticipantList extends React.Component {
         </h4>
         {this.state.participants.map(({name}, i)=>
         <div key={i}>
-          <i className="ion ion-android-person {classColor(i)}" aria-hidden="true"></i>
+          <i className="ion ion-android-person {classColor({i})}" aria-hidden="true"></i>
           <span>{name}</span>
         </div>
       )}

@@ -90,6 +90,9 @@ module.exports = (listen) => {
       socket.emit('add note error', 'Note does not exist you asshat');
     });
 
+    socket.on('disconnect', () => {
+      io.in(socket.pathUrl).emit('user disconnected', socket.user);
+    });
     //socket.on('disconnect', () => console.log('a user disconnected'));
   });
   return io;
