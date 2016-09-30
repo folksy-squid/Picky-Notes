@@ -19,6 +19,7 @@ class NoteList extends React.Component {
     var pathname = props.getState().routing.locationBeforeTransitions.pathname.slice(0, 6);
     this.state = {
       // notes: props.getState().note.notes,
+      notes: [],
       view: getCurrentView(pathname)
     }
   }

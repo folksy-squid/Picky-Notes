@@ -9,16 +9,14 @@ class InputBox extends React.Component {
   // view will alter depending on the page it's on.
   render(){
     var view;
-    if (props.page === 'Compile') {
+    if (this.props.page === 'Compile') {
       view = (
         <input>
           'this is the input box for Compile'
         </input>)
     } else {
       view = (
-        <input>
-          'this is the input box for Lecture'
-        </input>)
+        <input></input>)
     }
 
     return view;

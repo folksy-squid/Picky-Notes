@@ -58,9 +58,9 @@ class Lobby extends React.Component {
             <ChatBox />
           </div>
           <div className="col-sm-3">
-            <button className="btn btn-lg btn-success">
+            <Link className="btn btn-lg btn-success" to="/lecture">
               Start Lecture
-            </button>
+            </Link>
             <div className="panel-item">
               <div className="clipboard">
                 <input ref="shareLink" className="shareLink" value={this.state.pathUrl} readOnly/>
