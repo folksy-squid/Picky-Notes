@@ -5,17 +5,37 @@ var expect = require('chai').expect;
 var {app, ioServer} = require('../../server/server');
 var {db, User, Room, Note} = require('../../server/database/db-config');
 var cache = require('../../server/cache/cache-config');
-var cacheHelpers = require('../../server/cache/cache-helpers')
+var cacheHelpers = require('../../server/cache/cache-helpers');
 
 var ioClient = require('socket.io-client');
 var socketURL = 'http://0.0.0.0:3000';
+
 var options = {
   transports: ['websocket'],
   'force new connection': true
 };
 
+var testUser1 = {
+  id: 9999,
+  facebookId: 12345,
+  name: 'Testing McTesty',
+  email: 'test@email.com',
+  pictureUrl: 'https://www.test.com/picture.jpg',
+  gender: 'Male'
+};
+
+var testUser2 = {
+  id: 6666,
+  facebookId: 67890,
+  name: 'Speccy McSpec',
+  email: 'spec@email.com',
+  pictureUrl: 'https://www.spec.com/picture.jpg',
+  gender: 'Female'
+};
+
 before((done) => {
-  db.sync()
+  const options = process.env.NODE_ENV === 'test' ? { force: true } : {};
+  db.sync(options)
   .then(() => {
     User.destroy({where: { id: 9999 } })
     .then(() => User.destroy({where: { id: 6666 } }))
@@ -23,34 +43,11 @@ before((done) => {
     .then(() => cache.del('TESTT'))
     .then(() => cache.del('9999:TESTT'))
     .then(() => cache.del('6666:TESTT'))
-    .then(() => {
-    User.destroy({
-      where: {
-        id: 9999
-      }
-    }).then(() => {
-      User.create({
-        id: 9999,
-        facebookId: 12345,
-        name: 'Testing McTesty',
-        email: 'test@email.com',
-        pictureUrl: 'https://www.test.com/picture.jpg',
-        gender: 'Male'
-      })
-      .then(() => done());
-    });
-    });
+    .then(() => User.create(testUser1))
+    .then(() => User.create(testUser2))
+    .then(() => done());
   });
 });
-
-// after((done) => {
-//   Note.destroy({ where: { originalUserId: 9999 } })
-//   .then(() => Room.destroy({ where: { hostId: 9999 } }))
-//   .then(() => User.destroy({ where: { id: 9999 } }))
-//   .then(() => cache.del('TESTT'))
-//   .then(() => cache.del('9999:TESTT'))
-//   .then(() => done());
-// });
 
 describe('test', () => {
   it('should pass this test', () => expect(true).to.equal.true);
@@ -59,18 +56,19 @@ describe('test', () => {
 describe('/api/rooms/', () => {
 
   var hash1, hash2;
+  var testRoom = {
+    topic: 'Data Structures',
+    className: 'Hack Reactor',
+    lecturer: 'FredZ',
+    hostId: 9999
+  };
 
   beforeEach((done) => {
     request(app)
-      .post('/api/rooms')
-      .send({
-        topic: 'Data Structures',
-        className: 'Hack Reactor',
-        lecturer: 'FredZ',
-        hostId: 9999
-      })
-      .expect((res) => hash2 = res.body.pathUrl)
-      .end(done);
+    .post('/api/rooms')
+    .send(testRoom)
+    .expect((res) => hash2 = res.body.pathUrl)
+    .end(done);
   });
 
   afterEach(() => Room.destroy({ where: { hostId: 9999 } }));
@@ -84,18 +82,13 @@ describe('/api/rooms/', () => {
 
     it('should pass back a pathUrl', (done) => {
       request(app)
-        .post('/api/rooms')
-        .send({
-          topic: 'Data Structures',
-          className: 'Hack Reactor',
-          lecturer: 'FredZ',
-          hostId: 9999
-        })
-        .expect((res) => {
-          hash1 = res.body.pathUrl;
-          expect(res.body.pathUrl.length).to.equal(5);
-        })
-        .end(done);
+      .post('/api/rooms')
+      .send(testRoom)
+      .expect((res) => {
+        hash1 = res.body.pathUrl;
+        expect(res.body.pathUrl.length).to.equal(5);
+      })
+      .end(done);
     });
     it('should create a unique hash', () => {
       expect(hash1).to.exist;
@@ -105,20 +98,23 @@ describe('/api/rooms/', () => {
   });
 });
 
-describe('/api/notes/', () => {
+xdescribe('/api/notes/', () => {
+
+  var testRoom = {
+    id: 12345,
+    pathUrl: 'abcde',
+    topic: 'Toy Problems',
+    class: 'HackReactor',
+    lecturer: 'AllenP',
+    audioUrl: 'http://www.test.com/audio.mp3',
+    hostId: 9999
+  };
 
   beforeEach((done) => {
-    Room.create({
-      id: 12345,
-      pathUrl: 'abcde',
-      topic: 'Toy Problems',
-      class: 'HackReactor',
-      lecturer: 'AllenP',
-      audioUrl: 'http://www.test.com/audio.mp3',
-      hostId: 9999
-    })
+    Room.create(testRoom)
     .then(() => done());
   });
+
   afterEach(() => Room.destroy({ where: { id: 12345 } }));
 
   describe('Note Creation', () => {
@@ -145,159 +141,119 @@ describe('/api/notes/', () => {
 
 describe('Server Side Socket Connection', () => {
 
+  var testRoom = {
+    id: 12345,
+    pathUrl: 'TESTT',
+    topic: 'Toy Problems',
+    class: 'HackReactor',
+    lecturer: 'AllenP',
+    audioUrl: 'http://www.test.com/audio.mp3',
+    hostId: 9999
+  };
+
+  var roomCreator;
+
   before((done) => {
-    Room.create({
-      id: 12345,
-      pathUrl: 'TESTT',
-      topic: 'All About Testing',
-      class: 'Tests Tests Tests',
-      lecturer: 'Mr. Tester',
-      audioUrl: 'http:www.test.com/test.mp3',
-      hostId: 9999
-    })
+    Room.destroy({ where: { id: 12345 }})
+    .then(() => Room.create(testRoom))
     .then(()=>done());
   });
 
-  //after(() => Room.destroy({ where: { id: 12345 } }));
+  beforeEach(() => {
+    roomCreator = ioClient.connect(socketURL, options);
+    roomCreator.emit('create room', 'TESTT', testUser1);
+  });
+
+  afterEach(() => roomCreator.disconnect());
 
   it('should connect to incoming sockets', (done) => {
-    var client = ioClient.connect(socketURL, options);
-
-    client.on('connect', (d) => {
-      client.disconnect();
+    roomCreator.on('connect', () => {
+      roomCreator.disconnect();
       done();
     });
   });
 
   it('should create rooms', (done) => {
-    var client = ioClient.connect(socketURL, options);
-    client.emit('create room', 'TESTT', 9999);
-    client.on('create room success', () => {
+    roomCreator.on('create room success', () => {
       expect(ioServer.sockets.adapter.rooms).to.have.property('TESTT');
-      client.disconnect();
+      done();
+    });
+    roomCreator.on('create room error', (error) => {
+      expect(error).to.not.exist;
       done();
     });
   });
 
-  it('should put users in a room', (done) => {
-    var roomCreator = ioClient.connect(socketURL, options);
-    roomCreator.emit('create room', 'TESTT', 9999);
+  describe('Other Users Joining Room', () => {
 
-    var joiner = ioClient.connect(socketURL, options);
-    roomCreator.on('create room success', () => {
-      joiner.emit('join room', 'TESTT', 6666);
+    var joiner;
+    var exampleNote = { content: 'Picky Notes is a collaborative note taking app.' };
+
+    beforeEach(() => {
+      joiner = ioClient.connect(socketURL, options);
+      roomCreator.on('create room success', () => joiner.emit('join room', 'TESTT', testUser2));
     });
-    joiner.on('join room success', () => {
-      expect(ioServer.sockets.adapter.rooms['TESTT'].length).to.equal(2);
-      roomCreator.disconnect();
-      joiner.disconnect();
-      done();
-    });
-  });
 
-  it('should notify members of a room when a lecture starts', (done) => {
-    var roomCreator = ioClient.connect(socketURL, options);
-    roomCreator.emit('create room', 'TESTT', 9999);
+    afterEach(() => joiner.disconnect());
 
-    roomCreator.on('create room success', () => {
-      var joiner = ioClient.connect(socketURL, options);
-      joiner.emit('join room', 'TESTT', 6666);
-
+    it('should put users in a room', (done) => {
       joiner.on('join room success', () => {
-        roomCreator.emit('lecture start');
+        expect(ioServer.sockets.adapter.rooms['TESTT'].length).to.equal(2);
+        done();
       });
-
-      joiner.on('lecture started', () => {
-        roomCreator.disconnect();
-        joiner.disconnect();
+      joiner.on('join room error', (error) => {
+        expect(error).to.be.true;
         done();
       });
     });
+
+    it('should notify members of a room when a lecture starts', (done) => {
+      joiner.on('join room success', () => roomCreator.emit('lecture start'));
+      joiner.on('lecture started', () => done());
+    });
+
+    it('should notify members of a room when a lecture ends', (done) => {
+      joiner.on('join room success', () => roomCreator.emit('lecture end'));
+      joiner.on('lecture ended', () => done());
+    });
   });
 
-  it('should notify members of a room when a lecture ends', (done) => {
-    var roomCreator = ioClient.connect(socketURL, options);
-    roomCreator.emit('create room', 'TESTT', 9999);
+  describe('Create Notes', () => {
 
-    roomCreator.on('create room success', () => {
-      var joiner = ioClient.connect(socketURL, options);
-      joiner.emit('join room', 'TESTT', 6666);
+    var joiner;
+    var creatorNote = { content: 'Picky Notes is a collaborative note taking app.' };
+    var joinerNote = { content: 'Picky Notes is a collaborative note taking app.' };
 
+    beforeEach(() => {
+      joiner = ioClient.connect(socketURL, options);
+      roomCreator.on('create room success', () => joiner.emit('join room', 'TESTT', testUser2));
+    });
+
+    afterEach(() => joiner.disconnect());
+
+    it('should receive new notes from the client', (done) => {
+      roomCreator.on('create room success', () => roomCreator.emit('new note', creatorNote));
+      roomCreator.on('add note success', () => done());
+    });
+
+    it('should emit "all ready" when all sockets are ready', (done) => {
       joiner.on('join room success', () => {
-        roomCreator.emit('lecture end');
+        roomCreator.emit('user ready');
+        joiner.emit('user ready');
       });
+      joiner.on('all ready', () => done());
+    });
 
-      joiner.on('lecture ended', () => {
-        roomCreator.disconnect();
-        joiner.disconnect();
-        done();
+    it('should save all notes from cache and retrieve from database', (done) => {
+      joiner.on('join room success', () => {
+        roomCreator.emit('new note', creatorNote);
+        joiner.emit('new note', joinerNote);
       });
+      joiner.on('add note success', () => {
+        roomCreator.emit('user ready');
+        joiner.emit('user ready');
+      });
+      joiner.on('all notes saved', () => done());
     });
-  });
-
-  it('should receive new notes from the client', (done) => {
-    var exampleNote = {
-      content: 'Picky Notes is a collaborative note taking app.',
-    };
-    var roomCreator = ioClient.connect(socketURL, options);
-    roomCreator.emit('create room', 'TESTT', 9999);
-    roomCreator.emit('new note', exampleNote);
-    roomCreator.on('add note success', () => {
-      roomCreator.disconnect();
-      done();
-    });
-  });
-
-  it('should emit "all ready" when all sockets are ready', (done) => {
-    var roomCreator = ioClient.connect(socketURL, options);
-    roomCreator.emit('create room', 'TESTT', 9999);
-
-    var joiner = ioClient.connect(socketURL, options);
-    roomCreator.on('create room success', () => {
-      joiner.emit('join room', 'TESTT', 6666);
-    });
-
-    joiner.on('all ready', () => {
-      roomCreator.disconnect();
-      joiner.disconnect();
-      done();
-    });
-
-    joiner.on('join room success', () => {
-      expect(ioServer.sockets.adapter.rooms['TESTT'].length).to.equal(2);
-      roomCreator.emit('user ready');
-      joiner.emit('user ready');
-    });
-  });
-
-  it('should save all notes from cache and retrieve from database', (done) => {
-    var roomCreator = ioClient.connect(socketURL, options);
-    roomCreator.emit('create room', 'TESTT', 9999);
-
-    var joiner = ioClient.connect(socketURL, options);
-
-    roomCreator.on('create room success', () => {
-      joiner.emit('join room', 'TESTT', 6666);
-    });
-
-    joiner.on('all notes saved', () => {
-      roomCreator.disconnect();
-      joiner.disconnect();
-      done();
-    });
-
-    joiner.on('join room success', () => {
-      roomCreator.emit('new note', {content: 'room creator\'s note'});
-    });
-
-    roomCreator.on('add note success', () => {
-      joiner.emit('new note', {content: 'joiner\'s note'});
-    });
-
-    joiner.on('add note success', () => {
-      roomCreator.emit('user ready');
-      joiner.emit('user ready');
-    });
-
   });
 });

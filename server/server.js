@@ -15,10 +15,7 @@ const port = process.env.NODE_ENV === 'production' ? 80 : 3000;
 
 const listen = app.listen(port, () => {
   console.log('Server listening on port ' + port);
-  db.sync();
-  // .then(() => {
-  //   console.log('Database is synced');
-  // });
+  process.env.NODE_ENV !== 'test' && db.sync();
 });
 
 const ioServer = require('./sockets/io.js')(listen);
