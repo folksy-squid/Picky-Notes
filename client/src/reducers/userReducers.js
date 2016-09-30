@@ -3,7 +3,6 @@
 export default (state = {}, action) => {
 
   if (action.type === 'CREATE_USER'){
-    console.log('creating user.');
     state.information = action.user;
   }
 

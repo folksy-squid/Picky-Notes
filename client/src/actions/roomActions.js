@@ -18,3 +18,10 @@ export function joinSocketRoom (pathUrl, user, joinedRoom) {
     joinedRoom
   };
 }
+
+export function addParticipant(participant) {
+  return {
+    type: 'ADD_PARTICIPANT',
+    participant
+  };
+}
