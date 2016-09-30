@@ -1,3 +1,4 @@
+/*jshint esversion: 6 */
 const md5 = require('js-md5');
 const {User, Room, Note} = require('./db-config');
 
