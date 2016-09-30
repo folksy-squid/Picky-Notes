@@ -38,7 +38,6 @@ class JoinRoom extends React.Component {
     this.refs.joinRoomInput.value = '';
   }
   render() {
-    var context = this;
     return (
       <div className="container">
         <h2>Join Room</h2>
@@ -49,7 +48,7 @@ class JoinRoom extends React.Component {
             <span className="input-group-btn">
               <button className="btn btn-default">Join</button>
             </span>
-            {(context.state.error) ?
+            {(this.state.error) ?
               (<div className="alert alert-danger">
                 <a data-dismiss="alert">&times;</a>
                 <strong>Error!</strong> Invalid Access Code. Try again!
