@@ -28,7 +28,7 @@ class Note extends React.Component {
     } else if (this.props.view === 'Lecture'){
       view = (
         <div className="note">
-          {this.props.note.content + this.props.note.audioTimestamp}
+          {this.props.note.content + ' ' + this.props.note.audioTimestamp}
         </div>)
     } else if (this.props.view === 'Review') {
       view = (
