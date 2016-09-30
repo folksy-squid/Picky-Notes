@@ -15,13 +15,18 @@ module.exports = (listen) => {
         for (var id in roomIds) {
           var sockets = io.sockets;
           console.log('id', id);
-          socketUser = sockets.connected[id].user;
+          console.log('sockets', sockets);
+          socketUser = connected[id].user;
+          console.log('socketuser!!!:', socketUser);
           res.push(socketUser);
         }
+        console.log('res!!!::', res);
       }
       cb(res);
       return;
     };
+
+      //console.log('a user connected');
     //console.log('a user connected');
 
     socket.on('create room', (pathUrl, user) => {

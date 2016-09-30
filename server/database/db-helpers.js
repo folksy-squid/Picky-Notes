@@ -101,7 +101,7 @@ const showFilteredNotes = ({userId, roomId}, cb) => {
 
 const findRoom = (pathUrl, cb) => {
   Room.findOne({ where: {pathUrl: pathUrl} })
-  .then((room) => { cb(room.dataValues); });
+  .then((room) => { cb(room); });
 };
 
 module.exports = {

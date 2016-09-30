@@ -4,7 +4,8 @@ const {findRoom, createRoomNotes} = require('../database/db-helpers');
 
 const joinRoom = (socket, pathUrl, user, cb) => {
   socket.pathUrl = pathUrl;
-  socket.userId = userId;
+  socket.user = user;
+  socket.userId = user.id;
   socket.ready = false;
   socket.join(pathUrl);
   /* redis ==> add userId to "pathUrl" Set */

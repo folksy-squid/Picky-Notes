@@ -54,8 +54,6 @@ export default (state = {}, action) => {
       state.roomInfo = roomInfo;
       state.participants = participants;
       action.joinedRoom(null, 'success');
-      // get users and roomInfo from the socket and save it to our store
-      // state.participants = participants;
     });
   }
 
