@@ -1,7 +1,6 @@
 const {createNewUser, createNewRoom, joinRoom, createNewNote, showAllNotes, showFilteredNotes} = require ('../database/db-helpers');
 const passport = require('./passport');
 const path = require('path');
-
 module.exports = (app, express) => {
   // Facebook OAuth
   app.get('/auth/facebook',
@@ -98,7 +97,6 @@ module.exports = (app, express) => {
       // potentially instead of using this endpoint, reuse /api/notes/create?
       res.send('Add new notes (save button) for user #' + req.params.userId + ' inside room #' + req.params.roomId);
     });
-
 
   app.get('*/index.bundle.js', function (request, response) {
     response.sendFile(path.resolve(__dirname, '../../client', 'dist/index.bundle.js'));
