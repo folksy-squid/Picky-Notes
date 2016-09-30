@@ -1,6 +1,7 @@
 import React from 'react';
 import {mapStateToProps} from '../../Connection.js';
 import {connect} from 'react-redux';
+import {addParticipant} from '../../actions/roomActions';
 
 class ParticipantList extends React.Component {
   constructor(props) {
@@ -17,7 +18,7 @@ class ParticipantList extends React.Component {
     };
 
     this.state = {
-      participants: props.getState().room.participants || [props.getState().user.information[0]],
+      participants: props.getState().room.participants,
       view: getCurrentView()
     };
   }
@@ -26,6 +27,12 @@ class ParticipantList extends React.Component {
     console.log('this.props', this.props);
     console.log('this.props state', this.props.getState());
     var socket = this.props.getState().room.socket;
+
+    socket.on('new user joined room', (user) => {
+      console.log('new user joined room');
+      this.props.dispatch(addParticipant(user));
+      this.setState({participants: this.props.getState().room.participants});
+    });
     // var participants = this.props.getState().room.participants;
     // this.setState({
     //   participants: participants

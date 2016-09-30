@@ -34,7 +34,6 @@ const authCheck = (nextState, replace) => {
     // if redux store does not have user,
     console.log('auth-checking.', store.getState().user)
     if (!store.getState().user.information) {
-      console.log('creating user')
       store.dispatch(createUser(user));
     }
 
