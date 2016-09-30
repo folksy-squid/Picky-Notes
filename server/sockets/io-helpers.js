@@ -5,11 +5,9 @@ const {findRoom, createRoomNotes} = require('../database/db-helpers');
 const joinRoom = (socket, pathUrl, user, cb) => {
   socket.pathUrl = pathUrl;
   socket.user = user;
-  socket.userId = user.id;
   socket.ready = false;
   socket.join(pathUrl);
   /* redis ==> add userId to "pathUrl" Set */
-  // addUserToCache(pathUrl, userId, () => console.log('added user to cache'));
   addUserToCache(pathUrl, user.id);
   cb(user);
 };
@@ -20,7 +18,6 @@ const addNote = (socket, note, cb) => {
 
   /* redis ==> add note to "userId:pathUrl" List of notes*/
   // note = { userId, content, pathUrl, timeStamp }
-  // addNoteToCache(pathUrl, userId, note, () => console.log('added note to cache'));
   addNoteToCache(pathUrl, userId, note, cb);
 };
 
