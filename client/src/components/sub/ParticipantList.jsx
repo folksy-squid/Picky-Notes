@@ -13,6 +13,7 @@ var getCurrentView = function(pathname){
   }
 };
 
+
 class ParticipantList extends React.Component {
   constructor(props) {
     super(props);
