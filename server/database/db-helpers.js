@@ -47,25 +47,42 @@ const joinRoom = (userId, pathUrl, cb) => {
   });
 };
 
-const createNewNote = ({content, roomId, originalUserId}, cb) => {
-  // content, audioTimestamp, show, roomId, editingUserId, originalUserId
+// const createNewNote = ({content, roomId, originalUserId}, cb) => {
+//   // content, audioTimestamp, show, roomId, editingUserId, originalUserId
+//
+//   Note.create({
+//     content: content,
+//     audioTimestamp: Date(),
+//     show: true,
+//     originalUserId: originalUserId,
+//     editingUserId: originalUserId,
+//     roomId: roomId
+//   })
+//   .then((note) => { cb(note); });
+// };
 
-  Note.create({
-    content: content,
-    audioTimestamp: Date(),
-    show: true,
-    originalUserId: originalUserId,
-    editingUserId: originalUserId,
-    roomId: roomId
-  })
-  .then((note) => { cb(note); });
+const multiplyNotes = (notes, arrOfClients) => {
+  let multipliedNotes = [];
+  for (let i = 0; i < notes.length; i++) {
+    for (let j = 0; j < arrOfClients.length; j++) {
+      if (notes[i].originalUserId !== arrOfClients[j].id) {
+        var copy = JSON.parse(JSON.stringify(notes[i]));
+        copy.editingUserId = arrOfClients[j].id;
+        copy.show = false;
+        multipliedNotes.push(copy);
+      }
+    }
+    multipliedNotes.push(notes[i]);
+  }
+  return multipliedNotes;
 };
 
-const createRoomNotes = (notes, roomId, cb) => {
+const createRoomNotes = (notes, roomId, arrOfClients, cb) => {
   notes = notes.map(note => {
     note.roomId = roomId;
     return note;
   });
+  notes = multiplyNotes(notes, arrOfClients);
   //console.log('INSIDE CREATE ROOM', notes);
   Note.bulkCreate(notes)
   // .then(() => Note.findAll({raw: true}))
@@ -109,9 +126,9 @@ module.exports = {
   createNewUser,
   createNewRoom,
   joinRoom,
-  createNewNote,
   showAllNotes,
   showFilteredNotes,
   findRoom,
   createRoomNotes,
+  multiplyNotes
 };
