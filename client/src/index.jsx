@@ -64,6 +64,7 @@ render((<Provider store={store}>
           <Route path='/review' component={Review} />
         </Route>
         <Route path='/lecture' component={Lecture} onEnter={authCheck}/>
+        <Route path='/lecture/:roomId' component={Lecture} onEnter={authCheck}/>
         <Route path='/compile' component={Compile} onEnter={authCheck}/>
       </Route>
     </Router>
