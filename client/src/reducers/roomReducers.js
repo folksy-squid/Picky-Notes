@@ -65,7 +65,7 @@ export default (state = {}, action) => {
   }
   if (action.type === 'REMOVE_PARTICIPANT') {
     console.log(action.participant);
-    state.participants = state.participants.splice(state.participants.findIndex(obj => obj.id === action.participant.id), 0);
+    state.participants = state.participants.splice(state.participants.findIndex(obj => obj.facebookId === action.participant.facebookId), 0);
   }
 
 
