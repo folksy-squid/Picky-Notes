@@ -1,7 +1,7 @@
 import React from 'react';
 import {mapStateToProps} from '../../Connection.js';
 import {connect} from 'react-redux';
-import {addParticipant} from '../../actions/roomActions';
+import {addParticipant, removeParticipant} from '../../actions/roomActions';
 
 var getCurrentView = function(pathname){
   if (pathname === "/lobby") {
@@ -33,6 +33,11 @@ class ParticipantList extends React.Component {
       this.props.dispatch(addParticipant(user));
       this.setState({participants: this.props.getState().room.participants});
     });
+    socket.on('user disconnected', (user) => {
+      console.log('a user has disconnected');
+      this.props.dispatch(removeParticipant(user));
+      this.setState({participants: this.props.getState().room.participants});
+    });
     // var participants = this.props.getState().room.participants;
     // this.setState({
     //   participants: participants
@@ -47,7 +52,7 @@ class ParticipantList extends React.Component {
 
   render() {
     var participantLength = this.state.participants.length;
-    var classColor = (i) => 'participant'+i;
+    var classColor = (i) => 'participant' + i;
     return (
       <div className="participants">
         <h4>
@@ -55,7 +60,7 @@ class ParticipantList extends React.Component {
         </h4>
         {this.state.participants.map(({name}, i)=>
         <div key={i}>
-          <i className="ion ion-android-person {classColor(i)}" aria-hidden="true"></i>
+          <i className="ion ion-android-person {classColor({i})}" aria-hidden="true"></i>
           <span>{name}</span>
         </div>
       )}
