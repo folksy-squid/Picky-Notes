@@ -30,14 +30,14 @@ const isAllReady = (pathUrl, rooms, connected) => {
   return true;
 };
 
-const saveAllNotes = (pathUrl, cb) => {
+const saveAllNotes = (pathUrl, arrOfClients, cb) => {
   // get roomId
   findRoom(pathUrl, (room) => {
     if (room) {
 
       getNotesFromRoom(pathUrl, (allNotes) => {
         // save all notes with roomId into database;
-        createRoomNotes(allNotes, room.id, () => {
+        createRoomNotes(allNotes, room.id, arrOfClients, () => {
           cb();
           deleteAllNotesAndRoom(pathUrl);
         });
