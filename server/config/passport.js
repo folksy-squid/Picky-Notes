@@ -26,7 +26,6 @@ passport.use(new FacebookStrategy({
     where: newUser
   })
   .then( (user) => {
-    console.log('this is the user', user);
     done(null, user);
   })
   .catch( (err) => {

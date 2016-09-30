@@ -1,4 +1,4 @@
-const {cache} = require('./cache-config');
+const cache = require('./cache-config');
 
 const test = () => {
   cache.set('newNote', 'a new thing')
@@ -15,6 +15,10 @@ const addUserToCache = (pathUrl, userId, cb) => {
 };
 
 const addNoteToCache = (pathUrl, userId, note, cb) => {
+  note.audioTimestamp = Date();
+  note.show = true;
+  note.originalUserId = userId;
+  note.editingUserId = note.originalUserId;
   cache.rpush(`${userId}:${pathUrl}`, JSON.stringify(note))
   .then(() => cache.lrange(`${userId}:${pathUrl}`, -1, -1))
   .then((note) => cb && cb(JSON.parse(note[0])));
@@ -24,7 +28,16 @@ const addNoteToCache = (pathUrl, userId, note, cb) => {
 
 /************************* DEV *************************/
 
-const deleteNotesFromUser = (pathUrl, userId) => {};
+const deleteAllNotesAndRoom = (pathUrl) => {
+  getUsersFromRoom(pathUrl)
+  .then((allUserIds) => {
+    cache.del(pathUrl);
+    allUserIds.forEach((userId) => {
+      cache.del(`${userId}:${pathUrl}`);
+    });
+
+  });
+};
 
 const getUsersFromRoom = pathUrl => cache.smembers(pathUrl);
 
@@ -32,7 +45,7 @@ const getUsersFromRoom = pathUrl => cache.smembers(pathUrl);
 //   cache.lrange(`${userId}:${pathUrl}`, 0, -1)
 //   .then((notes) => notes.map( note => JSON.parse(note) ));
 
-const getNotesFromRoom = pathUrl => {
+const getNotesFromRoom = (pathUrl, cb) => {
   // getUsersFromRoom
   var pipeline = cache.pipeline();
   getUsersFromRoom(pathUrl)
@@ -41,7 +54,13 @@ const getNotesFromRoom = pathUrl => {
       pipeline.lrange(`${userId}:${pathUrl}`, 0, -1);
     });
     pipeline.exec()
-    .then((results) => console.log(results));
+    .then((results) => {
+      cb(results.reduce((p, c) => {
+        return p.concat(c[1]);
+      }, []).map((note) => {
+        return JSON.parse(note);
+      }));
+    });
   });
   // iterate through users in room
   // do something
@@ -50,5 +69,7 @@ const getNotesFromRoom = pathUrl => {
 
 module.exports = {
   addUserToCache,
-  addNoteToCache
+  addNoteToCache,
+  getNotesFromRoom,
+  deleteAllNotesAndRoom,
 };

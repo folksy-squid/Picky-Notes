@@ -1,9 +1,10 @@
-const {joinRoom, addNote} = require('./io-helpers');
+const {joinRoom, addNote, isAllReady, saveAllNotes} = require('./io-helpers');
 const {findRoom} = require('../database/db-helpers');
 
 module.exports = (listen) => {
   const io = require('socket.io').listen(listen);
-  const rooms = io.sockets.adapter.rooms;
+  const rooms = io.sockets.adapter.rooms; 
+  const connected = io.sockets.connected;
 
   io.on('connection', (socket) => {
     //console.log('a user connected');
@@ -48,6 +49,17 @@ module.exports = (listen) => {
         io.in(socket.pathUrl).emit('lecture ended');
       } else {
         socket.emit('lecture end error', 'You do not belong to a room');
+      }
+    });
+
+    socket.on('user ready', () => {
+      socket.ready = true;
+      io.in(socket.pathUrl).emit('user ready', socket.userId);
+      if (isAllReady(socket.pathUrl, rooms, connected)) {
+        io.in(socket.pathUrl).emit('all ready');
+        saveAllNotes(socket.pathUrl, () => {
+          io.in(socket.pathUrl).emit('all notes saved');
+        });
       }
     });
 

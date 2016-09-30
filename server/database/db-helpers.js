@@ -60,6 +60,18 @@ const createNewNote = ({content, roomId, originalUserId}, cb) => {
   .then((note) => { cb(note); });
 };
 
+const createRoomNotes = (notes, roomId, cb) => {
+  notes = notes.map(note => {
+    note.roomId = roomId;
+    return note;
+  });
+  //console.log('INSIDE CREATE ROOM', notes);
+  Note.bulkCreate(notes)
+  // .then(() => Note.findAll({raw: true}))
+  // .then((allNotes) => console.log('SAVED', allNotes))
+  .then(() => cb());
+};
+
 const showAllNotes = ({userId, roomId}, cb) => {
   Note.findAll({
     where: { editingUserId: userId },
@@ -88,8 +100,8 @@ const showFilteredNotes = ({userId, roomId}, cb) => {
 };
 
 const findRoom = (pathUrl, cb) => {
-  Room.count({ where: {pathUrl: pathUrl} })
-  .then((count) => { cb(count); });
+  Room.findOne({ where: {pathUrl: pathUrl} })
+  .then((room) => { cb(room.dataValues); });
 };
 
 module.exports = {
@@ -99,5 +111,6 @@ module.exports = {
   createNewNote,
   showAllNotes,
   showFilteredNotes,
-  findRoom
+  findRoom,
+  createRoomNotes,
 };
