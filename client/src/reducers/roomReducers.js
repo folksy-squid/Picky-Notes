@@ -48,7 +48,7 @@ export default (state = {}, action) => {
     });
 
     socket.on('join room success', (participants, roomInfo) => {
-      console.log(`join room success, ${JSON.stringify(participants)} are here`);
+      console.log('join room success');
       state.socket = socket;
       state.roomInfo = roomInfo;
       state.participants = participants;
