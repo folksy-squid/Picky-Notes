@@ -4,11 +4,11 @@ import {connect} from 'react-redux';
 import {addParticipant, removeParticipant} from '../../actions/roomActions';
 
 var getCurrentView = function(pathname) {
-  if (pathname === "/lobby") {
+  if (pathname === '/lobby') {
     return 'lobby';
-  } else if (pathname === "/lectu") {
+  } else if (pathname === '/lectu') {
     return 'lecture';
-  } else if (pathname === "/compi") {
+  } else if (pathname === '/compi') {
     return 'compile';
   }
 };
