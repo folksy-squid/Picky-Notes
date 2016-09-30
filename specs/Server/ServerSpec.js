@@ -21,7 +21,9 @@ var testUser1 = {
   name: 'Testing McTesty',
   email: 'test@email.com',
   pictureUrl: 'https://www.test.com/picture.jpg',
-  gender: 'Male'
+  gender: 'Male',
+  createdAt: new Date(),
+  updatedAt: new Date()
 };
 
 var testUser2 = {
@@ -30,7 +32,9 @@ var testUser2 = {
   name: 'Speccy McSpec',
   email: 'spec@email.com',
   pictureUrl: 'https://www.spec.com/picture.jpg',
-  gender: 'Female'
+  gender: 'Female',
+  createdAt: new Date(),
+  updatedAt: new Date()
 };
 
 before((done) => {
