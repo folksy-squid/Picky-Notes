@@ -25,8 +25,8 @@ class ParticipantList extends React.Component {
   }
 
   componentWillMount() {
-    console.log('this.props', this.props);
-    console.log('this.props state', this.props.getState());
+    // console.log('this.props', this.props);
+    // console.log('this.props state', this.props.getState());
     var socket = this.props.getState().room.socket;
 
     socket.on('new user joined room', (user) => {

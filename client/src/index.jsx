@@ -32,7 +32,7 @@ const authCheck = (nextState, replace) => {
     let user = getUserFromCookie(document.cookie);
 
     // if redux store does not have user,
-    console.log('auth-checking.', store.getState().user);
+    // console.log('auth-checking.', store.getState().user);
     if (!store.getState().user.information && user) {
       store.dispatch(createUser(user));
     }

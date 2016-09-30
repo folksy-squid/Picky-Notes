@@ -1,7 +1,6 @@
 /*jshint esversion: 6 */
-
 export const createRoom = (data, user, createRoom) => {
-  console.log('called createRoom');
+  // console.log('called createRoom');
   return {
     type: 'CREATE_ROOM',
     data,

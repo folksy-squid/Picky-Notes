@@ -12,7 +12,7 @@ import {Router} from 'react-router';
 class Lobby extends React.Component {
   constructor(props) {
     super(props);
-    console.log(props);
+    // console.log(props);
     var context = this;
 
     (!props.getState().user) && context.context.router.push('/');

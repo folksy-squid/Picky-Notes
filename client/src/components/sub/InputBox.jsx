@@ -1,9 +1,17 @@
 import React from 'react';
 import Connection from '../../Connection.js';
+import {addNote, submitNote} from '../../actions/noteActions.js';
 
 class InputBox extends React.Component {
   constructor (props) {
     super(props);
+  }
+
+  submitNoteHandler(e) {
+    e.preventDefault();
+    console.log('adding note', this.refs.inputNote.value);
+    this.props.dispatch(submitNote(this.props.getState().room.socket, this.refs.inputNote.value));
+    this.refs.inputNote.value = '';
   }
 
   // view will alter depending on the page it's on.
@@ -15,8 +23,7 @@ class InputBox extends React.Component {
           'this is the input box for Compile'
         </input>)
     } else {
-      view = (
-        <input></input>)
+      view = <form onSubmit={this.submitNoteHandler.bind(this)}><input ref="inputNote" type="text"/></form>;
     }
 
     return view;

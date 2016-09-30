@@ -7,8 +7,8 @@ import { Link } from 'react-router';
 class Notebook extends React.Component {
   constructor (props) {
     super(props);
-    console.log('state:', this.state);
-    console.log('props:', props);
+    // console.log('state:', this.state);
+    // console.log('props:', props);
   }
 
   render(){
