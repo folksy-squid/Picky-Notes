@@ -1,6 +1,7 @@
 /*jshint esversion: 6 */
 const Sequelize = require('sequelize');
-const db = new Sequelize('postgres://ubuntu:password@localhost:5432/pickynotes', { logging: false });
+const logging = process.env.NODE_ENV === 'test' ? console.log : false;
+const db = new Sequelize('postgres://ubuntu:password@localhost:5432/pickynotes', { logging: logging });
 
 const {User} = require('./controllers/UserController')(db, Sequelize);
 const {Room} = require('./controllers/RoomController')(db, Sequelize);

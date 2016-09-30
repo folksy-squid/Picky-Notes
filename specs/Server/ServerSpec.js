@@ -34,7 +34,8 @@ var testUser2 = {
 };
 
 before((done) => {
-  db.sync()
+  const options = process.env.NODE_ENV === 'test' ? { force: true } : {};
+  db.sync(options)
   .then(() => {
     User.destroy({where: { id: 9999 } })
     .then(() => User.destroy({where: { id: 6666 } }))
