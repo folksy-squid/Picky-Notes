@@ -35,7 +35,7 @@ class ParticipantList extends React.Component {
       this.setState({participants: this.props.getState().room.participants});
     });
     socket.on('user disconnected', (user) => {
-      console.log('a user has disconnected');
+      console.log('a user has disconnected', user);
       this.props.dispatch(removeParticipant(user));
       this.setState({participants: this.props.getState().room.participants});
     });
