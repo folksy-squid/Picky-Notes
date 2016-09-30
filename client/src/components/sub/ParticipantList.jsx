@@ -3,15 +3,16 @@ import {mapStateToProps} from '../../Connection.js';
 import {connect} from 'react-redux';
 import {addParticipant, removeParticipant} from '../../actions/roomActions';
 
-var getCurrentView = function(pathname){
-  if (pathname === "/lobby") {
+var getCurrentView = function(pathname) {
+  if (pathname === '/lobby') {
     return 'lobby';
-  } else if (pathname === "/lectu") {
+  } else if (pathname === '/lectu') {
     return 'lecture';
-  } else if (pathname === "/compi") {
+  } else if (pathname === '/compi') {
     return 'compile';
   }
 };
+
 
 class ParticipantList extends React.Component {
   constructor(props) {
@@ -34,7 +35,7 @@ class ParticipantList extends React.Component {
       this.setState({participants: this.props.getState().room.participants});
     });
     socket.on('user disconnected', (user) => {
-      console.log('a user has disconnected');
+      console.log('a user has disconnected', user);
       this.props.dispatch(removeParticipant(user));
       this.setState({participants: this.props.getState().room.participants});
     });

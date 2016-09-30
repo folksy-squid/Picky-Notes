@@ -22,14 +22,14 @@ class JoinRoom extends React.Component {
     this.setState({value: e.target.value});
   }
   submitInput(e) {
-    console.log("submitting input");
+    console.log('submitting input');
     e.preventDefault();
     var realm = this;
     var pathUrl = this.state.value;
     var user = this.props.getState().user.information[0];
     var joinedRoom = (err, success) => {
       if (err) {
-
+        console.log('we have an error', err);
       } else {
         realm.context.router.push(`/lobby/${realm.state.value}`);
       }

@@ -32,21 +32,21 @@ const authCheck = (nextState, replace) => {
     let user = getUserFromCookie(document.cookie);
 
     // if redux store does not have user,
-    console.log('auth-checking.', store.getState().user)
-    if (!store.getState().user.information) {
+    console.log('auth-checking.', store.getState().user);
+    if (!store.getState().user.information && user) {
       store.dispatch(createUser(user));
     }
 
-    if (nextState.location.pathname === '/'){
+    if (nextState.location.pathname === '/') {
       replace({
         pathname: '/notebook'
       });
     }
   } else {
-    if (nextState.location.pathname !== '/'){
+    if (nextState.location.pathname !== '/') {
       replace({
         pathname: '/'
-      })
+      });
     }
   }
 };
@@ -56,7 +56,7 @@ render((<Provider store={store}>
       <Route path='/' component={App} >
         <IndexRoute component={Landing} onEnter={authCheck}/>
         <Route component={Main} onEnter={authCheck}>
-          <Route path='/notebook' component={Notebook} />
+          <Route path='/notebook' component={Notebook} onEnter={authCheck}/>
           <Route path='/new' component={NewRoom} />
           <Route path='/join' component={JoinRoom} />
           <Route path='/lobby' component={Lobby}/>

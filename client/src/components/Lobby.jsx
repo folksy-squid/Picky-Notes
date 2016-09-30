@@ -2,19 +2,38 @@ import React from 'react';
 import { Link } from 'react-router';
 import LectureTitle from './sub/LectureTitle.jsx';
 import ParticipantList from './sub/ParticipantList.jsx';
-import ChatBox from './sub/ChatBox.jsx'
-import Connection from '../Connection.js'
+import ChatBox from './sub/ChatBox.jsx';
+import {mapStateToProps} from '../Connection.js';
+import {connect} from 'react-redux';
+import {joinSocketRoom} from '../actions/roomActions';
+import {Router} from 'react-router';
+
 
 class Lobby extends React.Component {
   constructor(props) {
     super(props);
-    console.log(props)
+    console.log(props);
+    var context = this;
+
+    (!props.getState().user) && context.context.router.push('/');
+    var pathUrl = props.getState().room.roomInfo ? props.getState().room.roomInfo.pathUrl : props.params.roomId;
     this.state = {
-      pathUrl: props.getState().room.roomInfo.pathUrl
-    }
+      pathUrl: pathUrl,
+      completed: true
+    };
+  }
+  static get contextTypes() {
+    return {
+      router: React.PropTypes.object.isRequired,
+    };
   }
 
   componentWillMount() {
+    if (!this.props.getState().room.roomInfo) {
+      console.log('you have no room info');
+      this.setState({completed: false});
+      this.props.dispatch(joinSocketRoom(this.state.pathUrl, this.props.getState().user.information[0], () => { this.setState({completed: true }); }));
+    }
   }
 
   componentDidMount() {
@@ -31,6 +50,7 @@ class Lobby extends React.Component {
 
   render() {
     return (
+      this.state.completed ? (
       <div className="container lobby">
         <LectureTitle />
         <div className="row">
@@ -57,8 +77,9 @@ class Lobby extends React.Component {
           </div>
         </div>
       </div>
+    ) : <div></div>
     );
   }
 }
 
-export default Connection(Lobby);
+export default connect(mapStateToProps)(Lobby);

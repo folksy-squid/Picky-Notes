@@ -35,7 +35,7 @@ export default (state = {}, action) => {
     });
   }
 
-  if (action.type === 'JOIN_SOCKET_ROOM'){
+  if (action.type === 'JOIN_SOCKET_ROOM') {
     var socket = io();
     console.log('joining room');
     socket.emit('join room', action.pathUrl, action.user);
@@ -48,7 +48,7 @@ export default (state = {}, action) => {
     });
 
     socket.on('join room success', (participants, roomInfo) => {
-      console.log(`join room success, ${JSON.stringify(participants)} are here`);
+      console.log('join room success');
       state.socket = socket;
       state.roomInfo = roomInfo;
       state.participants = participants;
@@ -64,8 +64,8 @@ export default (state = {}, action) => {
     state.participants.push(action.participant);
   }
   if (action.type === 'REMOVE_PARTICIPANT') {
-    console.log(action.participant);
-    state.participants = state.participants.splice(state.participants.findIndex((obj) => obj.facebookId === action.participant.facebookId), 0);
+    console.log('this is the participant to remove', state.participants.findIndex((obj) => obj.facebookId === action.participant.facebookId));
+    state.participants.splice(state.participants.findIndex((obj) => obj.facebookId === action.participant.facebookId), 1);
   }
 
 
