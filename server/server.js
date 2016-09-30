@@ -16,7 +16,8 @@ const port = process.env.NODE_ENV === 'production' ? 80 : 3000;
 const listen = app.listen(port, () => {
   console.log('Server listening on port ' + port);
   if (process.env.NODE_ENV === 'test') { console.log('testing'); }
-  process.env.NODE_ENV === 'test' ? db.sync({ force: true }) : db.sync();
+  // process.env.NODE_ENV === 'test' ? db.sync({ force: true }) : db.sync();
+  db.sync();
   // .then(() => {
   //   console.log('Database is synced');
   // });
