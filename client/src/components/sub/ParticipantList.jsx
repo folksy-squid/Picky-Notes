@@ -3,23 +3,24 @@ import {mapStateToProps} from '../../Connection.js';
 import {connect} from 'react-redux';
 import {addParticipant} from '../../actions/roomActions';
 
+var getCurrentView = function(){
+  var pathname = props.getState().routing.locationBeforeTransitions.pathname.slice(0, 6);
+  if (pathname === "/lobby") {
+    return 'lobby';
+  } else if (pathname === "/lectu") {
+    return 'lecture';
+  } else if (pathname === "/compi") {
+    return 'compile';
+  }
+};
+
 class ParticipantList extends React.Component {
   constructor(props) {
     super(props);
-    var getCurrentView = function(){
-      var pathname = props.getState().routing.locationBeforeTransitions.pathname.slice(0, 6);
-      if (pathname === "/lobby") {
-        return 'lobby';
-      } else if (pathname === "/lectu") {
-        return 'lecture';
-      } else if (pathname === "/compi") {
-        return 'compile';
-      }
-    };
-
+    var pathname = props.getState().routing.locationBeforeTransitions.pathname.slice(0, 6);
     this.state = {
       participants: props.getState().room.participants,
-      view: getCurrentView()
+      view: getCurrentView(pathname)
     };
   }
 
