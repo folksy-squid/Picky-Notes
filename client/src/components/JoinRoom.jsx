@@ -22,12 +22,17 @@ class JoinRoom extends React.Component {
     this.setState({value: e.target.value});
   }
   submitInput(e) {
+    console.log("submitting input");
     e.preventDefault();
-    var context = this;
+    var realm = this;
     var pathUrl = this.state.value;
     var user = this.props.getState().user.information[0];
-    var joinedRoom = function(success) {
-      context.context.router.push(`/lobby/${context.state.value}`);
+    var joinedRoom = (err, success) => {
+      if (err) {
+
+      } else {
+        realm.context.router.push(`/lobby/${realm.state.value}`);
+      }
     };
     this.props.dispatch(joinSocketRoom(pathUrl, user, joinedRoom));
     this.refs.joinRoomInput.value = '';
