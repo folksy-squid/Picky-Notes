@@ -5,11 +5,10 @@ const createSocketRoom = (state, host, pathUrl, createRoom) => {
   // if server is not localhost,
   // then set up io to know where the server is
   socket.emit('create room', pathUrl, host);
-  socket.on('create room success', function(){
+  socket.on('create room success', function() {
     console.log('successfully created socket room');
     createRoom(pathUrl);
   });
-  console.log('this is your socket', socket);
   return socket;
 };
 
@@ -64,6 +63,11 @@ export default (state = {}, action) => {
   if (action.type === 'ADD_PARTICIPANT') {
     state.participants.push(action.participant);
   }
+  if (action.type === 'REMOVE_PARTICIPANT') {
+    console.log(action.participant);
+    state.participants = state.participants.splice(state.participants.findIndex(obj => obj.id === action.participant.id), 0);
+  }
+
 
   return state;
 };

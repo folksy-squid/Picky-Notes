@@ -25,3 +25,10 @@ export function addParticipant(participant) {
     participant
   };
 }
+
+export function removeParticipant(participant) {
+  return {
+    type: 'REMOVE_PARTICIPANT',
+    participant
+  };
+}
