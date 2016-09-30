@@ -1,6 +1,6 @@
 /*jshint esversion: 6 */
 
-export function createRoom (data, user, createRoom) {
+export const createRoom = (data, user, createRoom) => {
   console.log('called createRoom');
   return {
     type: 'CREATE_ROOM',
@@ -8,27 +8,27 @@ export function createRoom (data, user, createRoom) {
     user,
     createRoom
   };
-}
+};
 
-export function joinSocketRoom (pathUrl, user, joinedRoom) {
+export const joinSocketRoom = (pathUrl, user, joinedRoom) => {
   return {
     type: 'JOIN_SOCKET_ROOM',
     pathUrl,
     user,
     joinedRoom
   };
-}
+};
 
-export function addParticipant(participant) {
+export const addParticipant = (participant) => {
   return {
     type: 'ADD_PARTICIPANT',
     participant
   };
-}
+};
 
-export function removeParticipant(participant) {
+export const removeParticipant = (participant) => {
   return {
     type: 'REMOVE_PARTICIPANT',
     participant
   };
-}
+};
