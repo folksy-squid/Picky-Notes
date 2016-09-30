@@ -8,26 +8,17 @@ module.exports = (listen) => {
 
   io.on('connection', (socket) => {
     var getClientNames = (roomId, cb) => {
-      var res = [];
+      var result = [];
       var roomIds = rooms[roomId].sockets;
-      console.log('room ids', roomIds);
       if (roomIds) {
         for (var id in roomIds) {
           var sockets = io.sockets;
-          console.log('id', id);
-          console.log('sockets', sockets);
           socketUser = connected[id].user;
-          console.log('socketuser!!!:', socketUser);
-          res.push(socketUser);
+          result.push(socketUser);
         }
-        console.log('res!!!::', res);
       }
-      cb(res);
-      return;
+      return cb(result);
     };
-
-      //console.log('a user connected');
-    //console.log('a user connected');
 
     socket.on('create room', (pathUrl, user) => {
       // verify if pathUrl and userId are valid
@@ -52,10 +43,9 @@ module.exports = (listen) => {
           if (socket.pathUrl) {
             findRoom(socket.pathUrl, (found) => {
               getClientNames(socket.pathUrl, (participants) => {
-                console.log('these are participants', participants);
                 socket.emit('join room success', participants, found.dataValues);
               });
-            })
+            });
             io.in(socket.pathUrl).emit('new user joined room', user);
           }
         });
