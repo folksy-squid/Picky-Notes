@@ -12,9 +12,6 @@ const createSocketRoom = (state, host, pathUrl, createRoom) => {
   return socket;
 };
 
-
-
-
 export default (state = {}, action) => {
   if (action.type === 'CREATE_ROOM') {
     // ajax call passing in action.data and then setting state in the success
