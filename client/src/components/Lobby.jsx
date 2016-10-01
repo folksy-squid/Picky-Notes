@@ -12,7 +12,7 @@ import {Router} from 'react-router';
 class Lobby extends React.Component {
   constructor(props) {
     super(props);
-    console.log(props);
+    // console.log(props);
     var context = this;
 
     (!props.getState().user) && context.context.router.push('/');
@@ -44,9 +44,9 @@ class Lobby extends React.Component {
     });
   }
 
-  // componentWillUnmount() {
-  //   this.socket.disconnect();
-  // }
+  startLecture() {
+    this.props.getState().room.socket.emit('lecture start');
+  }
 
   render() {
     return (
@@ -58,9 +58,12 @@ class Lobby extends React.Component {
             <ChatBox />
           </div>
           <div className="col-sm-3">
-            <button className="btn btn-lg btn-success">
+            {/*<button className="btn btn-lg btn-success" onClick={this.startLecture.bind(this)}>
               Start Lecture
-            </button>
+            </button>*/}
+            <Link className="btn btn-lg btn-success" to="/lecture">
+              Start Lecture
+            </Link>
             <div className="panel-item">
               <div className="clipboard">
                 <input ref="shareLink" className="shareLink" value={this.state.pathUrl} readOnly/>

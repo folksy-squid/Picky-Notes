@@ -19,16 +19,16 @@ class Note extends React.Component {
     var view;
 
     //props.page will be obtained from redux store.
-    if (this.props.view === 'Compiled') {
+    if (this.props.view === 'compile') {
       view = (
         <div className="note">
-          'this is a note in compiled'{/*this.props.note*/}
+          {this.props.note.content + ' ' + this.props.note.audioTimestamp + ' ' + this.props.view}
         </div>
       )
-    } else if (this.props.view === 'Lecture'){
+    } else if (this.props.view === 'lecture'){
       view = (
         <div className="note">
-          'this is a note in lecture'{/*this.props.note*/}
+          {this.props.note.content + ' ' + this.props.note.audioTimestamp + ' ' + this.props.view}
         </div>)
     } else if (this.props.view === 'Review') {
       view = (

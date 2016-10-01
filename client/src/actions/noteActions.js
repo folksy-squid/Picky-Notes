@@ -1,10 +1,16 @@
 /*jshint esversion: 6 */
+export function submitNote (socket, content) {
+  return {
+    type: 'SUBMIT_NOTE',
+    socket,
+    content
+  };
+}
 
-export function addNote (timestamp, text) {
+export function addNote (note) {
   return {
     type: 'ADD_NOTE',
-    timestamp,
-    text
+    note
   };
 }
 
