@@ -40,7 +40,7 @@ class JoinRoom extends React.Component {
   render() {
     return (
       <div className="container">
-        <h2>Join Roomsssss</h2>
+        <h2>Join Room</h2>
         <div>
         <form onSubmit={this.submitInput.bind(this)} className="" role="join">
           <div className="form-group">
