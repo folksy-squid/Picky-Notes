@@ -8,7 +8,6 @@ import {connect} from 'react-redux';
 import {joinSocketRoom} from '../actions/roomActions';
 import {Router} from 'react-router';
 
-
 class Lobby extends React.Component {
   constructor(props) {
     super(props);
@@ -18,6 +17,7 @@ class Lobby extends React.Component {
     (!props.getState().user) && context.context.router.push('/');
     var pathUrl = props.getState().room.roomInfo ? props.getState().room.roomInfo.pathUrl : props.params.roomId;
     this.state = {
+      isHost: true,
       pathUrl: pathUrl,
       completed: true
     };
@@ -44,13 +44,16 @@ class Lobby extends React.Component {
     });
   }
 
-  startLecture() {
-    this.props.getState().room.socket.emit('lecture start');
+  startLecture(){
+    //this.props.getState().room..socket.emit('lecture start')
+  }
+
+  noSuchLobby() {
+    // redirect to '404' page.
   }
 
   render() {
     return (
-      this.state.completed ? (
       <div className="container lobby">
         <LectureTitle />
         <div className="row">
@@ -58,12 +61,10 @@ class Lobby extends React.Component {
             <ChatBox />
           </div>
           <div className="col-sm-3">
-            {/*<button className="btn btn-lg btn-success" onClick={this.startLecture.bind(this)}>
+          { this.state.isHost && (
+            <Link className="btn btn-lg btn-success" onClick={this.startLecture.bind(this)} to="/lecture">
               Start Lecture
-            </button>*/}
-            <Link className="btn btn-lg btn-success" to="/lecture">
-              Start Lecture
-            </Link>
+            </Link>)}
             <div className="panel-item">
               <div className="clipboard">
                 <input ref="shareLink" className="shareLink" value={this.state.pathUrl} readOnly/>
@@ -80,8 +81,7 @@ class Lobby extends React.Component {
           </div>
         </div>
       </div>
-    ) : <div></div>
-    );
+    )
   }
 }
 

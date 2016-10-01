@@ -12,9 +12,6 @@ const createSocketRoom = (state, host, pathUrl, createRoom) => {
   return socket;
 };
 
-
-
-
 export default (state = {}, action) => {
   if (action.type === 'CREATE_ROOM') {
     // ajax call passing in action.data and then setting state in the success
@@ -39,12 +36,10 @@ export default (state = {}, action) => {
     var socket = io();
     console.log('joining room');
     socket.emit('join room', action.pathUrl, action.user);
-
     socket.on('join room error', () => {
-      console.log('join room error');
       socket.disconnect();
       state.socket = null;
-      action.joinedRoom('error');
+      action.joinedRoom('join room error');
     });
 
     socket.on('join room success', (participants, roomInfo) => {
@@ -52,7 +47,7 @@ export default (state = {}, action) => {
       state.socket = socket;
       state.roomInfo = roomInfo;
       state.participants = participants;
-      action.joinedRoom(null, 'success');
+      action.joinedRoom(null, 'success', roomInfo);
     });
   }
 
