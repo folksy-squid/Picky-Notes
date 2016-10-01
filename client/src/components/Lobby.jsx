@@ -48,7 +48,6 @@ class Lobby extends React.Component {
         return this.refs.shareLink.innerText;
       }
     });
-
     this.checkHost();
     var socket = this.props.getState().room.socket;
     socket.on('lecture started', this.goToLecture.bind(this));
@@ -65,6 +64,10 @@ class Lobby extends React.Component {
 
   noSuchLobby() {
     // redirect to '404' page.
+  }
+  componentWillUnmount() {
+    var socket = this.props.getState().room.socket;
+    socket.off('user disconnected');
   }
 
   render() {

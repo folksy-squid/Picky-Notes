@@ -18,27 +18,32 @@ class ParticipantList extends React.Component {
     };
   }
 
+  newUserJoinedRoom(user) {
+    console.log('new user joined room');
+    this.props.dispatch(addParticipant(user));
+    this.setState({participants: this.props.getState().room.participants});
+  }
+
+  userDisconnected(user) {
+    console.log('a user has disconnected', user);
+    this.props.dispatch(removeParticipant(user));
+    this.setState({participants: this.props.getState().room.participants});
+  }
+
+  userReady(user) {
+    console.log('a user is ready', user);
+    this.props.dispatch(readyParticipant(user));
+    this.setState({participants: this.props.getState().room.participants});
+  }
+
   componentWillMount() {
     // console.log('this.props', this.props);
     // console.log('this.props state', this.props.getState());
     var socket = this.props.getState().room.socket;
 
-    socket.on('new user joined room', (user) => {
-      console.log('new user joined room');
-      this.props.dispatch(addParticipant(user));
-      this.setState({participants: this.props.getState().room.participants});
-    });
-    socket.on('user disconnected', (user) => {
-      console.log('a user has disconnected', user);
-      this.props.dispatch(removeParticipant(user));
-      this.setState({participants: this.props.getState().room.participants});
-    });
-
-    socket.on('user ready', (user) => {
-      console.log('a user is ready', user);
-      this.props.dispatch(readyParticipant(user));
-      this.setState({participants: this.props.getState().room.participants});
-    });
+    socket.on('new user joined room', this.newUserJoinedRoom.bind(this));
+    socket.on('user disconnected', this.userDisconnected.bind(this));
+    socket.on('user ready', this.userReady.bind(this));
 
     if (this.state.view === 'lecture') {
       this.state.readyStatusDisplay = 'inline-block';
@@ -53,6 +58,14 @@ class ParticipantList extends React.Component {
     //     participants: this.state.participants.concat([user])
     //   });
     // });
+  }
+
+  componentWillUnmount() {
+    console.log('unmounting this component', this.newUserJoinedRoom);
+    var socket = this.props.getState().room.socket;
+    socket.removeListener('new user joined room', this.newUserJoinedRoom);
+    socket.removeListener('user disconnected', this.userDisconnected);
+    socket.removeListener('user ready', this.userReady);
   }
 
   render() {
