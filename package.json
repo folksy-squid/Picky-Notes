@@ -8,9 +8,7 @@
     "test": "npm run test:server & npm run test:client",
     "test:server": "mocha --recursive specs/Server/",
     "test:client": "mocha specs/Client/helpers.js specs/Client/ComponentSpec.js",
-    "dev": "nodemon server/server.js & webpack --watch",
-    "serve": "webpack-dev-server",
-    "hm": "nodemon server/server.js --ignore components"
+    "dev": "nodemon server/server.js --ignore components"
   },
   "repository": {
     "type": "git",
