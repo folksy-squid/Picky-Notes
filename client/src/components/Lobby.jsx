@@ -36,6 +36,12 @@ class Lobby extends React.Component {
 
   }
 
+  checkHost() {
+    let host = this.props.getState().room.participants[0];
+    let user = this.props.getState().user.information[0];
+    host.id === user.id && this.setState({isHost: true});
+  }
+
   componentDidMount() {
     new Clipboard(this.refs.copyButton, {
       text: (trigger) => {
@@ -43,12 +49,10 @@ class Lobby extends React.Component {
       }
     });
 
-    let host = this.props.getState().room.participants[0];
-    let user = this.props.getState().user.information[0];
-    host.id === user.id && this.setState({isHost: true});
-
+    this.checkHost();
     var socket = this.props.getState().room.socket;
-    this.props.getState().room.socket.on('lecture started', this.goToLecture.bind(this));
+    socket.on('lecture started', this.goToLecture.bind(this));
+    socket.on('user disconnected', this.checkHost.bind(this));
   }
 
   startLecture() {
