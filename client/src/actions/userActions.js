@@ -1,13 +1,13 @@
 /*jshint esversion: 6 */
-export function createUser (user) {
+export const createUser = (user) => {
   return {
     type: 'CREATE_USER',
     user
   };
-}
+};
 
-export function logOut () {
+export const logOut = () => {
   return {
     type: 'DELETE_USER'
   };
-}
+};
