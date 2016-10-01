@@ -3,7 +3,7 @@ var webpack = require('webpack');
 
 // Add spec files to compile
 module.exports = {
-  devtool: 'inline-source-map',
+  devtool: 'source-map',
   entry: [
     //entry for webpack to look for current code when change
     'webpack-hot-middleware/client',
@@ -33,7 +33,7 @@ module.exports = {
     loaders: [{
       test: /\.jsx?$/,
       exclude: /node_modules/,
-      loader: ['babel-loader'],
+      loader: 'babel-loader',
       query: {
         presets: ['react', 'es2015', 'react-hmre']
       }
