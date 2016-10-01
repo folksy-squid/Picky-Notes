@@ -31,7 +31,6 @@ class JoinRoom extends React.Component {
       if (err) {
         console.log(err);
       } else {
-        console.log('realm', realm);
         realm.context.router.push(`/lobby/${realm.state.value}`);
       }
     };
