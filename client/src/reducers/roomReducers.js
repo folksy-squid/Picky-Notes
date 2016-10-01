@@ -64,7 +64,7 @@ export default (state = {}, action) => {
 
   if (action.type === 'REMOVE_PARTICIPANT') {
     var index = findUser(state.participants, action.participant);
-    if (index !== -1) { state.participants.splice(1, 1); }
+    if (index !== -1) { state.participants.splice(index, 1); }
   }
 
   if (action.type === 'READY_PARTICIPANT') {
