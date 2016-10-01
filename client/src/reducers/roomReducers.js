@@ -36,7 +36,6 @@ export default (state = {}, action) => {
     var socket = io();
     console.log('joining room');
     socket.emit('join room', action.pathUrl, action.user);
-
     socket.on('join room error', () => {
       socket.disconnect();
       state.socket = null;

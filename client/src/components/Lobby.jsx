@@ -11,24 +11,21 @@ import {Router} from 'react-router';
 class Lobby extends React.Component {
   constructor(props) {
     super(props);
+    // console.log(props);
     var context = this;
 
     (!props.getState().user) && context.context.router.push('/');
     var pathUrl = props.getState().room.roomInfo ? props.getState().room.roomInfo.pathUrl : props.params.roomId;
     this.state = {
+      isHost: true,
       pathUrl: pathUrl,
-      completed: false,
-      isHost: false
+      completed: true
     };
   }
   static get contextTypes() {
     return {
       router: React.PropTypes.object.isRequired,
     };
-  }
-
-  noSuchLobby() {
-    // redirect to '404' page.
   }
 
   componentWillMount() {
@@ -47,14 +44,16 @@ class Lobby extends React.Component {
     });
   }
 
-  startLecture() {
-    this.props.getState().room.socket.emit('lecture start');
+  startLecture(){
+
   }
 
+  noSuchLobby() {
+    // redirect to '404' page.
+  }
 
   render() {
     return (
-      this.state.completed ? (
       <div className="container lobby">
         <LectureTitle />
         <div className="row">
@@ -82,8 +81,7 @@ class Lobby extends React.Component {
           </div>
         </div>
       </div>
-    ) : <div></div>
-    );
+    )
   }
 }
 
