@@ -3,6 +3,7 @@ var webpack = require('webpack');
 
 // Add spec files to compile
 module.exports = {
+  devtool: 'inline-source-map',
   entry: [
     //entry for webpack to look for current code when change
     'webpack-hot-middleware/client',
@@ -10,10 +11,9 @@ module.exports = {
     './client/src/index.jsx'
   ],
   output: {
-    // path: path.join(__dirname, '/client/dist'),
-    path: path.resolve('./client/dist'),
+    path: path.resolve('./client/dist/'),
     filename: 'index.bundle.js',
-    publicPath: '/'
+    publicPath: '/dist/'
   },
   // devServer: {
   //   hot: true,
@@ -21,12 +21,6 @@ module.exports = {
   //   port: 7700,
   //   historyApiFallback: true
   // },
-  externals: {
-    'cheerio': 'window',
-    'react/addons': true,
-    'react/lib/ExecutionEnvironment': true,
-    'react/lib/ReactContext': true
-  },
   plugins: [
     // optimizes the order and efficiency of module usage
     new webpack.optimize.OccurrenceOrderPlugin(),
@@ -39,14 +33,10 @@ module.exports = {
     loaders: [{
       test: /\.jsx?$/,
       exclude: /node_modules/,
-      loader: 'babel-loader',
+      loader: ['babel-loader'],
       query: {
         presets: ['react', 'es2015', 'react-hmre']
       }
-    }, {
-      test: /\.css$/,
-      loader: 'style-loader!css-loader'
     }]
-  },
-  devtool: 'inline-source-map'
+  }
 };
