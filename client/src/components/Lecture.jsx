@@ -56,7 +56,7 @@ class Lecture extends React.Component {
           <button className="btn btn-lg btn-success" style={{display: this.state.readyButtonDisplay}} onClick={this.sendReady.bind(this)}>
             Ready
           </button>
-          <Link className="btn btn-lg btn-success" style={{ display: this.state.continueButtonDisplay}} to="/compile">
+          <Link className="btn btn-lg btn-info" style={{ display: this.state.continueButtonDisplay}} to="/compile">
             Continue
           </Link>
         </div>
