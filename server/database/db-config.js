@@ -1,6 +1,12 @@
 /*jshint esversion: 6 */
+var {username, password, awsDB} = require('../../keys').dbCredentials;
 const Sequelize = require('sequelize');
-const db = new Sequelize('postgres://ubuntu:password@localhost:5432/pickynotes', { logging: false });
+
+var testDB = 'ubuntu:password@localhost:5432/pickynotes';
+var prodDB = `${username}:${password}@${awsDB}`;
+var dbInstance = process.env.NODE_ENV === 'production' ? prodDB : testDB;
+
+const db = new Sequelize(`postgres://${dbInstance}`, { logging: false });
 
 const {User} = require('./controllers/UserController')(db, Sequelize);
 const {Room} = require('./controllers/RoomController')(db, Sequelize);
