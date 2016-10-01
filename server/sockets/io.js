@@ -7,6 +7,7 @@ module.exports = (listen) => {
   const connected = io.sockets.connected;
 
   io.on('connection', (socket) => {
+
     var getClientNames = (roomId, cb) => {
       var result = [];
       var roomIds = rooms[roomId].sockets;
@@ -76,8 +77,10 @@ module.exports = (listen) => {
       io.in(socket.pathUrl).emit('user ready', socket.userId);
       if (isAllReady(socket.pathUrl, rooms, connected)) {
         io.in(socket.pathUrl).emit('all ready');
-        saveAllNotes(socket.pathUrl, () => {
-          io.in(socket.pathUrl).emit('all notes saved');
+        getClientNames(socket.pathUrl, (arrOfClients) => {
+          saveAllNotes(socket.pathUrl, arrOfClients, () => {
+            io.in(socket.pathUrl).emit('all notes saved');
+          });
         });
       }
     });
