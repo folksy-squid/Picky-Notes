@@ -44,9 +44,9 @@ class Lobby extends React.Component {
     });
   }
 
-  // componentWillUnmount() {
-  //   this.socket.disconnect();
-  // }
+  startLecture() {
+    this.props.getState().room.socket.emit('lecture start');
+  }
 
   render() {
     return (

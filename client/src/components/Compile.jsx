@@ -20,7 +20,7 @@ class Compile extends React.Component {
           <LectureBox />
         </div>
         <div className="col-md-3">
-          <div>SAVE BUTTON</div>
+          <button className="btn btn-lg btn-success">Save</button>
           <ParticipantList />
         </div>
       </div>
