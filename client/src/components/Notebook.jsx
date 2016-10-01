@@ -16,7 +16,7 @@ class Notebook extends React.Component {
       <div className="container">
         <div className="row">
           <div className="col-sm-8">
-            <h3>My Notebookasdf</h3>
+            <h3>My Notebook</h3>
           </div>
           <div className="col-sm-4">
             <SearchBar />
