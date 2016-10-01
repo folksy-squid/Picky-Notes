@@ -51,7 +51,7 @@ class NewRoom extends React.Component {
         lecturer: this.state.lecturer
       };
       var user = this.props.getState().user.information[0];
-      console.log('button was clicked');
+
       this.props.dispatch(createRoom(data, user, createdRoom));
     } else {
       this.setState({error: true});

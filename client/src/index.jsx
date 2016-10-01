@@ -10,7 +10,6 @@ import { Router } from 'react-router';
 import createRoutes from './routes.jsx';
 import store, { history } from './store';
 import {createUser, getUser} from './actions/userActions';
-
 import {joinSocketRoom} from './actions/roomActions'
 import {getCurrentView, getRoomCodeFromUrl} from './helpers'
 

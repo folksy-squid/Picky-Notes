@@ -29,7 +29,7 @@ class JoinRoom extends React.Component {
     var user = this.props.getState().user.information[0];
     var joinedRoom = (err, success) => {
       if (err) {
-        console.log('we have an error', err);
+        console.log(err);
       } else {
         realm.context.router.push(`/lobby/${realm.state.value}`);
       }

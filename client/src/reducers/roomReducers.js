@@ -38,10 +38,9 @@ export default (state = {}, action) => {
     socket.emit('join room', action.pathUrl, action.user);
 
     socket.on('join room error', () => {
-      console.log('join room error');
       socket.disconnect();
       state.socket = null;
-      action.joinedRoom('error');
+      action.joinedRoom('join room error');
     });
 
     socket.on('join room success', (participants, roomInfo) => {
@@ -49,7 +48,7 @@ export default (state = {}, action) => {
       state.socket = socket;
       state.roomInfo = roomInfo;
       state.participants = participants;
-      action.joinedRoom(null, 'success');
+      action.joinedRoom(null, 'success', roomInfo);
     });
   }
 

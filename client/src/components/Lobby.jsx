@@ -8,15 +8,16 @@ import {connect} from 'react-redux';
 import {joinSocketRoom} from '../actions/roomActions';
 import {Router} from 'react-router';
 
-
 class Lobby extends React.Component {
   constructor(props) {
     super(props);
     var context = this;
+
+    (!props.getState().user) && context.context.router.push('/');
     var pathUrl = props.getState().room.roomInfo ? props.getState().room.roomInfo.pathUrl : props.params.roomId;
     this.state = {
       pathUrl: pathUrl,
-      completed: true,
+      completed: false,
       isHost: false
     };
   }
@@ -24,6 +25,10 @@ class Lobby extends React.Component {
     return {
       router: React.PropTypes.object.isRequired,
     };
+  }
+
+  noSuchLobby() {
+    // redirect to '404' page.
   }
 
   componentWillMount() {
@@ -46,9 +51,9 @@ class Lobby extends React.Component {
     this.props.getState().room.socket.emit('lecture start');
   }
 
+
   render() {
     return (
-<<<<<<< 351bd45a851f24d8051f2d673afd9cd58ddf2d84
       this.state.completed ? (
       <div className="container lobby">
         <LectureTitle />
@@ -69,34 +74,16 @@ class Lobby extends React.Component {
                     <i className="ion ion-clipboard"></i>
                   </button>
                 </div>
-=======
-    <div className="container lobby">
-      <LectureTitle />
-      <div className="row">
-        <div className="col-sm-9">
-          <ChatBox />
-        </div>
-        <div className="col-sm-3">
-          <button className="btn btn-lg btn-success">
-            Start Lecture
-          </button>
-          <div className="panel-item">
-            <div className="clipboard">
-              <input ref="shareLink" className="shareLink" value={this.state.pathUrl} readOnly/>
-              <div className="buttonCell">
-                <button ref="copyButton" className="copyButton" data-clipboard-target=".shareLink">
-                  <i className="ion ion-clipboard"></i>
-                </button>
->>>>>>> (dev) fixing routes to obtain information before route loads the page
               </div>
             </div>
-          </div>
-          <div className="panel-item">
-            <ParticipantList />
+            <div className="panel-item">
+              <ParticipantList />
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    ) : <div></div>
+    );
   }
 }
 
