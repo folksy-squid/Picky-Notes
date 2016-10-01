@@ -11,7 +11,7 @@ class Lecture extends React.Component {
     this.state = {
       readyButtonDisplay: 'none',
       endLectureDisplay: 'inline-block',
-      isHost: false
+      isHost: false,
     };
   }
 
@@ -22,7 +22,6 @@ class Lecture extends React.Component {
   }
 
   componentDidMount() {
-    console.log('CONTEXT', this.context);
     this.checkHost();
 
     var socket = this.props.getState().room.socket;
@@ -36,7 +35,6 @@ class Lecture extends React.Component {
 
     socket.on('all notes saved', () => {
       // redirect to compile view
-      console.log('all notes saved and redirect');
       this.context.router.push(`/compile/${this.props.getState().room.roomInfo.pathUrl}`);
     });
     socket.on('user disconnected', this.checkHost.bind(this));

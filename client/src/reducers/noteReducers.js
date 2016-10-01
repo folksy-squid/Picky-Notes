@@ -14,5 +14,14 @@ export default (state = [], action) => {
     state = action.allNotes.sort((a, b) => Date.parse(a.audioTimestamp) - Date.parse(b.audioTimestamp));
   }
 
+  if (action.type === 'SELECT_NOTE') {
+    state.forEach((note, i) => {
+      if (note.id === action.noteId) {
+        note.show = !note.show;
+      }
+    });
+    console.log('STATE IN REDUCER', state, action.noteId);
+  }
+
   return state;
 };
