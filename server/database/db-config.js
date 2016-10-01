@@ -11,8 +11,8 @@ const {Note} = require('./controllers/NoteController')(db, Sequelize);
 
 Room.belongsTo(User, {foreignKey: 'hostId', as: 'host', constraints: false});
 
-User.belongsToMany(Room, {foreignKey: 'studentId', through: 'UserRoom'});
-Room.belongsToMany(User, {foreignKey: 'lectureRoomId', through: 'UserRoom'});
+User.belongsToMany(Room, {through: 'UserRoom'});
+Room.belongsToMany(User, {through: 'UserRoom'});
 
 Room.hasMany(Note);
 Note.belongsTo(Room, {onDelete: 'cascade'});

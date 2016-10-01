@@ -7,12 +7,29 @@ import { Link } from 'react-router';
 class Notebook extends React.Component {
   constructor (props) {
     super(props);
+    this.state= {
+      loaded: false
+    };
     // console.log('state:', this.state);
     // console.log('props:', props);
   }
 
+  componentWillMount() {
+    var user = this.props.getState().user.information[0];
+    var context = this;
+    console.log('user', user);
+    $.ajax({
+      method: 'GET',
+      url: `/api/users/rooms/${user.id}`,
+      success: (entries) => {
+        context.setState({loaded: true, entries: entries});
+      }
+    });
+  }
+
   render() {
     return (
+      this.state.loaded ? (
       <div className="container">
         <div className="row">
           <div className="col-sm-8">
@@ -23,9 +40,10 @@ class Notebook extends React.Component {
           </div>
         </div>
         <div className="row">
-          <EntryList />
+          <EntryList entries={this.state.entries}/>
         </div>
       </div>
+    ) : (<div></div>)
     );
   }
 }

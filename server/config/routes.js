@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 const {createNewUser, createNewRoom, joinRoom, createNewNote, showAllNotes, showFilteredNotes, updateNotes} = require ('../database/db-helpers');
+=======
+const {createNewUser, createNewRoom, joinRoom, createNewNote, showAllNotes, showFilteredNotes, getAllUserRooms} = require ('../database/db-helpers');
+>>>>>>> notebook work part 1
 const passport = require('./passport');
 const path = require('path');
 const hotreload = require('./hotreload');
@@ -36,7 +40,11 @@ module.exports = (app, express) => {
       }
     });
   });
-
+  app.get('/api/users/rooms/:userId', (req, res) => {
+    getAllUserRooms(req.params.userId, (allUserRooms) => {
+      res.send(allUserRooms);
+    });
+  });
   // User Info Update
   app.route('/api/users/:userId')
     .get((req, res) => {
