@@ -9,12 +9,12 @@ class Compile extends React.Component {
     super(props);
   }
 
-  
+
   render() {
     return (
     <div className="container-fluid">
       <div className="row">
-        <h3>Select your notes</h3>
+        <h3>Edit Notes</h3>
         <div> 'AUDIO COMPONENT GOES HERE '</div>
       </div>
       <div className="row">

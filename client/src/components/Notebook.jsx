@@ -1,7 +1,7 @@
 import React from 'react';
-import Connection from '../Connection.js'
-import EntryList from './sub/EntryList.jsx'
-import SearchBar from './sub/SearchBar.jsx'
+import Connection from '../Connection.js';
+import EntryList from './sub/EntryList.jsx';
+import SearchBar from './sub/SearchBar.jsx';
 import { Link } from 'react-router';
 
 class Notebook extends React.Component {
@@ -11,7 +11,7 @@ class Notebook extends React.Component {
     // console.log('props:', props);
   }
 
-  render(){
+  render() {
     return (
       <div className="container">
         <div className="row">
@@ -26,7 +26,7 @@ class Notebook extends React.Component {
           <EntryList />
         </div>
       </div>
-    )
+    );
   }
 }
 
