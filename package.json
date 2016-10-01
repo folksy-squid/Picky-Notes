@@ -9,7 +9,7 @@
     "test:server": "mocha --recursive specs/Server/",
     "test:client": "mocha specs/Client/helpers.js specs/Client/ComponentSpec.js",
     "client": "export NODE_ENV='client' && nodemon server/server.js --ignore components",
-    "dev": "export NODE_ENV='dev' && nodemon server/server.js --ignore components"
+    "dev": "export NODE_ENV='dev' && nodemon server/server.js & webpack --watch"
   },
   "repository": {
     "type": "git",
