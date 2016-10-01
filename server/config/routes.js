@@ -103,13 +103,13 @@ module.exports = (app, express) => {
       res.send('Add new notes (save button) for user #' + req.params.userId + ' inside room #' + req.params.roomId);
     });
 
-  // app.get('*/index.bundle.js', function (request, response) {
-  //   response.sendFile(path.resolve(__dirname, '../../client', 'dist/index.bundle.js'));
-  // });
+  app.get('*/index.bundle.js', function (request, response) {
+    response.sendFile(path.resolve(__dirname, '../../client', 'dist/index.bundle.js'));
+  });
 
-  // app.get('*/index.bundle.js.map', function(request, response) {
-  //   response.sendFile(path.resolve(__dirname, '../../client', 'dist/index.bundle.js.map'));
-  // });
+  app.get('*/index.bundle.js.map', function(request, response) {
+    response.sendFile(path.resolve(__dirname, '../../client', 'dist/index.bundle.js.map'));
+  });
 
   app.get('*', function(request, response) {
     response.sendFile(path.resolve(__dirname, '../../client', 'index.html'));
