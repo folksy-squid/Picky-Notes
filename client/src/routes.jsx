@@ -59,7 +59,7 @@ export default (store) => {
         <Route path='/review' component={Review} />
       </Route>
       <Route path='/lecture/:roomId' component={Lecture} onEnter={authCheck}/>
-      <Route path='/compile' component={Compile} onEnter={authCheck}/>
+      <Route path='/compile/:roomId' component={Compile} onEnter={authCheck}/>
     </Route>
   );
 };
