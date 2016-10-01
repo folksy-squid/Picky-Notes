@@ -1,8 +1,13 @@
 const {createNewUser, createNewRoom, joinRoom, createNewNote, showAllNotes, showFilteredNotes} = require ('../database/db-helpers');
 const passport = require('./passport');
 const path = require('path');
+const hotreload = require('./hotreload');
+
+
 module.exports = (app, express) => {
   // Facebook OAuth
+
+  // hotreload(app);
   app.get('/auth/facebook',
     passport.authenticate('facebook', {
       scope: ['public_profile', 'email', 'user_about_me', 'user_friends']
