@@ -74,7 +74,7 @@ module.exports = (listen) => {
 
     socket.on('user ready', () => {
       socket.ready = true;
-      io.in(socket.pathUrl).emit('user ready', socket.user.id);
+      io.in(socket.pathUrl).emit('user ready', socket.user);
       if (isAllReady(socket.pathUrl, rooms, connected)) {
         io.in(socket.pathUrl).emit('all ready');
         getClientNames(socket.pathUrl, (arrOfClients) => {

@@ -45,9 +45,9 @@ class ParticipantList extends React.Component {
       this.setState({participants: this.props.getState().room.participants});
     });
 
-    socket.on('user ready', (userId) => {
-      console.log('a user is ready', userId);
-      this.props.dispatch(readyParticipant(userId));
+    socket.on('user ready', (user) => {
+      console.log('a user is ready', user);
+      this.props.dispatch(readyParticipant(user));
       this.setState({participants: this.props.getState().room.participants});
     });
 

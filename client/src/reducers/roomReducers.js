@@ -51,22 +51,24 @@ export default (state = {}, action) => {
     });
   }
 
-  const findUser = (user) => state.participants.findIndex((obj) => obj.id === user);
+  const findUser = (list, user) => list.findIndex( obj => obj.id === user.id);
 
   if (action.type === 'LEAVE_SOCKET_ROOM') {
     state.socket.disconnect();
     state.socket = null;
   }
   if (action.type === 'ADD_PARTICIPANT') {
+    console.log('adding', action.participant, 'to', state.participants);
     state.participants.push(action.participant);
   }
   if (action.type === 'REMOVE_PARTICIPANT') {
-    state.participants.splice(findUser(action.participant), 1);
+    console.log('participant', action.participant);
+    console.log('findUser', findUser(state.participants, action.participant));
+    state.participants.splice(findUser(state.participants, action.participant), 1);
   }
 
   if (action.type === 'READY_PARTICIPANT') {
-    console.log('participant', action.participant);
-    state.participants[findUser(action.participant)].readyStatus = true;
+    state.participants[findUser(state.participants, action.participant)].readyStatus = true;
   }
 
 
