@@ -4,17 +4,6 @@ import {connect} from 'react-redux';
 import {addParticipant, removeParticipant, readyParticipant} from '../../actions/roomActions';
 import {getCurrentView} from '../../helpers.js';
 
-var getCurrentView = function(pathname) {
-  if (pathname === '/lobby') {
-    return 'lobby';
-  } else if (pathname === '/lectu') {
-    return 'lecture';
-  } else if (pathname === '/compi') {
-    return 'compile';
-  }
-};
-
-
 class ParticipantList extends React.Component {
   constructor(props) {
     super(props);
