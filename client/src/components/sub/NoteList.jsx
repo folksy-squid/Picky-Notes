@@ -9,10 +9,11 @@ class NoteList extends React.Component {
   constructor(props) {
     super(props);
     var pathname = props.getState().routing.locationBeforeTransitions.pathname;
+    var currentView = getCurrentView(pathname);
     this.state = {
       notes: props.getState().note,
-      view: getCurrentView(pathname)
-    };
+      view: currentView
+    }
   }
 
   componentWillMount() {
@@ -50,12 +51,8 @@ class NoteList extends React.Component {
   //   this.setState({view});
   // }
 
-<<<<<<< d8b03c0e401440dbca6b9a1b314a273576bb5f11
 /*<Note note={note} view={this.state.view} key={i} />*/
   render() {
-=======
-  render(){
->>>>>>> Reverted back to old stuff
     return (
       <div className="note-list">
         NoteList with {this.state.view} view

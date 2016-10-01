@@ -7,10 +7,13 @@ import {getCurrentView} from '../../helper.js'
 class ParticipantList extends React.Component {
   constructor(props) {
     super(props);
-    var pathname = props.getState().routing.locationBeforeTransitions.pathname.slice(0, 6);
+
+    let pathname = props.getState().routing.locationBeforeTransitions.pathname;
+    let currentView = getCurrentView(pathname)
+
     this.state = {
       participants: props.getState().room.participants,
-      view: getCurrentView(pathname)
+      view: currentView
     };
   }
 

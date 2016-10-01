@@ -30,7 +30,7 @@ class Note extends React.Component {
         <div className="note">
           {this.props.note.content + ' ' + this.props.note.audioTimestamp + ' ' + this.props.view}
         </div>)
-    } else if (this.props.view === 'Review') {
+    } else if (this.props.view === 'review') {
       view = (
         <div className="note">
           'this is a note in review'{/*this.props.note*/}
