@@ -4,69 +4,51 @@
 import React from 'react';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
-import { Router, Route, IndexRoute } from 'react-router';
+import { Router } from 'react-router';
 
-/* <- Import components -> */
-import Landing from './components/Landing.jsx';
-import Lecture from './components/Lecture.jsx';
-import Compile from './components/Compile.jsx';
-import NewRoom from './components/NewRoom.jsx';
-import JoinRoom from './components/JoinRoom.jsx';
-import Lobby from './components/Lobby.jsx';
-import Notebook from './components/Notebook.jsx';
-import Review from './components/Review.jsx';
-import Main from './components/Main.jsx';
-import App from './components/App.jsx';
-/* <- Import store -> */
+/* <- Import store and routes -> */
+import createRoutes from './routes.jsx';
 import store, { history } from './store';
 import {createUser, getUser} from './actions/userActions';
+import {joinSocketRoom} from './actions/roomActions'
+import {getCurrentView, getRoomCodeFromUrl} from './helpers'
 
-const getUserFromCookie = (cookie) => {
-  let slicedCookie = cookie.slice(17);
-  let decoded = window.decodeURIComponent(slicedCookie);
-  return JSON.parse(decoded).user;
-};
+const routes = createRoutes(store);
 
-const authCheck = (nextState, replace) => {
-  if (document.cookie) {
-    let user = getUserFromCookie(document.cookie);
+// const checkLobby = ({roomCode}) => {
 
-    // if redux store does not have user,
-    // console.log('auth-checking.', store.getState().user);
-    if (!store.getState().user.information && user) {
-      store.dispatch(createUser(user));
-    }
+//   let user = store.getState().user.information && store.getState().user.information[0];
+//   let participants = store.getState().room.participants;
+//   let host = participants && participants[0];
 
-    if (nextState.location.pathname === '/') {
-      replace({
-        pathname: '/notebook'
-      });
-    }
-  } else {
-    if (nextState.location.pathname !== '/') {
-      replace({
-        pathname: '/'
-      });
-    }
-  }
-};
+//   if (host && user && host.id !== user.id) {
+//     store.dispatch(joinSocketRoom(roomCode, user, (err, success)=>{
+//       if (err){
+//         console.log('there was an error joining the room.');
+//       } else {
+//         console.log('join room success.');
+//       }
+//     }))
+//   } else {
+//     // redirect to 404 page...
+//     console.log('sorry not allowed....')
+//   }
+// }
+
+// // if you need to perform checks before mounting component
+// const getInfo = {
+//   'lobby': checkLobby
+// };
+
+// history.listen(location=> {
+//   let currentView = getCurrentView(location.pathname);
+//   let roomCode = getRoomCodeFromUrl(location.pathname);
+//   return getInfo[currentView] && getInfo[currentView]({roomCode});
+// });
 
 render((<Provider store={store}>
     <Router history={history} >
-      <Route path='/' component={App} >
-        <IndexRoute component={Landing} onEnter={authCheck}/>
-        <Route component={Main} onEnter={authCheck}>
-          <Route path='/notebook' component={Notebook} onEnter={authCheck}/>
-          <Route path='/new' component={NewRoom} />
-          <Route path='/join' component={JoinRoom} />
-          <Route path='/lobby' component={Lobby}/>
-          <Route path="/lobby/:roomId" component={Lobby}/>
-          <Route path='/review' component={Review} />
-        </Route>
-        <Route path='/lecture' component={Lecture} onEnter={authCheck}/>
-        <Route path='/lecture/:roomId' component={Lecture} onEnter={authCheck}/>
-        <Route path='/compile' component={Compile} onEnter={authCheck}/>
-      </Route>
+      {routes}
     </Router>
   </Provider>),
   document.getElementById('root')
