@@ -57,14 +57,14 @@ export default (state = {}, action) => {
     state.socket.disconnect();
     state.socket = null;
   }
+
   if (action.type === 'ADD_PARTICIPANT') {
-    console.log('adding', action.participant, 'to', state.participants);
     state.participants.push(action.participant);
   }
+
   if (action.type === 'REMOVE_PARTICIPANT') {
-    console.log('participant', action.participant);
-    console.log('findUser', findUser(state.participants, action.participant));
-    state.participants.splice(findUser(state.participants, action.participant), 1);
+    var index = findUser(state.participants, action.participant);
+    if (index !== -1) { state.participants.splice(1, 1); }
   }
 
   if (action.type === 'READY_PARTICIPANT') {
