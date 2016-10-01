@@ -3,7 +3,7 @@ import Note from './Note.jsx'
 import {mapStateToProps} from '../../Connection.js';
 import {addNote} from '../../actions/noteActions.js';
 import {connect} from 'react-redux';
-import {getCurrentView} from '../../helper.js'
+import {getCurrentView} from '../../helpers.js'
 
 class NoteList extends React.Component {
   constructor(props){

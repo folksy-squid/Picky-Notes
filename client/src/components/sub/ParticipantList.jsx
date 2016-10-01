@@ -2,7 +2,7 @@ import React from 'react';
 import {mapStateToProps} from '../../Connection.js';
 import {connect} from 'react-redux';
 import {addParticipant, removeParticipant} from '../../actions/roomActions';
-import {getCurrentView} from '../../helper.js'
+import {getCurrentView} from '../../helpers.js'
 
 class ParticipantList extends React.Component {
   constructor(props) {
