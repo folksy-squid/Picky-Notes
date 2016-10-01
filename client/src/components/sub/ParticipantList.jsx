@@ -46,16 +46,6 @@ class ParticipantList extends React.Component {
     if (this.state.view === 'lecture') {
       this.state.readyStatusDisplay = 'inline-block';
     }
-    // var participants = this.props.getState().room.participants;
-    // this.setState({
-    //   participants: participants
-    // })
-
-    // socket.on('new user joined room', (user) => {
-    //   this.setState({
-    //     participants: this.state.participants.concat([user])
-    //   });
-    // });
   }
 
   componentWillUnmount() {
