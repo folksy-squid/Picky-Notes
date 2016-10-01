@@ -152,6 +152,14 @@ h2.new-room-title {
   color: pink;
 }
 
+.btn-ready {
+  border: 1px solid black;
+  border-radius: 5px;
+  padding: 0px 4px;
+  font-size: 12px;
+  vertical-align: middle;
+}
+
 /*
   =================================
     Note List
