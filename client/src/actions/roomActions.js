@@ -22,3 +22,10 @@ export const removeParticipant = (participant) => ({
   type: 'REMOVE_PARTICIPANT',
   participant
 });
+
+export const readyParticipant = (participant) => {
+  return {
+    type: 'READY_PARTICIPANT',
+    participant
+  };
+};

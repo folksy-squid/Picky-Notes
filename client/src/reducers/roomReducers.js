@@ -51,6 +51,8 @@ export default (state = {}, action) => {
     });
   }
 
+  const findUser = (user) => state.participants.findIndex((obj) => obj.id === user);
+
   if (action.type === 'LEAVE_SOCKET_ROOM') {
     state.socket.disconnect();
     state.socket = null;
@@ -59,8 +61,12 @@ export default (state = {}, action) => {
     state.participants.push(action.participant);
   }
   if (action.type === 'REMOVE_PARTICIPANT') {
-    console.log('this is the participant to remove', state.participants.findIndex((obj) => obj.facebookId === action.participant.facebookId));
-    state.participants.splice(state.participants.findIndex((obj) => obj.facebookId === action.participant.facebookId), 1);
+    state.participants.splice(findUser(action.participant), 1);
+  }
+
+  if (action.type === 'READY_PARTICIPANT') {
+    console.log('participant', action.participant);
+    state.participants[findUser(action.participant)].readyStatus = true;
   }
 
 
