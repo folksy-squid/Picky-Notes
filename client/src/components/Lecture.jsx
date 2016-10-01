@@ -10,11 +10,16 @@ class Lecture extends React.Component {
     super(props);
     this.state = {
       continueButtonDisplay: 'none',
-      readyButtonDisplay: 'inline-block'
+      readyButtonDisplay: 'none',
+      endLectureButton: 'inline-block'
     };
   }
 
   componentWillMount() {
+    this.props.getState().room.socket.on('lecture ended', () => {
+      console.log(this.props.getState());
+      this.setState({readyButtonDisplay: 'inline-block'});
+    });
     this.props.getState().room.socket.on('all ready', () => {
       // loading
       console.log('user is ready');
@@ -33,6 +38,7 @@ class Lecture extends React.Component {
   }
 
   endLecture() {
+    this.setState({endLectureButton: 'none'});
     this.props.getState().room.socket.emit('lecture end');
   }
 
@@ -47,12 +53,9 @@ class Lecture extends React.Component {
           <div className="col-md-9">
             <LectureTitle />
           </div>
-          {/*<button className="btn btn-lg btn-danger" onClick={this.endLecture}>
+          <button className="btn btn-lg btn-danger" onClick={this.endLecture.bind(this)}>
             End Lecture
-          </button>*/}
-          <Link className="btn btn-lg btn-danger" to="/compile">
-            End Lecture
-          </Link>
+          </button>
           <button className="btn btn-lg btn-success" style={{display: this.state.readyButtonDisplay}} onClick={this.sendReady.bind(this)}>
             Ready
           </button>
