@@ -31,10 +31,10 @@ class NoteList extends React.Component {
         url: `/api/notes/${userId}/${roomId}`,
         contentType: 'application/json',
         success: (res, status) => {
-          this.props.dispatch(replaceNotes(res));
-          this.setState({notes: this.props.getState().note});
           // clear out current Notes
+          this.props.dispatch(replaceNotes(res));
           // reassign with notes from server
+          this.setState({notes: this.props.getState().note});
         },
         error: function( res, status ) {
           console.log(res);
