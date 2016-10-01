@@ -71,6 +71,5 @@ export default (state = {}, action) => {
     state.participants[findUser(state.participants, action.participant)].readyStatus = true;
   }
 
-
   return state;
 };
