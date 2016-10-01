@@ -3,7 +3,7 @@ import Note from './Note.jsx';
 import {mapStateToProps} from '../../Connection.js';
 import {addNote, replaceNotes} from '../../actions/noteActions.js';
 import {connect} from 'react-redux';
-import {getCurrentView} from '../../helpers.js'
+import {getCurrentView} from '../../helpers.js';
 
 class NoteList extends React.Component {
   constructor(props) {
@@ -13,7 +13,7 @@ class NoteList extends React.Component {
     this.state = {
       notes: props.getState().note,
       view: currentView
-    }
+    };
   }
 
   componentWillMount() {
@@ -28,7 +28,6 @@ class NoteList extends React.Component {
     if (this.state.view === 'compile') {
       this.getAllNotes(userId, roomId);
     }
-
     if (this.state.view === 'review') {
       this.getReviewNotes(userId, roomId);
     }

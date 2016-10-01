@@ -67,9 +67,9 @@ class ParticipantList extends React.Component {
         </h4>
         {this.state.participants.map(({name, readyStatus}, i) =>
         <div key={i}>
-          <i className="ion ion-android-person {classColor({i})}" aria-hidden="true"></i>
+          <i className={`ion ion-android-person ${classColor(`${i}`)}`} aria-hidden="true"></i>
           <span>{name}</span>&nbsp;
-          <span className='btn-ready' style={{display: this.state.readyStatusDisplay}}>{readyStatus ? 'Ready' : 'Not Ready'}</span>
+          <span className={`btn-ready ${classColor(`${i}`)}`} style={{display: this.state.readyStatusDisplay}}>{readyStatus ? 'Ready' : 'Not Ready'}</span>
         </div>)}
       </div>
     );
