@@ -25,6 +25,9 @@ class Lecture extends React.Component {
           <div className="col-md-9">
             <LectureTitle />
           </div>
+          {/*<button className="btn btn-lg btn-danger" onClick={this.endLecture}>
+            End Lecture
+          </button>*/}
           <Link className="btn btn-lg btn-danger" to="/compile">
             End Lecture
           </Link>

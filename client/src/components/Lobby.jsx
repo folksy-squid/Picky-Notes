@@ -58,6 +58,9 @@ class Lobby extends React.Component {
             <ChatBox />
           </div>
           <div className="col-sm-3">
+            {/*<button className="btn btn-lg btn-success" onClick={this.startLecture.bind(this)}>
+              Start Lecture
+            </button>*/}
             <Link className="btn btn-lg btn-success" to="/lecture">
               Start Lecture
             </Link>
