@@ -43,6 +43,7 @@ class NewRoom extends React.Component {
       var createdRoom = function(success) {
         context.context.router.push(`/lobby/${success}`);
       };
+      console.log('this.props.getState()', this.props.getState())
       var data = {
         hostId: this.props.getState().user.information[0].id,
         topic: this.state.topic,

@@ -9,9 +9,10 @@ class NoteList extends React.Component {
   constructor(props){
     super(props);
     var pathname = props.getState().routing.locationBeforeTransitions.pathname;
+    var currentView = getCurrentView(pathname);
     this.state = {
       notes: props.getState().note,
-      view: getCurrentView(pathname)
+      view: currentView
     }
   }
 
