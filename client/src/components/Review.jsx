@@ -8,12 +8,20 @@ class Review extends React.Component {
   constructor (props) {
     super(props);
   }
+
+  goToCompiledView() {
+
+  }
+
   render() {
     return (
       <div className="container">
         <LectureTitle />
         <NoteList />
         <div> AUDIO Component </div>
+        <button className="btn btn-lg btn-primary">
+          Add / Edit Notes
+        </button>
       </div>
     );
   }
