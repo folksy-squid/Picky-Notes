@@ -45,7 +45,7 @@ class Lobby extends React.Component {
   }
 
   startLecture(){
-
+    //this.props.getState().room..socket.emit('lecture start')
   }
 
   noSuchLobby() {
