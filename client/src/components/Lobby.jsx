@@ -11,13 +11,10 @@ import {Router} from 'react-router';
 class Lobby extends React.Component {
   constructor(props) {
     super(props);
-    // console.log(props);
-    var context = this;
-
-    (!props.getState().user) && context.context.router.push('/');
+    (!props.getState().user) && this.context.router.push('/');
     var pathUrl = props.getState().room.roomInfo ? props.getState().room.roomInfo.pathUrl : props.params.roomId;
     this.state = {
-      isHost: true,
+      isHost: false,
       pathUrl: pathUrl,
       completed: true
     };
@@ -29,11 +26,14 @@ class Lobby extends React.Component {
   }
 
   componentWillMount() {
+
+    // join the socket if there is no room info
     if (!this.props.getState().room.roomInfo) {
       console.log('you have no room info');
       this.setState({completed: false});
       this.props.dispatch(joinSocketRoom(this.state.pathUrl, this.props.getState().user.information[0], () => { this.setState({completed: true }); }));
     }
+
   }
 
   componentDidMount() {
@@ -42,10 +42,21 @@ class Lobby extends React.Component {
         return this.refs.shareLink.innerText;
       }
     });
+
+    let host = this.props.getState().room.participants[0];
+    let user = this.props.getState().user.information[0];
+    host.id === user.id && this.setState({isHost: true});
+
+    var socket = this.props.getState().room.socket;
+    this.props.getState().room.socket.on('lecture started', this.goToLecture.bind(this));
   }
 
-  startLecture(){
-    //this.props.getState().room..socket.emit('lecture start')
+  startLecture() {
+    this.props.getState().room.socket.emit('lecture start');
+  }
+
+  goToLecture() {
+    this.context.router.push(`/lecture/${this.state.pathUrl}`);
   }
 
   noSuchLobby() {
@@ -53,7 +64,6 @@ class Lobby extends React.Component {
   }
 
   render() {
-    var pathUrl = `/lecture/${this.state.pathUrl}`;
     return (
       <div className="container lobby">
         <LectureTitle />
@@ -63,9 +73,9 @@ class Lobby extends React.Component {
           </div>
           <div className="col-sm-3">
           { this.state.isHost && (
-            <Link className="btn btn-lg btn-success" to={pathUrl}>
+            <button className="btn btn-lg btn-success" onClick={this.startLecture.bind(this)}>
               Start Lecture
-            </Link>)}
+            </button>)}
             <div className="panel-item">
               <div className="clipboard">
                 <input ref="shareLink" className="shareLink" value={this.state.pathUrl} readOnly/>
