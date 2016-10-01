@@ -1,19 +1,20 @@
 import React from 'react';
 import {mapStateToProps} from '../../Connection.js';
 import {connect} from 'react-redux';
-import {addParticipant, removeParticipant} from '../../actions/roomActions';
-import {getCurrentView} from '../../helpers.js'
+import {addParticipant, removeParticipant, readyParticipant} from '../../actions/roomActions';
+import {getCurrentView} from '../../helpers.js';
 
 class ParticipantList extends React.Component {
   constructor(props) {
     super(props);
 
     let pathname = props.getState().routing.locationBeforeTransitions.pathname;
-    let currentView = getCurrentView(pathname)
+    let currentView = getCurrentView(pathname);
 
     this.state = {
       participants: props.getState().room.participants,
-      view: currentView
+      view: getCurrentView(pathname),
+      readyStatusDisplay: 'none'
     };
   }
 
@@ -32,6 +33,16 @@ class ParticipantList extends React.Component {
       this.props.dispatch(removeParticipant(user));
       this.setState({participants: this.props.getState().room.participants});
     });
+
+    socket.on('user ready', (user) => {
+      console.log('a user is ready', user);
+      this.props.dispatch(readyParticipant(user));
+      this.setState({participants: this.props.getState().room.participants});
+    });
+
+    if (this.state.view === 'lecture') {
+      this.state.readyStatusDisplay = 'inline-block';
+    }
     // var participants = this.props.getState().room.participants;
     // this.setState({
     //   participants: participants
@@ -52,12 +63,12 @@ class ParticipantList extends React.Component {
         <h4>
           Participants ({participantLength}/10)
         </h4>
-        {this.state.participants.map(({name}, i)=>
+        {this.state.participants.map(({name, readyStatus}, i) =>
         <div key={i}>
           <i className="ion ion-android-person {classColor({i})}" aria-hidden="true"></i>
-          <span>{name}</span>
-        </div>
-      )}
+          <span>{name}</span>&nbsp;
+          <span className='btn-ready' style={{display: this.state.readyStatusDisplay}}>{readyStatus ? 'Ready' : 'Not Ready'}</span>
+        </div>)}
       </div>
     );
   }

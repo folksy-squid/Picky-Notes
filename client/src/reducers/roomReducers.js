@@ -5,7 +5,7 @@ const createSocketRoom = (state, host, pathUrl, createRoom) => {
   // if server is not localhost,
   // then set up io to know where the server is
   socket.emit('create room', pathUrl, host);
-  socket.on('create room success', function() {
+  socket.on('create room success', () => {
     console.log('successfully created socket room');
     createRoom(pathUrl);
   });
@@ -20,7 +20,7 @@ export default (state = {}, action) => {
       url: '/api/rooms',
       contentType: 'application/json',
       data: JSON.stringify(action.data),
-      success: function(res, status) {
+      success: (res, status) => {
         console.log('the response: ', res);
         state.participants = [action.user];
         state.socket = createSocketRoom(state, action.user, res.pathUrl, action.createRoom);
@@ -51,16 +51,24 @@ export default (state = {}, action) => {
     });
   }
 
+  const findUser = (list, user) => list.findIndex( obj => obj.id === user.id);
+
   if (action.type === 'LEAVE_SOCKET_ROOM') {
     state.socket.disconnect();
     state.socket = null;
   }
+
   if (action.type === 'ADD_PARTICIPANT') {
     state.participants.push(action.participant);
   }
+
   if (action.type === 'REMOVE_PARTICIPANT') {
-    console.log('this is the participant to remove', state.participants.findIndex((obj) => obj.facebookId === action.participant.facebookId));
-    state.participants.splice(state.participants.findIndex((obj) => obj.facebookId === action.participant.facebookId), 1);
+    var index = findUser(state.participants, action.participant);
+    if (index !== -1) { state.participants.splice(index, 1); }
+  }
+
+  if (action.type === 'READY_PARTICIPANT') {
+    state.participants[findUser(state.participants, action.participant)].readyStatus = true;
   }
 
 

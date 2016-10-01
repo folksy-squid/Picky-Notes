@@ -53,6 +53,7 @@ class Lobby extends React.Component {
   }
 
   render() {
+    var pathUrl = `/lecture/${this.state.pathUrl}`;
     return (
       <div className="container lobby">
         <LectureTitle />
@@ -62,7 +63,7 @@ class Lobby extends React.Component {
           </div>
           <div className="col-sm-3">
           { this.state.isHost && (
-            <Link className="btn btn-lg btn-success" onClick={this.startLecture.bind(this)} to="/lecture">
+            <Link className="btn btn-lg btn-success" to={pathUrl}>
               Start Lecture
             </Link>)}
             <div className="panel-item">

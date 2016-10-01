@@ -29,21 +29,21 @@ export default (store) => {
       let user = getUserFromCookie(document.cookie);
 
       // if redux store does not have user,
-      console.log('auth-checking.', store.getState().user)
+      console.log('auth-checking.', store.getState().user);
       if (!store.getState().user || !store.getState().user.information) {
         store.dispatch(createUser(user));
       }
 
-      if (nextState.location.pathname === '/'){
+      if (nextState.location.pathname === '/') {
         replace({
           pathname: '/notebook'
         });
       }
     } else {
-      if (nextState.location.pathname !== '/'){
+      if (nextState.location.pathname !== '/') {
         replace({
           pathname: '/'
-        })
+        });
       }
     }
   };
@@ -61,5 +61,5 @@ export default (store) => {
       <Route path='/lecture/:roomId' component={Lecture} onEnter={authCheck}/>
       <Route path='/compile' component={Compile} onEnter={authCheck}/>
     </Route>
-  )
-}
+  );
+};

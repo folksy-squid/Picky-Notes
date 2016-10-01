@@ -18,7 +18,6 @@ class NoteList extends React.Component {
 
   componentWillMount() {
     this.props.getState().room.socket.on('add note success', (note) => {
-      console.log('success!');
       this.props.dispatch(addNote(note));
       this.setState({notes: this.props.getState().note});
     });
@@ -32,11 +31,10 @@ class NoteList extends React.Component {
         url: `/api/notes/${userId}/${roomId}`,
         contentType: 'application/json',
         success: (res, status) => {
-          console.log('the response: ', res);
-          this.props.dispatch(replaceNotes(res));
-          this.setState({notes: this.props.getState().note});
           // clear out current Notes
+          this.props.dispatch(replaceNotes(res));
           // reassign with notes from server
+          this.setState({notes: this.props.getState().note});
         },
         error: function( res, status ) {
           console.log(res);

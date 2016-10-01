@@ -1,21 +1,21 @@
 import React from 'react';
-import Connection from '../../Connection.js'
+import Connection from '../../Connection.js';
 
 class Note extends React.Component {
-  constructor(props){
+  constructor(props) {
     super(props);
   }
 
-  saveNote(note){
+  saveNote(note) {
     // this can be invoked when in the compiled view
     // send it to the redis cache
   }
 
-  playNote(note){
+  playNote(note) {
     // this can be invoked when in the review view
   }
 
-  render(){
+  render() {
     var view;
 
     //props.page will be obtained from redux store.
@@ -24,23 +24,23 @@ class Note extends React.Component {
         <div className="note">
           {this.props.note.content + ' ' + this.props.note.audioTimestamp + ' ' + this.props.view}
         </div>
-      )
-    } else if (this.props.view === 'lecture'){
+      );
+    } else if (this.props.view === 'lecture') {
       view = (
         <div className="note">
           {this.props.note.content + ' ' + this.props.note.audioTimestamp + ' ' + this.props.view}
-        </div>)
+        </div>);
     } else if (this.props.view === 'review') {
       view = (
         <div className="note">
           'this is a note in review'{/*this.props.note*/}
         </div>
-      )
+      );
     }
 
-    return view
+    return view;
   }
 }
 
 
-export default Connection(Note)
+export default Connection(Note);
