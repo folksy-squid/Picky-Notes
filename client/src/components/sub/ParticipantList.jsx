@@ -2,17 +2,7 @@ import React from 'react';
 import {mapStateToProps} from '../../Connection.js';
 import {connect} from 'react-redux';
 import {addParticipant, removeParticipant} from '../../actions/roomActions';
-
-var getCurrentView = function(pathname) {
-  if (pathname === '/lobby') {
-    return 'lobby';
-  } else if (pathname === '/lectu') {
-    return 'lecture';
-  } else if (pathname === '/compi') {
-    return 'compile';
-  }
-};
-
+import {getCurrentView} from '../../helper.js'
 
 class ParticipantList extends React.Component {
   constructor(props) {

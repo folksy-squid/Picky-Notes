@@ -3,21 +3,12 @@ import Note from './Note.jsx';
 import {mapStateToProps} from '../../Connection.js';
 import {addNote, replaceNotes} from '../../actions/noteActions.js';
 import {connect} from 'react-redux';
-
-var getCurrentView = function(pathname) {
-  if (pathname === '/revie') {
-    return 'review';
-  } else if (pathname === '/lectu') {
-    return 'lecture';
-  } else if (pathname === '/compi') {
-    return 'compile';
-  }
-};
+import {getCurrentView} from '../../helpers.js'
 
 class NoteList extends React.Component {
   constructor(props) {
     super(props);
-    var pathname = props.getState().routing.locationBeforeTransitions.pathname.slice(0, 6);
+    var pathname = props.getState().routing.locationBeforeTransitions.pathname;
     this.state = {
       notes: props.getState().note,
       view: getCurrentView(pathname)
@@ -59,8 +50,12 @@ class NoteList extends React.Component {
   //   this.setState({view});
   // }
 
+<<<<<<< d8b03c0e401440dbca6b9a1b314a273576bb5f11
 /*<Note note={note} view={this.state.view} key={i} />*/
   render() {
+=======
+  render(){
+>>>>>>> Reverted back to old stuff
     return (
       <div className="note-list">
         NoteList with {this.state.view} view

@@ -19,7 +19,8 @@ class Lobby extends React.Component {
     var pathUrl = props.getState().room.roomInfo ? props.getState().room.roomInfo.pathUrl : props.params.roomId;
     this.state = {
       pathUrl: pathUrl,
-      completed: true
+      completed: true,
+      isHost: false
     };
   }
   static get contextTypes() {
@@ -58,12 +59,10 @@ class Lobby extends React.Component {
             <ChatBox />
           </div>
           <div className="col-sm-3">
-            {/*<button className="btn btn-lg btn-success" onClick={this.startLecture.bind(this)}>
+          { this.state.isHost && (
+            <Link className="btn btn-lg btn-success" onClick={this.startLecture.bind(this)} to="/lecture">
               Start Lecture
-            </button>*/}
-            <Link className="btn btn-lg btn-success" to="/lecture">
-              Start Lecture
-            </Link>
+            </Link>)}
             <div className="panel-item">
               <div className="clipboard">
                 <input ref="shareLink" className="shareLink" value={this.state.pathUrl} readOnly/>
