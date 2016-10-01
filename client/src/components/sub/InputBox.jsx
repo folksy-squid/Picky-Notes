@@ -15,13 +15,14 @@ class InputBox extends React.Component {
   }
 
   // view will alter depending on the page it's on.
-  render(){
+  render() {
     var view;
-    if (this.props.page === 'Compile') {
+    if (this.props.page === 'compile') {
       view = (
         <input>
           'this is the input box for Compile'
-        </input>)
+        </input>
+      );
     } else {
       view = <form onSubmit={this.submitNoteHandler.bind(this)}><input ref="inputNote" type="text"/></form>;
     }
