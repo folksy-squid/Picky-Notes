@@ -98,47 +98,6 @@ describe('/api/rooms/', () => {
   });
 });
 
-xdescribe('/api/notes/', () => {
-
-  var testRoom = {
-    id: 12345,
-    pathUrl: 'abcde',
-    topic: 'Toy Problems',
-    class: 'HackReactor',
-    lecturer: 'AllenP',
-    audioUrl: 'http://www.test.com/audio.mp3',
-    hostId: 9999
-  };
-
-  beforeEach((done) => {
-    Room.create(testRoom)
-    .then(() => done());
-  });
-
-  afterEach(() => Room.destroy({ where: { id: 12345 } }));
-
-  describe('Note Creation', () => {
-
-    it('should pass back a new note', (done) => {
-      request(app)
-        .post('/api/notes/create')
-        .send({
-          content: 'This is marvelous.',
-          roomId: 12345,
-          originalUserId: 9999
-        })
-        .expect((res) => {
-          expect(res.body.content).to.equal('This is marvelous.');
-          expect(res.body.roomId).to.equal(12345);
-          expect(res.body.originalUserId).to.equal(9999);
-          expect(res.body.editingUserId).to.equal(9999);
-          expect(res.body.show).to.be.true;
-        })
-        .end(done);
-    });
-  });
-});
-
 describe('Server Side Socket Connection', () => {
 
   var testRoom = {
@@ -221,8 +180,9 @@ describe('Server Side Socket Connection', () => {
   describe('Create Notes', () => {
 
     var joiner;
+    var testNote = { content: 'This is the test note.' };
     var creatorNote = { content: 'Picky Notes is a collaborative note taking app.' };
-    var joinerNote = { content: 'Picky Notes is a collaborative note taking app.' };
+    var joinerNote = { content: 'This is not a note taking app.' };
 
     beforeEach(() => {
       joiner = ioClient.connect(socketURL, options);
@@ -232,7 +192,7 @@ describe('Server Side Socket Connection', () => {
     afterEach(() => joiner.disconnect());
 
     it('should receive new notes from the client', (done) => {
-      roomCreator.on('create room success', () => roomCreator.emit('new note', creatorNote));
+      roomCreator.on('create room success', () => roomCreator.emit('new note', testNote));
       roomCreator.on('add note success', () => done());
     });
 
