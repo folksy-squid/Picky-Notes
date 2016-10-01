@@ -5,7 +5,7 @@ const createSocketRoom = (state, host, pathUrl, createRoom) => {
   // if server is not localhost,
   // then set up io to know where the server is
   socket.emit('create room', pathUrl, host);
-  socket.on('create room success', function() {
+  socket.on('create room success', () => {
     console.log('successfully created socket room');
     createRoom(pathUrl);
   });
@@ -20,7 +20,7 @@ export default (state = {}, action) => {
       url: '/api/rooms',
       contentType: 'application/json',
       data: JSON.stringify(action.data),
-      success: function(res, status) {
+      success: (res, status) => {
         console.log('the response: ', res);
         state.participants = [action.user];
         state.socket = createSocketRoom(state, action.user, res.pathUrl, action.createRoom);

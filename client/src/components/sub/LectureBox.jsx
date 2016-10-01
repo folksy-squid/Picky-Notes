@@ -1,21 +1,21 @@
 import React from 'react';
-import Connection from '../../Connection.js'
-import NoteList from './NoteList.jsx'
-import InputBox from './InputBox.jsx'
+import Connection from '../../Connection.js';
+import NoteList from './NoteList.jsx';
+import InputBox from './InputBox.jsx';
 
 class LectureBox extends React.Component {
   constructor (props) {
-    super(props)
+    super(props);
   }
 
-  toggleView(tab='notes'){
+  toggleView(tab = 'notes') {
     if (tab === 'notes') {
       return true;
     }
     return false;
   }
 
-  render(){
+  render() {
     return (
     <div className="lecture-box">
       <ul className="nav nav-tabs">
@@ -32,8 +32,8 @@ class LectureBox extends React.Component {
         <InputBox />
       </div>) : <div></div> }
     </div>
-    )
+  );
   }
 }
 
-export default Connection(LectureBox)
+export default Connection(LectureBox);
