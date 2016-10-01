@@ -14,8 +14,8 @@ const webpackDevMiddleware = require('webpack-dev-middleware');
 const webpackHotMiddleware = require('webpack-hot-middleware');
 const compiler = webpack(webpackconfig);
 
+//hot module reloading middleware
 var useWebpackMiddleware = function (app) {
-  console.log('running.');
   app.use(webpackDevMiddleware(compiler, {
     publicPath: webpackconfig.output.publicPath,
     noInfo: true,
@@ -34,12 +34,7 @@ var useWebpackMiddleware = function (app) {
 
 module.exports = (app, express) => {
 //  app.use(morgan('dev'));
-  // app.use(webpackDevMiddleware(compiler, {
-  //   //so we don't see every output that webpack is doing in console
-  //   noInfo: true,
-  //   //path that the dev simulates as path
-  //   publicPath: webpackconfig.output.publicPath
-  // }));
+
   useWebpackMiddleware(app);
   app.use(passport.initialize());
   app.use(bodyParser.json());
