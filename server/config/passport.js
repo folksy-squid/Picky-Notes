@@ -1,7 +1,7 @@
 if (process.env.NODE_ENV === 'test') {
   var keys = {facebook: {FACEBOOK_APP_ID: 'haha', FACEBOOK_APP_SECRET: 'no secrets for you'}};
 } else {
-  var keys = require('../../keys.js');
+  var keys = require('../../keys').facebook;
 }
 var passport = require('passport');
 var FacebookStrategy = require('passport-facebook').Strategy;
@@ -10,8 +10,8 @@ var FacebookStrategy = require('passport-facebook').Strategy;
 var {db, User} = require('../database/db-config.js');
 /****************** PASSPORT CONFIG ***************/
 passport.use(new FacebookStrategy({
-  clientID: keys.facebook.FACEBOOK_APP_ID,
-  clientSecret: keys.facebook.FACEBOOK_APP_SECRET,
+  clientID: keys.FACEBOOK_APP_ID,
+  clientSecret: keys.FACEBOOK_APP_SECRET,
   callbackURL: 'http://localhost:3000/auth/facebook/callback',
   profileFields: ['id', 'name', 'picture.type(large)', 'email', 'gender']
 }, function(accessToken, refreshToken, profile, done) {
