@@ -22,7 +22,6 @@ class JoinRoom extends React.Component {
     this.setState({value: e.target.value});
   }
   submitInput(e) {
-    console.log('submitting input');
     e.preventDefault();
     var realm = this;
     var pathUrl = this.state.value;
