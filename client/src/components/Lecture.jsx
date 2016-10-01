@@ -11,7 +11,7 @@ class Lecture extends React.Component {
     this.state = {
       continueButtonDisplay: 'none',
       readyButtonDisplay: 'none',
-      endLectureButton: 'inline-block'
+      endLectureDisplay: 'inline-block'
     };
   }
 
@@ -38,7 +38,7 @@ class Lecture extends React.Component {
   }
 
   endLecture() {
-    this.setState({endLectureButton: 'none'});
+    this.setState({endLectureDisplay: 'none'});
     this.props.getState().room.socket.emit('lecture end');
   }
 
@@ -53,7 +53,7 @@ class Lecture extends React.Component {
           <div className="col-md-9">
             <LectureTitle />
           </div>
-          <button className="btn btn-lg btn-danger" onClick={this.endLecture.bind(this)}>
+          <button className="btn btn-lg btn-danger" style={{display: this.state.endLectureDisplay}} onClick={this.endLecture.bind(this)}>
             End Lecture
           </button>
           <button className="btn btn-lg btn-success" style={{display: this.state.readyButtonDisplay}} onClick={this.sendReady.bind(this)}>
