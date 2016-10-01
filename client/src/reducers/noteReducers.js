@@ -4,12 +4,14 @@ export default (state = [], action) => {
   }
 
   if (action.type === 'ADD_NOTE') {
-    console.log(state);
     state.push(action.note);
-    console.log(state)
   }
 
   if (action.type === 'EDIT_NOTE') {
+  }
+
+  if (action.type === 'REPLACE_NOTES') {
+    state = action.allNotes;
   }
 
   return state;

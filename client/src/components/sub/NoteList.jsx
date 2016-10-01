@@ -1,27 +1,27 @@
 import React from 'react';
-import Note from './Note.jsx'
+import Note from './Note.jsx';
 import {mapStateToProps} from '../../Connection.js';
-import {addNote} from '../../actions/noteActions.js';
+import {addNote, replaceNotes} from '../../actions/noteActions.js';
 import {connect} from 'react-redux';
 
-var getCurrentView = function(pathname){
-  if (pathname === "/revie") {
+var getCurrentView = function(pathname) {
+  if (pathname === '/revie') {
     return 'review';
-  } else if (pathname === "/lectu") {
+  } else if (pathname === '/lectu') {
     return 'lecture';
-  } else if (pathname === "/compi") {
+  } else if (pathname === '/compi') {
     return 'compile';
   }
 };
 
 class NoteList extends React.Component {
-  constructor(props){
+  constructor(props) {
     super(props);
     var pathname = props.getState().routing.locationBeforeTransitions.pathname.slice(0, 6);
     this.state = {
       notes: props.getState().note,
       view: getCurrentView(pathname)
-    }
+    };
   }
 
   componentWillMount() {
@@ -30,6 +30,28 @@ class NoteList extends React.Component {
       this.props.dispatch(addNote(note));
       this.setState({notes: this.props.getState().note});
     });
+
+    if (this.state.view === 'compile') {
+      // get userId roomId
+      const userId = this.props.getState().user.information[0].id;
+      const roomId = this.props.getState().room.roomInfo.id;
+      $.ajax({
+        method: 'GET',
+        url: `/api/notes/${userId}/${roomId}`,
+        contentType: 'application/json',
+        success: (res, status) => {
+          console.log('the response: ', res);
+          this.props.dispatch(replaceNotes(res));
+          this.setState({notes: this.props.getState().note});
+          // clear out current Notes
+          // reassign with notes from server
+        },
+        error: function( res, status ) {
+          console.log(res);
+        }
+      });
+
+    }
   }
 
   // componentWillUnmount() {
@@ -38,14 +60,14 @@ class NoteList extends React.Component {
   // }
 
 /*<Note note={note} view={this.state.view} key={i} />*/
-  render(){
+  render() {
     return (
       <div className="note-list">
         NoteList with {this.state.view} view
         {this.state.notes.map((note, i)=>(<Note key={i} note={note} view={this.state.view}/>)
         )}
       </div>
-    )
+    );
   }
 }
 

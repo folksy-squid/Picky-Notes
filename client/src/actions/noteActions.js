@@ -22,3 +22,9 @@ export function editNote (noteId, newText) {
   };
 }
 
+export function replaceNotes (allNotes) {
+  return {
+    type: 'REPLACE_NOTES',
+    allNotes
+  };
+}
