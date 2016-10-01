@@ -30,7 +30,6 @@ export default (store) => {
 
       // if redux store does not have user,
       console.log('auth-checking.', store.getState().user)
-
       if (!store.getState().user || !store.getState().user.information) {
         store.dispatch(createUser(user));
       }
