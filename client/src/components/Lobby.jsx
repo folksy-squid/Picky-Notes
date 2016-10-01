@@ -1,12 +1,11 @@
 import React from 'react';
-import { Link } from 'react-router';
+import { Link, Router } from 'react-router';
 import LectureTitle from './sub/LectureTitle.jsx';
 import ParticipantList from './sub/ParticipantList.jsx';
 import ChatBox from './sub/ChatBox.jsx';
 import {mapStateToProps} from '../Connection.js';
 import {connect} from 'react-redux';
 import {joinSocketRoom} from '../actions/roomActions';
-import {Router} from 'react-router';
 
 class Lobby extends React.Component {
   constructor(props) {
@@ -64,10 +63,6 @@ class Lobby extends React.Component {
 
   noSuchLobby() {
     // redirect to '404' page.
-  }
-  componentWillUnmount() {
-    var socket = this.props.getState().room.socket;
-    socket.off('user disconnected');
   }
 
   render() {

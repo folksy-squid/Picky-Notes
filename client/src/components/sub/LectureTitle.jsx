@@ -7,9 +7,6 @@ const LectureTitle = (props) => {
   var lecturer = roomInfo.lecturer;
   var topic = roomInfo.topic;
   var createdAt = moment(roomInfo.createdAt);
-  // var lecturer = 'lecturer';
-  // var topic = 'topic';
-  // var createdAt = 'time';
 
   return (
     <h3 className="lectureTitle">{topic} by {lecturer}</h3>

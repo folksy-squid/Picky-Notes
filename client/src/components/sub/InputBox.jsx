@@ -9,9 +9,9 @@ class InputBox extends React.Component {
 
   submitNoteHandler(e) {
     e.preventDefault();
-    console.log('adding note', this.refs.inputNote.value);
-    this.props.dispatch(submitNote(this.props.getState().room.socket, this.refs.inputNote.value));
-    this.refs.inputNote.value = '';
+    if (this.refs.inputNote.value.length === 0) { return; }
+      this.props.dispatch(submitNote(this.props.getState().room.socket, this.refs.inputNote.value));
+      this.refs.inputNote.value = '';
   }
 
   // view will alter depending on the page it's on.

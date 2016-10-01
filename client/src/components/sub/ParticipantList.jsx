@@ -37,8 +37,6 @@ class ParticipantList extends React.Component {
   }
 
   componentWillMount() {
-    // console.log('this.props', this.props);
-    // console.log('this.props state', this.props.getState());
     var socket = this.props.getState().room.socket;
 
     socket.on('new user joined room', this.newUserJoinedRoom.bind(this));
@@ -48,24 +46,14 @@ class ParticipantList extends React.Component {
     if (this.state.view === 'lecture') {
       this.state.readyStatusDisplay = 'inline-block';
     }
-    // var participants = this.props.getState().room.participants;
-    // this.setState({
-    //   participants: participants
-    // })
-
-    // socket.on('new user joined room', (user) => {
-    //   this.setState({
-    //     participants: this.state.participants.concat([user])
-    //   });
-    // });
   }
 
   componentWillUnmount() {
     console.log('unmounting this component', this.newUserJoinedRoom);
     var socket = this.props.getState().room.socket;
-    socket.removeListener('new user joined room', this.newUserJoinedRoom);
-    socket.removeListener('user disconnected', this.userDisconnected);
-    socket.removeListener('user ready', this.userReady);
+    socket.removeListener('new user joined room');
+    socket.removeListener('user disconnected');
+    socket.removeListener('user ready');
   }
 
   render() {

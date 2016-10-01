@@ -9,22 +9,41 @@ class Lecture extends React.Component {
   constructor (props) {
     super(props);
     this.state = {
-      continueButtonDisplay: 'none',
-      readyButtonDisplay: 'inline-block'
+      readyButtonDisplay: 'none',
+      endLectureDisplay: 'inline-block',
+      isHost: false,
     };
   }
 
-  componentWillMount() {
-    this.props.getState().room.socket.on('all ready', () => {
+  static get contextTypes() {
+    return {
+      router: React.PropTypes.object.isRequired,
+    };
+  }
+
+  componentDidMount() {
+    this.checkHost();
+
+    var socket = this.props.getState().room.socket;
+    socket.on('lecture ended', () => {
+      this.setState({readyButtonDisplay: 'inline-block'});
+    });
+    socket.on('all ready', () => {
       // loading
       console.log('user is ready');
     });
 
-    this.props.getState().room.socket.on('all notes saved', () => {
+    socket.on('all notes saved', () => {
       // redirect to compile view
-      console.log('all notes saved and redirect');
-      this.setState({continueButtonDisplay: 'inline-block'});
+      this.context.router.push(`/compile/${this.props.getState().room.roomInfo.pathUrl}`);
     });
+    socket.on('user disconnected', this.checkHost.bind(this));
+  }
+
+  checkHost() {
+    let host = this.props.getState().room.participants[0];
+    let user = this.props.getState().user.information[0];
+    host.id === user.id && this.setState({isHost: true});
   }
 
   sendReady() {
@@ -33,11 +52,8 @@ class Lecture extends React.Component {
   }
 
   endLecture() {
+    this.setState({endLectureDisplay: 'none'});
     this.props.getState().room.socket.emit('lecture end');
-  }
-
-  redirectToCompile () {
-
   }
 
   render() {
@@ -47,18 +63,12 @@ class Lecture extends React.Component {
           <div className="col-md-9">
             <LectureTitle />
           </div>
-          {/*<button className="btn btn-lg btn-danger" onClick={this.endLecture}>
+          {this.state.isHost && (<button className="btn btn-lg btn-danger" style={{display: this.state.endLectureDisplay}} onClick={this.endLecture.bind(this)}>
             End Lecture
-          </button>*/}
-          <Link className="btn btn-lg btn-danger" to="/compile">
-            End Lecture
-          </Link>
+          </button>)}
           <button className="btn btn-lg btn-success" style={{display: this.state.readyButtonDisplay}} onClick={this.sendReady.bind(this)}>
             Ready
           </button>
-          <Link className="btn btn-lg btn-success" style={{ display: this.state.continueButtonDisplay}} to="/compile">
-            Continue
-          </Link>
         </div>
         <div className="row">
           <div className="col-md-9">

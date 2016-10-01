@@ -1,5 +1,6 @@
 import React from 'react';
 import Connection from '../../Connection.js';
+import {selectNote} from '../../actions/noteActions.js';
 
 class Note extends React.Component {
   constructor(props) {
@@ -15,6 +16,11 @@ class Note extends React.Component {
     // this can be invoked when in the review view
   }
 
+  selectNoteHandler(e) {
+    this.props.dispatch(selectNote(this.props.note.id));
+    this.forceUpdate();
+  }
+
   render() {
     var view;
 
@@ -22,13 +28,16 @@ class Note extends React.Component {
     if (this.props.view === 'compile') {
       view = (
         <div className="note">
-          {this.props.note.content + ' ' + this.props.note.audioTimestamp + ' ' + this.props.view}
+          <input type="checkbox" ref="checkbox" onChange={this.selectNoteHandler.bind(this)} checked={this.props.note.show}/>
+          <span className="content">{this.props.note.content}</span>
+          <span className="audioTimestamp">{this.props.note.audioTimestamp}</span>
         </div>
       );
     } else if (this.props.view === 'lecture') {
       view = (
         <div className="note">
-          {this.props.note.content + ' ' + this.props.note.audioTimestamp + ' ' + this.props.view}
+          <span className="content">{this.props.note.content}</span>
+          <span className="audioTimestamp">{this.props.note.audioTimestamp}</span>
         </div>);
     } else if (this.props.view === 'review') {
       view = (

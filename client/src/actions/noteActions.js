@@ -28,3 +28,10 @@ export const replaceNotes = (allNotes) => {
     allNotes
   };
 };
+
+export const selectNote = (noteId) => {
+  return {
+    type: 'SELECT_NOTE',
+    noteId
+  };
+};

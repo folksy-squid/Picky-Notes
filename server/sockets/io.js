@@ -56,7 +56,7 @@ module.exports = (listen) => {
       }
     });
 
-    socket.on('lecture start', (pathUrl) => {
+    socket.on('lecture start', () => {
       if (socket.pathUrl) {
         io.in(socket.pathUrl).emit('lecture started');
       } else {
@@ -64,7 +64,7 @@ module.exports = (listen) => {
       }
     });
 
-    socket.on('lecture end', (pathUrl) => {
+    socket.on('lecture end', () => {
       if (socket.pathUrl) {
         io.in(socket.pathUrl).emit('lecture ended');
       } else {
