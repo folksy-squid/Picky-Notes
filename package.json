@@ -8,7 +8,8 @@
     "test": "npm run test:server & npm run test:client",
     "test:server": "mocha --recursive specs/Server/",
     "test:client": "mocha specs/Client/helpers.js specs/Client/ComponentSpec.js",
-    "dev": "nodemon server/server.js --ignore components"
+    "client": "export NODE_ENV='client' && nodemon server/server.js --ignore components",
+    "dev": "export NODE_ENV='dev' && nodemon server/server.js --ignore components"
   },
   "repository": {
     "type": "git",

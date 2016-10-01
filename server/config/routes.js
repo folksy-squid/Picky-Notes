@@ -1,8 +1,13 @@
 const {createNewUser, createNewRoom, joinRoom, createNewNote, showAllNotes, showFilteredNotes} = require ('../database/db-helpers');
 const passport = require('./passport');
 const path = require('path');
+const hotreload = require('./hotreload');
+
+
 module.exports = (app, express) => {
   // Facebook OAuth
+
+  // hotreload(app);
   app.get('/auth/facebook',
     passport.authenticate('facebook', {
       scope: ['public_profile', 'email', 'user_about_me', 'user_friends']
@@ -98,13 +103,13 @@ module.exports = (app, express) => {
       res.send('Add new notes (save button) for user #' + req.params.userId + ' inside room #' + req.params.roomId);
     });
 
-  app.get('*/index.bundle.js', function (request, response) {
-    response.sendFile(path.resolve(__dirname, '../../client', 'dist/index.bundle.js'));
-  });
+  // app.get('*/index.bundle.js', function (request, response) {
+  //   response.sendFile(path.resolve(__dirname, '../../client', 'dist/index.bundle.js'));
+  // });
 
-  app.get('*/index.bundle.js.map', function(request, response) {
-    response.sendFile(path.resolve(__dirname, '../../client', 'dist/index.bundle.js.map'));
-  });
+  // app.get('*/index.bundle.js.map', function(request, response) {
+  //   response.sendFile(path.resolve(__dirname, '../../client', 'dist/index.bundle.js.map'));
+  // });
 
   app.get('*', function(request, response) {
     response.sendFile(path.resolve(__dirname, '../../client', 'index.html'));
