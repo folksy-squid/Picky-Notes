@@ -42,7 +42,7 @@ class Note extends React.Component {
     } else if (this.props.view === 'review') {
       view = (
         <div className="note">
-          <i class="fa fa-play-circle" aria-hidden="true"></i>
+          <i className="fa fa-play-circle" aria-hidden="true"></i>
           'this is afadsf note in review'{/*this.props.note*/}
         </div>
       );
