@@ -126,7 +126,6 @@ const updateNotes = (userId, roomId, allNotes, cb) => {
   };
 
   for (let i = 0; i < allNotes.length; i++) {
-    console.log('UPDATE NOTE', allNotes[i]);
     promises.push(updateOneNote(allNotes[i]));
   }
 
