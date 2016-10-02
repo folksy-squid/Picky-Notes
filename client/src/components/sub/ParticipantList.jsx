@@ -49,7 +49,6 @@ class ParticipantList extends React.Component {
   }
 
   componentWillUnmount() {
-    console.log('unmounting this component', this.newUserJoinedRoom);
     var socket = this.props.getState().room.socket;
     socket.removeListener('new user joined room');
     socket.removeListener('user disconnected');

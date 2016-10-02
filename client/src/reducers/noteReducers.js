@@ -18,9 +18,9 @@ export default (state = [], action) => {
     state.forEach((note, i) => {
       if (note.id === action.noteId) {
         note.show = !note.show;
+        note.changed = true;
       }
     });
-    console.log('STATE IN REDUCER', state, action.noteId);
   }
 
   return state;

@@ -1,6 +1,6 @@
 import React from 'react';
 import Connection from '../../Connection.js';
-import {selectNote} from '../../actions/noteActions.js';
+import {toggleNote} from '../../actions/noteActions.js';
 
 class Note extends React.Component {
   constructor(props) {
@@ -16,8 +16,8 @@ class Note extends React.Component {
     // this can be invoked when in the review view
   }
 
-  selectNoteHandler(e) {
-    this.props.dispatch(selectNote(this.props.note.id));
+  toggleNoteHandler(e) {
+    this.props.dispatch(toggleNote(this.props.note.id));
     this.forceUpdate();
   }
 
@@ -28,7 +28,7 @@ class Note extends React.Component {
     if (this.props.view === 'compile') {
       view = (
         <div className="note">
-          <input type="checkbox" ref="checkbox" onChange={this.selectNoteHandler.bind(this)} checked={this.props.note.show}/>
+          <input type="checkbox" ref="checkbox" onChange={this.toggleNoteHandler.bind(this)} checked={this.props.note.show}/>
           <span className="content">{this.props.note.content}</span>
           <span className="audioTimestamp">{this.props.note.audioTimestamp}</span>
         </div>
