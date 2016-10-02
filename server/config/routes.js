@@ -1,4 +1,4 @@
-const {createNewUser, createNewRoom, joinRoom, createNewNote, showAllNotes, showFilteredNotes} = require ('../database/db-helpers');
+const {createNewUser, createNewRoom, joinRoom, createNewNote, showAllNotes, showFilteredNotes, updateNotes} = require ('../database/db-helpers');
 const passport = require('./passport');
 const path = require('path');
 const hotreload = require('./hotreload');
@@ -96,7 +96,10 @@ module.exports = (app, express) => {
     .put((req, res) => {
       // accepts in req.body an array of notes to update
       // [{id, show, content}]
-      res.send('Edit existing notes (save button) for user #' + req.params.userId + ' inside room #' + req.params.roomId);
+      updateNotes(req.params.userId, req.params.roomId, req.body, (err) => {
+        if (err) { res.status(400).send({ text: 'Bad Update Note Request', error: err }); }
+        res.status(204).send();
+      });
     })
     .post((req, res) => {
       // potentially instead of using this endpoint, reuse /api/notes/create?
