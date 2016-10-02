@@ -16,7 +16,8 @@ class Compile extends React.Component {
   }
 
   reviewNotesHandler() {
-    let changedNotes = this.props.getState().note.filter(note => note.changed);
+    let state = this.props.getState();
+    let changedNotes = state.note.filter(note => note.changed);
     changedNotes = JSON.parse(JSON.stringify(changedNotes));
     changedNotes = changedNotes.map(note => {
       delete note.changed;
@@ -25,7 +26,7 @@ class Compile extends React.Component {
 
     $.ajax({
       method: 'PUT',
-      url: '/api/notes/:userId/:roomId',
+      url: `/api/notes/${state.user.information[0].id}/:${state.room.roomInfo.id}`,
       contentType: 'application/json',
       data: JSON.stringify(changedNotes),
       success: (res) => {
