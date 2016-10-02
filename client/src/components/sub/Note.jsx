@@ -43,7 +43,7 @@ class Note extends React.Component {
       view = (
         <div className="note">
           <i className="fa fa-play-circle" aria-hidden="true"></i>
-          'this is afadsf note in review'{/*this.props.note*/}
+          'this is afadsf note in review'{this.props.note.content}
         </div>
       );
     }

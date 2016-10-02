@@ -35,6 +35,7 @@ class Compile extends React.Component {
       },
       error: (error) => console.log('Error updating changed notes', error),
     });
+  }
 
   render() {
     return (
