@@ -31,16 +31,14 @@ const createNewRoom = ({topic, className, lecturer, hostId}, cb) => {
     lecturer: lecturer,
     hostId: hostId
   })
-  .then((roomInfo) => cb(roomInfo));
+  .then(roomInfo => cb(roomInfo));
 };
 
 const joinRoom = (userId, pathUrl, cb) => {
   User.findById(userId)
-  .then((currentUser) => {
-    Room.findOne({
-      where: { pathUrl: pathUrl }
-    })
-    .then((currentRoom) => {
+  .then(currentUser => {
+    Room.findOne({ where: { pathUrl: pathUrl } })
+    .then(currentRoom => {
       currentUser.addRoom(currentRoom);
       cb(currentRoom);
     });
@@ -83,7 +81,6 @@ const createRoomNotes = (notes, roomId, arrOfClients, cb) => {
     return note;
   });
   notes = multiplyNotes(notes, arrOfClients);
-  //console.log('INSIDE CREATE ROOM', notes);
   Note.bulkCreate(notes)
   // .then(() => Note.findAll({raw: true}))
   // .then((allNotes) => console.log('SAVED', allNotes))
@@ -99,7 +96,7 @@ const showAllNotes = ({userId, roomId}, cb) => {
       attributes: []
     }
   })
-  .then((allNotes) => cb(allNotes));
+  .then(allNotes => cb(allNotes));
 };
 
 const showFilteredNotes = ({userId, roomId}, cb) => {
@@ -114,12 +111,35 @@ const showFilteredNotes = ({userId, roomId}, cb) => {
       attributes: []
     }
   })
-  .then((allNotes) => cb(allNotes));
+  .then(allNotes => cb(allNotes));
+};
+
+const updateNotes = (userId, roomId, allNotes, cb) => {
+  let promises = [];
+
+  const updateOneNote = note => {
+    Note.update(note, { where: {
+      id: note.id,
+      editingUserId: userId,
+      roomId: roomId
+    } });
+  };
+
+  for (let i = 0; i < allNotes.length; i++) {
+    promises.push(updateOneNote(allNotes[i]));
+  }
+
+  Promise.all(promises).then((data) => {
+    cb(null);
+  }, err => {
+    console.log('ERROR', error);
+    cb(err);
+  });
 };
 
 const findRoom = (pathUrl, cb) => {
   Room.findOne({ where: {pathUrl: pathUrl} })
-  .then((room) => { cb(room); });
+  .then(room => cb(room));
 };
 
 module.exports = {
@@ -130,5 +150,6 @@ module.exports = {
   showFilteredNotes,
   findRoom,
   createRoomNotes,
-  multiplyNotes
+  multiplyNotes,
+  updateNotes,
 };
