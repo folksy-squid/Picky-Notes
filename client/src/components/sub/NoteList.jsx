@@ -17,37 +17,58 @@ class NoteList extends React.Component {
   }
 
   componentWillMount() {
+    const userId = this.props.getState().user.information[0].id;
+    const roomId = this.props.getState().room.roomInfo.id;
+
     this.props.getState().room.socket.on('add note success', (note) => {
       this.props.dispatch(addNote(note));
       this.setState({notes: this.props.getState().note});
     });
 
     if (this.state.view === 'compile') {
-      // get userId roomId
-      const userId = this.props.getState().user.information[0].id;
-      const roomId = this.props.getState().room.roomInfo.id;
-      $.ajax({
-        method: 'GET',
-        url: `/api/notes/${userId}/${roomId}`,
-        contentType: 'application/json',
-        success: (res, status) => {
-          // clear out current Notes
-          this.props.dispatch(replaceNotes(res));
-          // reassign with notes from server
-          this.setState({notes: this.props.getState().note});
-        },
-        error: function( res, status ) {
-          console.log(res);
-        }
-      });
+      this.getAllNotes(userId, roomId);
+    }
 
+    if (this.state.view === 'review') {
+      this.getReviewNotes(userId, roomId);
     }
   }
 
-  // componentWillUnmount() {
-  //   var view = getCurrentView(this.props.getState().routing.locationBeforeTransitions.pathname.slice(0, 6));
-  //   this.setState({view});
-  // }
+  getAllNotes(userId, roomId) {
+    $.ajax({
+      method: 'GET',
+      url: `/api/notes/${userId}/${roomId}`,
+      contentType: 'application/json',
+      success: (res, status) => {
+        // replace current Notes with response
+        this.props.dispatch(replaceNotes(res));
+
+        // reassign with notes from server
+        this.setState({notes: this.props.getState().note});
+      },
+      error: ( res, status ) => {
+        console.log(res);
+      }
+    });
+  }
+
+  getReviewNotes(userId, roomId) {
+    // var context = this;
+    $.ajax({
+      method: 'GET',
+      url: `/api/notes/${userId}/${roomId}?filter=show`,
+      success: (res, status) => {
+        // replace current Notes with response
+        this.props.dispatch(replaceNotes(res));
+
+        // reassign with notes from server
+        this.setState({notes: this.props.getState().note});
+      },
+      error: (res, status) => {
+        console.log(res);
+      }
+    });
+  }
 
 /*<Note note={note} view={this.state.view} key={i} />*/
   render() {
