@@ -10,7 +10,7 @@ class Review extends React.Component {
   }
   render() {
     return (
-      <div class="container">
+      <div className="container">
         <LectureTitle />
         <NoteList />
         <div> AUDIO Component </div>

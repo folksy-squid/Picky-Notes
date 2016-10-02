@@ -29,7 +29,7 @@ export const replaceNotes = (allNotes) => {
   };
 };
 
-export const selectNote = (noteId) => {
+export const toggleNote = (noteId) => {
   return {
     type: 'SELECT_NOTE',
     noteId

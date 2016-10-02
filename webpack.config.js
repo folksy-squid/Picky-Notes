@@ -13,7 +13,6 @@ module.exports = {
   output: {
     path: path.resolve('./client/dist/'),
     filename: 'index.bundle.js',
-    publicPath: '/dist/'
   },
   // devServer: {
   //   hot: true,

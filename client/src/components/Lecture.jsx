@@ -29,8 +29,8 @@ class Lecture extends React.Component {
       this.setState({readyButtonDisplay: 'inline-block'});
     });
     socket.on('all ready', () => {
-      // loading
-      console.log('user is ready');
+      // loading page
+
     });
 
     socket.on('all notes saved', () => {
