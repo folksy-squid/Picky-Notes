@@ -18,6 +18,11 @@ h3 {
   font-family: 'PT Serif', serif;
 }
 
+h4 {
+  font-size: 30px;
+  font-family: 'PT Serif', serif;
+}
+
 /*
   =================================
     Landing
@@ -79,12 +84,23 @@ h2.new-room-title {
   =================================
 */
 
-
 .lobby {
   display: flex;
   justify-content: space-around;
   flex-direction: column;
 }
+
+.panel-item {
+  margin-top: 25px;
+  margin-bottom: 10px;
+}
+
+/*
+  =================================
+    LectureTitle
+  =================================
+*/
+
 
 .lectureTitle {
   display: flex;
@@ -92,9 +108,15 @@ h2.new-room-title {
   font-size: 2.8em;
 }
 
-.panel-item {
-  margin-top: 25px;
-  margin-bottom: 10px;
+.review-header > .lectureTitle {
+  display: inline-block;
+  text-align: left;
+}
+
+.review-date {
+  display: inline;
+  text-align: right;
+  float: right;
 }
 
 /*
@@ -165,17 +187,33 @@ h2.new-room-title {
     Note List
   =================================
 */
+
 .note-list {
-  border: 1px solid black;
+  padding-left: 15px;
 }
 
 .note {
   display: flex;
   justify-content: flex-start;
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
 
 .audioTimestamp {
   margin-left: auto;
+}
+
+
+/*
+  =================================
+    Note - Review
+  =================================
+*/
+
+.note > .fa-play-circle {
+  cursor: pointer;
+  margin-right: 15px;
+  font-size: 20px;
 }
 
 
@@ -229,3 +267,4 @@ h2.new-room-title {
   background-image: linear-gradient(#eee, #ddd);
   border-color: #ccc;
 }
+

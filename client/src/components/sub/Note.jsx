@@ -12,8 +12,9 @@ class Note extends React.Component {
     // send it to the redis cache
   }
 
-  playNote(note) {
+  playNote(e) {
     // this can be invoked when in the review view
+    console.log(this.props.note.content);
   }
 
   toggleNoteHandler(e) {
@@ -42,8 +43,8 @@ class Note extends React.Component {
     } else if (this.props.view === 'review') {
       view = (
         <div className="note">
-          <i className="fa fa-play-circle" aria-hidden="true"></i>
-          'this is afadsf note in review'{this.props.note.content}
+          <i className="fa fa-play-circle" aria-hidden="true" onClick={this.playNote.bind(this)}></i>
+          {this.props.note.content}
         </div>
       );
     }
