@@ -1,6 +1,6 @@
 import React from 'react';
 import Connection from '../../Connection.js';
-import {selectNote} from '../../actions/noteActions.js';
+import {toggleNote} from '../../actions/noteActions.js';
 
 class Note extends React.Component {
   constructor(props) {
@@ -12,12 +12,12 @@ class Note extends React.Component {
     // send it to the redis cache
   }
 
-  playNote(note) {
+  playNote(e) {
     // this can be invoked when in the review view
   }
 
   selectNoteHandler(e) {
-    this.props.dispatch(selectNote(this.props.note.id));
+    this.props.dispatch(toggleNote(this.props.note.id));
     this.forceUpdate();
   }
 
@@ -42,7 +42,7 @@ class Note extends React.Component {
     } else if (this.props.view === 'review') {
       view = (
         <div className="note">
-          <i className="fa fa-play-circle" aria-hidden="true"></i>
+          <i className="fa fa-play-circle" aria-hidden="true" onClick={this.playNote.bind(this)}></i>
           {this.props.note.content}
         </div>
       );
