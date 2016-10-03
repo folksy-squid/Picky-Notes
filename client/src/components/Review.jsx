@@ -46,7 +46,7 @@ class Review extends React.Component {
         <LectureTitle />
         <NoteList />
         <div> AUDIO Component </div>
-        <button className="btn btn-lg btn-primary" onClick={this.goToCompiledView.bind(this)}>
+        <button className="btn btn-md btn-primary" onClick={this.goToCompiledView.bind(this)}>
           Add / Edit Notes
         </button>
       </div>

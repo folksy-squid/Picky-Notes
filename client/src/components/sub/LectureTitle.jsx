@@ -27,12 +27,12 @@ const LectureTitle = (props) => {
 
     view = (
     <div className="review-header">
-      <h3 className="lectureTitle">
+      <h4 className="lectureTitle">
         {topic} by {lecturer}
-      </h3>
-      <h3 className="review-date">
+      </h4>
+      <h4 className="review-date">
         {createdAt}
-      </h3>
+      </h4>
     </div>
     )
   }
