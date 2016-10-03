@@ -17,7 +17,7 @@ class Note extends React.Component {
     console.log(this.props.note.content);
   }
 
-  selectNoteHandler(e) {
+  toggleNoteHandler(e) {
     this.props.dispatch(toggleNote(this.props.note.id));
     this.forceUpdate();
   }
@@ -29,7 +29,7 @@ class Note extends React.Component {
     if (this.props.view === 'compile') {
       view = (
         <div className="note">
-          <input type="checkbox" ref="checkbox" onChange={this.selectNoteHandler.bind(this)} checked={this.props.note.show}/>
+          <input type="checkbox" ref="checkbox" onChange={this.toggleNoteHandler.bind(this)} checked={this.props.note.show}/>
           <span className="content">{this.props.note.content}</span>
           <span className="audioTimestamp">{this.props.note.audioTimestamp}</span>
         </div>
