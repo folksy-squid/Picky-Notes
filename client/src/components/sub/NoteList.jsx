@@ -3,7 +3,8 @@ import Note from './Note.jsx';
 import {mapStateToProps} from '../../Connection.js';
 import {addNote, replaceNotes} from '../../actions/noteActions.js';
 import {connect} from 'react-redux';
-import {getCurrentView} from '../../helpers.js'
+import {getCurrentView} from '../../helpers.js';
+import {setRoomInfo} from '../../actions/roomActions';
 
 class NoteList extends React.Component {
 
@@ -38,18 +39,28 @@ class NoteList extends React.Component {
     this.state = {
       notes: props.getState().note,
       view: currentView
-    }
-
+    };
   }
 
   componentWillMount() {
     const userId = this.props.getState().user.information[0].id;
+    const user = this.props.getState().user.information[0];
+    if (!this.props.getState().room.roomInfo) {
+      this.props.dispatch(setRoomInfo(pathUrl, user, (err, success) => {
+        if (err) {
+          realm.context.router.push('/notebook');
+        } else {
+          realm.setState({loaded: true});
+        }
+      }));
+    }
     const roomId = this.props.getState().room.roomInfo.id;
-
-    this.props.getState().room.socket.on('add note success', (note) => {
-      this.props.dispatch(addNote(note));
-      this.setState({notes: this.props.getState().note});
-    });
+    if (this.props.getState().room.socket) {
+      this.props.getState().room.socket.on('add note success', (note) => {
+        this.props.dispatch(addNote(note));
+        this.setState({notes: this.props.getState().note});
+      });
+    }
 
     if (this.state.view === 'compile') {
       this.getAllNotes(userId, roomId);
