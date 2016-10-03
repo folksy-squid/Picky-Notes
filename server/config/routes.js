@@ -3,6 +3,7 @@ const {createNewUser, createNewRoom, joinRoom, createNewNote, showAllNotes, show
 const passport = require('./passport');
 const path = require('path');
 const hotreload = require('./hotreload');
+const audioUpload = require('./audioUpload');
 
 
 module.exports = (app, express) => {
@@ -81,6 +82,14 @@ module.exports = (app, express) => {
   app.post('/api/rooms/:pathUrl', (req, res) => {
   // Have user join the room at 'pathUrl'
     joinRoom(req.body.userId, req.params.pathUrl, (currentRoom) => res.send(currentRoom));
+  });
+
+  app.post('/api/audio', audioUpload.single('lecture'), function(req, res) {
+    console.log('request.body!!!', req.body);
+    console.log('request.file!!!', req.file);
+    console.log('file url!!!', req.file.location);
+
+    res.status(201).send('Uploaded!');
   });
 
   // Note Creation
