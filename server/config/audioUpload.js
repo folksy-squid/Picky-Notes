@@ -13,19 +13,6 @@ const s3 = new AWS.S3({
   region: region
 });
 
-// let upload = multer({
-//   dest: './uploads',
-//   limits: { fileSize: 10000000 },
-//   rename: function (fieldname, filename) {
-//     return filename.replace(/\W+/g, '-').toLowerCase();
-//   },
-//   onFileUploadData: function (file, data, req, res) {
-//     var params = {
-
-//     }
-//   }
-// })
-
 module.exports = multer({
   storage: multerS3({
     s3: s3,
