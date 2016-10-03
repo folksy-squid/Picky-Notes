@@ -104,10 +104,15 @@ h2.new-room-title {
 }
 
 .review-header > .lectureTitle {
-  display: inline;
+  display: inline-block;
   text-align: left;
 }
 
+.review-date {
+  display: inline;
+  text-align: right;
+  float: right;
+}
 
 /*
   =================================
