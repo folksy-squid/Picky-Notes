@@ -4,7 +4,7 @@ import {connect} from 'react-redux';
 import * as actions from './actions/index.js';
 import store from './store';
 
-const mapStateToProps = () => (store);
+const mapStateToProps = (state) => (store);
 
 
 const mapDispatchToProps = (dispatch) =>
