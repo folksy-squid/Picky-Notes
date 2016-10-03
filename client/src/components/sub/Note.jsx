@@ -22,6 +22,13 @@ class Note extends React.Component {
     this.forceUpdate();
   }
 
+  formatTime(milliseconds) {
+    let totalSeconds = ~~(milliseconds / 1000);
+    let minutes = ~~(totalSeconds / 60);
+    let seconds = totalSeconds % 60;
+    return (minutes) ? `${minutes}m ${seconds}s` : `${seconds}s`;
+  }
+
   render() {
     var view;
 
@@ -31,14 +38,14 @@ class Note extends React.Component {
         <div className="note">
           <input type="checkbox" ref="checkbox" onChange={this.toggleNoteHandler.bind(this)} checked={this.props.note.show}/>
           <span className="content">{this.props.note.content}</span>
-          <span className="audioTimestamp">{this.props.note.audioTimestamp}</span>
+          <span className="audioTimestamp">{this.formatTime(this.props.note.audioTimestamp)}</span>
         </div>
       );
     } else if (this.props.view === 'lecture') {
       view = (
         <div className="note">
           <span className="content">{this.props.note.content}</span>
-          <span className="audioTimestamp">{this.props.note.audioTimestamp}</span>
+          <span className="audioTimestamp">{this.formatTime(this.props.note.audioTimestamp)}</span>
         </div>);
     } else if (this.props.view === 'review') {
       view = (

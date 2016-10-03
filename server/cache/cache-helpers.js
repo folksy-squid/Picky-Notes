@@ -15,15 +15,18 @@ const addUserToCache = (pathUrl, userId, cb) => {
 };
 
 const addNoteToCache = (pathUrl, userId, note, cb) => {
-  note.audioTimestamp = Date();
-  note.show = true;
-  note.originalUserId = userId;
-  note.editingUserId = note.originalUserId;
-  cache.rpush(`${userId}:${pathUrl}`, JSON.stringify(note))
-  .then(() => cache.lrange(`${userId}:${pathUrl}`, -1, -1))
-  .then((note) => cb && cb(JSON.parse(note[0])));
-  // .then(() => cache.lrange(`${userId}:${pathUrl}`, 0, -1))
-  // .then((data) => console.log(data));
+  cache.get(`${pathUrl}:START`)
+  .then((startTime) => {
+    note.audioTimestamp = Date.now() - startTime;
+    note.show = true;
+    note.originalUserId = userId;
+    note.editingUserId = note.originalUserId;
+    cache.rpush(`${userId}:${pathUrl}`, JSON.stringify(note))
+    .then(() => cache.lrange(`${userId}:${pathUrl}`, -1, -1))
+    .then((note) => cb && cb(JSON.parse(note[0])));
+    // .then(() => cache.lrange(`${userId}:${pathUrl}`, 0, -1))
+    // .then((data) => console.log(data));
+  });
 };
 
 /************************* DEV *************************/
@@ -31,11 +34,13 @@ const addNoteToCache = (pathUrl, userId, note, cb) => {
 const deleteAllNotesAndRoom = (pathUrl) => {
   getUsersFromRoom(pathUrl)
   .then((allUserIds) => {
-    cache.del(pathUrl);
+    let pipeline = cache.pipeline();
+    pipeline.del(pathUrl);
+    pipeline.del(`${pathUrl}:START`);
     allUserIds.forEach((userId) => {
-      cache.del(`${userId}:${pathUrl}`);
+      pipeline.del(`${userId}:${pathUrl}`);
     });
-
+    pipeline.exec();
   });
 };
 
@@ -67,9 +72,14 @@ const getNotesFromRoom = (pathUrl, cb) => {
   // delete Notes From user
 };
 
+const addTimestampToCache = (pathUrl, startTime) => {
+  cache.set(`${pathUrl}:START`, startTime);
+};
+
 module.exports = {
   addUserToCache,
   addNoteToCache,
   getNotesFromRoom,
   deleteAllNotesAndRoom,
+  addTimestampToCache,
 };
