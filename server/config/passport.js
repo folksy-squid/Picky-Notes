@@ -1,5 +1,5 @@
 if (process.env.NODE_ENV === 'test') {
-  var keys = {facebook: {FACEBOOK_APP_ID: 'haha', FACEBOOK_APP_SECRET: 'no secrets for you'}};
+  var keys = {FACEBOOK_APP_ID: 'haha', FACEBOOK_APP_SECRET: 'no secrets for you'};
 } else {
   var keys = require('../../keys').facebook;
 }
