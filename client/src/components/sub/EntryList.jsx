@@ -1,5 +1,4 @@
 import React from 'react';
-import Connection from '../../Connection.js';
 import Entry from './Entry.jsx';
 
 // See below example for rendering with map.
@@ -12,11 +11,15 @@ import Entry from './Entry.jsx';
 </div>
 */
 
+
 const EntryList = (props) => (
   <div className="container-fluid">
-    <Entry />
+    {props.entries.map((entry, i) => {
+      console.log('entry', entry);
+      return <Entry key = {i} entry={entry}/>;
+    })}
   </div>
 );
 
 
-export default Connection(EntryList);
+export default EntryList;

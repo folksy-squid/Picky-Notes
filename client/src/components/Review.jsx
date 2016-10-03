@@ -3,10 +3,30 @@ import { Link } from 'react-router';
 import NoteList from './sub/NoteList.jsx';
 import LectureTitle from './sub/LectureTitle.jsx';
 import Connection from '../Connection.js';
+import {setRoomInfo} from '../actions/roomActions';
 
 class Review extends React.Component {
   constructor (props) {
     super(props);
+    this.state = {
+      loaded: false
+    };
+  }
+  componentWillMount() {
+    if (this.props.getState().room.roomInfo) {
+      this.setState({loaded: true});
+    } else {
+      var realm = this;
+      var user = this.props.getState().user.information[0];
+      var pathUrl = this.props.params.roomId;
+      this.props.dispatch(setRoomInfo(pathUrl, user, (err, success) => {
+        if (err) {
+          realm.context.router.push('/notebook');
+        } else {
+          realm.setState({loaded: true});
+        }
+      }));
+    }
   }
 
   goToCompiledView() {
@@ -15,6 +35,7 @@ class Review extends React.Component {
 
   render() {
     return (
+      this.state.loaded ? (
       <div className="container">
         <LectureTitle />
         <NoteList />
@@ -23,6 +44,7 @@ class Review extends React.Component {
           Add / Edit Notes
         </button>
       </div>
+    ) : (<div></div>)
     );
   }
 }

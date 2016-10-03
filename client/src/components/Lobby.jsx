@@ -67,6 +67,7 @@ class Lobby extends React.Component {
 
   render() {
     return (
+        this.state.completed ? (
       <div className="container lobby">
         <LectureTitle />
         <div className="row">
@@ -94,7 +95,8 @@ class Lobby extends React.Component {
           </div>
         </div>
       </div>
-    )
+    ) : (<div></div>)
+  );
   }
 }
 

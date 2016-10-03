@@ -11,8 +11,11 @@ class Entry extends React.Component {
     // (use map)
     return (
       <div className="col-sm-6 col-md-4">
-        'Here lies an Entry Component'
-        (insert a sneaky preview of your note)
+        <Link to={`/review/${this.props.entry.pathUrl}`}>
+          <div>{`${this.props.entry.topic} by ${this.props.entry.lecturer}`}</div>
+          <img style={{maxHeight: '200px', maxWidth: '200px'}} src='https://image.freepik.com/free-icon/file-interface-symbol-of-a-white-page-with-one-folded-corner_318-41811.jpg' />
+          <div>{`${this.props.entry.class}`}</div>
+        </Link>
       </div>
     );
   }

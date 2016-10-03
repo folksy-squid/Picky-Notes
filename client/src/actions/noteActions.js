@@ -35,3 +35,12 @@ export const toggleNote = (noteId) => {
     noteId
   };
 };
+
+export const getNotesFromRoom = (pathUrl, user, cb) => {
+  return {
+    type: 'GET_NOTES_FROM_ROOM',
+    pathUrl,
+    user,
+    cb
+  };
+};

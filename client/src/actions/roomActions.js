@@ -23,9 +23,14 @@ export const removeParticipant = (participant) => ({
   participant
 });
 
-export const readyParticipant = (participant) => {
-  return {
-    type: 'READY_PARTICIPANT',
-    participant
-  };
-};
+export const readyParticipant = (participant) => ({
+  type: 'READY_PARTICIPANT',
+  participant
+});
+
+export const setRoomInfo = (pathUrl, user, cb) => ({
+  type: 'SET_ROOM_INFO',
+  pathUrl,
+  user,
+  cb
+});

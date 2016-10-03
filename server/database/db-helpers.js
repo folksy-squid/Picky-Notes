@@ -1,6 +1,6 @@
 /*jshint esversion: 6 */
 const md5 = require('js-md5');
-const {User, Room, Note} = require('./db-config');
+const {User, Room, Note, db} = require('./db-config');
 
 const createNewUser = ({facebookId, name, email, pictureUrl, gender}, cb) => {
 
@@ -35,6 +35,7 @@ const createNewRoom = ({topic, className, lecturer, hostId}, cb) => {
 };
 
 const joinRoom = (userId, pathUrl, cb) => {
+  console.log('this is user Id', userId);
   User.findById(userId)
   .then(currentUser => {
     Room.findOne({ where: { pathUrl: pathUrl } })
@@ -139,7 +140,22 @@ const updateNotes = (userId, roomId, allNotes, cb) => {
 
 const findRoom = (pathUrl, cb) => {
   Room.findOne({ where: {pathUrl: pathUrl} })
-  .then(room => cb(room));
+  .then(cb);
+};
+
+const getAllUserRooms = (userId, cb) => {
+  User.findById(userId)
+  .then((user) => user.getRooms({raw: true}))
+  .then(cb);
+};
+
+const getRoom = (pathUrl, userId, cb) => {
+  User.findById(userId)
+  .then((user) => user.getRooms({where: {pathUrl: pathUrl}, raw: true}))
+  .then((room) => {
+    console.log(room[0]);
+    cb(room[0]);
+  });
 };
 
 module.exports = {
@@ -152,4 +168,6 @@ module.exports = {
   createRoomNotes,
   multiplyNotes,
   updateNotes,
+  getAllUserRooms,
+  getRoom
 };
