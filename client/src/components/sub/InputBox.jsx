@@ -3,6 +3,7 @@ import {connect} from 'react-redux';
 import {addNote, submitNote} from '../../actions/noteActions.js';
 import NoteReducer from '../../reducers/noteReducers';
 import RoomReducer from '../../reducers/roomReducers';
+import {getCurrentView} from '../../helpers.js';
 
 class InputBox extends React.Component {
   constructor (props) {
@@ -11,8 +12,25 @@ class InputBox extends React.Component {
 
   submitNoteHandler(e) {
     e.preventDefault();
-    console.log('i am trying to get something to work');
-    if (this.refs.inputNote.value.trim().length === 0) { return; }
+    if (this.refs.inputNote.value.trim() === '') { return; }
+    if (getCurrentView(this.props.routing.locationBeforeTransitions.pathname) === 'compile') {
+      let note = {
+        content: this.refs.inputNote.value, 
+        originalUserId: this.props.user.information[0].id,
+        roomId: this.props.room.roomInfo.id
+      };
+      $.ajax({
+        method: 'POST',
+        url: '/api/notes/create',
+        contentType: 'application/json',
+        data: JSON.stringify(note),
+        success: (res) => {
+          console.log(res);
+        },
+        error: console.log.bind(this)
+      });
+      return;
+    }
     this.props.dispatch(submitNote(this.props.room.socket, this.refs.inputNote.value));
     this.refs.inputNote.value = '';
   }

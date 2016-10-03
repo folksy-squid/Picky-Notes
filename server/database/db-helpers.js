@@ -46,19 +46,19 @@ const joinRoom = (userId, pathUrl, cb) => {
   });
 };
 
-// const createNewNote = ({content, roomId, originalUserId}, cb) => {
-//   // content, audioTimestamp, show, roomId, editingUserId, originalUserId
-//
-//   Note.create({
-//     content: content,
-//     audioTimestamp: Date(),
-//     show: true,
-//     originalUserId: originalUserId,
-//     editingUserId: originalUserId,
-//     roomId: roomId
-//   })
-//   .then((note) => { cb(note); });
-// };
+const createNewNote = ({content, roomId, originalUserId}, cb) => {
+  // content, audioTimestamp, show, roomId, editingUserId, originalUserId
+
+  Note.create({
+    content: content,
+    audioTimestamp: Date.now(),
+    show: true,
+    originalUserId: originalUserId,
+    editingUserId: originalUserId,
+    roomId: roomId
+  })
+  .then((note) => { cb(note); });
+};
 
 const multiplyNotes = (notes, arrOfClients) => {
   let multipliedNotes = [];
