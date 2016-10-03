@@ -14,6 +14,7 @@ class Note extends React.Component {
 
   playNote(e) {
     // this can be invoked when in the review view
+    console.log(this.props.note.content);
   }
 
   selectNoteHandler(e) {
