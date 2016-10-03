@@ -1,9 +1,9 @@
-
-const {createNewUser, createNewRoom, joinRoom, createNewNote, showAllNotes, showFilteredNotes, updateNotes, getAllUserRooms, getRoom} = require ('../database/db-helpers');
+/*jshint esversion: 6 */
+const {createNewUser, createNewRoom, joinRoom, createNewNote, showAllNotes, showFilteredNotes, updateNotes, getAllUserRooms, getRoom, saveAudioToRoom} = require ('../database/db-helpers');
 const passport = require('./passport');
 const path = require('path');
 const hotreload = require('./hotreload');
-
+const audioUpload = require('./audioUpload');
 
 module.exports = (app, express) => {
   // Facebook OAuth
@@ -81,6 +81,10 @@ module.exports = (app, express) => {
   app.post('/api/rooms/:pathUrl', (req, res) => {
   // Have user join the room at 'pathUrl'
     joinRoom(req.body.userId, req.params.pathUrl, (currentRoom) => res.send(currentRoom));
+  });
+
+  app.post('/api/audio/:pathUrl', audioUpload.single('lecture'), function(req, res) {
+    saveAudioToRoom(req.params.pathUrl, req.file.location, () => res.status(201).send('Uploaded!'));
   });
 
   // Note Creation

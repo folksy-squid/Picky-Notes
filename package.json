@@ -46,12 +46,15 @@
     "webpack-hot-middleware": "^2.12.2"
   },
   "dependencies": {
+    "aws-sdk": "^2.6.6",
     "bluebird": "^3.4.6",
     "body-parser": "^1.15.2",
     "express": "^4.14.0",
     "ioredis": "^2.4.0",
     "js-md5": "^0.4.1",
     "morgan": "^1.7.0",
+    "multer": "^1.2.0",
+    "multer-s3": "^2.3.2",
     "passport": "^0.3.2",
     "passport-facebook": "^2.1.1",
     "path": "^0.12.7",
