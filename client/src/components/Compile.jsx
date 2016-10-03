@@ -30,7 +30,6 @@ class Compile extends React.Component {
       contentType: 'application/json',
       data: JSON.stringify(changedNotes),
       success: (res) => {
-        console.log(res);
         this.context.router.push(`/review/${this.props.getState().room.roomInfo.pathUrl}`)
       },
       error: (error) => console.log('Error updating changed notes', error),
