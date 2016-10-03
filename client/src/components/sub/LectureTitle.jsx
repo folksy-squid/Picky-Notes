@@ -2,9 +2,16 @@ import React from 'react';
 import Connection from '../../Connection';
 const LectureTitle = (props) => {
   var roomInfo = props.getState().room.roomInfo;
-  var lecturer = roomInfo.lecturer;
-  var topic = roomInfo.topic;
-  var createdAt = moment(roomInfo.createdAt);
+
+  //** UNCOMMENT BELOW
+  // var lecturer = roomInfo.lecturer;
+  // var topic = roomInfo.topic;
+  // var createdAt = moment(roomInfo.createdAt);
+
+  //** DELETE BELOW
+  var lecturer = 'Mr Potatohead'
+  var topic = 'World History';
+  // var createdAt = moment(roomInfo.createdAt);
 
   return (
     <h3 className="lectureTitle">{topic} by {lecturer}</h3>
