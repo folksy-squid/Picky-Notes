@@ -13,20 +13,16 @@ class Review extends React.Component {
     };
   }
   componentWillMount() {
-    if (this.props.getState().room.roomInfo) {
-      this.setState({loaded: true});
-    } else {
-      var realm = this;
-      var user = this.props.getState().user.information[0];
-      var pathUrl = this.props.params.roomId;
-      this.props.dispatch(setRoomInfo(pathUrl, user, (err, success) => {
-        if (err) {
-          realm.context.router.push('/notebook');
-        } else {
-          realm.setState({loaded: true});
-        }
-      }));
-    }
+    var realm = this;
+    var user = this.props.getState().user.information[0];
+    var pathUrl = this.props.params.roomId;
+    this.props.dispatch(setRoomInfo(pathUrl, user, (err, success) => {
+      if (err) {
+        realm.context.router.push('/notebook');
+      } else {
+        realm.setState({loaded: true});
+      }
+    }));
   }
 
   static get contextTypes() {
