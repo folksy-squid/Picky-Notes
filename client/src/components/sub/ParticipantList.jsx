@@ -37,8 +37,9 @@ class ParticipantList extends React.Component {
   }
 
   componentWillMount() {
-    if (this.props.getState().room.socket) {
-      const socket = this.props.getState().room.socket;
+    const socket = this.props.getState().room.socket;
+
+    if (socket) {
       socket.on('new user joined room', this.newUserJoinedRoom.bind(this));
       socket.on('user disconnected', this.userDisconnected.bind(this));
       socket.on('user ready', this.userReady.bind(this));
@@ -52,8 +53,8 @@ class ParticipantList extends React.Component {
   componentWillUnmount() {
 
     console.log('unmounting participant component');
-    if (this.props.getState().room.socket) {
-      var socket = this.props.getState().room.socket;
+    const socket = this.props.getState().room.socket;
+    if (socket) {
       socket.removeListener('new user joined room');
       socket.removeListener('user disconnected');
       socket.removeListener('user ready');
