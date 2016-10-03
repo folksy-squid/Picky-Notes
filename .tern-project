@@ -2,6 +2,7 @@
   "ecmaVersion": 7,
   "libs": [
     "browser",
+    "chai",
     "jquery"
   ],
   "plugins": {

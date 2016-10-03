@@ -7,7 +7,7 @@ import { Link } from 'react-router';
 class Notebook extends React.Component {
   constructor (props) {
     super(props);
-    this.state= {
+    this.state = {
       loaded: false
     };
     // console.log('state:', this.state);
@@ -15,8 +15,8 @@ class Notebook extends React.Component {
   }
 
   componentWillMount() {
-    var user = this.props.getState().user.information[0];
-    var context = this;
+    const user = this.props.getState().user.information[0];
+    const context = this;
     console.log('user', user);
     $.ajax({
       method: 'GET',

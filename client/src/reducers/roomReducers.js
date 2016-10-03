@@ -82,6 +82,19 @@ export default (state = {}, action) => {
   if (action.type === 'READY_PARTICIPANT') {
     state.participants[findUser(state.participants, action.participant)].readyStatus = true;
   }
-
+  if (action.type === 'SET_ROOM_INFO') {
+    $.ajax({
+      method: 'GET',
+      url: `/api/users/${action.user.id}?pathUrl=${action.pathUrl}`,
+      success: (res) => {
+        if (res === 'error') {
+          action.cb(res);
+        } else {
+          state.roomInfo = res;
+          action.cb(null, res);
+        }
+      }
+    });
+  }
   return state;
 };
