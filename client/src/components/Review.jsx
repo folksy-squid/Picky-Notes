@@ -29,8 +29,14 @@ class Review extends React.Component {
     }
   }
 
-  goToCompiledView() {
+  static get contextTypes() {
+    return {
+      router: React.PropTypes.object.isRequired,
+    };
+  }
 
+  goToCompiledView() {
+    this.context.router.push(`/compile/${this.props.getState().room.roomInfo.pathUrl}`);
   }
 
   render() {
@@ -40,7 +46,7 @@ class Review extends React.Component {
         <LectureTitle />
         <NoteList />
         <div> AUDIO Component </div>
-        <button className="btn btn-lg btn-primary">
+        <button className="btn btn-lg btn-primary" onClick={this.goToCompiledView.bind(this)}>
           Add / Edit Notes
         </button>
       </div>
