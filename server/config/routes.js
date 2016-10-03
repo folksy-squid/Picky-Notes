@@ -1,8 +1,5 @@
-<<<<<<< HEAD
-const {createNewUser, createNewRoom, joinRoom, createNewNote, showAllNotes, showFilteredNotes, updateNotes} = require ('../database/db-helpers');
-=======
-const {createNewUser, createNewRoom, joinRoom, createNewNote, showAllNotes, showFilteredNotes, getAllUserRooms} = require ('../database/db-helpers');
->>>>>>> notebook work part 1
+
+const {createNewUser, createNewRoom, joinRoom, createNewNote, showAllNotes, showFilteredNotes, updateNotes, getAllUserRooms, getRoom} = require ('../database/db-helpers');
 const passport = require('./passport');
 const path = require('path');
 const hotreload = require('./hotreload');
@@ -48,7 +45,11 @@ module.exports = (app, express) => {
   // User Info Update
   app.route('/api/users/:userId')
     .get((req, res) => {
-      res.send('Retrieve the info for user #' + req.params.userId);
+      if (req.query.pathUrl) {
+        getRoom(req.query.pathUrl, req.params.userId, (room) => res.send(room));
+      } else {
+        res.send('Retrieve the info for user #' + req.params.userId);
+      }
     })
     .put((req, res) => {
       res.send('Update the info for user #' + req.params.userId);

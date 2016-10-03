@@ -140,18 +140,21 @@ const updateNotes = (userId, roomId, allNotes, cb) => {
 
 const findRoom = (pathUrl, cb) => {
   Room.findOne({ where: {pathUrl: pathUrl} })
-  .then(room => cb(room));
+  .then(cb);
 };
 
 const getAllUserRooms = (userId, cb) => {
-  console.log('the user id', userId);
-  User.findById(userId).
-  then((user) => {
-    user.getRooms({raw: true})
-  .then( (rooms) => {
-    console.log('these are your rooms', rooms);
-    cb(rooms);
-    });
+  User.findById(userId)
+  .then((user) => user.getRooms({raw: true}))
+  .then(cb);
+};
+
+const getRoom = (pathUrl, userId, cb) => {
+  User.findById(userId)
+  .then((user) => user.getRooms({where: {pathUrl: pathUrl}, raw: true}))
+  .then((room) => {
+    console.log(room[0]);
+    cb(room[0]);
   });
 };
 
@@ -165,5 +168,6 @@ module.exports = {
   createRoomNotes,
   multiplyNotes,
   updateNotes,
-  getAllUserRooms
+  getAllUserRooms,
+  getRoom
 };
