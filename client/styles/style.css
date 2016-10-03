@@ -79,12 +79,23 @@ h2.new-room-title {
   =================================
 */
 
-
 .lobby {
   display: flex;
   justify-content: space-around;
   flex-direction: column;
 }
+
+.panel-item {
+  margin-top: 25px;
+  margin-bottom: 10px;
+}
+
+/*
+  =================================
+    LectureTitle
+  =================================
+*/
+
 
 .lectureTitle {
   display: flex;
@@ -92,10 +103,11 @@ h2.new-room-title {
   font-size: 2.8em;
 }
 
-.panel-item {
-  margin-top: 25px;
-  margin-bottom: 10px;
+.review-header > .lectureTitle {
+  display: inline;
+  text-align: left;
 }
+
 
 /*
   =================================
@@ -165,6 +177,7 @@ h2.new-room-title {
     Note List
   =================================
 */
+
 .note-list {
   border: 1px solid black;
 }
@@ -240,3 +253,4 @@ h2.new-room-title {
   background-image: linear-gradient(#eee, #ddd);
   border-color: #ccc;
 }
+
