@@ -159,6 +159,7 @@ const getRoom = (pathUrl, userId, cb) => {
 };
 
 const saveAudioToRoom = (pathUrl, audioUrl, cb) => {
+  console.log('pathUrl', pathUrl, 'audioUrl', audioUrl);
   Room.update({audioUrl: audioUrl}, {where: {pathUrl: pathUrl}})
   .then(cb);
 };

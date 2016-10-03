@@ -84,7 +84,7 @@ module.exports = (app, express) => {
   });
 
   app.post('/api/audio/:pathUrl', audioUpload.single('lecture'), function(req, res) {
-    saveAudioToRoom(req.body.pathUrl, req.file.location, () => res.status(201).send('Uploaded!'));
+    saveAudioToRoom(req.params.pathUrl, req.file.location, () => res.status(201).send('Uploaded!'));
   });
 
   // Note Creation
