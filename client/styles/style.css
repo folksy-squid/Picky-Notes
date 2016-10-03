@@ -18,6 +18,11 @@ h3 {
   font-family: 'PT Serif', serif;
 }
 
+h4 {
+  font-size: 30px;
+  font-family: 'PT Serif', serif;
+}
+
 /*
   =================================
     Landing
@@ -184,12 +189,14 @@ h2.new-room-title {
 */
 
 .note-list {
-  border: 1px solid black;
+  padding-left: 15px;
 }
 
 .note {
   display: flex;
   justify-content: flex-start;
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
 
 .audioTimestamp {
@@ -205,6 +212,8 @@ h2.new-room-title {
 
 .note > .fa-play-circle {
   cursor: pointer;
+  margin-right: 15px;
+  font-size: 20px;
 }
 
 
