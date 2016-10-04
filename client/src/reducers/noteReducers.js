@@ -15,11 +15,12 @@ export default (state = [], action) => {
   }
 
   if (action.type === 'SELECT_NOTE') {
-    state.forEach((note, i) => {
+    state = state.map((note, i) => {
       if (note.id === action.noteId) {
         note.show = !note.show;
         note.changed = true;
       }
+      return note;
     });
   }
 

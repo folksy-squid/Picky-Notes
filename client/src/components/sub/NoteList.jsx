@@ -99,7 +99,7 @@ class NoteList extends React.Component {
   render() {
     return (
       <div className="note-list">
-        {this.props.note.map((note, i)=>(<Note key={i} note={note} view={this.state.view}/>)
+        {this.props.note.map((note, i)=>(<Note key={i} noteInfo={note} view={this.state.view}/>)
         )}
       </div>
     );

@@ -14,11 +14,11 @@ class Note extends React.Component {
 
   playNote(e) {
     // this can be invoked when in the review view
-    console.log(this.props.note.content);
+    console.log(this.props.noteInfo.content);
   }
 
   toggleNoteHandler(e) {
-    this.props.dispatch(toggleNote(this.props.note.id));
+    this.props.dispatch(toggleNote(this.props.noteInfo.id));
   }
 
   formatTime(milliseconds) {
@@ -30,27 +30,26 @@ class Note extends React.Component {
 
   render() {
     var view;
-
     //props.page will be obtained from redux store.
     if (this.props.view === 'compile') {
       view = (
         <div className="note">
-          <input type="checkbox" ref="checkbox" onChange={this.toggleNoteHandler.bind(this)} checked={this.props.note.show}/>
-          <span className="content">{this.props.note.content}</span>
-          <span className="audioTimestamp">{this.formatTime(this.props.note.audioTimestamp)}</span>
+          <input type="checkbox" ref="checkbox" onChange={this.toggleNoteHandler.bind(this)} checked={this.props.noteInfo.show}/>
+          <span className="content">{this.props.noteInfo.content}</span>
+          <span className="audioTimestamp">{this.formatTime(this.props.noteInfo.audioTimestamp)}</span>
         </div>
       );
     } else if (this.props.view === 'lecture') {
       view = (
         <div className="note">
-          <span className="content">{this.props.note.content}</span>
-          <span className="audioTimestamp">{this.formatTime(this.props.note.audioTimestamp)}</span>
+          <span className="content">{this.props.noteInfo.content}</span>
+          <span className="audioTimestamp">{this.formatTime(this.props.noteInfo.audioTimestamp)}</span>
         </div>);
     } else if (this.props.view === 'review') {
       view = (
         <div className="note">
           <i className="fa fa-play-circle" aria-hidden="true" onClick={this.playNote.bind(this)}></i>
-          {this.props.note.content}
+          {this.props.noteInfo.content}
         </div>
       );
     }
@@ -59,4 +58,11 @@ class Note extends React.Component {
   }
 }
 
-export default Note;
+const mapStateToProps = (state) => {
+  return {
+    ...state,
+    NoteReducer
+  }
+};
+
+export default connect(mapStateToProps)(Note);
