@@ -4,6 +4,7 @@ import NoteList from './sub/NoteList.jsx';
 import LectureTitle from './sub/LectureTitle.jsx';
 import Connection from '../Connection.js';
 import {setRoomInfo} from '../actions/roomActions';
+import Audio from './sub/Audio.jsx';
 
 class Review extends React.Component {
   constructor (props) {
@@ -41,10 +42,10 @@ class Review extends React.Component {
       <div className="container">
         <LectureTitle />
         <NoteList />
-        <div> AUDIO Component </div>
         <button className="btn btn-md btn-primary" onClick={this.goToCompiledView.bind(this)}>
           Add / Edit Notes
         </button>
+        <Audio />
       </div>
     ) : (<div></div>)
     );

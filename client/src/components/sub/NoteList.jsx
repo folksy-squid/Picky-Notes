@@ -1,10 +1,11 @@
 import React from 'react';
 import Note from './Note.jsx';
-import {mapStateToProps} from '../../Connection.js';
 import {addNote, replaceNotes} from '../../actions/noteActions.js';
+import NoteReducer from '../../reducers/noteReducers';
+import RoomReducer from '../../reducers/roomReducers';
+import UserReducer from '../../reducers/userReducers';
 import {connect} from 'react-redux';
 import {getCurrentView} from '../../helpers.js';
-import {setRoomInfo} from '../../actions/roomActions';
 
 class NoteList extends React.Component {
 
@@ -34,31 +35,22 @@ class NoteList extends React.Component {
   /*----------  NPM RUN DEV  ----------*/
   constructor(props) {
     super(props);
-    var pathname = props.getState().routing.locationBeforeTransitions.pathname;
+    var pathname = props.routing.locationBeforeTransitions.pathname;
     var currentView = getCurrentView(pathname);
     this.state = {
-      notes: props.getState().note,
-      view: currentView
+      view: currentView,
+      note: this.props.note
     };
   }
 
   componentWillMount() {
-    const userId = this.props.getState().user.information[0].id;
-    const user = this.props.getState().user.information[0];
-    if (!this.props.getState().room.roomInfo) {
-      this.props.dispatch(setRoomInfo(pathUrl, user, (err, success) => {
-        if (err) {
-          realm.context.router.push('/notebook');
-        } else {
-          realm.setState({loaded: true});
-        }
-      }));
-    }
-    const roomId = this.props.getState().room.roomInfo.id;
-    if (this.props.getState().room.socket) {
-      this.props.getState().room.socket.on('add note success', (note) => {
+    const userId = this.props.user.information[0].id;
+
+    const roomId = this.props.room.roomInfo.id;
+    if (this.props.room.socket) {
+      this.props.room.socket.on('add note success', (note) => {
+        console.log('add a new note', note);
         this.props.dispatch(addNote(note));
-        this.setState({notes: this.props.getState().note});
       });
     }
 
@@ -81,9 +73,7 @@ class NoteList extends React.Component {
       success: (res, status) => {
         // replace current Notes with response
         this.props.dispatch(replaceNotes(res));
-
         // reassign with notes from server
-        this.setState({notes: this.props.getState().note});
       },
       error: ( res, status ) => {
         console.log(res);
@@ -99,9 +89,7 @@ class NoteList extends React.Component {
       success: (res, status) => {
         // replace current Notes with response
         this.props.dispatch(replaceNotes(res));
-
         // reassign with notes from server
-        this.setState({notes: this.props.getState().note});
       },
       error: (res, status) => {
         console.log(res);
@@ -110,13 +98,25 @@ class NoteList extends React.Component {
   }
 
   render() {
-    return(
+    console.log('these are the notes', this.props.note);
+    return (
       <div className="note-list">
-        {this.state.notes.map((note, i)=>(<Note key={i} note={note} view={this.state.view}/>)
+        {this.props.note.map((note, i)=>(<Note key={i} note={note} view={this.state.view}/>)
         )}
       </div>
-    )
+    );
   }
 }
+
+const mapStateToProps = (state) => {
+  console.log(state);
+  return {
+    ...state,
+    NoteReducer,
+    RoomReducer,
+    UserReducer
+  }
+}
+
 
 export default connect(mapStateToProps)(NoteList);

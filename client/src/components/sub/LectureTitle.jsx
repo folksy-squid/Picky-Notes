@@ -1,9 +1,11 @@
 import React from 'react';
-import Connection from '../../Connection';
-import {getCurrentView} from '../../helpers.js'
+import {connect} from 'react-redux';
+import {getCurrentView} from '../../helpers.js';
+import RoomReducer from '../../reducers/roomReducers';
+
 const LectureTitle = (props) => {
   /*----------  NPM RUN DEV  ----------*/
-  var roomInfo = props.getState().room.roomInfo;
+  var roomInfo = props.room.roomInfo;
   var lecturer = roomInfo.lecturer;
   var topic = roomInfo.topic;
   var createdAt = moment(roomInfo.createdAt).format('MM/DD/YYYY');
@@ -20,7 +22,7 @@ const LectureTitle = (props) => {
   );
 
   console.log('props...', props);
-  var pathname = props.getState().routing.locationBeforeTransitions.pathname;
+  var pathname = props.routing.locationBeforeTransitions.pathname;
 
   if (getCurrentView(pathname) === 'review') {
     console.log('lecturer', lecturer, 'topic', topic, 'createdAt', createdAt);
@@ -34,10 +36,17 @@ const LectureTitle = (props) => {
         {createdAt}
       </h4>
     </div>
-    )
+  );
   }
-  console.log('view,', view)
+  console.log('view,', view);
   return view;
 };
 
-export default Connection(LectureTitle);
+const mapStateToProps = (state) => {
+  return {
+    ...state,
+    roomReducer    
+  }
+}
+
+export default connect(mapStateToProps)(LectureTitle);

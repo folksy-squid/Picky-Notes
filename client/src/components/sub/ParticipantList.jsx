@@ -1,18 +1,18 @@
 import React from 'react';
-import {mapStateToProps} from '../../Connection.js';
 import {connect} from 'react-redux';
 import {addParticipant, removeParticipant, readyParticipant} from '../../actions/roomActions';
+import roomReducer from '../../reducers/roomReducers';
 import {getCurrentView} from '../../helpers.js';
 
 class ParticipantList extends React.Component {
   constructor(props) {
     super(props);
 
-    let pathname = props.getState().routing.locationBeforeTransitions.pathname;
+    let pathname = props.routing.locationBeforeTransitions.pathname;
     let currentView = getCurrentView(pathname);
 
     this.state = {
-      participants: props.getState().room.participants,
+      participants: props.room.participants,
       view: getCurrentView(pathname),
       readyStatusDisplay: 'none'
     };
@@ -21,24 +21,20 @@ class ParticipantList extends React.Component {
   newUserJoinedRoom(user) {
     console.log('new user joined room');
     this.props.dispatch(addParticipant(user));
-    this.setState({participants: this.props.getState().room.participants});
   }
 
   userDisconnected(user) {
     console.log('a user has disconnected', user);
     this.props.dispatch(removeParticipant(user));
-    this.setState({participants: this.props.getState().room.participants});
   }
 
   userReady(user) {
     console.log('a user is ready', user);
     this.props.dispatch(readyParticipant(user));
-    this.setState({participants: this.props.getState().room.participants});
   }
 
   componentWillMount() {
     const socket = this.props.getState().room.socket;
-
     if (socket) {
       socket.on('new user joined room', this.newUserJoinedRoom.bind(this));
       socket.on('user disconnected', this.userDisconnected.bind(this));
@@ -62,14 +58,15 @@ class ParticipantList extends React.Component {
   }
 
   render() {
-    var participantLength = this.state.participants.length;
+    console.log(this.props);
+    var participantLength = this.props.room.participants.length;
     var classColor = (i) => 'participant' + i;
     return (
       <div className="participants">
         <h4>
           Participants ({participantLength}/10)
         </h4>
-        {this.state.participants.map(({name, readyStatus}, i) =>
+        {this.props.room.participants.map(({name, readyStatus}, i) =>
         <div key={i}>
           <i className={`ion ion-android-person ${classColor(`${i}`)}`} aria-hidden="true"></i>
           <span>{name}</span>&nbsp;
@@ -79,5 +76,12 @@ class ParticipantList extends React.Component {
     );
   }
 }
+
+const mapStateToProps = (state) => {
+  return {
+    ...state,
+    roomReducer
+  }
+};
 
 export default connect(mapStateToProps)(ParticipantList);
