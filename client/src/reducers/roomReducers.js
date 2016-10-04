@@ -1,4 +1,7 @@
 /*jshint esversion: 6 */
+// need to import socket streams
+import ss from 'socket.io-stream';
+
 const createSocketRoom = (state, host, pathUrl, createRoom) => {
   // this is if server is localhost
   var socket = io();
@@ -10,6 +13,16 @@ const createSocketRoom = (state, host, pathUrl, createRoom) => {
     createRoom(pathUrl);
   });
   return socket;
+};
+
+const convertoFloat32ToInt16 = buffer => {
+  var l = buffer.length;
+  var buf = new Int16Array(l);
+
+  while (l--) {
+    buf[l] = buffer[l] * 0xFFFF;    //convert to 16 bit
+  }
+  return buf.buffer;
 };
 
 export default (state = {}, action) => {
@@ -79,6 +92,7 @@ export default (state = {}, action) => {
   if (action.type === 'READY_PARTICIPANT') {
     state.participants[findUser(state.participants, action.participant)].readyStatus = true;
   }
+
   if (action.type === 'SET_ROOM_INFO') {
     $.ajax({
       method: 'GET',
@@ -93,5 +107,54 @@ export default (state = {}, action) => {
       }
     });
   }
+
+  if (action.type === 'CREATE_STREAM_TO_SERVER') {
+    // initiate audio stream
+    state.stream = ss.createStream();
+    ss(state.socket).emit('startStream', state.stream);
+    state.recording = false;
+
+    const audioSuccess = e => {
+      const audioContext = window.AudioContext || window.webkitAudioContext;
+      const context = new audioContext();
+
+      // the sample rate is in context.sampleRate
+      const audioInput = context.createMediaStreamSource(e);
+
+      var bufferSize = 2048;
+      const recorder = context.createScriptProcessor(bufferSize, 1, 1);
+
+      recorder.onaudioprocess = e => {
+        if (!state.recording) { return; }
+        var left = e.inputBuffer.getChannelData(0);
+        state.stream.write(new ss.Buffer(convertoFloat32ToInt16(left)));
+      };
+
+      audioInput.connect(recorder);
+      recorder.connect(context.destination);
+    };
+
+    if (!navigator.getUserMedia) {
+      navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia ||
+      navigator.mozGetUserMedia || navigator.msGetUserMedia;
+    }
+    if (navigator.getUserMedia) {
+      navigator.getUserMedia({ audio: true }, audioSuccess, e => console.log('Error capturing audio.'));
+    } else {
+      console.log('getUserMedia not supported in this browser.');
+    }
+  }
+
+  if (action.type === 'START_RECORDING') {
+    state.recording = true;
+    console.log('started recording', state.recording);
+  }
+
+  if (action.type === 'STOP_RECORDING') {
+    state.recording = false;
+    ss(state.socket).emit('stopStream');
+    console.log('stopped recording', state.recording);
+  }
+
   return state;
 };
