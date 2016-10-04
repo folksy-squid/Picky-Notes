@@ -68,6 +68,7 @@
     "redis": "^2.6.2",
     "redux": "^3.6.0",
     "sequelize": "^3.24.3",
-    "socket.io": "^1.4.8"
+    "socket.io": "^1.4.8",
+    "wavesurfer.js": "^1.2.1"
   }
 }
