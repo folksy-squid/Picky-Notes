@@ -1,5 +1,5 @@
 /*jshint esversion: 6 */
-const {joinRoom, addNote, isAllReady, saveAllNotes, saveStartTime} = require('./io-helpers');
+const {joinRoom, addNote, isAllReady, saveAllNotes, saveStartTime, uploadAudio} = require('./io-helpers');
 const {findRoom} = require('../database/db-helpers');
 
 module.exports = (listen) => {
@@ -131,6 +131,7 @@ module.exports = (listen) => {
         console.log('ending stream');
         fileWriter.end();
         console.log('wrote to file ' + outFile);
+        // uploadAudio();
       });
     });
   });

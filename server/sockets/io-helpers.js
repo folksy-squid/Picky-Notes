@@ -53,10 +53,15 @@ const saveStartTime = (pathUrl, startTime) => {
   saveStartTimestamp(pathUrl, startTime);
 };
 
+const uploadAudio = () => {
+
+};
+
 module.exports = {
   joinRoom,
   addNote,
   isAllReady,
   saveAllNotes,
   saveStartTime,
+  uploadAudio,
 };
