@@ -4,6 +4,9 @@ const {findRoom} = require('../database/db-helpers');
 
 module.exports = (listen) => {
   const io = require('socket.io').listen(listen);
+  const ss = require('socket.io-stream');
+  const wav = require('wav');
+
   const rooms = io.sockets.adapter.rooms;
   const connected = io.sockets.connected;
 
@@ -20,6 +23,15 @@ module.exports = (listen) => {
         }
       }
       return cb(result);
+    };
+
+    const createFile = () => {
+      const outFile = `audio/${socket.pathUrl}.wav`;
+      return new wav.FileWriter(outFile, {
+        channels: 1,
+        sampleRate: 48000,
+        bitDepth: 16
+      });
     };
 
     socket.on('create room', (pathUrl, user) => {
@@ -108,6 +120,19 @@ module.exports = (listen) => {
       io.in(socket.pathUrl).emit('user disconnected', socket.user);
     });
     //socket.on('disconnect', () => console.log('a user disconnected'));
+
+    // Audio Streaming to Server
+    ss(socket).on('start stream', (stream) => {
+      const fileWriter = createFile();
+      console.log('inside stream');
+      stream.pipe(fileWriter);
+
+      ss(socket).on('end', function() {
+        console.log('ending stream');
+        fileWriter.end();
+        console.log('wrote to file ' + outFile);
+      });
+    });
   });
   return io;
 };

@@ -53,7 +53,6 @@ const saveStartTime = (pathUrl, startTime) => {
   saveStartTimestamp(pathUrl, startTime);
 };
 
-
 module.exports = {
   joinRoom,
   addNote,
