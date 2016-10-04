@@ -12,4 +12,5 @@ module.exports = (app, express) => {
   }
   app.use(passport.initialize());
   app.use(bodyParser.json());
+  app.use(express.static('../'));
 };

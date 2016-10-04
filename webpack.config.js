@@ -13,9 +13,9 @@ module.exports = {
     APP_DIR + '/index.jsx'
   ],
   output: {
-    path: path.join(__dirname, 'dist'),
+    path: path.resolve(__dirname, 'dist'),
     filename: 'index.bundle.js',
-    publicPath: '/dist/'
+    publicPath: 'http://localhost:8800/dist/'
   },
   // devServer: {
   //   hot: true,

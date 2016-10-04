@@ -121,10 +121,10 @@ module.exports = (app, express) => {
     response.sendFile(path.resolve(__dirname, '../../client', 'sample/audio/FlowerDance.mp3'));
   });
 
-
   app.get('*/index.bundle.js', function (request, response) {
     response.sendFile(path.resolve(__dirname, '../../dist/index.bundle.js'));
   });
+  
   app.get('*/style.css', function (request, response) {
     response.sendFile(path.resolve(__dirname, '../../client/styles/style.css'));
   });
