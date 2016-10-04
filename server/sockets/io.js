@@ -1,3 +1,4 @@
+/*jshint esversion: 6 */
 const {joinRoom, addNote, isAllReady, saveAllNotes} = require('./io-helpers');
 const {findRoom} = require('../database/db-helpers');
 
@@ -53,6 +54,15 @@ module.exports = (listen) => {
         return;
       } else {
         socket.emit('join room error', `Room '${pathUrl}' was not found`);
+      }
+    });
+
+    socket.on('sending message', (user, message) => {
+      console.log('socket.pathUrl', socket.pathUrl);
+      if (socket.pathUrl) {
+        io.in(socket.pathUrl).emit('message received');
+      } else {
+        socket.emit('sending message error', 'You are not connected to a room');
       }
     });
 

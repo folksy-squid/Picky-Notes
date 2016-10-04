@@ -72,7 +72,7 @@ class Lobby extends React.Component {
         <LectureTitle />
         <div className="row">
           <div className="col-sm-9">
-            <ChatBox />
+            <ChatBox socket={this.props.getState().room.socket}/>
           </div>
           <div className="col-sm-3">
           { this.state.isHost && (
