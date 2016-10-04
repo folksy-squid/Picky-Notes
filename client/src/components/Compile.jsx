@@ -38,12 +38,14 @@ class Compile extends React.Component {
   }
   reviewNotesHandler() {
     let changedNotes = this.props.note.filter(note => note.changed);
+    if (changedNotes.length === 0) { 
+      return this.context.router.push(`/review/${this.props.room.roomInfo.pathUrl}`); 
+    }
     changedNotes = JSON.parse(JSON.stringify(changedNotes));
     changedNotes = changedNotes.map(note => {
       delete note.changed;
       return note;
     });
-
     $.ajax({
       method: 'PUT',
       url: `/api/notes/${this.props.user.information[0].id}/${this.props.room.roomInfo.id}`,

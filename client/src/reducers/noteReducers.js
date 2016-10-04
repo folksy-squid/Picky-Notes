@@ -18,7 +18,11 @@ export default (state = [], action) => {
     state = state.map((note, i) => {
       if (note.id === action.noteId) {
         note.show = !note.show;
-        note.changed = true;
+        if (note.changed) {
+          delete note.changed;
+        } else {
+          note.changed = true;
+        }
       }
       return note;
     });
