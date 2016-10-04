@@ -5,7 +5,7 @@ import ParticipantList from './sub/ParticipantList.jsx';
 import ChatBox from './sub/ChatBox.jsx';
 import {connect} from 'react-redux';
 import roomReducer from '../reducers/roomReducers';
-import {joinSocketRoom} from '../actions/roomActions';
+import {joinSocketRoom, createAudioStream, startRecording} from '../actions/roomActions';
 
 class Lobby extends React.Component {
   constructor(props) {
@@ -38,7 +38,12 @@ class Lobby extends React.Component {
   checkHost() {
     let host = this.props.room.participants[0];
     let user = this.props.user.information[0];
-    host.id === user.id && this.setState({isHost: true});
+    if (host.id === user.id) {
+      // switch host status to user
+      this.setState({isHost: true});
+      // and switch audio stream to host
+      this.props.dispatch(createAudioStream());
+    }
   }
 
   componentDidMount() {
@@ -55,6 +60,8 @@ class Lobby extends React.Component {
 
   startLecture() {
     this.props.room.socket.emit('lecture start');
+    // start streaming recorded audio
+    this.props.dispatch(startRecording());
   }
 
   goToLecture() {
