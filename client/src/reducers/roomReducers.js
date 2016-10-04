@@ -39,7 +39,6 @@ export default (state = {}, action) => {
   }
 
   if (action.type === 'JOIN_SOCKET_ROOM') {
-    var user = state.user.information[0];
     $.ajax({
       method: 'POST',
       url: `/api/rooms/${res.pathUrl}`,

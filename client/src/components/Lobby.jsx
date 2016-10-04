@@ -3,15 +3,15 @@ import { Link, Router } from 'react-router';
 import LectureTitle from './sub/LectureTitle.jsx';
 import ParticipantList from './sub/ParticipantList.jsx';
 import ChatBox from './sub/ChatBox.jsx';
-import {mapStateToProps} from '../Connection.js';
 import {connect} from 'react-redux';
+import roomReducer from '../reducers/roomReducers';
 import {joinSocketRoom} from '../actions/roomActions';
 
 class Lobby extends React.Component {
   constructor(props) {
     super(props);
-    (!props.getState().user) && this.context.router.push('/');
-    var pathUrl = props.getState().room.roomInfo ? props.getState().room.roomInfo.pathUrl : props.params.roomId;
+    (!props.user) && this.context.router.push('/');
+    var pathUrl = props.room.roomInfo ? props.room.roomInfo.pathUrl : props.params.roomId;
     this.state = {
       isHost: false,
       pathUrl: pathUrl,
@@ -27,17 +27,17 @@ class Lobby extends React.Component {
   componentWillMount() {
 
     // join the socket if there is no room info
-    if (!this.props.getState().room.roomInfo) {
+    if (!this.props.room.roomInfo) {
       console.log('you have no room info');
       this.setState({completed: false});
-      this.props.dispatch(joinSocketRoom(this.state.pathUrl, this.props.getState().user.information[0], () => { this.setState({completed: true }); }));
+      this.props.dispatch(joinSocketRoom(this.state.pathUrl, this.props.user.information[0], () => { this.setState({completed: true }); }));
     }
 
   }
 
   checkHost() {
-    let host = this.props.getState().room.participants[0];
-    let user = this.props.getState().user.information[0];
+    let host = this.props.room.participants[0];
+    let user = this.props.user.information[0];
     host.id === user.id && this.setState({isHost: true});
   }
 
@@ -48,13 +48,13 @@ class Lobby extends React.Component {
       }
     });
     this.checkHost();
-    var socket = this.props.getState().room.socket;
+    var socket = this.props.room.socket;
     socket.on('lecture started', this.goToLecture.bind(this));
     socket.on('user disconnected', this.checkHost.bind(this));
   }
 
   startLecture() {
-    this.props.getState().room.socket.emit('lecture start');
+    this.props.room.socket.emit('lecture start');
   }
 
   goToLecture() {
@@ -72,7 +72,7 @@ class Lobby extends React.Component {
         <LectureTitle />
         <div className="row">
           <div className="col-sm-9">
-            <ChatBox />
+            <ChatBox socket={this.props.room.socket}/>
           </div>
           <div className="col-sm-3">
           { this.state.isHost && (
@@ -99,5 +99,12 @@ class Lobby extends React.Component {
   );
   }
 }
+
+const mapStateToProps = (state) => {
+  return {
+    ...state,
+    roomReducer
+  }
+};
 
 export default connect(mapStateToProps)(Lobby);

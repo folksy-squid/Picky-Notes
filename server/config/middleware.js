@@ -7,9 +7,10 @@ const hotreload = require('./hotreload');
 
 module.exports = (app, express) => {
 //  app.use(morgan('dev'));
-  // process.env.NODE_ENV === 'client' && hotreload(app);
-  // process.env.NODE_ENV === 'dev' && console.log('NOT running hotreload');
+  if (process.env.NODE_ENV === 'client'){
+    hotreload(app);
+  }
   app.use(passport.initialize());
   app.use(bodyParser.json());
-  app.use(express.static(__dirname + '/../../client'));
+  app.use(express.static('./client'));
 };

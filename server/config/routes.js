@@ -2,13 +2,11 @@
 const {createNewUser, createNewRoom, joinRoom, createNewNote, showAllNotes, showFilteredNotes, updateNotes, getAllUserRooms, getRoom, saveAudioToRoom} = require ('../database/db-helpers');
 const passport = require('./passport');
 const path = require('path');
-const hotreload = require('./hotreload');
 const audioUpload = require('./audioUpload');
 
 module.exports = (app, express) => {
   // Facebook OAuth
 
-  // hotreload(app);
   app.get('/auth/facebook',
     passport.authenticate('facebook', {
       scope: ['public_profile', 'email', 'user_about_me', 'user_friends']
@@ -84,7 +82,7 @@ module.exports = (app, express) => {
   });
 
   app.post('/api/audio/:pathUrl', audioUpload.single('lecture'), function(req, res) {
-    saveAudioToRoom(req.params.pathUrl, req.file.location, () => res.status(201).send('Uploaded!'));
+    saveAudioToRoom(req.params.pathUrl, req.file.location, () => res.status(201).send('Audio was uploaded!'));
   });
 
   // Note Creation
@@ -118,18 +116,23 @@ module.exports = (app, express) => {
       // potentially instead of using this endpoint, reuse /api/notes/create?
       res.send('Add new notes (save button) for user #' + req.params.userId + ' inside room #' + req.params.roomId);
     });
+
   app.get('*.mp3', function(request, response) {
     response.sendFile(path.resolve(__dirname, '../../client', 'sample/audio/FlowerDance.mp3'));
   });
-  app.get('*/index.bundle.js', function (request, response) {
-    response.sendFile(path.resolve(__dirname, '../../client', 'dist/index.bundle.js'));
-  });
 
-  app.get('*/index.bundle.js.map', function(request, response) {
-    response.sendFile(path.resolve(__dirname, '../../client', 'dist/index.bundle.js.map'));
-  });
+  app.use('/dist', express.static(path.join(__dirname, '../../dist')));
 
-  app.get('*', function(request, response) {
-    response.sendFile(path.resolve(__dirname, '../../client', 'index.html'));
-  });
+
+  // app.get('*/index.bundle.js', function (request, response) {
+  //   response.sendFile(path.resolve(__dirname, '../dist/index.bundle.js'));
+  // });
+
+  // app.get('*/index.bundle.js.map', function(request, response) {
+  //   response.sendFile(path.resolve(__dirname, '../../client', 'dist/index.bundle.js.map'));
+  // });
+
+  // app.get('*', function(request, response) {
+  //   response.sendFile(path.resolve(__dirname, '../../client', 'index.html'));
+  // });
 };
