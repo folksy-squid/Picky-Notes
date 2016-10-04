@@ -5,6 +5,7 @@ import LectureTitle from './sub/LectureTitle.jsx';
 import LectureBox from './sub/LectureBox.jsx';
 import ParticipantList from './sub/ParticipantList.jsx';
 import RoomReducer from '../reducers/roomReducers';
+import {stopRecording} from '../actions/roomActions';
 import UserReducer from '../reducers/userReducers';
 
 class Lecture extends React.Component {
@@ -56,6 +57,7 @@ class Lecture extends React.Component {
   endLecture() {
     this.props.room.socket.emit('lecture end');
     this.setState({endLectureDisplay: 'none'});
+    this.dispatch(stopRecording());
   }
 
   render() {
