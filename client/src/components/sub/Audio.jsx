@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import Connection from '../../Connection';
 require('wavesurfer.js');
-import Wavesurfer  from "react-wavesurfer";
+import Wavesurfer from 'react-wavesurfer';
 class Audio extends React.Component {
   constructor(props) {
     super(props);
