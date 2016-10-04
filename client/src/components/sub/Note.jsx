@@ -19,7 +19,6 @@ class Note extends React.Component {
 
   toggleNoteHandler(e) {
     this.props.dispatch(toggleNote(this.props.note.id));
-    this.forceUpdate();
   }
 
   formatTime(milliseconds) {
