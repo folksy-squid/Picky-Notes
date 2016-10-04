@@ -111,7 +111,7 @@ export default (state = {}, action) => {
   if (action.type === 'CREATE_STREAM_TO_SERVER') {
     // initiate audio stream
     state.stream = ss.createStream();
-    ss(state.socket).emit('startStream', state.stream);
+    ss(state.socket).emit('start stream', state.stream);
     state.recording = false;
 
     const audioSuccess = e => {
@@ -152,7 +152,7 @@ export default (state = {}, action) => {
 
   if (action.type === 'STOP_RECORDING') {
     state.recording = false;
-    ss(state.socket).emit('stopStream');
+    ss(state.socket).emit('stop stream');
     console.log('stopped recording', state.recording);
   }
 

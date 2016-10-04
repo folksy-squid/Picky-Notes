@@ -57,7 +57,7 @@ class Lecture extends React.Component {
   endLecture() {
     this.props.room.socket.emit('lecture end');
     this.setState({endLectureDisplay: 'none'});
-    this.dispatch(stopRecording());
+    this.props.dispatch(stopRecording());
   }
 
   render() {
