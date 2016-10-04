@@ -1,5 +1,5 @@
 import React from 'react';
-import Connection from '../../Connection.js';
+import {connect} from 'react-redux';
 import NoteList from './NoteList.jsx';
 import InputBox from './InputBox.jsx';
 
@@ -36,4 +36,10 @@ class LectureBox extends React.Component {
   }
 }
 
-export default Connection(LectureBox);
+const mapStateToProps = (state) => {
+  return {
+    ...state,
+  }
+};
+
+export default connect(mapStateToProps)(LectureBox);

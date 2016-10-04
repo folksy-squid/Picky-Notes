@@ -1,10 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router';
-import Connection from '../Connection.js';
+import {connect} from 'react-redux';
 import ParticipantList from './sub/ParticipantList.jsx';
 import LectureBox from './sub/LectureBox.jsx';
 import {setRoomInfo} from '../actions/roomActions';
-
+import RoomReducer from '../reducers/roomReducers';
+import UserReducer from '../reducers/userReducers';
+import NoteReducer from '../reducers/noteReducers';
 
 class Compile extends React.Component {
   constructor (props) {
@@ -20,10 +22,10 @@ class Compile extends React.Component {
     };
   }
   componentWillMount() {
-    const user = this.props.getState().user.information[0];
+    const user = this.props.user.information[0];
     const pathUrl = this.props.params.roomId;
     const realm = this;
-    if (!this.props.getState().room.roomInfo) {
+    if (!this.props.room.roomInfo) {
       this.setState({loaded: false});
       this.props.dispatch(setRoomInfo(pathUrl, user, (err, success) => {
         if (err) {
@@ -35,8 +37,7 @@ class Compile extends React.Component {
     }
   }
   reviewNotesHandler() {
-    let state = this.props.getState();
-    let changedNotes = state.note.filter(note => note.changed);
+    let changedNotes = this.props.note.filter(note => note.changed);
     changedNotes = JSON.parse(JSON.stringify(changedNotes));
     changedNotes = changedNotes.map(note => {
       delete note.changed;
@@ -49,7 +50,7 @@ class Compile extends React.Component {
       contentType: 'application/json',
       data: JSON.stringify(changedNotes),
       success: (res) => {
-        this.context.router.push(`/review/${this.props.getState().room.roomInfo.pathUrl}`);
+        this.context.router.push(`/review/${this.props.room.roomInfo.pathUrl}`);
       },
       error: (error) => console.log('Error updating changed notes', error),
     });
@@ -70,7 +71,7 @@ class Compile extends React.Component {
         <div className="col-md-3">
           <button className="btn btn-lg btn-success" onClick={this.reviewNotesHandler.bind(this)}>Review</button>
           {
-            this.props.getState().room.participants ? (
+            this.props.room.participants ? (
               <ParticipantList />
             ) : (<div></div>)
           }
@@ -80,5 +81,13 @@ class Compile extends React.Component {
     );
   }
 }
+const mapStateToProps = (state) => {
+  return {
+    ...state,
+    RoomReducer,
+    UserReducer,
+    NoteReducer
+  }
+}
 
-export default Connection(Compile);
+export default connect(mapStateToProps)(Compile);

@@ -1,9 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router';
-import Connection from '../Connection.js';
+import {connect} from 'react-redux';
 import LectureTitle from './sub/LectureTitle.jsx';
 import LectureBox from './sub/LectureBox.jsx';
 import ParticipantList from './sub/ParticipantList.jsx';
+import RoomReducer from '../reducers/roomReducers';
+import UserReducer from '../reducers/userReducers';
 
 class Lecture extends React.Component {
   constructor (props) {
@@ -24,7 +26,7 @@ class Lecture extends React.Component {
   componentDidMount() {
     this.checkHost();
 
-    var socket = this.props.getState().room.socket;
+    var socket = this.props.room.socket;
     socket.on('lecture ended', () => {
       this.setState({readyButtonDisplay: 'inline-block'});
     });
@@ -35,25 +37,25 @@ class Lecture extends React.Component {
 
     socket.on('all notes saved', () => {
       // redirect to compile view
-      this.context.router.push(`/compile/${this.props.getState().room.roomInfo.pathUrl}`);
+      this.context.router.push(`/compile/${this.props.room.roomInfo.pathUrl}`);
     });
     socket.on('user disconnected', this.checkHost.bind(this));
   }
 
   checkHost() {
-    let host = this.props.getState().room.participants[0];
-    let user = this.props.getState().user.information[0];
+    let host = this.props.room.participants[0];
+    let user = this.props.user.information[0];
     host.id === user.id && this.setState({isHost: true});
   }
 
   sendReady() {
-    this.props.getState().room.socket.emit('user ready');
+    this.props.room.socket.emit('user ready');
     this.setState({readyButtonDisplay: 'none'});
   }
 
   endLecture() {
+    this.props.room.socket.emit('lecture end');
     this.setState({endLectureDisplay: 'none'});
-    this.props.getState().room.socket.emit('lecture end');
   }
 
   render() {
@@ -83,4 +85,13 @@ class Lecture extends React.Component {
   }
 }
 
-export default Connection(Lecture);
+const mapStateToProps = (state) => {
+  console.log(state);
+  return {
+    ...state,
+    RoomReducer,
+    UserReducer
+  }
+};
+
+export default connect(mapStateToProps)(Lecture);

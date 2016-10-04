@@ -1,7 +1,7 @@
 import React from 'react';
-import Connection from '../../Connection.js';
+import {connect} from 'react-redux';
 import {toggleNote} from '../../actions/noteActions.js';
-
+import NoteReducer from '../../reducers/noteReducers';
 class Note extends React.Component {
   constructor(props) {
     super(props);
@@ -53,5 +53,4 @@ class Note extends React.Component {
   }
 }
 
-
-export default Connection(Note);
+export default Note;

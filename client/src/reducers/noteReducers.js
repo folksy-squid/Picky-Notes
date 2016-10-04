@@ -1,10 +1,11 @@
 export default (state = [], action) => {
   if (action.type === 'SUBMIT_NOTE') {
+    console.log(action);
     action.socket.emit('new note', {content: action.content});
   }
 
   if (action.type === 'ADD_NOTE') {
-    state.push(action.note);
+    state = state.concat([action.note]);
   }
 
   if (action.type === 'EDIT_NOTE') {

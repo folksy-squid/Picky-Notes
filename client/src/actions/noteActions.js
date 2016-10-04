@@ -8,6 +8,7 @@ export const submitNote = (socket, content) => {
 };
 
 export const addNote = (note) => {
+  console.log('adding a note', note);
   return {
     type: 'ADD_NOTE',
     note

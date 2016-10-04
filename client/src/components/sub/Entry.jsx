@@ -2,7 +2,7 @@ import React from 'react';
 import Connection from '../../Connection.js';
 import { Link } from 'react-router';
 
-class Entry extends React.Component {
+export default class Entry extends React.Component {
   constructor (props) {
     super(props);
   }
@@ -20,5 +20,3 @@ class Entry extends React.Component {
     );
   }
 }
-
-export default Connection(Entry);

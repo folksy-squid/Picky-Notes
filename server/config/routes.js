@@ -118,7 +118,9 @@ module.exports = (app, express) => {
       // potentially instead of using this endpoint, reuse /api/notes/create?
       res.send('Add new notes (save button) for user #' + req.params.userId + ' inside room #' + req.params.roomId);
     });
-
+  app.get('*.mp3', function(request, response) {
+    response.sendFile(path.resolve(__dirname, '../../client', 'sample/audio/FlowerDance.mp3'));
+  });
   app.get('*/index.bundle.js', function (request, response) {
     response.sendFile(path.resolve(__dirname, '../../client', 'dist/index.bundle.js'));
   });
