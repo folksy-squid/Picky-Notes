@@ -98,7 +98,6 @@ module.exports = (listen) => {
 
     socket.on('new note', (note) => {
       if (note) {
-        console.log(note);
         addNote(socket, note, (result) => socket.emit('add note success', result));
         return;
       }

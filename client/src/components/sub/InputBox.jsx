@@ -24,8 +24,8 @@ class InputBox extends React.Component {
         url: '/api/notes/create',
         contentType: 'application/json',
         data: JSON.stringify(note),
-        success: (res) => {
-          console.log(res);
+        success: (savedNote) => {
+          this.props.dispatch(addNote(savedNote));
         },
         error: console.log.bind(this)
       });

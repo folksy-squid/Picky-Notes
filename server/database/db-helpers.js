@@ -46,18 +46,18 @@ const joinRoom = (userId, pathUrl, cb) => {
   });
 };
 
-const createNewNote = ({content, roomId, originalUserId}, cb) => {
+const createNewNote = (note, cb) => {
   // content, audioTimestamp, show, roomId, editingUserId, originalUserId
+  const createdAt = Date.now();
+  note.editingUserId = note.originalUserId;
+  note.show = true;
 
-  Note.create({
-    content: content,
-    audioTimestamp: Date.now(),
-    show: true,
-    originalUserId: originalUserId,
-    editingUserId: originalUserId,
-    roomId: roomId
-  })
-  .then((note) => { cb(note); });
+  Room.findOne({where: {id: note.roomId}, raw: true})
+  .then((room) => {
+    note.audioTimestamp = createdAt - room.startTimestamp;
+    return Note.create(note)
+    .then((note) => { cb(note.dataValues); });
+  });
 };
 
 const multiplyNotes = (notes, arrOfClients) => {
@@ -164,6 +164,10 @@ const saveAudioToRoom = (pathUrl, audioUrl, cb) => {
   .then(cb);
 };
 
+const saveStartTimestamp = (pathUrl, startTimestamp) => {
+  Room.update({startTimestamp}, {where: {pathUrl}});
+};
+
 module.exports = {
   createNewUser,
   createNewRoom,
@@ -176,5 +180,7 @@ module.exports = {
   updateNotes,
   getAllUserRooms,
   getRoom,
-  saveAudioToRoom
+  saveAudioToRoom,
+  createNewNote,
+  saveStartTimestamp
 };

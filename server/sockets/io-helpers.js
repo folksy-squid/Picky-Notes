@@ -1,6 +1,6 @@
 // require Redis
 const {addUserToCache, addNoteToCache, getNotesFromRoom, deleteAllNotesAndRoom, addTimestampToCache} = require('../cache/cache-helpers');
-const {findRoom, createRoomNotes} = require('../database/db-helpers');
+const {findRoom, createRoomNotes, saveStartTimestamp} = require('../database/db-helpers');
 
 const joinRoom = (socket, pathUrl, user, cb) => {
   socket.pathUrl = pathUrl;
@@ -49,8 +49,8 @@ const saveAllNotes = (pathUrl, arrOfClients, cb) => {
 };
 
 const saveStartTime = (pathUrl, startTime) => {
-  console.log(pathUrl, startTime);
   addTimestampToCache(pathUrl, startTime);
+  saveStartTimestamp(pathUrl, startTime);
 };
 
 

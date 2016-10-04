@@ -2,7 +2,6 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {getCurrentView} from '../../helpers.js';
 import RoomReducer from '../../reducers/roomReducers';
-
 const LectureTitle = (props) => {
   /*----------  NPM RUN DEV  ----------*/
   var roomInfo = props.room.roomInfo;
