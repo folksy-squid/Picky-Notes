@@ -34,3 +34,18 @@ export const setRoomInfo = (pathUrl, user, cb) => ({
   user,
   cb
 });
+
+export const createAudioStream = (cb) => ({
+  type: 'CREATE_STREAM_TO_SERVER',
+  cb
+});
+
+export const startRecording = (cb) => ({
+  type: 'START_RECORDING',
+  cb
+});
+
+export const stopRecording = (cb) => ({
+  type: 'STOP_RECORDING',
+  cb
+});
