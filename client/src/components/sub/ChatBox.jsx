@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import Message from './Message.jsx'
-import {} from '../../actions/chatActions'
+import {sendMessage} from '../../actions/chatActions'
 
 export default class ChatBox extends Component {
   constructor(props) {
@@ -8,6 +8,17 @@ export default class ChatBox extends Component {
     this.state = {
       messages: []
     };
+  }
+
+  componentDidMount() {
+    // this.props.socket.on('message received', this.messageReceived.bind(this, message))
+  }
+
+  messageReceived(message) {
+    let timestamp = moment().format('LTS')
+    this.setState({
+      messages: this.state.messages.concat([message])
+    })
   }
 
   sendMessage (e) {
