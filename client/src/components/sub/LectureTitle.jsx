@@ -45,7 +45,7 @@ const LectureTitle = (props) => {
 const mapStateToProps = (state) => {
   return {
     ...state,
-    roomReducer    
+    RoomReducer    
   }
 }
 
