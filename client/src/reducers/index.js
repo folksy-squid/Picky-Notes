@@ -2,13 +2,15 @@
 import {combineReducers} from 'redux';
 import {routerReducer as routing} from 'react-router-redux';
 
-import note from './noteReducers.js';
-import user from './userReducers.js';
-import room from './roomReducers.js';
+import note from './noteReducers';
+import user from './userReducers';
+import room from './roomReducers';
+import waveform from './waveformReducers';
 
 export default combineReducers({
   user,
   note,
   room,
-  routing
+  routing,
+  waveform
 });

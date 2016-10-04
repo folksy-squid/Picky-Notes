@@ -40,9 +40,12 @@ export default (state = {}, action) => {
           contentType: 'application/json',
           data: JSON.stringify({userId: action.user.id})
         });
-        state.participants = [action.user];
-        state.socket = createSocketRoom(state, action.user, res.pathUrl, action.createRoom);
-        state.roomInfo = res;
+        return {
+          ...state,
+          participants: [action.user],
+          socket: createSocketRoom(state, action.user, res.pathUrl, action.createRoom),
+          roomInfo: res
+        };
       },
       error: function( res, status ) {
         console.log(res);
@@ -51,25 +54,29 @@ export default (state = {}, action) => {
   }
 
   if (action.type === 'JOIN_SOCKET_ROOM') {
+    console.log('user id', action.user.id);
     $.ajax({
       method: 'POST',
       url: `/api/rooms/${action.pathUrl}`,
-      data: {userId: action.user.id}
-    });
-    var socket = io();
-    socket.emit('join room', action.pathUrl, action.user);
-    socket.on('join room error', () => {
-      socket.disconnect();
-      state.socket = null;
-      action.joinedRoom('join room error');
-    });
-
-    socket.on('join room success', (participants, roomInfo) => {
-      console.log('join room success');
-      state.socket = socket;
-      state.roomInfo = roomInfo;
-      state.participants = participants;
-      action.joinedRoom(null, 'success', roomInfo);
+      contentType: 'application/json',
+      data: JSON.stringify({userId: action.user.id}),
+      success: (response) => {
+        var socket = io();
+        console.log('joining room');
+        socket.emit('join room', action.pathUrl, action.user);
+        socket.on('join room error', () => {
+          socket.disconnect();
+          state.socket = null;
+          action.joinedRoom('join room error');
+        });
+        socket.on('join room success', (participants, roomInfo) => {
+          console.log('join room success');
+          state.socket = socket;
+          state.roomInfo = roomInfo;
+          state.participants = participants;
+          action.joinedRoom(null, 'success', roomInfo);
+        });
+      }
     });
   }
 
@@ -77,20 +84,35 @@ export default (state = {}, action) => {
 
   if (action.type === 'LEAVE_SOCKET_ROOM') {
     state.socket.disconnect();
-    state.socket = null;
+    return {
+      ...state,
+      socket: null
+    };
   }
 
   if (action.type === 'ADD_PARTICIPANT') {
-    state.participants.push(action.participant);
+    console.log('adding a new participant');
+    return {
+      ...state,
+      participants: state.participants.concat([action.participant])
+    };
   }
 
   if (action.type === 'REMOVE_PARTICIPANT') {
     var index = findUser(state.participants, action.participant);
     if (index !== -1) { state.participants.splice(index, 1); }
+    return {
+      ...state,
+      participants: state.participants
+    };
   }
 
   if (action.type === 'READY_PARTICIPANT') {
     state.participants[findUser(state.participants, action.participant)].readyStatus = true;
+    return {
+      ...state,
+      participants: state.participants
+    };
   }
 
   if (action.type === 'SET_ROOM_INFO') {
