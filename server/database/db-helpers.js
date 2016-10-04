@@ -152,10 +152,7 @@ const getAllUserRooms = (userId, cb) => {
 const getRoom = (pathUrl, userId, cb) => {
   User.findById(userId)
   .then((user) => user.getRooms({where: {pathUrl: pathUrl}, raw: true}))
-  .then((room) => {
-    console.log(room[0]);
-    cb(room[0]);
-  });
+  .then((room) => cb(room[0]));
 };
 
 const saveAudioToRoom = (pathUrl, audioUrl, cb) => {

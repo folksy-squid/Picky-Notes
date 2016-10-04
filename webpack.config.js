@@ -2,7 +2,6 @@ var path = require('path');
 var webpack = require('webpack');
 var APP_DIR = path.resolve(__dirname, 'client/src');
 
-const entry = (process.env.NODE_ENV === 'dev') ? ['./client/src/index.jsx'] : ['webpack-hot-middleware/client', './client/src/index.jsx'];
 // Add spec files to compile
 module.exports = {
   devtool: 'eval',
