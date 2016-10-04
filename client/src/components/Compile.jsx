@@ -46,7 +46,7 @@ class Compile extends React.Component {
 
     $.ajax({
       method: 'PUT',
-      url: `/api/notes/${state.user.information[0].id}/${state.room.roomInfo.id}`,
+      url: `/api/notes/${this.props.user.information[0].id}/${this.props.room.roomInfo.id}`,
       contentType: 'application/json',
       data: JSON.stringify(changedNotes),
       success: (res) => {
