@@ -111,7 +111,7 @@ const mapStateToProps = (state) => {
   return {
     ...state,
     roomReducer
-  }
+  };
 };
 
 export default connect(mapStateToProps)(Lobby);
