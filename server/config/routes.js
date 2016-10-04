@@ -121,18 +121,29 @@ module.exports = (app, express) => {
     response.sendFile(path.resolve(__dirname, '../../client', 'sample/audio/FlowerDance.mp3'));
   });
 
-  app.use('/dist', express.static(path.join(__dirname, '../../dist')));
 
-
-  // app.get('*/index.bundle.js', function (request, response) {
-  //   response.sendFile(path.resolve(__dirname, '../dist/index.bundle.js'));
+  app.get('*/index.bundle.js', function (request, response) {
+    response.sendFile(path.resolve(__dirname, '../../dist/index.bundle.js'));
+  });
+  app.get('*/style.css', function (request, response) {
+    response.sendFile(path.resolve(__dirname, '../../client/styles/style.css'));
+  });
+  app.get('*', function(request, response) {
+    response.sendFile(path.resolve(__dirname, '../../client', 'index.html'));
+  });
+  // app.get('/review/*', function(request, response) {
+  //   response.sendFile(path.resolve(__dirname, '../../client', 'index.html'));
   // });
-
-  // app.get('*/index.bundle.js.map', function(request, response) {
-  //   response.sendFile(path.resolve(__dirname, '../../client', 'dist/index.bundle.js.map'));
+  // app.get('/compile/*', function(request, response) {
+  //   response.sendFile(path.resolve(__dirname, '../../client', 'index.html'));
   // });
-
-  // app.get('*', function(request, response) {
+  // app.get('/notebook', function(request, response) {
+  //   response.sendFile(path.resolve(__dirname, '../../client', 'index.html'));
+  // });
+  // app.get('/lobby/*', function(request, response) {
+  //   response.sendFile(path.resolve(__dirname, '../../client', 'index.html'));
+  // });
+  // app.get('/lecture/*', function(request, response) {
   //   response.sendFile(path.resolve(__dirname, '../../client', 'index.html'));
   // });
 };
