@@ -127,7 +127,7 @@ module.exports = (listen) => {
       console.log('inside stream');
       stream.pipe(fileWriter);
 
-      ss(socket).on('end', function() {
+      ss(socket).on('stop stream', function() {
         console.log('ending stream');
         fileWriter.end();
         console.log('wrote to file ' + outFile);
