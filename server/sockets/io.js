@@ -1,5 +1,5 @@
 /*jshint esversion: 6 */
-const {joinRoom, addNote, isAllReady, saveAllNotes} = require('./io-helpers');
+const {joinRoom, addNote, isAllReady, saveAllNotes, saveStartTime} = require('./io-helpers');
 const {findRoom} = require('../database/db-helpers');
 
 module.exports = (listen) => {
@@ -68,6 +68,7 @@ module.exports = (listen) => {
 
     socket.on('lecture start', () => {
       if (socket.pathUrl) {
+        saveStartTime(socket.pathUrl, Date.now());
         io.in(socket.pathUrl).emit('lecture started');
       } else {
         socket.emit('lecture start error', 'You do not belong to a room');

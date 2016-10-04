@@ -7,7 +7,7 @@ const hotreload = require('./hotreload');
 
 module.exports = (app, express) => {
 //  app.use(morgan('dev'));
-  if (process.env.NODE_ENV === 'client'){
+  if (process.env.NODE_ENV === 'client') {
     hotreload(app);
   }
   app.use(passport.initialize());

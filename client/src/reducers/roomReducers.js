@@ -27,7 +27,6 @@ export default (state = {}, action) => {
           contentType: 'application/json',
           data: JSON.stringify({userId: action.user.id})
         });
-        console.log('the response: ', res);
         state.participants = [action.user];
         state.socket = createSocketRoom(state, action.user, res.pathUrl, action.createRoom);
         state.roomInfo = res;
@@ -41,11 +40,10 @@ export default (state = {}, action) => {
   if (action.type === 'JOIN_SOCKET_ROOM') {
     $.ajax({
       method: 'POST',
-      url: `/api/rooms/${res.pathUrl}`,
+      url: `/api/rooms/${action.pathUrl}`,
       data: {userId: action.user.id}
     });
     var socket = io();
-    console.log('joining room');
     socket.emit('join room', action.pathUrl, action.user);
     socket.on('join room error', () => {
       socket.disconnect();

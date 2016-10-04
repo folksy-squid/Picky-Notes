@@ -4,7 +4,7 @@ module.exports = (db, Sequelize) => {
       type: Sequelize.TEXT,
     },
     audioTimestamp: {
-      type: Sequelize.DATE,
+      type: Sequelize.TEXT,
     },
     show: {
       type: Sequelize.BOOLEAN,

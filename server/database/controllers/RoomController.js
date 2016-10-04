@@ -10,6 +10,9 @@ module.exports = (db, Sequelize) => {
     audioUrl: {
       type: Sequelize.TEXT,
       defaultValue: 'audio url'
+    },
+    startTimestamp: {
+      type: Sequelize.TEXT
     }
   });
 

@@ -49,7 +49,6 @@ class NoteList extends React.Component {
     const roomId = this.props.room.roomInfo.id;
     if (this.props.room.socket) {
       this.props.room.socket.on('add note success', (note) => {
-        console.log('add a new note', note);
         this.props.dispatch(addNote(note));
       });
     }
@@ -98,10 +97,9 @@ class NoteList extends React.Component {
   }
 
   render() {
-    console.log('these are the notes', this.props.note);
     return (
       <div className="note-list">
-        {this.props.note.map((note, i)=>(<Note key={i} note={note} view={this.state.view}/>)
+        {this.props.note.map((note, i)=>(<Note key={i} noteInfo={note} view={this.state.view}/>)
         )}
       </div>
     );
@@ -109,7 +107,6 @@ class NoteList extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-  console.log(state);
   return {
     ...state,
     NoteReducer,

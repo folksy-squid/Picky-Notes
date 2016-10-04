@@ -46,19 +46,19 @@ const joinRoom = (userId, pathUrl, cb) => {
   });
 };
 
-// const createNewNote = ({content, roomId, originalUserId}, cb) => {
-//   // content, audioTimestamp, show, roomId, editingUserId, originalUserId
-//
-//   Note.create({
-//     content: content,
-//     audioTimestamp: Date(),
-//     show: true,
-//     originalUserId: originalUserId,
-//     editingUserId: originalUserId,
-//     roomId: roomId
-//   })
-//   .then((note) => { cb(note); });
-// };
+const createNewNote = (note, cb) => {
+  // content, audioTimestamp, show, roomId, editingUserId, originalUserId
+  const createdAt = Date.now();
+  note.editingUserId = note.originalUserId;
+  note.show = true;
+
+  Room.findOne({where: {id: note.roomId}, raw: true})
+  .then((room) => {
+    note.audioTimestamp = createdAt - room.startTimestamp;
+    return Note.create(note)
+    .then((note) => { cb(note.dataValues); });
+  });
+};
 
 const multiplyNotes = (notes, arrOfClients) => {
   let multipliedNotes = [];
@@ -152,16 +152,17 @@ const getAllUserRooms = (userId, cb) => {
 const getRoom = (pathUrl, userId, cb) => {
   User.findById(userId)
   .then((user) => user.getRooms({where: {pathUrl: pathUrl}, raw: true}))
-  .then((room) => {
-    console.log(room[0]);
-    cb(room[0]);
-  });
+  .then((room) => cb(room[0]));
 };
 
 const saveAudioToRoom = (pathUrl, audioUrl, cb) => {
   console.log('pathUrl', pathUrl, 'audioUrl', audioUrl);
   Room.update({audioUrl: audioUrl}, {where: {pathUrl: pathUrl}})
   .then(cb);
+};
+
+const saveStartTimestamp = (pathUrl, startTimestamp) => {
+  Room.update({startTimestamp}, {where: {pathUrl}});
 };
 
 module.exports = {
@@ -176,5 +177,7 @@ module.exports = {
   updateNotes,
   getAllUserRooms,
   getRoom,
-  saveAudioToRoom
+  saveAudioToRoom,
+  createNewNote,
+  saveStartTimestamp
 };
