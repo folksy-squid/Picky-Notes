@@ -40,7 +40,7 @@ export default (state = {}, action) => {
   if (action.type === 'JOIN_SOCKET_ROOM') {
     $.ajax({
       method: 'POST',
-      url: `/api/rooms/${res.pathUrl}`,
+      url: `/api/rooms/${action.pathUrl}`,
       data: {userId: action.user.id}
     });
     var socket = io();
