@@ -19,12 +19,9 @@ const LectureTitle = (props) => {
   var view = (
     <h3 className="lectureTitle">{topic} by {lecturer}</h3>
   );
-
-  console.log('props...', props);
   var pathname = props.routing.locationBeforeTransitions.pathname;
 
   if (getCurrentView(pathname) === 'review') {
-    console.log('lecturer', lecturer, 'topic', topic, 'createdAt', createdAt);
 
     view = (
     <div className="review-header">
@@ -37,7 +34,6 @@ const LectureTitle = (props) => {
     </div>
   );
   }
-  console.log('view,', view);
   return view;
 };
 

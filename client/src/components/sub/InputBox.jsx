@@ -45,7 +45,7 @@ class InputBox extends React.Component {
         </input>
       );
     } else {
-      view = <form onSubmit={this.submitNoteHandler.bind(this)}><input ref="inputNote" type="text"/></form>;
+      view = <form id="lectureForm" onSubmit={this.submitNoteHandler.bind(this)}><input ref="inputNote" id="lectureInput" type="text"/></form>;
     }
 
     return view;

@@ -1,6 +1,5 @@
 export default (state = [], action) => {
   if (action.type === 'SUBMIT_NOTE') {
-    console.log(action);
     action.socket.emit('new note', {content: action.content});
   }
 
