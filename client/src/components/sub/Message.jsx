@@ -9,14 +9,15 @@ export default ({message, timestamp, sender, pictureUrl})=>(
         </a>
         <div className="media-body">
           <span className="message-sender">
-            {sender}:
-          </span>
-          <span className="message-body">
-            {message}
+            {sender}
           </span>
           <small className="text-muted">
             {timestamp}
           </small>
+          <br />
+          <span className="message-body">
+            {message}
+          </span>
         </div>
       </div>
     </div>

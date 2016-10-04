@@ -35,6 +35,10 @@ module.exports = {
       // exclude: /node_modules/,
       loaders: ['react-hot', 'babel'],
       include: APP_DIR
+    },
+    {
+      test: /\.css$/,
+      loader: "style-loader!css-loader"
     }]
   }
 };

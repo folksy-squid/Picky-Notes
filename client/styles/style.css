@@ -119,7 +119,7 @@ h2.new-room-title {
 }
 
 small.text-muted {
-  text-align: right;
+  float: right;
 }
 
 /*
