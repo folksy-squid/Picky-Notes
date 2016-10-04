@@ -12,7 +12,7 @@ const compiler = webpack(webpackconfig);
 module.exports = (app) => {
   console.log('running hotreload!');
   app.use(webpackDevMiddleware(compiler, {
-    publicPath: '/dist/',
+    publicPath: webpackconfig.output.publicPath,
     noInfo: true,
     stats: {
       colors: true,
