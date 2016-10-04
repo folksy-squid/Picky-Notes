@@ -2,6 +2,9 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {toggleNote} from '../../actions/noteActions.js';
 import NoteReducer from '../../reducers/noteReducers';
+import WaveformReducer from '../../reducers/waveformReducers';
+import {togglePlay, setPos, play} from '../../actions/waveformActions';
+
 class Note extends React.Component {
   constructor(props) {
     super(props);
@@ -14,6 +17,9 @@ class Note extends React.Component {
 
   playNote(e) {
     // this can be invoked when in the review view
+    console.log(this.props.noteInfo.audioTimestamp);
+    this.props.dispatch(setPos(50));
+    this.props.dispatch(play());
     console.log(this.props.noteInfo.content);
   }
 
@@ -61,8 +67,9 @@ class Note extends React.Component {
 const mapStateToProps = (state) => {
   return {
     ...state,
-    NoteReducer
-  }
+    NoteReducer,
+    WaveformReducer
+  };
 };
 
 export default connect(mapStateToProps)(Note);

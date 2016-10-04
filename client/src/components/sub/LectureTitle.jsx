@@ -19,10 +19,10 @@ const LectureTitle = (props) => {
   var view = (
     <h3 className="lectureTitle">{topic} by {lecturer}</h3>
   );
+
   var pathname = props.routing.locationBeforeTransitions.pathname;
 
   if (getCurrentView(pathname) === 'review') {
-
     view = (
     <div className="review-header">
       <h4 className="lectureTitle">
@@ -40,8 +40,8 @@ const LectureTitle = (props) => {
 const mapStateToProps = (state) => {
   return {
     ...state,
-    RoomReducer    
-  }
-}
+    RoomReducer
+  };
+};
 
 export default connect(mapStateToProps)(LectureTitle);

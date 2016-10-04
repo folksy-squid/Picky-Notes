@@ -53,7 +53,7 @@ class Lobby extends React.Component {
       }
     });
     this.checkHost();
-    var socket = this.props.room.socket;
+    const socket = this.props.room.socket;
     socket.on('lecture started', this.goToLecture.bind(this));
     socket.on('user disconnected', this.checkHost.bind(this));
   }

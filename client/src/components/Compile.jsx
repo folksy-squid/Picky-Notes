@@ -89,7 +89,7 @@ const mapStateToProps = (state) => {
     RoomReducer,
     UserReducer,
     NoteReducer
-  }
-}
+  };
+};
 
 export default connect(mapStateToProps)(Compile);

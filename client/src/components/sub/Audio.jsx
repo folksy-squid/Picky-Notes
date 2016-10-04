@@ -1,53 +1,57 @@
 import React, {Component} from 'react';
-import Connection from '../../Connection';
+import {connect} from 'react-redux';
 require('wavesurfer.js');
 import Wavesurfer from 'react-wavesurfer';
+import WaveformReducer from '../../reducers/waveformReducers';
+import {togglePlay, setPos, setVolume, setAudioRateChange} from '../../actions/waveformActions';
+
 class Audio extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      audioFile: 'http://localhost:3000/sample/audio/FlowerDance.mp3',
-      playing: false,
-      pos: 0,
-      volume: 0.5,
-      audioRate: 1
+      audioFile: 'http://localhost:3000/sample/audio/FlowerDance.mp3'
     };
+    this.handleAudioRateChange = this.handleAudioRateChange.bind(this);
     this.handleTogglePlay = this.handleTogglePlay.bind(this);
     this.handlePosChange = this.handlePosChange.bind(this);
-    this.handleReady = this.handleReady.bind(this);
     this.handleVolumeChange = this.handleVolumeChange.bind(this);
-    this.handleAudioRateChange = this.handleAudioRateChange.bind(this);
+    this.handleReady = this.handleReady.bind(this);
   }
 
   handleAudioRateChange(e) {
-    this.setState({
-      audioRate: +e.target.value
-    });
+    this.props.dispatch(setAudioRateChange(+e.target.value));
+    // this.setState({
+    //   audioRate: +e.target.value
+    // });
   }
 
   handleTogglePlay() {
-    this.setState({
-      playing: !this.state.playing
-    });
+    this.props.dispatch(togglePlay());
+    // this.setState({
+    //   playing: !this.state.playing
+    // });
   }
 
   handlePosChange(e) {
-    this.setState({
-      pos: e.originalArgs ? e.originalArgs[0] : +e.target.value
-    });
+    this.props.dispatch(setPos(e.originalArgs ? e.originalArgs[0] : +e.target.value));
+    // this.setState({
+    //   pos: e.originalArgs ? e.originalArgs[0] : +e.target.value
+    // });
   }
 
   handleReady() {
-    this.setState({
-      pos: 5
-    });
+    this.props.dispatch(setPos(5));
+    // this.setState({
+    //   pos: 5
+    // });
   }
 
   handleVolumeChange(e) {
-    this.setState({
-      volume: +e.target.value
-    });
+    this.props.dispatch(setVolume(+e.target.value));
+    // this.setState({
+    //   volume: +e.target.value
+    // });
   }
 
   render() {
@@ -58,7 +62,7 @@ class Audio extends React.Component {
       waveColor: '#c4c8dc',
       normalize: true,
       barWidth: 4,
-      audioRate: this.state.audioRate
+      audioRate: this.props.waveform.audioRate
     };
     return (
       <div className="example col-xs-12">
@@ -72,14 +76,14 @@ class Audio extends React.Component {
               min={0}
               max={1}
               step="0.01"
-              value={this.state.volume}
+              value={this.props.waveform.volume}
               onChange={this.handleVolumeChange}
               className="form-control"
             />
             <input
               className="form-control prop-value"
               type="text"
-              placeholder={String(this.state.volume)}
+              placeholder={String(this.props.waveform.volume)}
               readOnly
             />
           </div>
@@ -93,7 +97,7 @@ class Audio extends React.Component {
               name="simple-playing"
               className="form-control prop-value"
               type="text"
-              placeholder={String(this.state.playing)}
+              placeholder={String(this.props.waveform.playing)}
               readOnly
             />
           </div>
@@ -103,7 +107,7 @@ class Audio extends React.Component {
               name="simple-pos"
               type="number"
               step="0.01"
-              value={this.state.pos}
+              value={this.props.waveform.pos}
               onChange={this.handlePosChange}
               className="form-control"
             />
@@ -117,7 +121,7 @@ class Audio extends React.Component {
               min="0"
               max="10"
               step="0.001"
-              value={this.state.audioRate}
+              value={this.props.waveform.audioRate}
               onChange={this.handleAudioRateChange}
               className="form-control"
             />
@@ -136,12 +140,12 @@ class Audio extends React.Component {
           </div>
         </div>
         <Wavesurfer
-          volume={this.state.volume}
-          pos={this.state.pos}
+          volume={this.props.waveform.volume}
+          pos={this.props.waveform.pos}
           options={waveOptions}
           onPosChange={this.handlePosChange}
           audioFile={this.state.audioFile}
-          playing={this.state.playing}
+          playing={this.props.waveform.playing}
           onReady={this.handleReady}
         />
       </div>
@@ -149,4 +153,11 @@ class Audio extends React.Component {
   }
 }
 
-export default Audio;
+const mapStateToProps = (state) => {
+  return {
+    ...state,
+    WaveformReducer
+  };
+};
+
+export default connect(mapStateToProps)(Audio);
