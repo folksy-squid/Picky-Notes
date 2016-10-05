@@ -7,7 +7,7 @@ const fs = require('fs');
 module.exports = (listen) => {
   const io = require('socket.io').listen(listen);
   const ss = require('socket.io-stream');
-  const wav = require('wav');
+  const lame = require('lame');
 
   const rooms = io.sockets.adapter.rooms;
   const connected = io.sockets.connected;
@@ -29,10 +29,16 @@ module.exports = (listen) => {
 
     const createFile = () => {
       const outFile = `audio/${socket.pathUrl}.wav`;
-      return new wav.FileWriter(outFile, {
-        channels: 1,
-        sampleRate: 48000,
-        bitDepth: 16
+      return new lame.Encoder({
+        // input
+        channels: 2,        // 2 channels (left and right)
+        bitDepth: 16,       // 16-bit samples
+        sampleRate: 44100,  // 44,100 Hz sample rate 
+
+        // output
+        bitRate: 128,
+        outSampleRate: 22050,
+        mode: lame.STEREO // STEREO (default), JOINTSTEREO, DUALCHANNEL or MONO
       });
     };
 
