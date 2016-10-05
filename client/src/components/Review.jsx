@@ -2,10 +2,11 @@ import React from 'react';
 import { Link } from 'react-router';
 import NoteList from './sub/NoteList.jsx';
 import LectureTitle from './sub/LectureTitle.jsx';
-import Connection from '../Connection.js';
+import {connect} from 'react-redux';
 import {setRoomInfo} from '../actions/roomActions';
 import Audio from './sub/Audio.jsx';
-
+import UserReducer from '../reducers/userReducers';
+import RoomReducer from '../reducers/roomReducers';
 class Review extends React.Component {
   constructor (props) {
     super(props);
@@ -15,7 +16,7 @@ class Review extends React.Component {
   }
   componentWillMount() {
     var realm = this;
-    var user = this.props.getState().user.information[0];
+    var user = this.props.user.information[0];
     var pathUrl = this.props.params.roomId;
     this.props.dispatch(setRoomInfo(pathUrl, user, (err, success) => {
       if (err) {
@@ -33,7 +34,7 @@ class Review extends React.Component {
   }
 
   goToCompiledView() {
-    this.context.router.push(`/compile/${this.props.getState().room.roomInfo.pathUrl}`);
+    this.context.router.push(`/compile/${this.props.room.roomInfo.pathUrl}`);
   }
 
   render() {
@@ -52,4 +53,12 @@ class Review extends React.Component {
   }
 }
 
-export default Connection(Review);
+const mapStateToProps = (state) => {
+  return {
+    ...state,
+    UserReducer,
+    RoomReducer
+  };
+};
+
+export default connect(mapStateToProps)(Review);

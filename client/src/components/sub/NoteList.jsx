@@ -15,13 +15,11 @@ class NoteList extends React.Component {
     var currentView = getCurrentView(pathname);
     this.state = {
       view: currentView,
-      note: this.props.note
     };
   }
 
   componentWillMount() {
     const userId = this.props.user.information[0].id;
-
     const roomId = this.props.room.roomInfo.id;
     if (this.props.room.socket) {
       this.props.room.socket.on('add note success', (note) => {

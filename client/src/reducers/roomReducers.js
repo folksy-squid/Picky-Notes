@@ -27,7 +27,6 @@ const convertoFloat32ToInt16 = buffer => {
 
 export default (state = {}, action) => {
   if (action.type === 'CREATE_ROOM') {
-    console.log(action.user);
     // ajax call passing in action.data and then setting state in the success
     $.ajax({
       method: 'POST',
@@ -54,7 +53,6 @@ export default (state = {}, action) => {
   }
 
   if (action.type === 'JOIN_SOCKET_ROOM') {
-    console.log('user id', action.user.id);
     $.ajax({
       method: 'POST',
       url: `/api/rooms/${action.pathUrl}`,
@@ -62,7 +60,6 @@ export default (state = {}, action) => {
       data: JSON.stringify({userId: action.user.id}),
       success: (response) => {
         var socket = io();
-        console.log('joining room');
         socket.emit('join room', action.pathUrl, action.user);
         socket.on('join room error', () => {
           socket.disconnect();
@@ -70,7 +67,6 @@ export default (state = {}, action) => {
           action.joinedRoom('join room error');
         });
         socket.on('join room success', (participants, roomInfo) => {
-          console.log('join room success');
           state.socket = socket;
           state.roomInfo = roomInfo;
           state.participants = participants;
@@ -91,7 +87,6 @@ export default (state = {}, action) => {
   }
 
   if (action.type === 'ADD_PARTICIPANT') {
-    console.log('adding a new participant');
     return {
       ...state,
       participants: state.participants.concat([action.participant])
@@ -123,11 +118,8 @@ export default (state = {}, action) => {
         if (res === 'error') {
           action.cb(res);
         } else {
+          state.roomInfo = res;
           action.cb(null, res);
-          return {
-            ...state,
-            roomInfo: res
-          };
         }
       }
     });
@@ -172,13 +164,11 @@ export default (state = {}, action) => {
 
   if (action.type === 'START_RECORDING') {
     state.recording = true;
-    console.log('started recording', state.recording);
   }
 
   if (action.type === 'STOP_RECORDING') {
     state.recording = false;
     ss(state.socket).emit('stop stream');
-    console.log('stopped recording', state.recording);
   }
 
   return state;
