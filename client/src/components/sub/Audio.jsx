@@ -3,22 +3,23 @@ import {connect} from 'react-redux';
 require('wavesurfer.js');
 import Wavesurfer from 'react-wavesurfer';
 import WaveformReducer from '../../reducers/waveformReducers';
+import RoomReducer from '../../reducers/roomReducers';
+import {getRoomAudio, setRoomInfo} from '../../actions/roomActions';
 import {togglePlay, setPos, setVolume, setAudioRateChange} from '../../actions/waveformActions';
 
 class Audio extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      audioFile: 'http://localhost:3000/sample/audio/FlowerDance.mp3'
-    };
     this.handleAudioRateChange = this.handleAudioRateChange.bind(this);
     this.handleTogglePlay = this.handleTogglePlay.bind(this);
     this.handlePosChange = this.handlePosChange.bind(this);
     this.handleVolumeChange = this.handleVolumeChange.bind(this);
     this.handleReady = this.handleReady.bind(this);
   }
-
+  componentWillMount() {
+    this.props.dispatch(getRoomAudio(this.props.room.roomInfo.pathUrl, this.props.dispatch.bind(this, setRoomInfo(this.props.room.roomInfo.pathUrl, this.props.user.information[0], () => {}))));
+  }
   handleAudioRateChange(e) {
     this.props.dispatch(setAudioRateChange(+e.target.value));
     // this.setState({
@@ -58,11 +59,14 @@ class Audio extends React.Component {
     const waveOptions = {
       scrollParent: true,
       height: 140,
-      progressColor: '#6c718c',
-      waveColor: '#c4c8dc',
+      progressColor: 'rgba(48,125,125,1)',
+      waveColor: 'rgba(131, 187, 187, 0.6)',
       normalize: true,
+      autoCenter: true,
       barWidth: 4,
-      audioRate: this.props.waveform.audioRate
+      audioRate: this.props.waveform.audioRate,
+      cursorWidth: 5,
+      cursorColor: 'rgba(100, 50, 50, 1)'
     };
     return (
       <div className="example col-xs-12">
@@ -144,7 +148,7 @@ class Audio extends React.Component {
           pos={this.props.waveform.pos}
           options={waveOptions}
           onPosChange={this.handlePosChange}
-          audioFile={this.state.audioFile}
+          audioFile={this.props.room.roomInfo.audioUrl === 'audio url' ? `http://localhost:3000/sample/audio/${this.props.room.roomInfo.pathUrl}.wav` : this.props.room.roomInfo.pathUrl}
           playing={this.props.waveform.playing}
           onReady={this.handleReady}
         />
@@ -156,7 +160,8 @@ class Audio extends React.Component {
 const mapStateToProps = (state) => {
   return {
     ...state,
-    WaveformReducer
+    WaveformReducer,
+    RoomReducer
   };
 };
 

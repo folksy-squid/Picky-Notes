@@ -170,6 +170,15 @@ export default (state = {}, action) => {
     state.recording = false;
     ss(state.socket).emit('stop stream');
   }
+  if (action.type === 'GET_AUDIO_FROM_ROOM') {
+    $.ajax({
+      method: 'GET',
+      url: `/api/audio/${action.pathUrl}`,
+      success: (response) => {
+        state.roomInfo.audioUrl = response;
+      }
+    });
+  }
 
   return state;
 };
