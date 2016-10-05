@@ -81,10 +81,6 @@ module.exports = (app, express) => {
     joinRoom(req.body.userId, req.params.pathUrl, (currentRoom) => res.send(currentRoom));
   });
 
-  app.post('/api/audio/:pathUrl', audioUpload.single('lecture'), function(req, res) {
-    saveAudioToRoom(req.params.pathUrl, req.file.location, () => res.status(201).send('Audio was uploaded!'));
-  });
-
   app.get('/api/audio/:pathUrl', (req, res) => {
     getAudioForRoom(req.params.pathUrl, audioUrl => res.send(audioUrl));
   });

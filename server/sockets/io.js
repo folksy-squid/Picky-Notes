@@ -1,6 +1,8 @@
 /*jshint esversion: 6 */
 const {joinRoom, addNote, isAllReady, saveAllNotes, saveStartTime, uploadAudio} = require('./io-helpers');
-const {findRoom} = require('../database/db-helpers');
+const {findRoom, saveAudioToRoom} = require('../database/db-helpers');
+const {startUploading, endUploading} = require('../config/audioUpload.js');
+const fs = require('fs');
 
 module.exports = (listen) => {
   const io = require('socket.io').listen(listen);
@@ -70,8 +72,6 @@ module.exports = (listen) => {
     });
 
     socket.on('sending message', (user, message) => {
-      console.log('user', user)
-      console.log('message', message)
       if (socket.pathUrl) {
         io.in(socket.pathUrl).emit('message received', user, message);
       } else {
@@ -131,15 +131,36 @@ module.exports = (listen) => {
 
     // Audio Streaming to Server
     ss(socket).on('start stream', (stream) => {
+
+      const pathUrl = socket.pathUrl;
       const fileWriter = createFile();
       console.log('inside stream');
       stream.pipe(fileWriter);
 
+      // shouldn't this be a separate event?
       ss(socket).on('stop stream', function() {
-        console.log('ending stream');
-        fileWriter.end();
 
-        // uploadAudio();
+        var count = 0;
+
+        let endStreamCB = function(err, data){
+          if (err){
+            console.log('error in uploading stream, retrying.', err);
+            if (count < 5) {
+              count++;
+              return startUploading(`audio/${pathUrl}.wav`, pathUrl, endStreamCB);
+            }
+            console.log('Error persisted. Stop trying to upload again.', err);
+          } else {
+            saveAudioToRoom(pathUrl, data.Location, ()=>{
+              console.log('saved audioUrl to database');
+              fs.unlink(`audio/${pathUrl}.wav`, ()=>{
+                console.log(`successfully deleted audio from filesystem`);
+              });
+            });
+          }
+        };
+
+        fileWriter.end(null, null, startUploading(`audio/${pathUrl}.wav`, pathUrl, endStreamCB));
       });
     });
   });
