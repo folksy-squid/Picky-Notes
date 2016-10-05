@@ -17,9 +17,8 @@ class Note extends React.Component {
 
   playNote(e) {
     // this can be invoked when in the review view
-    this.props.dispatch(setPos(this.props.noteInfo.audioTimestamp));
+    this.props.dispatch(setPos(Number(this.props.noteInfo.audioTimestamp) / 1000));
     this.props.dispatch(play());
-    console.log(this.props.noteInfo.content);
   }
 
   toggleNoteHandler(e) {
