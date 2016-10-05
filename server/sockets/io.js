@@ -28,6 +28,7 @@ module.exports = (listen) => {
     };
 
     const mp3Encoder = () => {
+<<<<<<< 9062554baaed9883efda4375de8461a7484c6e5a
       const outFile = `audio/${socket.pathUrl}.mp3`;
       const file = fs.createWriteStream();
       return new lame.Encoder({
@@ -39,6 +40,9 @@ module.exports = (listen) => {
         outSampleRate: 22050,
         mode: lame.STEREO // STEREO (default), JOINTSTEREO, DUALCHANNEL or MONO
       });
+=======
+      return
+>>>>>>> formatting mp3 around
     };
 
     socket.on('create room', (pathUrl, user) => {
@@ -133,34 +137,46 @@ module.exports = (listen) => {
     // Audio Streaming to Server
     ss(socket).on('start stream', (stream) => {
       const pathUrl = socket.pathUrl;
-      const mp3Encoder = mp3Encoder();
+      const mp3 = `audio/${pathUrl}.mp3`;
+      const outputFile = fs.createWriteStream(mp3);
+      const encoder = new lame.Encoder({
+        channels: 2,        // 2 channels (left and right)
+        bitDepth: 16,       // 16-bit samples
+        sampleRate: 44100,  // 44,100 Hz sample rate
+
+        bitRate: 128,
+        outSampleRate: 22050,
+        mode: lame.STEREO // STEREO (default), JOINTSTEREO, DUALCHANNEL or MONO
+      });
       console.log('inside stream');
-      stream.pipe(fileWriter);
+      stream.pipe(encoder).pipe(outputFile);
 
       // shouldn't this be a separate event?
       ss(socket).on('stop stream', function() {
+        console.log('ending stream');
+        mp3Stream.end();
 
-        var count = 0;
-
-        let endStreamCB = function(err, data){
-          if (err){
-            console.log('error in uploading stream, retrying.', err);
-            if (count < 5) {
-              count++;
-              return startUploading(`audio/${pathUrl}.wav`, pathUrl, endStreamCB);
-            }
-            console.log('Error persisted. Stop trying to upload again.', err);
-          } else {
-            saveAudioToRoom(pathUrl, data.Location, ()=>{
-              console.log('saved audioUrl to database');
-              fs.unlink(`audio/${pathUrl}.wav`, ()=>{
-                console.log(`successfully deleted audio from filesystem`);
-              });
-            });
-          }
-        };
-
-        fileWriter.end(null, null, startUploading(`audio/${pathUrl}.wav`, pathUrl, endStreamCB));
+        // var count = 0;
+        //
+        // let endStreamCB = function(err, data){
+        //   if (err){
+        //     console.log('error in uploading stream, retrying.', err);
+        //     if (count < 5) {
+        //       count++;
+        //       return startUploading(`audio/${pathUrl}.wav`, pathUrl, endStreamCB);
+        //     }
+        //     console.log('Error persisted. Stop trying to upload again.', err);
+        //   } else {
+        //     saveAudioToRoom(pathUrl, data.Location, ()=>{
+        //       console.log('saved audioUrl to database');
+        //       fs.unlink(`audio/${pathUrl}.wav`, ()=>{
+        //         console.log(`successfully deleted audio from filesystem`);
+        //       });
+        //     });
+        //   }
+        // };
+        //
+        // fileWriter.end(null, null, startUploading(`audio/${pathUrl}.wav`, pathUrl, endStreamCB));
       });
     });
   });
