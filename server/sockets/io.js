@@ -119,24 +119,15 @@ module.exports = (listen) => {
     // Audio Streaming to Server
     ss(socket).on('start stream', (stream) => {
       const pathUrl = socket.pathUrl;
-      const mp3 = `audio/${pathUrl}.mp3`;
-      const outputFile = fs.createWriteStream(mp3);
-      const encoder = new lame.Encoder({
-        channels: 2,        // 2 channels (left and right)
-        bitDepth: 16,       // 16-bit samples
-        sampleRate: 44100,  // 44,100 Hz sample rate
-
-        bitRate: 128,
-        outSampleRate: 22050,
-        mode: lame.STEREO // STEREO (default), JOINTSTEREO, DUALCHANNEL or MONO
-      });
+      const outputFile = fs.createWriteStream(`audio/${pathUrl}.mp3`);
+      const encoder = new lame.Encoder({ channels: 2, bitDepth: 32, float: true });
       console.log('inside stream');
       stream.pipe(encoder).pipe(outputFile);
 
       // shouldn't this be a separate event?
       ss(socket).on('stop stream', function() {
         console.log('ending stream');
-        mp3Stream.end();
+        encoder.end();
 
         // var count = 0;
         //
