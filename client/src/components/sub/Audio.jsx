@@ -13,13 +13,14 @@ class Audio extends React.Component {
     this.state = {
       loaded: false,
     };
-    this.props.dispatch(getRoomAudio(this.props.room.roomInfo.pathUrl, () => {
+  }
 
+  componentWillMount() {
+    this.props.dispatch(getRoomAudio(this.props.room.roomInfo.pathUrl, () => {
       this.setState({loaded: true});
     }));
   }
-  componentWillMount() {
-  }
+
   handleAudioRateChange(e) {
     this.props.dispatch(setAudioRateChange(+e.target.value));
     // this.setState({
@@ -65,7 +66,7 @@ class Audio extends React.Component {
       autoCenter: true,
       barWidth: 4,
       audioRate: this.props.waveform.audioRate,
-      cursorWidth: 5,
+      cursorWidth: 3,
       cursorColor: 'rgba(100, 50, 50, 1)'
     };
     return (
