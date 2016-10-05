@@ -163,9 +163,21 @@ const saveStartTimestamp = (pathUrl, startTimestamp) => {
   Room.update({startTimestamp}, {where: {pathUrl}});
 };
 
+const saveTimeLength = (pathUrl, endTimestamp) => {
+
+  Room.findOne({where: {pathUrl}})
+  .then(room => callback(room.startTimestamp));
+
+  var callback = (start) => {
+    let timeLength = endTimestamp - start;
+    Room.update({timeLength}, {where: {pathUrl}});
+  };
+
+};
+
 const getAudioForRoom = (pathUrl, cb) => {
   console.log('pathUrl', pathUrl);
-  Room.findOne({ where: { pathUrl: pathUrl }, raw: true})
+  Room.findOne({ where: { pathUrl }, raw: true})
   .then(room => cb(room.audioUrl));
 };
 
@@ -184,5 +196,6 @@ module.exports = {
   saveAudioToRoom,
   createNewNote,
   saveStartTimestamp,
+  saveTimeLength,
   getAudioForRoom
 };
