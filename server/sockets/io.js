@@ -128,7 +128,6 @@ module.exports = (listen) => {
         });
       }
     });
-    //socket.on('disconnect', () => console.log('a user disconnected'));
 
     // Audio Streaming to Server
     ss(socket).on('start stream', (stream) => {
