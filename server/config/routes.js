@@ -81,6 +81,10 @@ module.exports = (app, express) => {
     joinRoom(req.body.userId, req.params.pathUrl, (currentRoom) => res.send(currentRoom));
   });
 
+  app.get('/api/audio/:pathUrl', (req, res) => {
+    getAudioForRoom(req.params.pathUrl, audioUrl => res.send(audioUrl));
+  });
+
   // Note Creation
   app.post('/api/notes/create', (req, res) => {
     // pass the notes in cache (redis) to database (postgres)
