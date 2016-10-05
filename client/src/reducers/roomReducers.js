@@ -118,11 +118,8 @@ export default (state = {}, action) => {
         if (res === 'error') {
           action.cb(res);
         } else {
+          state.roomInfo = res;
           action.cb(null, res);
-          return {
-            ...state,
-            roomInfo: res
-          };
         }
       }
     });
