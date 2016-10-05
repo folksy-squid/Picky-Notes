@@ -22,6 +22,7 @@ const addNote = (socket, note, cb) => {
 };
 
 const isAllReady = (pathUrl, rooms, connected) => {
+  if (!rooms[pathUrl]) { return false; }
   for (var socketId in rooms[pathUrl].sockets) {
     if (connected[socketId].ready === false) {
       return false;
