@@ -1,7 +1,8 @@
 /*jshint esversion: 6 */
 const {joinRoom, addNote, isAllReady, saveAllNotes, saveStartTime, uploadAudio} = require('./io-helpers');
-const {findRoom} = require('../database/db-helpers');
+const {findRoom, saveAudioToRoom} = require('../database/db-helpers');
 const {startUploading, endUploading} = require('../config/audioUpload.js');
+const fs = require('fs');
 
 module.exports = (listen) => {
   const io = require('socket.io').listen(listen);
@@ -130,33 +131,36 @@ module.exports = (listen) => {
 
     // Audio Streaming to Server
     ss(socket).on('start stream', (stream) => {
-      let path = socket.pathUrl;
-      // require('../config/audioUpload.js')(stream, path, (err, data)=>{
-      //   if (err){
-      //     console.log('error in uploading stream', err);
-      //   } else {
-      //     console.log('success!', data);
-      //   }
-      // });
 
+      const pathUrl = socket.pathUrl;
       const fileWriter = createFile();
       console.log('inside stream');
       stream.pipe(fileWriter);
 
-      var cb = function(err, data){
-        if (err){
-          console.log('error in uploading stream', err);
-        } else {
-          console.log('success!', data);
-        }
-      };
-
       // shouldn't this be a separate event?
       ss(socket).on('stop stream', function() {
-        console.log('ending stream');
 
-        fileWriter.end(null, null, startUploading(`audio/${path}.wav`, path, cb));
-        console.log('what is this?', fileWriter.end);
+        var count = 0;
+
+        let endStreamCB = function(err, data){
+          if (err){
+            console.log('error in uploading stream, retrying.', err);
+            if (count < 5) {
+              count++;
+              return startUploading(`audio/${pathUrl}.wav`, pathUrl, endStreamCB);
+            }
+            console.log('Error persisted. Stop trying to upload again.', err);
+          } else {
+            saveAudioToRoom(pathUrl, data.Location, ()=>{
+              console.log('saved audioUrl to database');
+              fs.unlink(`audio/${pathUrl}.wav`, ()=>{
+                console.log(`successfully deleted audio from filesystem`);
+              });
+            });
+          }
+        };
+
+        fileWriter.end(null, null, startUploading(`audio/${pathUrl}.wav`, pathUrl, endStreamCB));
       });
     });
   });
