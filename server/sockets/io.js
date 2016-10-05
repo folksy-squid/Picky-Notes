@@ -118,38 +118,39 @@ module.exports = (listen) => {
 
     // Audio Streaming to Server
     ss(socket).on('start stream', (stream) => {
+
       const pathUrl = socket.pathUrl;
-      const outputFile = fs.createWriteStream(`audio/${pathUrl}.mp3`);
-      const encoder = new lame.Encoder({ channels: 2, bitDepth: 32, float: true });
+      const filePath = `audio/${pathUrl}.mp3`;
+      const outputFile = fs.createWriteStream(filePath);
+
+      const encoder = new lame.Encoder({ channels: 1, bitDepth: 16 });
       console.log('inside stream');
       stream.pipe(encoder).pipe(outputFile);
 
       // shouldn't this be a separate event?
       ss(socket).on('stop stream', function() {
         console.log('ending stream');
-        encoder.end();
 
-        // var count = 0;
-        //
-        // let endStreamCB = function(err, data){
-        //   if (err){
-        //     console.log('error in uploading stream, retrying.', err);
-        //     if (count < 5) {
-        //       count++;
-        //       return startUploading(`audio/${pathUrl}.wav`, pathUrl, endStreamCB);
-        //     }
-        //     console.log('Error persisted. Stop trying to upload again.', err);
-        //   } else {
-        //     saveAudioToRoom(pathUrl, data.Location, ()=>{
-        //       console.log('saved audioUrl to database');
-        //       fs.unlink(`audio/${pathUrl}.wav`, ()=>{
-        //         console.log(`successfully deleted audio from filesystem`);
-        //       });
-        //     });
-        //   }
-        // };
-        //
-        // fileWriter.end(null, null, startUploading(`audio/${pathUrl}.wav`, pathUrl, endStreamCB));
+        var count = 0;
+        let endStreamCB = function(err, data) {
+          if (err) {
+            console.log('error in uploading stream, retrying.', err);
+            if (count < 5) {
+              count++;
+              return startUploading(filePath, pathUrl, endStreamCB);
+            }
+            console.log('Error persisted. Stop trying to upload again.', err);
+          } else {
+            saveAudioToRoom(pathUrl, data.Location, ()=>{
+              console.log('saved audioUrl to database');
+              fs.unlink(filePath, ()=>{
+                console.log('successfully deleted audio from filesystem');
+              });
+            });
+          }
+        };
+
+        encoder.end(null, null, startUploading(filePath, pathUrl, endStreamCB));
       });
     });
   });
