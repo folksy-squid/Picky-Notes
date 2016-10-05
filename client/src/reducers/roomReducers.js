@@ -176,6 +176,7 @@ export default (state = {}, action) => {
       url: `/api/audio/${action.pathUrl}`,
       success: (response) => {
         state.roomInfo.audioUrl = response;
+        action.cb();
       }
     });
   }

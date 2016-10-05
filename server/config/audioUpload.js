@@ -7,15 +7,15 @@ let accessKeyId = '';
 let secretAccessKey = '';
 let region = '';
 //
-// if (process.env.NODE_ENV === 'test') {
-//   accessKeyId = require('../../example_keys.js').aws.AWS_ACCESS_KEY_ID;
-//   secretAccessKey = require('../../example_keys.js').aws.AWS_SECRET_ACCESS_KEY;
-//   region = require('../../example_keys.js').aws.AWS_REGION;
-// } else {
+if (process.env.NODE_ENV === 'test') {
+  accessKeyId = require('../../example_keys.js').aws.AWS_ACCESS_KEY_ID;
+  secretAccessKey = require('../../example_keys.js').aws.AWS_SECRET_ACCESS_KEY;
+  region = require('../../example_keys.js').aws.AWS_REGION;
+} else {
   accessKeyId = require('../../keys.js').aws.AWS_ACCESS_KEY_ID;
   secretAccessKey = require('../../keys.js').aws.AWS_SECRET_ACCESS_KEY;
   region = require('../../keys.js').aws.AWS_REGION;
-// }
+}
 
 const s3 = new AWS.S3({
   accessKeyId: accessKeyId,
