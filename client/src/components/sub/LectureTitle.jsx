@@ -3,18 +3,10 @@ import {connect} from 'react-redux';
 import {getCurrentView} from '../../helpers.js';
 import RoomReducer from '../../reducers/roomReducers';
 const LectureTitle = (props) => {
-  /*----------  NPM RUN DEV  ----------*/
   var roomInfo = props.room.roomInfo;
   var lecturer = roomInfo.lecturer;
   var topic = roomInfo.topic;
   var createdAt = moment(roomInfo.createdAt).format('MM/DD/YYYY');
-  /*----------  //NPM RUN DEV  ----------*/
-
-  /*----------  NPM RUN CLIENT  ----------*/
-  // var lecturer = 'Mr Potatohead'
-  // var topic = 'World History';
-  // var createdAt = ... ;
-  /*----------  // NPM RUN CLIENT  ----------*/
 
   var view = (
     <h3 className="lectureTitle">{topic} by {lecturer}</h3>
@@ -32,7 +24,7 @@ const LectureTitle = (props) => {
         {createdAt}
       </h4>
     </div>
-  );
+    );
   }
   return view;
 };

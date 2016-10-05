@@ -78,9 +78,9 @@ class Lobby extends React.Component {
         <LectureTitle />
         <div className="row">
           <div className="col-sm-9">
-            <ChatBox socket={this.props.room.socket}/>
+            <ChatBox />
           </div>
-          <div className="col-sm-3">
+          <div className="col-sm-3 panel">
           { this.state.isHost && (
             <button className="btn btn-lg btn-success" onClick={this.startLecture.bind(this)}>
               Start Lecture
