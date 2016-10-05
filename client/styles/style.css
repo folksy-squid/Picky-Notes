@@ -104,8 +104,17 @@ h2.new-room-title {
 .chatbox {
   margin: 0 auto;
   width: 100%;
-  height: 400px;
+  height: 375px;
   border-radius: 3px;
+}
+
+.panel-heading {
+  height: 20%;
+}
+
+#message-list {
+  height: 80%;
+  overflow: scroll;
 }
 
 .message-picture {

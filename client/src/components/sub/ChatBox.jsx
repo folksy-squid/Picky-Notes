@@ -9,7 +9,6 @@ class ChatBox extends Component {
       socket: this.props.room.socket,
       messages: []
     };
-    console.log('chatbox props', props);
   }
 
   componentDidMount() {
@@ -17,8 +16,6 @@ class ChatBox extends Component {
   }
 
   messageReceived(user, message) {
-    console.log('user', user);
-    console.log('message', message);
     let timestamp = moment().format('LTS');
 
     // we have to use an array instead of an object here because we can't pass down objects in props
@@ -26,6 +23,9 @@ class ChatBox extends Component {
     this.setState({
       messages: this.state.messages.concat([messageItem])
     })
+
+    let messagelist = document.getElementById('message-list');
+    messagelist.scrollTop = messagelist.scrollHeight;
   }
 
   sendMessage (e) {
@@ -43,10 +43,12 @@ class ChatBox extends Component {
   render() {
     return (
     <div className="chatbox panel panel-default">
-      <h4 className="panel-heading">
-        Chattt here!!
-      </h4>
-      <div className="panel-body message-list">
+      <div className="panel-heading">
+        <h4>
+          Chat here:
+        </h4>
+      </div>
+      <div className="panel-body" id="message-list">
         <ul className="media-list">
           {this.state.messages.length > 0 && this.state.messages.map((message, i)=>(<Message key={i} message={message[0]} timestamp={message[1]} sender={message[2]} pictureUrl={message[3]} />)
           )}
