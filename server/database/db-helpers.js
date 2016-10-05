@@ -163,6 +163,11 @@ const saveStartTimestamp = (pathUrl, startTimestamp) => {
   Room.update({startTimestamp}, {where: {pathUrl}});
 };
 
+const getAudioForRoom = (pathUrl, cb) => {
+  Room.findOne({ where: { pathUrl: pathUrl }, raw: true})
+  .then(room => cb(room.audioUrl));
+};
+
 module.exports = {
   createNewUser,
   createNewRoom,
@@ -177,5 +182,6 @@ module.exports = {
   getRoom,
   saveAudioToRoom,
   createNewNote,
-  saveStartTimestamp
+  saveStartTimestamp,
+  getAudioForRoom
 };
