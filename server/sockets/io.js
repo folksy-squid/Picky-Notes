@@ -131,6 +131,7 @@ module.exports = (listen) => {
       ss(socket).on('stop stream', function() {
         console.log('ending stream');
         fileWriter.end();
+        
         // uploadAudio();
       });
     });
