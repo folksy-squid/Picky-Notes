@@ -35,7 +35,6 @@ const createNewRoom = ({topic, className, lecturer, hostId}, cb) => {
 };
 
 const joinRoom = (userId, pathUrl, cb) => {
-  console.log('this is user Id', userId);
   User.findById(userId)
   .then(currentUser => {
     Room.findOne({ where: { pathUrl: pathUrl } })
@@ -156,7 +155,6 @@ const getRoom = (pathUrl, userId, cb) => {
 };
 
 const saveAudioToRoom = (pathUrl, audioUrl, cb) => {
-  console.log('pathUrl', pathUrl, 'audioUrl', audioUrl);
   Room.update({audioUrl: audioUrl}, {where: {pathUrl: pathUrl}})
   .then(cb);
 };

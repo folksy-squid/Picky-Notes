@@ -25,7 +25,6 @@ class Lobby extends React.Component {
   }
 
   componentWillMount() {
-
     // join the socket if there is no room info
     if (!this.props.room.roomInfo) {
       console.log('you have no room info');
@@ -53,7 +52,7 @@ class Lobby extends React.Component {
       }
     });
     this.checkHost();
-    var socket = this.props.room.socket;
+    const socket = this.props.room.socket;
     socket.on('lecture started', this.goToLecture.bind(this));
     socket.on('user disconnected', this.checkHost.bind(this));
   }
@@ -111,7 +110,7 @@ const mapStateToProps = (state) => {
   return {
     ...state,
     roomReducer
-  }
+  };
 };
 
 export default connect(mapStateToProps)(Lobby);

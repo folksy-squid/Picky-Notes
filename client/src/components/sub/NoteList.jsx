@@ -112,8 +112,8 @@ const mapStateToProps = (state) => {
     NoteReducer,
     RoomReducer,
     UserReducer
-  }
-}
+  };
+};
 
 
 export default connect(mapStateToProps)(NoteList);

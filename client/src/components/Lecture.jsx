@@ -92,7 +92,7 @@ const mapStateToProps = (state) => {
     ...state,
     RoomReducer,
     UserReducer
-  }
+  };
 };
 
 export default connect(mapStateToProps)(Lecture);

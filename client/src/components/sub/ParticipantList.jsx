@@ -10,7 +10,7 @@ class ParticipantList extends React.Component {
 
     let pathname = props.routing.locationBeforeTransitions.pathname;
     let currentView = getCurrentView(pathname);
-
+    console.log(props.room.participants);
     this.state = {
       participants: props.room.participants,
       view: getCurrentView(pathname),
@@ -19,14 +19,17 @@ class ParticipantList extends React.Component {
   }
 
   newUserJoinedRoom(user) {
+    console.log('new user joined room');
     this.props.dispatch(addParticipant(user));
   }
 
   userDisconnected(user) {
+    console.log('a user has disconnected', user);
     this.props.dispatch(removeParticipant(user));
   }
 
   userReady(user) {
+    console.log('a user is ready', user);
     this.props.dispatch(readyParticipant(user));
   }
 
@@ -44,6 +47,8 @@ class ParticipantList extends React.Component {
   }
 
   componentWillUnmount() {
+
+    console.log('unmounting participant component');
     const socket = this.props.room.socket;
     if (socket) {
       socket.removeListener('new user joined room');
@@ -53,6 +58,7 @@ class ParticipantList extends React.Component {
   }
 
   render() {
+    console.log(this.props);
     var participantLength = this.props.room.participants.length;
     var classColor = (i) => 'participant' + i;
     return (
@@ -75,7 +81,7 @@ const mapStateToProps = (state) => {
   return {
     ...state,
     roomReducer
-  }
+  };
 };
 
 export default connect(mapStateToProps)(ParticipantList);
