@@ -27,16 +27,14 @@ module.exports = (listen) => {
       return cb(result);
     };
 
-    const createFile = () => {
+    const mp3Encoder = () => {
       const outFile = `audio/${socket.pathUrl}.mp3`;
-      fs.writeFileStream(outFile);
+      const file = fs.createWriteStream();
       return new lame.Encoder({
-        // input
         channels: 2,        // 2 channels (left and right)
         bitDepth: 16,       // 16-bit samples
         sampleRate: 44100,  // 44,100 Hz sample rate
 
-        // output
         bitRate: 128,
         outSampleRate: 22050,
         mode: lame.STEREO // STEREO (default), JOINTSTEREO, DUALCHANNEL or MONO
@@ -134,9 +132,8 @@ module.exports = (listen) => {
 
     // Audio Streaming to Server
     ss(socket).on('start stream', (stream) => {
-
       const pathUrl = socket.pathUrl;
-      const fileWriter = createFile();
+      const mp3Encoder = mp3Encoder();
       console.log('inside stream');
       stream.pipe(fileWriter);
 
