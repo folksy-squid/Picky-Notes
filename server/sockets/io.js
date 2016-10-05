@@ -27,24 +27,6 @@ module.exports = (listen) => {
       return cb(result);
     };
 
-    const mp3Encoder = () => {
-<<<<<<< 9062554baaed9883efda4375de8461a7484c6e5a
-      const outFile = `audio/${socket.pathUrl}.mp3`;
-      const file = fs.createWriteStream();
-      return new lame.Encoder({
-        channels: 2,        // 2 channels (left and right)
-        bitDepth: 16,       // 16-bit samples
-        sampleRate: 44100,  // 44,100 Hz sample rate
-
-        bitRate: 128,
-        outSampleRate: 22050,
-        mode: lame.STEREO // STEREO (default), JOINTSTEREO, DUALCHANNEL or MONO
-      });
-=======
-      return
->>>>>>> formatting mp3 around
-    };
-
     socket.on('create room', (pathUrl, user) => {
       // verify if pathUrl and userId are valid
       if (pathUrl.length === 5 && user) {
