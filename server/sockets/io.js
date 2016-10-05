@@ -101,10 +101,8 @@ module.exports = (listen) => {
       io.in(socket.pathUrl).emit('user ready', socket.user);
       if (isAllReady(socket.pathUrl, rooms, connected)) {
         io.in(socket.pathUrl).emit('all ready');
-        getClientNames(socket.pathUrl, (arrOfClients) => {
-          saveAllNotes(socket.pathUrl, arrOfClients, () => {
-            io.in(socket.pathUrl).emit('all notes saved');
-          });
+        saveAllNotes(socket.pathUrl, () => {
+          io.in(socket.pathUrl).emit('all notes saved');
         });
       }
     });
@@ -121,10 +119,8 @@ module.exports = (listen) => {
       io.in(socket.pathUrl).emit('user disconnected', socket.user);
       if (isAllReady(socket.pathUrl, rooms, connected)) {
         io.in(socket.pathUrl).emit('all ready');
-        getClientNames(socket.pathUrl, (arrOfClients) => {
-          saveAllNotes(socket.pathUrl, arrOfClients, () => {
-            io.in(socket.pathUrl).emit('all notes saved');
-          });
+        saveAllNotes(socket.pathUrl, () => {
+          io.in(socket.pathUrl).emit('all notes saved');
         });
       }
     });

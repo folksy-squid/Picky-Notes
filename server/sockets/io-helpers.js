@@ -1,5 +1,5 @@
 // require Redis
-const {addUserToCache, addNoteToCache, getNotesFromRoom, deleteAllNotesAndRoom, addTimestampToCache} = require('../cache/cache-helpers');
+const {addUserToCache, addNoteToCache, getNotesFromRoom, deleteAllNotesAndRoom, addTimestampToCache, getUsersFromRoom} = require('../cache/cache-helpers');
 const {findRoom, createRoomNotes, saveStartTimestamp} = require('../database/db-helpers');
 
 const joinRoom = (socket, pathUrl, user, cb) => {
@@ -22,7 +22,7 @@ const addNote = (socket, note, cb) => {
 };
 
 const isAllReady = (pathUrl, rooms, connected) => {
-  if (!rooms[pathUrl]) { return false; }
+  if (!rooms[pathUrl]) { return true; }
   for (var socketId in rooms[pathUrl].sockets) {
     if (connected[socketId].ready === false) {
       return false;
@@ -31,16 +31,19 @@ const isAllReady = (pathUrl, rooms, connected) => {
   return true;
 };
 
-const saveAllNotes = (pathUrl, arrOfClients, cb) => {
+const saveAllNotes = (pathUrl, cb) => {
   // get roomId
   findRoom(pathUrl, (room) => {
     if (room) {
-
       getNotesFromRoom(pathUrl, (allNotes) => {
         // save all notes with roomId into database;
-        createRoomNotes(allNotes, room.id, arrOfClients, () => {
-          cb();
-          deleteAllNotesAndRoom(pathUrl);
+        if (allNotes.length === 0) { return cb(); }
+        getUsersFromRoom(pathUrl)
+        .then((arrOfClients) => {
+          createRoomNotes(allNotes, room.id, arrOfClients, () => {
+            cb();
+            deleteAllNotesAndRoom(pathUrl);
+          });
         });
       });
     } else {

@@ -37,9 +37,6 @@ const deleteAllNotesAndRoom = (pathUrl) => {
 
 const getUsersFromRoom = pathUrl => cache.smembers(pathUrl);
 
-// const getNotesFromUser = (pathUrl, userId) =>
-//   cache.lrange(`${userId}:${pathUrl}`, 0, -1)
-//   .then((notes) => notes.map( note => JSON.parse(note) ));
 
 const getNotesFromRoom = (pathUrl, cb) => {
   // getUsersFromRoom
@@ -73,4 +70,5 @@ module.exports = {
   getNotesFromRoom,
   deleteAllNotesAndRoom,
   addTimestampToCache,
+  getUsersFromRoom,
 };

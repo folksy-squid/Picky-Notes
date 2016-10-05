@@ -63,9 +63,9 @@ const multiplyNotes = (notes, arrOfClients) => {
   let multipliedNotes = [];
   for (let i = 0; i < notes.length; i++) {
     for (let j = 0; j < arrOfClients.length; j++) {
-      if (notes[i].originalUserId !== arrOfClients[j].id) {
+      if (notes[i].originalUserId !== parseInt(arrOfClients[j])) {
         var copy = JSON.parse(JSON.stringify(notes[i]));
-        copy.editingUserId = arrOfClients[j].id;
+        copy.editingUserId = arrOfClients[j];
         copy.show = false;
         multipliedNotes.push(copy);
       }
