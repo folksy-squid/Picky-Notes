@@ -148,8 +148,7 @@ class Audio extends React.Component {
           pos={this.props.waveform.pos}
           options={waveOptions}
           onPosChange={this.handlePosChange}
-          audioFile={this.props.room.roomInfo.audioUrl === 'audio url' ? `http://localhost:3000/sample/audio/${this.props.room.roomInfo.pathUrl}.wav` : this.props.room.roomInfo.pathUrl}
-          playing={this.props.waveform.playing}
+          audioFile={this.props.room.roomInfo.audioUrl}
           onReady={this.handleReady}
         />
       </div>
