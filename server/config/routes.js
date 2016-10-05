@@ -1,5 +1,5 @@
 /*jshint esversion: 6 */
-const {createNewUser, createNewRoom, joinRoom, createNewNote, showAllNotes, showFilteredNotes, updateNotes, getAllUserRooms, getRoom, saveAudioToRoom} = require ('../database/db-helpers');
+const {createNewUser, createNewRoom, joinRoom, createNewNote, showAllNotes, showFilteredNotes, updateNotes, getAllUserRooms, getRoom, saveAudioToRoom, getAudioForRoom} = require ('../database/db-helpers');
 const passport = require('./passport');
 const path = require('path');
 const audioUpload = require('./audioUpload');
@@ -85,6 +85,10 @@ module.exports = (app, express) => {
     saveAudioToRoom(req.params.pathUrl, req.file.location, () => res.status(201).send('Audio was uploaded!'));
   });
 
+  app.get('/api/audio/:pathUrl', (req, res) => {
+    getAudioForRoom(req.params.pathUrl, audioUrl => res.send(audioUrl));
+  });
+
   // Note Creation
   app.post('/api/notes/create', (req, res) => {
     // pass the notes in cache (redis) to database (postgres)
@@ -124,7 +128,7 @@ module.exports = (app, express) => {
   app.get('*/index.bundle.js', function (request, response) {
     response.sendFile(path.resolve(__dirname, '../../dist/index.bundle.js'));
   });
-  
+
   app.get('*/style.css', function (request, response) {
     response.sendFile(path.resolve(__dirname, '../../client/styles/style.css'));
   });
