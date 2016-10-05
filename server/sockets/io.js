@@ -128,11 +128,9 @@ module.exports = (listen) => {
       console.log('inside stream');
       stream.pipe(encoder).pipe(outputFile);
 
-      // shouldn't this be a separate event?
-      ss(socket).on('stop stream', function() {
-
+      ss(socket).on('stop stream', () => {
         var count = 0;
-        let endStreamCB = function(err, data) {
+        let endStreamCB = (err, data) => {
           if (err) {
             console.log('error in uploading stream, retrying.', err);
             if (count < 5) {
@@ -141,9 +139,9 @@ module.exports = (listen) => {
             }
             console.log('Error persisted. Stop trying to upload again.', err);
           } else {
-            saveAudioToRoom(pathUrl, data.Location, ()=>{
+            saveAudioToRoom(pathUrl, data.Location, () => {
               console.log('saved audioUrl to database');
-              fs.unlink(filePath, ()=>{
+              fs.unlink(filePath, () => {
                 console.log('successfully deleted audio from filesystem');
               });
             });

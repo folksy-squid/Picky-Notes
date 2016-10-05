@@ -132,6 +132,7 @@ export default (state = {}, action) => {
     ss(state.socket).emit('start stream', state.stream);
     state.recording = false;
 
+
     const audioSuccess = e => {
       const audioContext = window.AudioContext || window.webkitAudioContext;
       const context = new audioContext();
@@ -171,6 +172,7 @@ export default (state = {}, action) => {
     state.recording = false;
     ss(state.socket).emit('stop stream');
   }
+
   if (action.type === 'GET_AUDIO_FROM_ROOM') {
     $.ajax({
       method: 'GET',
