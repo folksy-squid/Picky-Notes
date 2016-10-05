@@ -70,8 +70,6 @@ module.exports = (listen) => {
     });
 
     socket.on('sending message', (user, message) => {
-      console.log('user', user)
-      console.log('message', message)
       if (socket.pathUrl) {
         io.in(socket.pathUrl).emit('message received', user, message);
       } else {
