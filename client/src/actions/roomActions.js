@@ -49,3 +49,9 @@ export const stopRecording = (cb) => ({
   type: 'STOP_RECORDING',
   cb
 });
+
+export const getRoomAudio = (pathUrl, cb) => ({
+  type: 'GET_AUDIO_FROM_ROOM',
+  pathUrl,
+  cb
+});

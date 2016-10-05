@@ -6,7 +6,7 @@ const fs = require('fs');
 let accessKeyId = '';
 let secretAccessKey = '';
 let region = '';
-
+//
 if (process.env.NODE_ENV === 'test') {
   accessKeyId = require('../../example_keys.js').aws.AWS_ACCESS_KEY_ID;
   secretAccessKey = require('../../example_keys.js').aws.AWS_SECRET_ACCESS_KEY;
