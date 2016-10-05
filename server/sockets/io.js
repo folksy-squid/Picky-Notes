@@ -119,6 +119,14 @@ module.exports = (listen) => {
 
     socket.on('disconnect', () => {
       io.in(socket.pathUrl).emit('user disconnected', socket.user);
+      if (isAllReady(socket.pathUrl, rooms, connected)) {
+        io.in(socket.pathUrl).emit('all ready');
+        getClientNames(socket.pathUrl, (arrOfClients) => {
+          saveAllNotes(socket.pathUrl, arrOfClients, () => {
+            io.in(socket.pathUrl).emit('all notes saved');
+          });
+        });
+      }
     });
     //socket.on('disconnect', () => console.log('a user disconnected'));
 
@@ -131,7 +139,7 @@ module.exports = (listen) => {
       ss(socket).on('stop stream', function() {
         console.log('ending stream');
         fileWriter.end();
-        
+
         // uploadAudio();
       });
     });
