@@ -18,7 +18,7 @@ class Audio extends React.Component {
     this.handleReady = this.handleReady.bind(this);
   }
   componentWillMount() {
-    this.props.dispatch(getRoomAudio(this.props.room.roomInfo.pathUrl, this.props.dispatch.bind(this, setRoomInfo(this.props.room.roomInfo.pathUrl, this.props.user.information[0], () => {}))));
+    this.props.dispatch(getRoomAudio(this.props.room.roomInfo.pathUrl));
   }
   handleAudioRateChange(e) {
     this.props.dispatch(setAudioRateChange(+e.target.value));
