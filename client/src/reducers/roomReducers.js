@@ -15,16 +15,6 @@ const createSocketRoom = (state, host, pathUrl, createRoom) => {
   return socket;
 };
 
-const convertoFloat32ToInt16 = buffer => {
-  var l = buffer.length;
-  var buf = new Int16Array(l);
-
-  while (l--) {
-    buf[l] = buffer[l] * 0xFFFF;    //convert to 16 bit
-  }
-  return buf.buffer;
-};
-
 export default (state = {}, action) => {
   if (action.type === 'CREATE_ROOM') {
     // ajax call passing in action.data and then setting state in the success

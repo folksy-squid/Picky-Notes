@@ -2,12 +2,12 @@
 const {joinRoom, addNote, isAllReady, saveAllNotes, saveStartTime, uploadAudio} = require('./io-helpers');
 const {findRoom, saveAudioToRoom} = require('../database/db-helpers');
 const {startUploading, endUploading} = require('../config/audioUpload.js');
+const lame = require('lame');
 const fs = require('fs');
 
 module.exports = (listen) => {
   const io = require('socket.io').listen(listen);
   const ss = require('socket.io-stream');
-  const lame = require('lame');
 
   const rooms = io.sockets.adapter.rooms;
   const connected = io.sockets.connected;
@@ -28,12 +28,13 @@ module.exports = (listen) => {
     };
 
     const createFile = () => {
-      const outFile = `audio/${socket.pathUrl}.wav`;
+      const outFile = `audio/${socket.pathUrl}.mp3`;
+      fs.writeFileStream(outFile);
       return new lame.Encoder({
         // input
         channels: 2,        // 2 channels (left and right)
         bitDepth: 16,       // 16-bit samples
-        sampleRate: 44100,  // 44,100 Hz sample rate 
+        sampleRate: 44100,  // 44,100 Hz sample rate
 
         // output
         bitRate: 128,
