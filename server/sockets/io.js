@@ -2,12 +2,12 @@
 const {joinRoom, addNote, isAllReady, saveAllNotes, saveStartTime, uploadAudio} = require('./io-helpers');
 const {findRoom, saveAudioToRoom} = require('../database/db-helpers');
 const {startUploading, endUploading} = require('../config/audioUpload.js');
+const lame = require('lame');
 const fs = require('fs');
 
 module.exports = (listen) => {
   const io = require('socket.io').listen(listen);
   const ss = require('socket.io-stream');
-  const wav = require('wav');
 
   const rooms = io.sockets.adapter.rooms;
   const connected = io.sockets.connected;
@@ -25,15 +25,6 @@ module.exports = (listen) => {
         }
       }
       return cb(result);
-    };
-
-    const createFile = () => {
-      const outFile = `audio/${socket.pathUrl}.wav`;
-      return new wav.FileWriter(outFile, {
-        channels: 1,
-        sampleRate: 48000,
-        bitDepth: 16
-      });
     };
 
     socket.on('create room', (pathUrl, user) => {
@@ -129,34 +120,36 @@ module.exports = (listen) => {
     ss(socket).on('start stream', (stream) => {
 
       const pathUrl = socket.pathUrl;
-      const fileWriter = createFile();
+      const filePath = `audio/${pathUrl}.mp3`;
+      const outputFile = fs.createWriteStream(filePath);
+
+      const encoder = new lame.Encoder({ channels: 1, bitDepth: 16 });
       console.log('inside stream');
-      stream.pipe(fileWriter);
+      stream.pipe(encoder).pipe(outputFile);
 
       // shouldn't this be a separate event?
       ss(socket).on('stop stream', function() {
 
         var count = 0;
-
-        let endStreamCB = function(err, data){
-          if (err){
+        let endStreamCB = function(err, data) {
+          if (err) {
             console.log('error in uploading stream, retrying.', err);
             if (count < 5) {
               count++;
-              return startUploading(`audio/${pathUrl}.wav`, pathUrl, endStreamCB);
+              return startUploading(filePath, pathUrl, endStreamCB);
             }
             console.log('Error persisted. Stop trying to upload again.', err);
           } else {
             saveAudioToRoom(pathUrl, data.Location, ()=>{
               console.log('saved audioUrl to database');
-              fs.unlink(`audio/${pathUrl}.wav`, ()=>{
-                console.log(`successfully deleted audio from filesystem`);
+              fs.unlink(filePath, ()=>{
+                console.log('successfully deleted audio from filesystem');
               });
             });
           }
         };
 
-        fileWriter.end(null, null, startUploading(`audio/${pathUrl}.wav`, pathUrl, endStreamCB));
+        encoder.end(null, null, startUploading(filePath, pathUrl, endStreamCB));
       });
     });
   });
