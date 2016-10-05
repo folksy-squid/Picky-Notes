@@ -129,7 +129,6 @@ module.exports = (listen) => {
 
       // shouldn't this be a separate event?
       ss(socket).on('stop stream', function() {
-        console.log('ending stream');
 
         var count = 0;
         let endStreamCB = function(err, data) {
