@@ -27,6 +27,7 @@ const convertoFloat32ToInt16 = buffer => {
 
 export default (state = {}, action) => {
   if (action.type === 'CREATE_ROOM') {
+    console.log(action.user);
     // ajax call passing in action.data and then setting state in the success
     $.ajax({
       method: 'POST',
@@ -38,14 +39,13 @@ export default (state = {}, action) => {
           method: 'POST',
           url: `/api/rooms/${res.pathUrl}`,
           contentType: 'application/json',
-          data: JSON.stringify({userId: action.user.id})
+          data: JSON.stringify({userId: action.user.id}),
+          success: (response) => {
+            state.participants = [action.user];
+            state.socket = createSocketRoom(state, action.user, res.pathUrl, action.createRoom);
+            state.roomInfo = res;
+          }
         });
-        return {
-          ...state,
-          participants: [action.user],
-          socket: createSocketRoom(state, action.user, res.pathUrl, action.createRoom),
-          roomInfo: res
-        };
       },
       error: function( res, status ) {
         console.log(res);

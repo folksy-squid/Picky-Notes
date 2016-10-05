@@ -25,7 +25,6 @@ class Lobby extends React.Component {
   }
 
   componentWillMount() {
-
     // join the socket if there is no room info
     if (!this.props.room.roomInfo) {
       console.log('you have no room info');

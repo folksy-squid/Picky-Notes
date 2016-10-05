@@ -10,7 +10,7 @@ class ParticipantList extends React.Component {
 
     let pathname = props.routing.locationBeforeTransitions.pathname;
     let currentView = getCurrentView(pathname);
-
+    console.log(props.room.participants);
     this.state = {
       participants: props.room.participants,
       view: getCurrentView(pathname),
