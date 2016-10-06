@@ -87,7 +87,7 @@ class Lobby extends React.Component {
             </button>)}
             <div className="panel-item">
               <div className="clipboard">
-                <input ref="shareLink" className="shareLink" value={this.state.pathUrl} readOnly/>
+                <input ref="shareLink" className="shareLink" value={'localhost:3000/lobby/' + this.state.pathUrl} readOnly/>
                 <div className="buttonCell">
                   <button ref="copyButton" className="copyButton" data-clipboard-target=".shareLink">
                     <i className="ion ion-clipboard"></i>

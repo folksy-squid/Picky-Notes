@@ -66,7 +66,7 @@ export default (state = {}, action) => {
         socket.on('join room error', () => {
           socket.disconnect();
           state.socket = null;
-          action.joinedRoom('join room error');
+          action.joinedRoom('Room was not found');
         });
         socket.on('join room success', (participants, roomInfo) => {
           state.socket = socket;

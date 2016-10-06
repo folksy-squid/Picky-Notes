@@ -17,7 +17,8 @@ class Lecture extends React.Component {
       readyButtonDisplay: 'none',
       endLectureDisplay: 'inline-block',
       isHost: false,
-      loaded: true
+      loaded: true,
+      error: ''
     };
   }
 
@@ -39,8 +40,12 @@ class Lecture extends React.Component {
           this.context.router.push('/notebook');
         } else {
           // join socket room
-          this.props.dispatch(joinSocketRoom(pathUrl, user, () => {
+          this.props.dispatch(joinSocketRoom(pathUrl, user, (error) => {
+            if (error) {
+              return this.setState({error});
+            }
             this.setState({loaded: true});
+            this.checkHost();
             this.applyListeners();
             this.props.room.socket.on('old notes', (notes) => {
               this.props.dispatch(replaceNotes(notes));
@@ -49,6 +54,9 @@ class Lecture extends React.Component {
           }));
         }
       }));
+    } else {
+      this.checkHost();
+      this.applyListeners();
     }
   }
 
@@ -66,12 +74,10 @@ class Lecture extends React.Component {
       // redirect to compile view
       this.context.router.push(`/compile/${this.props.room.roomInfo.pathUrl}`);
     });
-    socket.on('user disconnected', this.checkHost.bind(this));
   }
 
   componentDidMount() {
-    this.checkHost();
-    this.applyListeners();
+    this.props.room.socket && this.applyListeners();
   }
 
   checkHost() {
@@ -111,10 +117,10 @@ class Lecture extends React.Component {
             <LectureBox />
           </div>
           <div className="col-md-3">
-            <ParticipantList />
+            <ParticipantList checkHost={this.checkHost.bind(this)}/>
           </div>
         </div>
-      </div>) : (<div></div>)
+      </div>) : (<h2>{this.state.error}</h2>)
     );
   }
 }

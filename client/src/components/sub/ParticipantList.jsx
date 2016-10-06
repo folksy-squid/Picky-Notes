@@ -38,15 +38,18 @@ class ParticipantList extends React.Component {
 
     if (this.state.view === 'lecture') {
       this.state.readyStatusDisplay = 'inline-block';
+      socket.on('user disconnected', this.props.checkHost);
     }
   }
 
   componentWillUnmount() {
+    console.log('unmounting')
     const socket = this.props.room.socket;
     if (socket) {
       socket.removeListener('new user joined room');
       socket.removeListener('user disconnected');
       socket.removeListener('user ready');
+      console.log(this.state.view);
     }
   }
 
