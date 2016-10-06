@@ -1,5 +1,5 @@
 /*jshint esversion: 6 */
-const {joinRoom, addNote, isAllReady, saveAllNotes, saveStartTime, saveLectureTimeLength, uploadAudio} = require('./io-helpers');
+const {joinRoom, addNote, isAllReady, saveAllNotes, saveStartTime, saveLectureTimeLength, uploadAudio, getUserNotes} = require('./io-helpers');
 const {findRoom, saveAudioToRoom} = require('../database/db-helpers');
 const {startUploading, endUploading} = require('../config/audioUpload.js');
 const lame = require('lame');
@@ -105,6 +105,12 @@ module.exports = (listen) => {
         return;
       }
       socket.emit('add note error', 'Note does not exist you asshat');
+    });
+
+    socket.on('user reconnect', () => {
+      getUserNotes(socket.pathUrl, socket.user.id, (notes) => {
+        notes.length && socket.emit('old notes', notes);
+      });
     });
 
     socket.on('disconnect', () => {

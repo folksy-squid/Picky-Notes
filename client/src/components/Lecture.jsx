@@ -7,6 +7,8 @@ import ParticipantList from './sub/ParticipantList.jsx';
 import RoomReducer from '../reducers/roomReducers';
 import {stopRecording, setRoomInfo, joinSocketRoom} from '../actions/roomActions';
 import UserReducer from '../reducers/userReducers';
+import {replaceNotes} from '../actions/noteActions';
+import NoteReducer from '../reducers/noteReducers';
 
 class Lecture extends React.Component {
   constructor (props) {
@@ -39,6 +41,11 @@ class Lecture extends React.Component {
           this.props.dispatch(joinSocketRoom(pathUrl, user, () => {
             this.setState({loaded: true});
             this.applyListeners();
+            this.props.room.socket.on('old notes', (notes) => {
+              console.log(notes)
+              this.props.dispatch(replaceNotes(notes));
+            });
+            this.props.room.socket.emit('user reconnect');
           }));
         }
       }));
@@ -116,7 +123,8 @@ const mapStateToProps = (state) => {
   return {
     ...state,
     RoomReducer,
-    UserReducer
+    UserReducer,
+    NoteReducer,
   };
 };
 

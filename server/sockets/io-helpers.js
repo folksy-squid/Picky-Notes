@@ -1,5 +1,5 @@
 // require Redis
-const {addUserToCache, addNoteToCache, getNotesFromRoom, deleteAllNotesAndRoom, addTimestampToCache, getUsersFromRoom} = require('../cache/cache-helpers');
+const {addUserToCache, addNoteToCache, getNotesFromRoom, deleteAllNotesAndRoom, addTimestampToCache, getUsersFromRoom, getNotesFromUser} = require('../cache/cache-helpers');
 const {findRoom, createRoomNotes, saveStartTimestamp, saveTimeLength} = require('../database/db-helpers');
 
 const joinRoom = (socket, pathUrl, user, cb) => {
@@ -65,6 +65,10 @@ const uploadAudio = () => {
 
 };
 
+const getUserNotes = (pathUrl, userId, cb) => {
+  getNotesFromUser(pathUrl, userId, cb);
+};
+
 module.exports = {
   joinRoom,
   addNote,
@@ -73,4 +77,5 @@ module.exports = {
   saveStartTime,
   saveLectureTimeLength,
   uploadAudio,
+  getUserNotes,
 };
