@@ -22,6 +22,7 @@ class Notebook extends React.Component {
       method: 'GET',
       url: `/api/users/rooms/${user.id}`,
       success: (entries) => {
+        entries.sort((a, b) => b.startTimestamp - a.startTimestamp);
         context.setState({loaded: true, entries: entries});
       }
     });
@@ -33,7 +34,7 @@ class Notebook extends React.Component {
       <div className="container">
         <div className="row">
           <div className="col-sm-8">
-            <h3>My Notebook</h3>
+            <h3>My Lectures</h3>
           </div>
           <div className="col-sm-4">
             <SearchBar />

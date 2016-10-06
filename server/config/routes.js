@@ -4,7 +4,7 @@ const passport = require('./passport');
 const path = require('path');
 const audioUpload = require('./audioUpload');
 
-module.exports = (app, express) => {
+module.exports = (app, express, io) => {
   // Facebook OAuth
 
   app.get('/auth/facebook',
@@ -91,6 +91,10 @@ module.exports = (app, express) => {
     // {content, audioTimestamp, show, roomId, editingUserId, originalUserId}
     // res.send('End of lecture, and create all new notes for each user');
     createNewNote(req.body, (newNote) => res.send(newNote));
+  });
+
+  app.post('/api/room/status', (req, res) => {
+    res.status(201).send({active: !!io.sockets.adapter.rooms[req.body.pathUrl]});
   });
 
   // Note Editing

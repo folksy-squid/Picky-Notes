@@ -232,6 +232,20 @@ small.text-muted {
   font-size: 20px;
 }
 
+/*
+  =================================
+    My Lectures
+  =================================
+*/
+.notebook-entry {
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.notebook-entry:hover {
+  opacity: 0.6;
+}
+
 
 /*
   =================================
