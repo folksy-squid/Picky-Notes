@@ -20,7 +20,7 @@ class Navbar extends React.Component {
           </ul>
           <ul className="nav navbar-nav navbar-right">
             <li className="nav-item">
-              <Link className="nav-link " to="/notebook">My Notebook</Link>
+              <Link className="nav-link " to="/notebook">My Lectures</Link>
             </li>
             <li className="nav-item">
               <Link className="nav-link" to="/join">Join Room</Link>
