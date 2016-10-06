@@ -1,3 +1,4 @@
+/*jshint esversion: 6 */
 export const togglePlay = () => {
   return {
     type: 'TOGGLE_PLAY'

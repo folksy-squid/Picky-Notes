@@ -206,6 +206,8 @@ small.text-muted {
 
 .note-list {
   padding-left: 15px;
+  height: 300px;
+  overflow: scroll;
 }
 
 .note {

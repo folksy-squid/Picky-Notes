@@ -24,6 +24,10 @@ class Note extends React.Component {
     this.props.dispatch(play());
   }
 
+  checkHighlight() {
+
+  }
+
   toggleNoteHandler(e) {
     this.props.dispatch(toggleNote(this.props.noteInfo.id));
   }
@@ -51,11 +55,13 @@ class Note extends React.Component {
   render() {
     var view;
     //props.page will be obtained from redux store.
+    var highlighted = this.props.selected ? 'note highlighted' : 'note';
+
     if (this.props.view === 'compile') {
       view = (
-        <div className="note">
+        <div className={highlighted}>
           <input type="checkbox" ref="checkbox" onChange={this.toggleNoteHandler.bind(this)} checked={this.props.noteInfo.show}/>
-          {this.state.edit ? 
+          {this.state.edit ?
               <form onSubmit={this.editHandler.bind(this)}>
                 <input ref="noteInput" type="text" className="content" defaultValue={this.props.noteInfo.content} />
               </form>
