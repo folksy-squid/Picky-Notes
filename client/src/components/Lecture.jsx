@@ -5,7 +5,7 @@ import LectureTitle from './sub/LectureTitle.jsx';
 import LectureBox from './sub/LectureBox.jsx';
 import ParticipantList from './sub/ParticipantList.jsx';
 import RoomReducer from '../reducers/roomReducers';
-import {stopRecording} from '../actions/roomActions';
+import {stopRecording, setRoomInfo, joinSocketRoom} from '../actions/roomActions';
 import UserReducer from '../reducers/userReducers';
 
 class Lecture extends React.Component {
@@ -15,6 +15,7 @@ class Lecture extends React.Component {
       readyButtonDisplay: 'none',
       endLectureDisplay: 'inline-block',
       isHost: false,
+      loaded: true
     };
   }
 
@@ -22,6 +23,29 @@ class Lecture extends React.Component {
     return {
       router: React.PropTypes.object.isRequired,
     };
+  }
+
+  componentWillMount() {
+    const user = this.props.user.information[0];
+    const pathUrl = this.props.params.roomId;
+    const realm = this;
+    if (!this.props.room.roomInfo) {
+      this.setState({loaded: false});
+      this.props.dispatch(setRoomInfo(pathUrl, user, (err, success) => {
+        if (err) {
+          realm.context.router.push('/notebook');
+        } else {
+
+          // join socket room
+          realm.props.dispatch(joinSocketRoom(pathUrl, user, () => {
+            realm.setState({loaded: true});
+            realm.props.room.socket.on('lecture ended', ()=> {
+              this.setState({readyButtonDisplay: 'inline-block'});
+            })
+          }))
+        }
+      }));
+    }
   }
 
   componentDidMount() {
@@ -44,6 +68,7 @@ class Lecture extends React.Component {
   }
 
   checkHost() {
+    console.log('props here', this.props)
     let host = this.props.room.participants[0];
     let user = this.props.user.information[0];
     host.id === user.id && this.setState({isHost: true});
@@ -62,6 +87,7 @@ class Lecture extends React.Component {
 
   render() {
     return (
+      this.state.loaded ? (
       <div className="container-fluid">
         <div className="row">
           <div className="col-md-9">
@@ -82,7 +108,7 @@ class Lecture extends React.Component {
             <ParticipantList />
           </div>
         </div>
-      </div>
+      </div>) : (<div></div>)
     );
   }
 }

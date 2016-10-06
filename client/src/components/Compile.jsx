@@ -21,6 +21,7 @@ class Compile extends React.Component {
       router: React.PropTypes.object.isRequired,
     };
   }
+
   componentWillMount() {
     this.props.dispatch({type: 'LEAVE_SOCKET_ROOM'});
     
@@ -38,10 +39,11 @@ class Compile extends React.Component {
       }));
     }
   }
+
   reviewNotesHandler() {
     let changedNotes = this.props.note.filter(note => note.changed);
-    if (changedNotes.length === 0) { 
-      return this.context.router.push(`/review/${this.props.room.roomInfo.pathUrl}`); 
+    if (changedNotes.length === 0) {
+      return this.context.router.push(`/review/${this.props.room.roomInfo.pathUrl}`);
     }
     changedNotes = JSON.parse(JSON.stringify(changedNotes));
     changedNotes = changedNotes.map(note => {
@@ -60,6 +62,7 @@ class Compile extends React.Component {
     });
   }
 
+// IF this.props.roomInfo.audioUrl === 'audioUrl', render the audio loading component
   render() {
     return (
       this.state.loaded ? (

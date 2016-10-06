@@ -13,6 +13,10 @@ module.exports = (db, Sequelize) => {
     },
     startTimestamp: {
       type: Sequelize.TEXT
+    },
+    timeLength: {
+      type: Sequelize.TEXT,
+      defaultValue: null
     }
   });
 

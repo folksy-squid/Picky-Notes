@@ -1,5 +1,5 @@
 /*jshint esversion: 6 */
-const {joinRoom, addNote, isAllReady, saveAllNotes, saveStartTime, uploadAudio} = require('./io-helpers');
+const {joinRoom, addNote, isAllReady, saveAllNotes, saveStartTime, saveLectureTimeLength, uploadAudio} = require('./io-helpers');
 const {findRoom, saveAudioToRoom} = require('../database/db-helpers');
 const {startUploading, endUploading} = require('../config/audioUpload.js');
 const lame = require('lame');
@@ -81,6 +81,7 @@ module.exports = (listen) => {
 
     socket.on('lecture end', () => {
       if (socket.pathUrl) {
+        saveLectureTimeLength(socket.pathUrl, Date.now());
         io.in(socket.pathUrl).emit('lecture ended');
       } else {
         socket.emit('lecture end error', 'You do not belong to a room');

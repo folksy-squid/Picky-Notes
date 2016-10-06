@@ -70,7 +70,7 @@ export default (state = {}, action) => {
           state.socket = socket;
           state.roomInfo = roomInfo;
           state.participants = participants;
-          action.joinedRoom(null, 'success', roomInfo);
+          action.joinedRoom(null, 'success', roomInfo, participants);
         });
       }
     });
@@ -118,6 +118,7 @@ export default (state = {}, action) => {
         if (res === 'error') {
           action.cb(res);
         } else {
+
           state.roomInfo = res;
           action.cb(null, res);
         }

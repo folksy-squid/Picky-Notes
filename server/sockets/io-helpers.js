@@ -1,6 +1,6 @@
 // require Redis
 const {addUserToCache, addNoteToCache, getNotesFromRoom, deleteAllNotesAndRoom, addTimestampToCache, getUsersFromRoom} = require('../cache/cache-helpers');
-const {findRoom, createRoomNotes, saveStartTimestamp} = require('../database/db-helpers');
+const {findRoom, createRoomNotes, saveStartTimestamp, saveTimeLength} = require('../database/db-helpers');
 
 const joinRoom = (socket, pathUrl, user, cb) => {
   socket.pathUrl = pathUrl;
@@ -57,6 +57,10 @@ const saveStartTime = (pathUrl, startTime) => {
   saveStartTimestamp(pathUrl, startTime);
 };
 
+const saveLectureTimeLength = (pathUrl, endTime) => {
+  saveTimeLength(pathUrl, endTime);
+};
+
 const uploadAudio = () => {
 
 };
@@ -67,5 +71,6 @@ module.exports = {
   isAllReady,
   saveAllNotes,
   saveStartTime,
+  saveLectureTimeLength,
   uploadAudio,
 };
