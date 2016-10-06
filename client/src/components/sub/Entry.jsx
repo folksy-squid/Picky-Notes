@@ -22,10 +22,7 @@ export default class Entry extends React.Component {
       data: JSON.stringify({pathUrl}),
       success: (res) => {
         if (res.active) {
-          // create socket connection
-          // join room
           this.context.router.push(`/lecture/${this.props.entry.pathUrl}`);
-
         } else {
           this.context.router.push(`/review/${this.props.entry.pathUrl}`);
         }
