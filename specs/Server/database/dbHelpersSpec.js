@@ -1,5 +1,6 @@
-const helpers = require('../../../server/database/db-helpers');
+const {createNewUser, createNewRoom, joinRoom, showAllNotes, showFilteredNotes, findRoom, createRoomNotes, multiplyNotes, updateNotes, getAllUserRooms, getRoom, saveAudioToRoom, createNewNote, saveStartTimestamp, saveTimeLength, getAudioForRoom } = require('../../../server/database/db-helpers');
 const expect = require('chai').expect;
+
 describe('multiply notes', () => {
   const notes = [{
     content: 'This is a note for User 0',
@@ -20,10 +21,10 @@ describe('multiply notes', () => {
 
   const clients = ['0', '1', '2'];
 
-  var test;
+  let test;
 
   beforeEach(() => {
-    test = helpers.multiplyNotes(notes, clients);
+    test = multiplyNotes(notes, clients);
   });
   it('should multiply the notes', () =>{
     expect(test.length).to.equal(9);
