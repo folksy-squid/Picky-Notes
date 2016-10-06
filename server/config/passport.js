@@ -32,19 +32,6 @@ passport.use(new FacebookStrategy({
     console.log(err);
     done(err);
   });
-
-    // User.findOrCreateUser(profile, function(error, user) {
-    //   if (error) {
-    //     return done(error);
-    //   } else {
-    //     done(null, {
-    //       _facebookUniqueID: user._facebookUniqueID,
-    //       firstname: user.firstname,
-    //       lastname: user.lastname,
-    //       picture: user.picture
-    //     });
-    //   }
-    // });
 }));
 
 passport.serializeUser(function(user, done) {

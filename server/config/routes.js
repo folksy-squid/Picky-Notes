@@ -121,11 +121,6 @@ module.exports = (app, express, io) => {
       res.send('Add new notes (save button) for user #' + req.params.userId + ' inside room #' + req.params.roomId);
     });
 
-  app.get('*/:wavPath.wav', function(request, response) {
-    console.log(request.params);
-    response.sendFile(path.resolve(__dirname, '../../client', 'sample/audio/' + request.params.wavPath + '.wav'));
-  });
-
   app.get('*/index.bundle.js', function (request, response) {
     response.sendFile(path.resolve(__dirname, '../../dist/index.bundle.js'));
   });
@@ -136,19 +131,4 @@ module.exports = (app, express, io) => {
   app.get('*', function(request, response) {
     response.sendFile(path.resolve(__dirname, '../../client', 'index.html'));
   });
-  // app.get('/review/*', function(request, response) {
-  //   response.sendFile(path.resolve(__dirname, '../../client', 'index.html'));
-  // });
-  // app.get('/compile/*', function(request, response) {
-  //   response.sendFile(path.resolve(__dirname, '../../client', 'index.html'));
-  // });
-  // app.get('/notebook', function(request, response) {
-  //   response.sendFile(path.resolve(__dirname, '../../client', 'index.html'));
-  // });
-  // app.get('/lobby/*', function(request, response) {
-  //   response.sendFile(path.resolve(__dirname, '../../client', 'index.html'));
-  // });
-  // app.get('/lecture/*', function(request, response) {
-  //   response.sendFile(path.resolve(__dirname, '../../client', 'index.html'));
-  // });
 };
