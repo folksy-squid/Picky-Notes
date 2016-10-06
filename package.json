@@ -32,6 +32,7 @@
     "chai": "^3.5.0",
     "css-loader": "^0.25.0",
     "enzyme": "^2.4.1",
+    "ioredis-mock": "^2.1.0",
     "jsdom": "^9.5.0",
     "mocha": "^3.1.0",
     "nodemon": "^1.10.2",
