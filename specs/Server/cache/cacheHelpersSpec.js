@@ -76,7 +76,6 @@ describe('Cache-Helper Functions', () => {
       .then(() => done());
     });
     it('should delete all notes at the PathUrl', () => {});
-    it('', () => {});
   });
 
   describe('getUsersFromRoom', () => {
@@ -100,20 +99,22 @@ describe('Cache-Helper Functions', () => {
   });
 
   describe('getNotesFromRoom', () => {
-    var note1 = {
+
+    const note1 = {
       content: 'This is such a fun lecture',
       audioTimeStamp: 1,
       show: true,
       originalUserId: user1,
       editingUserId: user1,
     };
-    var note2 = {
+    const note2 = {
       content: 'What an interesting topic',
       audioTimeStamp: 2,
       show: true,
       originalUserId: user2,
       editingUserId: user2,
     };
+
     beforeEach((done)=>{
       cache.del(pathUrl)
       .then(cache.del(`${user1}:${pathUrl}`))
@@ -125,19 +126,35 @@ describe('Cache-Helper Functions', () => {
       .then(() => done());
     });
 
-    it('should return an array of notes for a specific room', () => {
+    it('should return an array of notes for a specific room', (done) => {
       getNotesFromRoom(pathUrl, (notes) => {
         expect(notes).to.have.lengthOf(2);
         expect(notes).to.deep.equal([note1, note2]);
+        done();
       });
     });
 
   });
 
   describe('addTimestampToCache', () => {
-    beforeEach(()=>{});
-    it('', () => {});
-    it('', () => {});
+
+    const now = Date.now();
+
+    beforeEach((done)=>{
+      cache.del(`${pathUrl}:START`)
+      .then(addTimestampToCache(pathUrl, now))
+      .then(() => done());
+    });
+
+    it('should add a start time to the specific PathUrl', (done) => {
+      cache.get(`${pathUrl}:START`)
+      .then((timestamp) => {
+        expect(timestamp).to.be.a.number;
+        expect(timestamp).to.equal(String(now));
+      })
+      .then(done);
+    });
+
   });
 
 });
