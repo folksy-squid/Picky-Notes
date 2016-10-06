@@ -24,7 +24,7 @@ export default class Entry extends React.Component {
         if (res.active) {
           // create socket connection
           // join room
-          // this.context.router.push(`/lecture/${this.props.entry.pathUrl}`);
+          this.context.router.push(`/lecture/${this.props.entry.pathUrl}`);
 
         } else {
           this.context.router.push(`/review/${this.props.entry.pathUrl}`);
