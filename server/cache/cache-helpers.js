@@ -20,8 +20,6 @@ const addNoteToCache = (pathUrl, userId, note, cb) => {
   });
 };
 
-/************************* DEV *************************/
-
 const deleteAllNotesAndRoom = (pathUrl) => {
   getUsersFromRoom(pathUrl)
   .then((allUserIds) => {
@@ -37,9 +35,7 @@ const deleteAllNotesAndRoom = (pathUrl) => {
 
 const getUsersFromRoom = pathUrl => cache.smembers(pathUrl);
 
-
 const getNotesFromRoom = (pathUrl, cb) => {
-  // getUsersFromRoom
   var pipeline = cache.pipeline();
   getUsersFromRoom(pathUrl)
   .then((allUserIds) => {
@@ -55,9 +51,6 @@ const getNotesFromRoom = (pathUrl, cb) => {
       }));
     });
   });
-  // iterate through users in room
-  // do something
-  // delete Notes From user
 };
 
 const addTimestampToCache = (pathUrl, startTime) => {
@@ -78,10 +71,10 @@ const getTimestampFromCache = (pathUrl, cb) => {
 module.exports = {
   addUserToCache,
   addNoteToCache,
-  getNotesFromRoom,
-  deleteAllNotesAndRoom,
   addTimestampToCache,
+  deleteAllNotesAndRoom,
   getUsersFromRoom,
+  getNotesFromRoom,
   getNotesFromUser,
   getTimestampFromCache,
 };
