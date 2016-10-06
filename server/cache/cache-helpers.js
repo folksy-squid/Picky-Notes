@@ -57,9 +57,7 @@ const getNotesFromRoom = (pathUrl, cb) => {
   });
 };
 
-const addTimestampToCache = (pathUrl, startTime) => {
-  cache.set(`${pathUrl}:START`, startTime);
-};
+const addTimestampToCache = (pathUrl, startTime) => cache.set(`${pathUrl}:START`, startTime);
 
 const getNotesFromUser = (pathUrl, userId, cb) => {
   cache.lrange(`${userId}:${pathUrl}`, 0, -1)
