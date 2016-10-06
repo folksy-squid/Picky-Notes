@@ -12,10 +12,11 @@ class InputBox extends React.Component {
 
   submitNoteHandler(e) {
     e.preventDefault();
+    console.log('submitting a note');
     if (this.refs.inputNote.value.trim() === '') { return; }
     if (getCurrentView(this.props.routing.locationBeforeTransitions.pathname) === 'compile') {
       let note = {
-        content: this.refs.inputNote.value, 
+        content: this.refs.inputNote.value,
         originalUserId: this.props.user.information[0].id,
         roomId: this.props.room.roomInfo.id
       };

@@ -7,6 +7,7 @@ import {setRoomInfo} from '../actions/roomActions';
 import RoomReducer from '../reducers/roomReducers';
 import UserReducer from '../reducers/userReducers';
 import NoteReducer from '../reducers/noteReducers';
+import Audio from './sub/Audio.jsx';
 
 class Compile extends React.Component {
   constructor (props) {
@@ -68,7 +69,7 @@ class Compile extends React.Component {
     <div className="container-fluid">
       <div className="row">
         <h3>Edit Notes</h3>
-        <div> 'AUDIO COMPONENT GOES HERE '</div>
+        <Audio />
       </div>
       <div className="row">
         <div className="col-md-9">

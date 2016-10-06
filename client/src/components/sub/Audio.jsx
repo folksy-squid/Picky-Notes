@@ -74,7 +74,6 @@ class Audio extends React.Component {
       height: 140,
       progressColor: 'rgba(48,125,125,1)',
       waveColor: 'rgba(131, 187, 187, 0.6)',
-      normalize: true,
       autoCenter: true,
       barWidth: 4,
       audioRate: this.props.waveform.audioRate,
@@ -117,43 +116,6 @@ class Audio extends React.Component {
               placeholder={String(this.props.waveform.playing)}
               readOnly
             />
-          </div>
-          <div className="form-group col-xs-4">
-            <label htmlFor="simple-pos">Position:</label>
-            <input
-              name="simple-pos"
-              type="number"
-              step="0.01"
-              value={this.props.waveform.pos}
-              onChange={this.handlePosChange.bind(this)}
-              className="form-control"
-            />
-            <p>Should set to 5 seconds on load.</p>
-          </div>
-          <div className="form-group col-xs-4">
-            <label htmlFor="simple-audiorate">Audio rate:</label>
-            <input
-              name="simple-audiorate"
-              type="range"
-              min="0"
-              max="10"
-              step="0.001"
-              value={this.props.waveform.audioRate}
-              onChange={this.handleAudioRateChange.bind(this)}
-              className="form-control"
-            />
-            <p>Should set to 5 seconds on load.</p>
-          </div>
-          <div className="form-group col-xs-4">
-            <label htmlFor="update-simple-pos">Set Position:</label>
-            <input
-              name="update-simple-pos"
-              type="number"
-              step="0.01"
-              onChange={this.handlePosChange.bind(this)}
-              className="form-control"
-            />
-            <p>Should set to 5 seconds on load.</p>
           </div>
         </div>
         <div style={{display: this.state.loadingDisplay}}>
