@@ -30,6 +30,7 @@ class Lecture extends React.Component {
   componentWillMount() {
     const user = this.props.user.information[0];
     const pathUrl = this.props.params.roomId;
+    this.props.dispatch(replaceNotes([]));
 
     if (!this.props.room.roomInfo) {
       this.setState({loaded: false});
@@ -42,7 +43,6 @@ class Lecture extends React.Component {
             this.setState({loaded: true});
             this.applyListeners();
             this.props.room.socket.on('old notes', (notes) => {
-              console.log(notes)
               this.props.dispatch(replaceNotes(notes));
             });
             this.props.room.socket.emit('user reconnect');

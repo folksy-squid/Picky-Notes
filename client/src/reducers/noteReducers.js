@@ -8,6 +8,13 @@ export default (state = [], action) => {
   }
 
   if (action.type === 'EDIT_NOTE') {
+    state = state.map((note, i) => {
+      if (note.id === action.noteId) {
+        note.content = action.newText;
+        note.changed = true;
+      }
+      return note;
+    });
   }
 
   if (action.type === 'REPLACE_NOTES') {
