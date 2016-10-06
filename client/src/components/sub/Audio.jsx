@@ -11,13 +11,20 @@ class Audio extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      loaded: false,
+      loaded: 'false',
+      waveformDisplay: 'none',
+      loadingDisplay: 'block',
+      loadVal: 0
     };
   }
 
   componentWillMount() {
-    this.props.dispatch(getRoomAudio(this.props.room.roomInfo.pathUrl, () => {
-      this.setState({loaded: true});
+    this.props.dispatch(getRoomAudio(this.props.room.roomInfo.pathUrl, (err, success) => {
+      if (err) {
+        this.setState({loaded: false});
+      } else {
+        this.setState({loaded: true});
+      }
     }));
   }
 
@@ -43,6 +50,7 @@ class Audio extends React.Component {
   }
 
   handleReady() {
+    this.setState({waveformDisplay: 'block', loadingDisplay: 'none'});
     this.props.dispatch(setPos(5));
     // this.setState({
     //   pos: 5
@@ -54,6 +62,9 @@ class Audio extends React.Component {
     // this.setState({
     //   volume: +e.target.value
     // });
+  }
+  handleLoading(e) {
+    this.setState({loadVal: e.originalArgs[0]});
   }
 
   render() {
@@ -70,7 +81,6 @@ class Audio extends React.Component {
       cursorColor: 'rgba(100, 50, 50, 1)'
     };
     return (
-      this.state.loaded ? (
       <div className="example col-xs-12">
         <h3>State & UI</h3>
         <div className="row">
@@ -145,6 +155,10 @@ class Audio extends React.Component {
             <p>Should set to 5 seconds on load.</p>
           </div>
         </div>
+        <div style={{display: this.state.loadingDisplay}}>
+          LOADING AUDIO FILE {this.state.loadVal}
+        </div>
+        <div ref="wavesurfContainer" style={{display: this.state.waveformDisplay}}>
           <Wavesurfer
             volume={this.props.waveform.volume}
             pos={this.props.waveform.pos}
@@ -153,10 +167,11 @@ class Audio extends React.Component {
             audioFile={this.props.room.roomInfo.audioUrl}
             playing={this.props.waveform.playing}
             onReady={this.handleReady.bind(this)}
+            onLoading={this.handleLoading.bind(this)}
           />
+        </div>
       </div>
-    ) : (<div></div>)
-    );
+  );
   }
 }
 

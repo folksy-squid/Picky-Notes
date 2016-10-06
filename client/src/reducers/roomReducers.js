@@ -175,8 +175,12 @@ export default (state = {}, action) => {
       method: 'GET',
       url: `/api/audio/${action.pathUrl}`,
       success: (response) => {
-        state.roomInfo.audioUrl = response;
-        action.cb();
+        if (response === 'audio url') {
+          action.cb(response);
+        } else {
+          state.roomInfo.audioUrl = response;
+          action.cb(null, response);
+        }
       }
     });
   }

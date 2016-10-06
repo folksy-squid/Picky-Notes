@@ -29,7 +29,6 @@ export default (store) => {
       let user = getUserFromCookie(document.cookie);
 
       // if redux store does not have user,
-      console.log('auth-checking.', store.getState().user);
       if (!store.getState().user || !store.getState().user.information) {
         store.dispatch(createUser(user));
       }

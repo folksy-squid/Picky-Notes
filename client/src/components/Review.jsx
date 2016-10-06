@@ -46,7 +46,7 @@ class Review extends React.Component {
         <button className="btn btn-md btn-primary" onClick={this.goToCompiledView.bind(this)}>
           Add / Edit Notes
         </button>
-        <Audio />
+        {this.props.room.roomInfo.audioUrl === 'audio url' ? (<div>Audio does not exist</div>) : <Audio />}
       </div>
     ) : (<div></div>)
     );
