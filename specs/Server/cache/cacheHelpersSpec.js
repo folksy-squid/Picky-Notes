@@ -4,14 +4,11 @@ const expect = require('chai').expect;
 
 describe('Cache-Helper Functions', () => {
 
-  it('should pass', () => {
-    expect(true).to.be.true;
-  });
-
   const pathUrl = 'ABCDE';
   const user1 = 12345;
   const user2 = 67890;
   const testNote = { content: 'This is a test note!' };
+  const anotherNote = { content: 'This is another note?' };
 
   describe('addUserToCache', () => {
 
@@ -23,8 +20,8 @@ describe('Cache-Helper Functions', () => {
     it('should store usernames at the PathUrl and call the callback', (done) => {
       cache.smembers(pathUrl)
       .then((allUsers) => {
-        expect(allUsers.length).to.equal(1);
-        expect(allUsers[0]).to.equal('12345');
+        expect(allUsers).to.have.lengthOf(1);
+        expect(allUsers[0]).to.equal(String(user1));
       })
       .then(done);
     });
@@ -33,9 +30,9 @@ describe('Cache-Helper Functions', () => {
       addUserToCache(pathUrl, user2, () => {
         cache.smembers(pathUrl)
         .then((allUsers) => {
-          expect(allUsers.length).to.equal(2);
-          expect(allUsers[0]).to.equal('12345');
-          expect(allUsers[1]).to.equal('67890');
+          expect(allUsers).to.have.lengthOf(2);
+          expect(allUsers[0]).to.equal(String(user1));
+          expect(allUsers[1]).to.equal(String(user2));
         }).then(done);
       });
     });
@@ -54,16 +51,16 @@ describe('Cache-Helper Functions', () => {
       cache.lrange(`${user1}:${pathUrl}`, 0, -1)
       .then((notes) => {
         const cacheNote = JSON.parse(notes[0]);
-        expect(notes.length).to.equal(1);
+        expect(notes).to.have.lengthOf(1);
         expect(cacheNote.content).to.equal(testNote.content);
-        expect(cacheNote.show).to.equal(true);
+        expect(cacheNote.audioTimestamp).to.be.a.number;
+        expect(cacheNote.show).to.be.true;
         expect(cacheNote.originalUserId).to.equal(user1);
         expect(cacheNote.editingUserId).to.equal(user1);
       });
     });
 
     it('should return the saved note parsed in the callback', () => {
-      const anotherNote = { content: 'This is another note' };
       addNoteToCache(pathUrl, user1, anotherNote, (cacheNote) => {
         expect(cacheNote.content).to.equal(anotherNote.content);
       });
@@ -72,22 +69,69 @@ describe('Cache-Helper Functions', () => {
   });
 
   describe('deleteAllNotesAndRoom', () => {
-    beforeEach(()=>{
+    beforeEach((done)=>{
+      cache.del(pathUrl)
+      .then(cache.sadd(pathUrl, user1))
+      .then(cache.sadd(pathUrl, user2))
+      .then(() => done());
     });
-    it('', () => {});
+    it('should delete all notes at the PathUrl', () => {});
     it('', () => {});
   });
 
   describe('getUsersFromRoom', () => {
-    beforeEach(()=>{});
-    it('', () => {});
-    it('', () => {});
+
+    beforeEach((done)=>{
+      cache.del(pathUrl)
+      .then(cache.sadd(pathUrl, user1))
+      .then(cache.sadd(pathUrl, user2))
+      .then(() => done());
+    });
+
+    it('should return all users in a room', (done) => {
+      getUsersFromRoom(pathUrl)
+      .then((users) => {
+        expect(users).to.have.lengthOf(2);
+        expect(users).to.include.members([String(user1), String(user2)]);
+      })
+      .then(done);
+    });
+
   });
 
   describe('getNotesFromRoom', () => {
-    beforeEach(()=>{});
-    it('', () => {});
-    it('', () => {});
+    var note1 = {
+      content: 'This is such a fun lecture',
+      audioTimeStamp: 1,
+      show: true,
+      originalUserId: user1,
+      editingUserId: user1,
+    };
+    var note2 = {
+      content: 'What an interesting topic',
+      audioTimeStamp: 2,
+      show: true,
+      originalUserId: user2,
+      editingUserId: user2,
+    };
+    beforeEach((done)=>{
+      cache.del(pathUrl)
+      .then(cache.del(`${user1}:${pathUrl}`))
+      .then(cache.del(`${user2}:${pathUrl}`))
+      .then(cache.sadd(pathUrl, user1))
+      .then(cache.sadd(pathUrl, user2))
+      .then(cache.rpush(`${user1}:${pathUrl}`, JSON.stringify(note1)))
+      .then(cache.rpush(`${user2}:${pathUrl}`, JSON.stringify(note2)))
+      .then(() => done());
+    });
+
+    it('should return an array of notes for a specific room', () => {
+      getNotesFromRoom(pathUrl, (notes) => {
+        expect(notes).to.have.lengthOf(2);
+        expect(notes).to.deep.equal([note1, note2]);
+      });
+    });
+
   });
 
   describe('addTimestampToCache', () => {
