@@ -117,7 +117,7 @@ class Lecture extends React.Component {
             <LectureBox />
           </div>
           <div className="col-md-3">
-            <ParticipantList checkHost={this.checkHost.bind(this)}/>
+            <ParticipantList checkHostLecture={this.checkHost.bind(this)}/>
           </div>
         </div>
       </div>) : (<h2>{this.state.error}</h2>)
