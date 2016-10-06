@@ -120,19 +120,22 @@ module.exports = (listen) => {
     // Audio Streaming to Server
     ss(socket).on('start stream', (stream) => {
 
+      // define pathUrl, filePath of mp3, and create write stream
       const pathUrl = socket.pathUrl;
       const filePath = `audio/${pathUrl}.mp3`;
       const outputFile = fs.createWriteStream(filePath);
 
+      // define mp3 LAME encoder properties
       const encoder = new lame.Encoder({ channels: 1, bitDepth: 16 });
       console.log('inside stream');
+
+      // pipe from stream, through encoder, to the outputFile
       stream.pipe(encoder).pipe(outputFile);
 
-      // shouldn't this be a separate event?
-      ss(socket).on('stop stream', function() {
-
+      // when stream has ended, attempt to upload to S3
+      stream.on('end', () => {
         var count = 0;
-        let endStreamCB = function(err, data) {
+        let endStreamCB = (err, data) => {
           if (err) {
             console.log('error in uploading stream, retrying.', err);
             if (count < 5) {
@@ -141,9 +144,9 @@ module.exports = (listen) => {
             }
             console.log('Error persisted. Stop trying to upload again.', err);
           } else {
-            saveAudioToRoom(pathUrl, data.Location, ()=>{
+            saveAudioToRoom(pathUrl, data.Location, () => {
               console.log('saved audioUrl to database');
-              fs.unlink(filePath, ()=>{
+              fs.unlink(filePath, () => {
                 console.log('successfully deleted audio from filesystem');
               });
             });

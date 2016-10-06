@@ -15,9 +15,11 @@ const createSocketRoom = (state, host, pathUrl, createRoom) => {
   return socket;
 };
 
+let audioStream;
+
 const convertoFloat32ToInt16 = buffer => {
-  var l = buffer.length;
-  var buf = new Int16Array(l);
+  let l = buffer.length;
+  let buf = new Int16Array(l);
 
   while (l--) {
     buf[l] = buffer[l] * 0xFFFF;    //convert to 16 bit
@@ -129,12 +131,18 @@ export default (state = {}, action) => {
   if (action.type === 'CREATE_STREAM_TO_SERVER') {
     // initiate audio stream
     state.stream = ss.createStream();
+    // connect socket.io stream to server-side
     ss(state.socket).emit('start stream', state.stream);
+    // initalize recording state
     state.recording = false;
 
+    // on success of grabbing audio from browser...
     const audioSuccess = e => {
       const audioContext = window.AudioContext || window.webkitAudioContext;
       const context = new audioContext();
+
+      // assign current audioStream to stop later
+      audioStream = e;
 
       // the sample rate is in context.sampleRate
       const audioInput = context.createMediaStreamSource(e);
@@ -142,20 +150,28 @@ export default (state = {}, action) => {
       var bufferSize = 2048;
       const recorder = context.createScriptProcessor(bufferSize, 1, 1);
 
+      // when processing audio during recording
       recorder.onaudioprocess = e => {
+        // if currently not in recording state, return
         if (!state.recording) { return; }
+
+        // if currently recording, send audio through socket.io stream to server
         var left = e.inputBuffer.getChannelData(0);
         state.stream.write(new ss.Buffer(convertoFloat32ToInt16(left)));
       };
 
+      // connections
       audioInput.connect(recorder);
       recorder.connect(context.destination);
     };
 
+
+    // grab User Media depending on client-side browser
     if (!navigator.getUserMedia) {
       navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia ||
       navigator.mozGetUserMedia || navigator.msGetUserMedia;
     }
+    // error if unable to grab User Media from browser
     if (navigator.getUserMedia) {
       navigator.getUserMedia({ audio: true }, audioSuccess, e => console.log('Error capturing audio.'));
     } else {
@@ -169,8 +185,10 @@ export default (state = {}, action) => {
 
   if (action.type === 'STOP_RECORDING') {
     state.recording = false;
-    ss(state.socket).emit('stop stream');
+    audioStream.getTracks()[0].stop();
+    state.stream.end();
   }
+
   if (action.type === 'GET_AUDIO_FROM_ROOM') {
     $.ajax({
       method: 'GET',
