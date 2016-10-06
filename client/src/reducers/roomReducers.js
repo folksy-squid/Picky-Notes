@@ -18,8 +18,8 @@ const createSocketRoom = (state, host, pathUrl, createRoom) => {
 let audioStream;
 
 const convertoFloat32ToInt16 = buffer => {
-  const l = buffer.length;
-  const buf = new Int16Array(l);
+  let l = buffer.length;
+  let buf = new Int16Array(l);
 
   while (l--) {
     buf[l] = buffer[l] * 0xFFFF;    //convert to 16 bit
@@ -160,7 +160,7 @@ export default (state = {}, action) => {
         state.stream.write(new ss.Buffer(convertoFloat32ToInt16(left)));
       };
 
-      // connections 
+      // connections
       audioInput.connect(recorder);
       recorder.connect(context.destination);
     };
