@@ -1,4 +1,3 @@
-/*jshint esversion: 6 */
 const defaultState = {
   playing: false,
   pos: 0,

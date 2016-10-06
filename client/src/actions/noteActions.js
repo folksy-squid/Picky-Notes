@@ -28,10 +28,11 @@ export const editNote = (noteId, newText) => {
   };
 };
 
-export const replaceNotes = (allNotes) => {
+export const replaceNotes = (allNotes, cb) => {
   return {
     type: 'REPLACE_NOTES',
-    allNotes
+    allNotes,
+    cb
   };
 };
 

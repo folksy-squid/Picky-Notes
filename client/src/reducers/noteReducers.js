@@ -19,7 +19,9 @@ export default (state = [], action) => {
 
   if (action.type === 'REPLACE_NOTES') {
     state = action.allNotes.sort((a, b) => Date.parse(a.audioTimestamp) - Date.parse(b.audioTimestamp));
+    if (action.cb) { action.cb(); }
   }
+
   if (action.type === 'REMOVE_NOTES') {
     state = [];
   }

@@ -68,6 +68,7 @@ class Audio extends React.Component {
   }
 
   render() {
+    console.log(this.props.waveform.pos);
     const waveOptions = {
       scrollParent: true,
       height: 140,

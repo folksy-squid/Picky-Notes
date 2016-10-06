@@ -24,10 +24,6 @@ class Note extends React.Component {
     this.props.dispatch(play());
   }
 
-  checkHighlight() {
-
-  }
-
   toggleNoteHandler(e) {
     this.props.dispatch(toggleNote(this.props.noteInfo.id));
   }
@@ -55,7 +51,8 @@ class Note extends React.Component {
   render() {
     var view;
     //props.page will be obtained from redux store.
-    var highlighted = this.props.selected ? 'note highlighted' : 'note';
+
+    var highlighted = this.props.highlighted ? "note highlighted" : "note";
 
     if (this.props.view === 'compile') {
       view = (
