@@ -4,8 +4,22 @@ module.exports = {
     FACEBOOK_APP_SECRET: 'YOUR_FACEBOOK_APP_SECRET'
   },
   aws: {
-    AWS_ACCESS_KEY_ID: "AWS_ACCESS_KEY_ID",
-    AWS_SECRET_ACCESS_KEY: "AWS_SECRET_ACCESS_KEY",
-    AWS_REGION: "AWS_REGION"
-  }
+    AWS_ACCESS_KEY_ID: 'AWS_ACCESS_KEY_ID',
+    AWS_SECRET_ACCESS_KEY: 'AWS_SECRET_ACCESS_KEY',
+    AWS_REGION: 'AWS_REGION'
+  },
+  db: {
+    dev: {
+      host: 'POSTGRES_DEV_HOST',
+      port: 'POSTGRES_DEV_PORT',
+      username: 'POSTGRES_DEV_USERNAME',
+      password: 'POSTGRES_DEV_PASSWORD'
+    },
+    production: {
+      host: 'POSTGRES_PRODUCTION_HOST',
+      port: 'POSTGRES_PRODUCTION_PORT',
+      username: 'POSTGRES_PRODUCTION_USERNAME',
+      password: 'POSTGRES_PRODUCTION_PASSWORD'
+    }
+  },
 };
