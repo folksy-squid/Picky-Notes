@@ -86,13 +86,32 @@ describe('Cache-Helper Functions', () => {
   describe('deleteAllNotesAndRoom', () => {
 
     beforeEach((done)=>{
-      cache.del(pathUrl)
+      cache.del(pathUrl, `${user1}:${pathUrl}`, `${user2}:${pathUrl}`)
       .then(cache.sadd(pathUrl, user1))
       .then(cache.sadd(pathUrl, user2))
-      .then(() => done());
+      .then(cache.rpush(`${user1}:${pathUrl}`, JSON.stringify(note1)))
+      .then(cache.rpush(`${user2}:${pathUrl}`, JSON.stringify(note2)))
+      .then(deleteAllNotesAndRoom(pathUrl, () => done()));
     });
 
-    it('should delete all notes at the PathUrl', () => {
+    it('should delete all notes at the PathUrl', (done) => {
+      cache.lrange(`${user1}:${pathUrl}`, 0, -1)
+      .then((user1Notes) => {
+        cache.lrange(`${user1}:${pathUrl}`, 0, -1)
+        .then((user2Notes) => {
+          expect(user1Notes).to.have.lengthOf(0);
+          expect(user2Notes).to.have.lengthOf(0);
+        })
+        .then(done);
+      });
+    });
+
+    it('should delete the room at the PathUrl', (done) => {
+      cache.get(pathUrl)
+      .then((room) => {
+        expect(room).to.be.null;
+      })
+      .then(done);
     });
 
   });
@@ -120,9 +139,7 @@ describe('Cache-Helper Functions', () => {
   describe('getNotesFromRoom', () => {
 
     beforeEach((done)=>{
-      cache.del(pathUrl)
-      .then(cache.del(`${user1}:${pathUrl}`))
-      .then(cache.del(`${user2}:${pathUrl}`))
+      cache.del(pathUrl, `${user1}:${pathUrl}`, `${user2}:${pathUrl}`)
       .then(cache.sadd(pathUrl, user1))
       .then(cache.sadd(pathUrl, user2))
       .then(cache.rpush(`${user1}:${pathUrl}`, JSON.stringify(note1)))
