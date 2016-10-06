@@ -45,15 +45,10 @@ describe('Cache-Helper Functions', () => {
 
   describe('addNoteToCache', () => {
 
-    before(() => {
-      addTimestampToCache(pathUrl, Date.now());
-    });
-
     beforeEach((done)=>{
-      cache.del(`${user1}:${pathUrl}`)
-      .then(() =>
-        addNoteToCache(pathUrl, user1, testNote, () =>
-          done()));
+      cache.del(`${user1}:${pathUrl}`, `${pathUrl}:START`)
+      .then(() => cache.set(`${pathUrl}:START`, Date.now()))
+      .then(() => addNoteToCache(pathUrl, user1, testNote, () => done()));
     });
 
     it('should add a note to the cache with default values', () => {
@@ -74,10 +69,12 @@ describe('Cache-Helper Functions', () => {
         expect(cacheNote.content).to.equal(anotherNote.content);
       });
     });
+    
   });
 
   describe('deleteAllNotesAndRoom', () => {
-    beforeEach(()=>{});
+    beforeEach(()=>{
+    });
     it('', () => {});
     it('', () => {});
   });

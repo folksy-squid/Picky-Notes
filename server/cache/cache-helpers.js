@@ -8,15 +8,19 @@ const addUserToCache = (pathUrl, userId, cb) => {
 const addNoteToCache = (pathUrl, userId, note, cb) => {
   cache.get(`${pathUrl}:START`)
   .then((startTime) => {
+
+    // set default values of note
     note.audioTimestamp = Date.now() - startTime;
     note.show = true;
     note.originalUserId = userId;
     note.editingUserId = note.originalUserId;
+
+    // insert stringified note into cache
     cache.rpush(`${userId}:${pathUrl}`, JSON.stringify(note))
+
+    // return most recently inserted note in cache
     .then(() => cache.lrange(`${userId}:${pathUrl}`, -1, -1))
     .then((note) => cb && cb(JSON.parse(note[0])));
-    // .then(() => cache.lrange(`${userId}:${pathUrl}`, 0, -1))
-    // .then((data) => console.log(data));
   });
 };
 
