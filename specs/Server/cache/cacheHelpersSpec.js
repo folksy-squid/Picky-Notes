@@ -7,8 +7,20 @@ describe('Cache-Helper Functions', () => {
   const pathUrl = 'ABCDE';
   const user1 = 12345;
   const user2 = 67890;
-  const testNote = { content: 'This is a test note!' };
-  const anotherNote = { content: 'This is another note?' };
+  const note1 = {
+    content: 'This is such a fun lecture',
+    audioTimeStamp: 1,
+    show: true,
+    originalUserId: user1,
+    editingUserId: user1,
+  };
+  const note2 = {
+    content: 'What an interesting topic',
+    audioTimeStamp: 2,
+    show: true,
+    originalUserId: user2,
+    editingUserId: user2,
+  };
 
   describe('addUserToCache', () => {
 
@@ -41,6 +53,9 @@ describe('Cache-Helper Functions', () => {
 
   describe('addNoteToCache', () => {
 
+    const testNote = { content: 'This is a test note!' };
+    const anotherNote = { content: 'This is another note?' };
+
     beforeEach((done)=>{
       cache.del(`${user1}:${pathUrl}`, `${pathUrl}:START`)
       .then(() => cache.set(`${pathUrl}:START`, Date.now()))
@@ -69,13 +84,17 @@ describe('Cache-Helper Functions', () => {
   });
 
   describe('deleteAllNotesAndRoom', () => {
+
     beforeEach((done)=>{
       cache.del(pathUrl)
       .then(cache.sadd(pathUrl, user1))
       .then(cache.sadd(pathUrl, user2))
       .then(() => done());
     });
-    it('should delete all notes at the PathUrl', () => {});
+
+    it('should delete all notes at the PathUrl', () => {
+    });
+
   });
 
   describe('getUsersFromRoom', () => {
@@ -99,21 +118,6 @@ describe('Cache-Helper Functions', () => {
   });
 
   describe('getNotesFromRoom', () => {
-
-    const note1 = {
-      content: 'This is such a fun lecture',
-      audioTimeStamp: 1,
-      show: true,
-      originalUserId: user1,
-      editingUserId: user1,
-    };
-    const note2 = {
-      content: 'What an interesting topic',
-      audioTimeStamp: 2,
-      show: true,
-      originalUserId: user2,
-      editingUserId: user2,
-    };
 
     beforeEach((done)=>{
       cache.del(pathUrl)
