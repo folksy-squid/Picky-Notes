@@ -91,7 +91,7 @@ class Lecture extends React.Component {
       <div className="container-fluid">
         <div className="row">
           <div className="col-md-9">
-            <LectureTitle roomId={this.props.params.roomId} />
+            <LectureTitle />
           </div>
           {this.state.isHost && (<button className="btn btn-lg btn-danger" style={{display: this.state.endLectureDisplay}} onClick={this.endLecture.bind(this)}>
             End Lecture
