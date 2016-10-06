@@ -24,7 +24,7 @@ const addNoteToCache = (pathUrl, userId, note, cb) => {
   });
 };
 
-const deleteAllNotesAndRoom = (pathUrl) => {
+const deleteAllNotesAndRoom = (pathUrl, cb) => {
   getUsersFromRoom(pathUrl)
   .then((allUserIds) => {
     let pipeline = cache.pipeline();
@@ -33,7 +33,8 @@ const deleteAllNotesAndRoom = (pathUrl) => {
     allUserIds.forEach((userId) => {
       pipeline.del(`${userId}:${pathUrl}`);
     });
-    pipeline.exec();
+    pipeline.exec()
+    .then(() => cb && cb());
   });
 };
 
