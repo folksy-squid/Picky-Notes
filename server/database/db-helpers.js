@@ -63,7 +63,7 @@ const multiplyNotes = (notes, arrOfClients) => {
   let multipliedNotes = [];
   for (let i = 0; i < notes.length; i++) {
     for (let j = 0; j < arrOfClients.length; j++) {
-      if (notes[i].originalUserId !== Number(arrOfClients[j].id)) {
+      if (notes[i].originalUserId !== Number(arrOfClients[j])) {
         var copy = JSON.parse(JSON.stringify(notes[i]));
         copy.editingUserId = arrOfClients[j];
         copy.show = false;
@@ -82,8 +82,6 @@ const createRoomNotes = (notes, roomId, arrOfClients, cb) => {
   });
   notes = multiplyNotes(notes, arrOfClients);
   Note.bulkCreate(notes)
-  // .then(() => Note.findAll({raw: true}))
-  // .then((allNotes) => console.log('SAVED', allNotes))
   .then(() => cb());
 };
 
