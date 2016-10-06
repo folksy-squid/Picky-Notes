@@ -36,8 +36,7 @@ describe('Cache-Helper Functions', () => {
           expect(allUsers.length).to.equal(2);
           expect(allUsers[0]).to.equal('12345');
           expect(allUsers[1]).to.equal('67890');
-        })
-        .then(done);
+        }).then(done);
       });
     });
 
@@ -69,7 +68,7 @@ describe('Cache-Helper Functions', () => {
         expect(cacheNote.content).to.equal(anotherNote.content);
       });
     });
-    
+
   });
 
   describe('deleteAllNotesAndRoom', () => {
