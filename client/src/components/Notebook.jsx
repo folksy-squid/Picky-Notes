@@ -22,8 +22,9 @@ class Notebook extends React.Component {
       method: 'GET',
       url: `/api/users/rooms/${user.id}`,
       success: (entries) => {
-        entries.sort((a, b) => b.startTimestamp - a.startTimestamp);
-        context.setState({loaded: true, entries: entries});
+        let lectures = entries.filter((entry) => entry.startTimestamp !== null);
+        lectures.sort((a, b) => b.startTimestamp - a.startTimestamp);
+        context.setState({loaded: true, entries: lectures});
       }
     });
   }
