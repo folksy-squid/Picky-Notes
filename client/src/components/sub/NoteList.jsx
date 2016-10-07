@@ -90,9 +90,8 @@ class NoteList extends React.Component {
       this.state.loaded ? (
       <div className={listClass}>
         {this.props.note.notes.map((note, i)=>(
-          <Note key={i} noteInfo={note} view={this.state.view} />
-          )
-        )}
+            <Note key={i} noteInfo={note} view={this.state.view} />
+        ))}
       </div> ) : (<div></div>)
     );
   }
