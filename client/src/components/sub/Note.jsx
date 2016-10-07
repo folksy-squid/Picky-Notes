@@ -12,6 +12,9 @@ class Note extends React.Component {
       edit: false
     };
   }
+  shouldComponentUpdate(nextProps, nextState) {
+    return nextProps.highlight ? true : false;
+  }
 
   saveNote(note) {
     // this can be invoked when in the compiled view
@@ -52,8 +55,7 @@ class Note extends React.Component {
     var view;
     //props.page will be obtained from redux store.
 
-    var highlighted = this.props.highlighted ? "note highlighted" : "note";
-
+    var highlighted = this.props.noteInfo.highlight ? "note highlighted" : "note";
     if (this.props.view === 'compile') {
       view = (
         <div className={highlighted}>

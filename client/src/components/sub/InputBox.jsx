@@ -12,7 +12,6 @@ class InputBox extends React.Component {
 
   submitNoteHandler(e) {
     e.preventDefault();
-    console.log('submitting a note');
     if (this.refs.inputNote.value.trim() === '') { return; }
     if (getCurrentView(this.props.routing.locationBeforeTransitions.pathname) === 'compile') {
       let note = {
@@ -26,6 +25,7 @@ class InputBox extends React.Component {
         contentType: 'application/json',
         data: JSON.stringify(note),
         success: (savedNote) => {
+          console.log(savedNote);
           this.props.dispatch(addNote(savedNote));
           this.refs.inputNote.value = '';
         },

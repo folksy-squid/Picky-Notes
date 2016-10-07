@@ -298,3 +298,6 @@ small.text-muted {
   border-color: #ccc;
 }
 
+.highlighted {
+  background-color: 'black';
+}

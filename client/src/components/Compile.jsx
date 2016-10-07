@@ -16,7 +16,11 @@ class Compile extends React.Component {
       loaded: true
     };
   }
-
+  shouldComponentUpdate(nextProps) {
+    // if (this.props.waveform.pos !== nextProps.waveform.pos )
+    //   return false;
+    return true;
+  }
   static get contextTypes() {
     return {
       router: React.PropTypes.object.isRequired,
@@ -41,7 +45,7 @@ class Compile extends React.Component {
   }
 
   reviewNotesHandler() {
-    let changedNotes = this.props.note.filter(note => note.changed);
+    let changedNotes = this.props.note.notes.filter(note => note.changed);
     if (changedNotes.length === 0) {
       return this.context.router.push(`/review/${this.props.room.roomInfo.pathUrl}`);
     }
@@ -69,7 +73,10 @@ class Compile extends React.Component {
     <div className="container-fluid">
       <div className="row">
         <h3>Edit Notes</h3>
-        <Audio />
+        <div className= "col-md-11">
+          <Audio />
+        </div>
+
       </div>
       <div className="row">
         <div className="col-md-9">

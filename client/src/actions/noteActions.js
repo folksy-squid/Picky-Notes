@@ -51,3 +51,11 @@ export const getNotesFromRoom = (pathUrl, user, cb) => {
     cb
   };
 };
+
+export const setTimer = (index, wavePos) => {
+  return {
+    type: 'SET_TIMER',
+    index,
+    wavePos
+  };
+};

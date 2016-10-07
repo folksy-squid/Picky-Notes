@@ -5,14 +5,15 @@ import Wavesurfer from 'react-wavesurfer';
 import WaveformReducer from '../../reducers/waveformReducers';
 import RoomReducer from '../../reducers/roomReducers';
 import {getRoomAudio, setRoomInfo} from '../../actions/roomActions';
-import {togglePlay, setPos, setVolume, setAudioRateChange} from '../../actions/waveformActions';
+import {highlightNote, setTimer} from '../../actions/noteActions';
+import {togglePlay, setPos, setVolume, play, setAudioRateChange, checkWavePos} from '../../actions/waveformActions';
 
 class Audio extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       loaded: 'false',
-      waveformDisplay: 'none',
+      waveformDisplay: 'hidden',
       loadingDisplay: 'block',
       loadVal: 0
     };
@@ -50,11 +51,10 @@ class Audio extends React.Component {
   }
 
   handleReady() {
-    this.setState({waveformDisplay: 'block', loadingDisplay: 'none'});
-    this.props.dispatch(setPos(5));
-    // this.setState({
-    //   pos: 5
-    // });
+    this.setState({waveformDisplay: 'visible', loadingDisplay: 'none'});
+    this.props.dispatch(play());
+    this.props.dispatch(setTimer(0, 0));
+
   }
 
   handleVolumeChange(e) {
@@ -63,12 +63,22 @@ class Audio extends React.Component {
     //   volume: +e.target.value
     // });
   }
+
   handleLoading(e) {
     this.setState({loadVal: e.originalArgs[0]});
   }
 
+  handleMouseup() {
+    let timestamps = this.props.note.audioTimestampArray;
+    let wavePos = this.props.waveform.pos;
+    for (var i = 0; i < timestamps.length; i++) {
+      if (timestamps[i] > wavePos > (timestamps[i-1] ? timestamps[i-1] : 0)) {
+        return this.props.dispatch(setTimer(i, wavePos));
+      }
+    }
+  }
+
   render() {
-    console.log(this.props.waveform.pos);
     const waveOptions = {
       scrollParent: true,
       height: 140,
@@ -82,7 +92,6 @@ class Audio extends React.Component {
     };
     return (
       <div className="example col-xs-12">
-        <h3>State & UI</h3>
         <div className="row">
           <div className="form-group col-xs-4">
             <label htmlFor="simple-volume">Volume:</label>
@@ -121,7 +130,7 @@ class Audio extends React.Component {
         <div style={{display: this.state.loadingDisplay}}>
           LOADING AUDIO FILE {this.state.loadVal}
         </div>
-        <div ref="wavesurfContainer" style={{display: this.state.waveformDisplay}}>
+        <div ref="wavesurfContainer" style={{visibility: this.state.waveformDisplay}}>
           <Wavesurfer
             volume={this.props.waveform.volume}
             pos={this.props.waveform.pos}
@@ -131,6 +140,7 @@ class Audio extends React.Component {
             playing={this.props.waveform.playing}
             onReady={this.handleReady.bind(this)}
             onLoading={this.handleLoading.bind(this)}
+            onMouseup={this.handleMouseup.bind(this)}
           />
         </div>
       </div>

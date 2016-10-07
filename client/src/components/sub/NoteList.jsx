@@ -11,12 +11,13 @@ class NoteList extends React.Component {
 
   constructor(props) {
     super(props);
+    console.log('notelistprops', props);
     var pathname = props.routing.locationBeforeTransitions.pathname;
     var currentView = getCurrentView(pathname);
     this.state = {
       view: currentView,
       noteTimestampArray: null,
-      loaded: false,
+      loaded: true,
       currentNoteSelected: 0
     };
   }
@@ -32,33 +33,31 @@ class NoteList extends React.Component {
 
     if (this.state.view === 'compile') {
       var context = this;
-      this.getAllNotes(userId, roomId, () => {
-        context.setState({
-          noteTimestampArray: context.props.note.map((note) => {
-            return note.audioTimestamp;
-          }),
-          loaded: true
-        });
+      this.setState({
+        loaded: false
       });
+      this.getAllNotes(userId, roomId);
     }
 
     if (this.state.view === 'review') {
-      this.setState({
-        loaded: true
-      });
       this.getReviewNotes(userId, roomId);
     }
   }
 
-  getAllNotes(userId, roomId, cb) {
+  getAllNotes(userId, roomId) {
     $.ajax({
       method: 'GET',
       url: `/api/notes/${userId}/${roomId}`,
       contentType: 'application/json',
       success: (res, status) => {
         // replace current Notes with response
-        this.props.dispatch(replaceNotes(res, cb));
-        // reassign with notes from server
+        console.log('got notes.');
+        this.props.dispatch(replaceNotes(res, () => {
+          console.log('getting all notes');
+          this.setState({
+            loaded: true
+          });
+        }));
       },
       error: ( res, status ) => {
         console.log(res);
@@ -82,35 +81,15 @@ class NoteList extends React.Component {
     });
   }
 
-  checkPos() {
-    let nextPos = this.state.noteTimestampArray[this.state.currentNoteSelected];
-    let currentPos = this.props.waveform.pos;
-    if (nextPos <= currentPos) {
-      return true;
-    }
-  }
 
-  isHighlighted(key) {
-    if (key !== this.state.currentNoteSelected) {
-      return false;
-    }
-    if (!this.checkPos()) {
-      return true;
-    }
-    this.setState({currentNoteSelected: this.state.currentNoteSelected + 1});
-    return false;
-  }
-
-  // NEXT WE NEED TO IMPLEMENT EVENT CLICK:
-  // iterate through this.state.timestamparray
-  // and find a value where the waveform position is less than this.state.timestamparray[i+1] but greater than this.state.timestamparray[i]
+  // <Note key={i} noteInfo={note} {this.ishighlighted.bind(this, i) && highlighted="true"} view={this.state.view} />
 
   render() {
     return (
       this.state.loaded ? (
       <div className="note-list">
-        {this.props.note.map((note, i)=>(
-          <Note key={i} noteInfo={note} highlighted={this.isHighlighted.bind(this, i)} view={this.state.view} />
+        {this.props.note.notes.map((note, i)=>(
+          <Note key={i} noteInfo={note} view={this.state.view} />
           )
         )}
       </div> ) : (<div></div>)
