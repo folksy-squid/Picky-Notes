@@ -80,3 +80,44 @@ describe('/api/rooms/', () => {
     });
   });
 });
+
+describe('/api/users', () => {
+  beforeEach(() => {});
+  afterEach(() => {});
+  describe('', () => {
+    it('', () => {});
+    it('', () => {});
+  });
+  describe('', () => {
+    it('', () => {});
+    it('', () => {});
+  });
+});
+
+describe('/api/notes', () => {
+  beforeEach(() => {});
+  afterEach(() => {});
+
+  describe('', () => {
+    it('', () => {});
+    it('', () => {});
+  });
+  describe('', () => {
+    it('', () => {});
+    it('', () => {});
+  });
+});
+
+describe('/api/audio', () => {
+  beforeEach(() => {});
+  afterEach(() => {});
+
+  describe('', () => {
+    it('', () => {});
+    it('', () => {});
+  });
+  describe('', () => {
+    it('', () => {});
+    it('', () => {});
+  });
+});
