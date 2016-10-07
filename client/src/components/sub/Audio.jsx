@@ -43,7 +43,6 @@ class Audio extends React.Component {
       let wavePos = this.props.waveform.pos;
       for (var i = 0; i < timestamps.length; i++) {
         if (timestamps[i] > wavePos) {
-          console.log('this is the next timestamp', timestamps[i]);
           return this.props.dispatch(setTimer(i, wavePos));
         }
       }
