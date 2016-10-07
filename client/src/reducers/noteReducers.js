@@ -1,3 +1,4 @@
+/*jshint esversion: 6 */
 export default (state = {notes: []}, action) => {
   if (action.type === 'SUBMIT_NOTE') {
     action.socket.emit('new note', {content: action.content});
@@ -30,7 +31,6 @@ export default (state = {notes: []}, action) => {
     action.cb && action.cb();
     return state;
   }
-    // state = action.allNotes.sort((a, b) => Date.parse(a.audioTimestamp) - Date.parse(b.audioTimestamp));
 
   if (action.type === 'REMOVE_NOTES') {
     return {
@@ -38,7 +38,6 @@ export default (state = {notes: []}, action) => {
       notes: [],
       audioTimestamp: []
     };
-    // state = [];
   }
 
   if (action.type === 'SELECT_NOTE') {
@@ -58,23 +57,30 @@ export default (state = {notes: []}, action) => {
 
   if (action.type === 'SET_TIMER') {
     let currentNoteSelected = action.index - 1;
-    console.log('triggering timer');
-    var wavePos = action.wavePos;
-    const updateNote = () => {
-      console.log('there is a timer', state.timer);
-      if (state.timer) {
-        clearTimeout(state.timer);
-      }
-      currentNoteSelected++;
-      let diff = (state.audioTimestampArray[currentNoteSelected] - wavePos);
-      wavePos = wavePos + diff;
+    let wavePos = action.wavePos;
 
-      console.log('diff:', diff, wavePos, state.audioTimestampArray[currentNoteSelected]);
+    const updateNote = () => {
+
+      if (state.highlightedIndex >= 0) {
+        state.notes[state.highlightedIndex]['highlight'] = null;
+      }
+
+      state.timer && clearTimeout(state.timer);
+
+      if (currentNoteSelected > -1) {
+        state.notes[currentNoteSelected]['highlight'] = true;
+        state.highlightedIndex = currentNoteSelected;
+      }
+
+      let diff = (state.audioTimestampArray[++currentNoteSelected] - wavePos);
+      wavePos += diff;
 
       if (state.audioTimestampArray.length > currentNoteSelected) {
         state.timer = window.setTimeout(updateNote, diff * 1000);
       }
+
     };
+
     updateNote();
     return state;
   }

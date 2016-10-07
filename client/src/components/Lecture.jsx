@@ -31,14 +31,14 @@ class Lecture extends React.Component {
   componentWillMount() {
     const user = this.props.user.information[0];
     const pathUrl = this.props.params.roomId;
-    this.props.dispatch(replaceNotes([]));
+    this.props.dispatch(replaceNotes([], ()=>{}));
 
     if (!this.props.room.roomInfo) {
       this.setState({loaded: false});
       this.props.dispatch(setRoomInfo(pathUrl, user, (err, success) => {
         if (err) {
           return this.context.router.push('/notebook');
-        } 
+        }
         this.props.dispatch(joinSocketRoom(pathUrl, user, (error) => {
           if (error) {
             return this.setState({error});
@@ -47,7 +47,7 @@ class Lecture extends React.Component {
           this.checkHost();
           this.applyListeners();
           this.props.room.socket.on('old notes', (notes) => {
-            this.props.dispatch(replaceNotes(notes));
+            this.props.dispatch(replaceNotes(notes, () =>{}));
           });
           this.props.room.socket.emit('user reconnect');
         }));
@@ -63,7 +63,7 @@ class Lecture extends React.Component {
     socket.on('lecture ended', () => {
       this.setState({readyButtonDisplay: 'inline-block'});
     });
-    
+
     socket.on('all ready', () => {
       // loading page
     });

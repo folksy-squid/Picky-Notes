@@ -53,19 +53,41 @@ class Note extends React.Component {
     var view;
     //props.page will be obtained from redux store.
 
-    var highlighted = this.props.noteInfo.highlight ? 'note highlighted' : 'note';
     if (this.props.view === 'compile') {
+
       view = (
-        <div className={highlighted}>
+        this.props.noteInfo.highlight ? (
+        <div>
+          <div className='note'>
+            <input type="checkbox" ref="checkbox" onChange={this.toggleNoteHandler.bind(this)} checked={this.props.noteInfo.show}/>
+            {this.state.edit ?
+              <span className="content">
+                <form onSubmit={this.editHandler.bind(this)}>
+                  <input ref="noteInput" type="text" defaultValue={this.props.noteInfo.content} />
+                </form>
+              </span>
+              :
+              <span className="content" onClick={this.compileClickHandler.bind(this)}>{this.props.noteInfo.content}</span>
+            }
+            <span className="audioTimestamp">{this.formatTime(this.props.noteInfo.audioTimestamp)}</span>
+          </div>
+          <div className='pointer' />
+        </div>
+        ) : (
+        <div className='note'>
           <input type="checkbox" ref="checkbox" onChange={this.toggleNoteHandler.bind(this)} checked={this.props.noteInfo.show}/>
           {this.state.edit ?
+            <span className="content">
               <form onSubmit={this.editHandler.bind(this)}>
-                <input ref="noteInput" type="text" className="content" defaultValue={this.props.noteInfo.content} />
+                <input ref="noteInput" type="text" defaultValue={this.props.noteInfo.content} />
               </form>
-            : <span className="content" onClick={this.compileClickHandler.bind(this)}>{this.props.noteInfo.content}</span>
+            </span>
+            :
+            <span className="content" onClick={this.compileClickHandler.bind(this)}>{this.props.noteInfo.content}</span>
           }
           <span className="audioTimestamp">{this.formatTime(this.props.noteInfo.audioTimestamp)}</span>
         </div>
+        )
       );
     } else if (this.props.view === 'lecture') {
       view = (
