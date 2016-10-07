@@ -1,7 +1,8 @@
 const {createNewUser, createNewRoom, joinRoom, showAllNotes, showFilteredNotes, findRoom, createRoomNotes, multiplyNotes, updateNotes, getAllUserRooms, getRoom, saveAudioToRoom, createNewNote, saveStartTimestamp, saveTimeLength, getAudioForRoom } = require('../../../server/database/db-helpers');
+const db = ('../../../server/database/db-config');
 const expect = require('chai').expect;
 
-describe('multiply notes', () => {
+describe('multiplyNotes', () => {
   const notes = [{
     content: 'This is a note for User 0',
     show: true,
@@ -20,7 +21,7 @@ describe('multiply notes', () => {
   }];
 
   const clients = ['0', '1', '2'];
-
+  
   let test;
 
   beforeEach(() => {
