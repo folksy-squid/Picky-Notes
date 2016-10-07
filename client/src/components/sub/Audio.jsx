@@ -38,24 +38,17 @@ class Audio extends React.Component {
   }
 
   handleTogglePlay() {
-    this.props.dispatch(removeTimer());
-    if (this.props.waveform.playing === false) {
-      this.props.dispatch(togglePlay());
-      setTimeout(() => {
-        let timestamps = this.props.note.audioTimestampArray;
-        console.log(timestamps);
-        let wavePos = this.props.waveform.pos;
-        for (var i = 0; i < timestamps.length; i++) {
-          console.log('checking timestamps', timestamps[i]);
-          if (timestamps[i] > wavePos) {
-            console.log('this is the next timestamp', timestamps[i]);
-            return this.props.dispatch(setTimer(i, wavePos));
-          }
+    setTimeout(() => {
+      let timestamps = this.props.note.audioTimestampArray;
+      let wavePos = this.props.waveform.pos;
+      for (var i = 0; i < timestamps.length; i++) {
+        if (timestamps[i] > wavePos) {
+          console.log('this is the next timestamp', timestamps[i]);
+          return this.props.dispatch(setTimer(i, wavePos));
         }
-      }, 10);
-    } else {
-      this.props.dispatch(togglePlay());
-    }
+      }
+    }, 10);
+    this.props.dispatch(togglePlay());
     // this.setState({
     //   playing: !this.state.playing
     // });
@@ -70,8 +63,8 @@ class Audio extends React.Component {
 
   handleReady() {
     this.setState({waveformDisplay: 'visible', loadingDisplay: 'none'});
-    this.props.dispatch(play());
-    this.props.dispatch(setTimer(0, .001));
+    // this.props.dispatch(play());
+    // this.props.dispatch(setTimer(0, .001));
 
   }
 
@@ -85,7 +78,9 @@ class Audio extends React.Component {
   handleLoading(e) {
     this.setState({loadVal: e.originalArgs[0]});
   }
-
+  onFinish() {
+    this.props.dispatch(removeTimer());
+  }
   handleClick() {
     setTimeout(() => {
       let timestamps = this.props.note.audioTimestampArray;
@@ -97,7 +92,6 @@ class Audio extends React.Component {
         }
       }
     }, 10);
-    this.forceUpdate();
   }
 
   render() {
@@ -162,6 +156,7 @@ class Audio extends React.Component {
             playing={this.props.waveform.playing}
             onReady={this.handleReady.bind(this)}
             onLoading={this.handleLoading.bind(this)}
+            onFinish={this.onFinish.bind(this)}
           />
         </div>
       </div>

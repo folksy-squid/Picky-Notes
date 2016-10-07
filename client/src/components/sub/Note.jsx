@@ -53,8 +53,8 @@ class Note extends React.Component {
     var view;
     //props.page will be obtained from redux store.
     if (this.props.view === 'compile') {
-      if(!this.props.noteInfo.content) {
-        if(this.props.noteInfo.highlight) {
+      if (!this.props.noteInfo.content) {
+        if (this.props.noteInfo.highlight) {
           return (<div className='pointer'></div>);
         } else {
           return (<div></div>);

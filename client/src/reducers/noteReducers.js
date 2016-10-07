@@ -56,40 +56,40 @@ export default (state = {notes: []}, action) => {
   }
 
   if (action.type === 'SET_TIMER') {
+    state.timer && clearTimeout(state.timer);
     state.currentNoteSelected = action.index;
-    console.log('triggering timer from', action.wavePos, 'to', state.audioTimestampArray[state.currentNoteSelected]);
     state.wavePos = action.wavePos;
     state.diff = (state.audioTimestampArray[state.currentNoteSelected] - state.wavePos);
-    if (state.highlightedIndex >= 0) {
-      console.log('removing highlight off', state.highlightedIndex);
-      state.notes[state.highlightedIndex]['highlight'] = null;
-    }
-
-
-    if (state.currentNoteSelected > -1) {
-      state.notes[state.currentNoteSelected]['highlight'] = true;
-      state.highlightedIndex = state.currentNoteSelected;
-    }
+    state.notes.forEach((note) => {
+      note['highlight'] = null;
+    });
     const updateNote = () => {
+      if (state.highlightedIndex >= 0) {
+        state.notes[state.highlightedIndex]['highlight'] = null;
+      }
+      if (state.currentNoteSelected > -1) {
+        state.notes[state.currentNoteSelected]['highlight'] = true;
+        state.highlightedIndex = state.currentNoteSelected;
+      }
+
       state.timer && clearTimeout(state.timer);
       state.diff = (state.audioTimestampArray[state.currentNoteSelected] - state.wavePos);
       state.wavePos = state.wavePos + state.diff;
       state.currentNoteSelected++;
-      if (state.audioTimestampArray[state.currentNoteSelected-1]) {
-        console.log('diff:', state.diff, state.wavePos, state.audioTimestampArray[state.currentNoteSelected]);
+      if (state.audioTimestampArray[state.currentNoteSelected - 1]) {
         state.timer = window.setTimeout(updateNote, state.diff * 1000 + 10);
       }
 
 
     };
     updateNote();
-    return state;
   }
   if (action.type === 'REMOVE_TIMER') {
     console.log('removing the timer', state.timer);
     if (state.timer) {
       clearTimeout(state.timer);
     }
+    return state;
   }
-  return state;
+  return {...state};
 };
