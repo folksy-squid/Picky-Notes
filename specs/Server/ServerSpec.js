@@ -36,10 +36,6 @@ before((done) => {
   });
 });
 
-describe('test', () => {
-  it('should pass this test', () => expect(true).to.equal.true);
-});
-
 describe('/api/rooms/', () => {
 
   var hash1, hash2;

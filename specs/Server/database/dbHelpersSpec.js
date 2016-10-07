@@ -21,7 +21,7 @@ describe('multiplyNotes', () => {
   }];
 
   const clients = ['0', '1', '2'];
-  
+
   let test;
 
   beforeEach(() => {
