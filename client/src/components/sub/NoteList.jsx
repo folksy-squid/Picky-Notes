@@ -85,9 +85,10 @@ class NoteList extends React.Component {
   // <Note key={i} noteInfo={note} {this.ishighlighted.bind(this, i) && highlighted="true"} view={this.state.view} />
 
   render() {
+    let listClass = this.state.view === 'compile' ? 'note-list compiled' : 'note-list';
     return (
       this.state.loaded ? (
-      <div className="note-list">
+      <div className={listClass}>
         {this.props.note.notes.map((note, i)=>(
           <Note key={i} noteInfo={note} view={this.state.view} />
           )

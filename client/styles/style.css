@@ -205,14 +205,31 @@ small.text-muted {
 */
 
 .note-list {
-  padding-left: 15px;
+}
+
+.note-list.compiled {
+  border-left: 1px solid black
+}
+
+.pointer {
+  height: 1px;
+  width: 80px;
+  background-color: red;
 }
 
 .note {
   display: flex;
   justify-content: flex-start;
-  margin-top: 10px;
-  margin-bottom: 10px;
+  margin-top: 7px;
+  margin-bottom: 7px;
+  padding-left: 15px;
+  padding-top: 7px;
+  padding-bottom: 7px;
+}
+
+
+.note > .content {
+  margin-left: 15px;
 }
 
 .audioTimestamp {
