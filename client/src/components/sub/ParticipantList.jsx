@@ -38,6 +38,10 @@ class ParticipantList extends React.Component {
 
     if (this.state.view === 'lecture') {
       this.state.readyStatusDisplay = 'inline-block';
+      socket.on('user disconnected', this.props.checkHostLecture);
+
+    } else if (this.state.view === 'lobby') {
+      socket.on('user disconnected', this.props.checkHostLobby);
     }
   }
 
@@ -47,6 +51,7 @@ class ParticipantList extends React.Component {
       socket.removeListener('new user joined room');
       socket.removeListener('user disconnected');
       socket.removeListener('user ready');
+      this.state.view === 'lobby' && socket.removeListener('user disconnected', this.props.checkHostLobby);
     }
   }
 

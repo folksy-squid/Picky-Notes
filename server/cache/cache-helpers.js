@@ -64,6 +64,17 @@ const addTimestampToCache = (pathUrl, startTime) => {
   cache.set(`${pathUrl}:START`, startTime);
 };
 
+const getNotesFromUser = (pathUrl, userId, cb) => {
+  cache.lrange(`${userId}:${pathUrl}`, 0, -1)
+  .then((notes) => notes.map((note) => JSON.parse(note)))
+  .then((notes) => cb(notes));
+};
+
+const getTimestampFromCache = (pathUrl, cb) => {
+  cache.get(`${pathUrl}:START`)
+  .then(cb);
+};
+
 module.exports = {
   addUserToCache,
   addNoteToCache,
@@ -71,4 +82,6 @@ module.exports = {
   deleteAllNotesAndRoom,
   addTimestampToCache,
   getUsersFromRoom,
+  getNotesFromUser,
+  getTimestampFromCache,
 };

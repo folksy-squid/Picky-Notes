@@ -176,7 +176,6 @@ const saveTimeLength = (pathUrl, endTimestamp) => {
 };
 
 const getAudioForRoom = (pathUrl, cb) => {
-  console.log('pathUrl', pathUrl);
   Room.findOne({ where: { pathUrl }, raw: true})
   .then(room => cb(room.audioUrl));
 };

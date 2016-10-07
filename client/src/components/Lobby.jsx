@@ -5,7 +5,8 @@ import ParticipantList from './sub/ParticipantList.jsx';
 import ChatBox from './sub/ChatBox.jsx';
 import {connect} from 'react-redux';
 import roomReducer from '../reducers/roomReducers';
-import {joinSocketRoom, createAudioStream, startRecording} from '../actions/roomActions';
+import {joinSocketRoom, createAudioStream, startRecording, setRoomInfo} from '../actions/roomActions';
+import ShareLink from './sub/ShareLink.jsx';
 
 class Lobby extends React.Component {
   constructor(props) {
@@ -15,7 +16,8 @@ class Lobby extends React.Component {
     this.state = {
       isHost: false,
       pathUrl: pathUrl,
-      completed: true
+      completed: true,
+      error: '',
     };
   }
   static get contextTypes() {
@@ -26,10 +28,33 @@ class Lobby extends React.Component {
 
   componentWillMount() {
     // join the socket if there is no room info
+    const user = this.props.user.information[0];
+    const pathUrl = this.props.params.roomId;
     if (!this.props.room.roomInfo) {
-      console.log('you have no room info');
       this.setState({completed: false});
-      this.props.dispatch(joinSocketRoom(this.state.pathUrl, this.props.user.information[0], () => { this.setState({completed: true }); }));
+      this.props.dispatch(setRoomInfo(pathUrl, user, (err, success) => {
+        if (err) {
+          return this.context.router.push('/notebook');
+        } 
+        this.props.dispatch(joinSocketRoom(pathUrl, user, (error, ...args) => {
+          if (error) {
+            return this.setState({error});
+          }
+          if (args[3] === 'lecture') {
+            return this.context.router.push(`/lecture/${pathUrl}`);
+          }
+          this.setState({completed: true});
+          this.checkHost();
+          this.applyListeners();
+          this.props.room.socket.on('old notes', (notes) => {
+            this.props.dispatch(replaceNotes(notes));
+          });
+          this.props.room.socket.emit('user reconnect');
+        }));
+      }));
+    } else {
+      this.checkHost();
+      this.applyListeners();
     }
 
   }
@@ -45,16 +70,9 @@ class Lobby extends React.Component {
     }
   }
 
-  componentDidMount() {
-    new Clipboard(this.refs.copyButton, {
-      text: (trigger) => {
-        return this.refs.shareLink.innerText;
-      }
-    });
-    this.checkHost();
+  applyListeners() {
     const socket = this.props.room.socket;
     socket.on('lecture started', this.goToLecture.bind(this));
-    socket.on('user disconnected', this.checkHost.bind(this));
   }
 
   startLecture() {
@@ -86,22 +104,15 @@ class Lobby extends React.Component {
               Start Lecture
             </button>)}
             <div className="panel-item">
-              <div className="clipboard">
-                <input ref="shareLink" className="shareLink" value={this.state.pathUrl} readOnly/>
-                <div className="buttonCell">
-                  <button ref="copyButton" className="copyButton" data-clipboard-target=".shareLink">
-                    <i className="ion ion-clipboard"></i>
-                  </button>
-                </div>
-              </div>
+              <ShareLink pathUrl={this.state.pathUrl}/>
             </div>
             <div className="panel-item">
-              <ParticipantList />
+              <ParticipantList checkHostLobby={this.checkHost.bind(this)}/>
             </div>
           </div>
         </div>
       </div>
-    ) : (<div></div>)
+    ) : (<h2>{this.state.error}</h2>)
   );
   }
 }

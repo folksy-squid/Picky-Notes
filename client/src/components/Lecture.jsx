@@ -7,6 +7,8 @@ import ParticipantList from './sub/ParticipantList.jsx';
 import RoomReducer from '../reducers/roomReducers';
 import {stopRecording, setRoomInfo, joinSocketRoom} from '../actions/roomActions';
 import UserReducer from '../reducers/userReducers';
+import {replaceNotes} from '../actions/noteActions';
+import NoteReducer from '../reducers/noteReducers';
 
 class Lecture extends React.Component {
   constructor (props) {
@@ -15,7 +17,8 @@ class Lecture extends React.Component {
       readyButtonDisplay: 'none',
       endLectureDisplay: 'inline-block',
       isHost: false,
-      loaded: true
+      loaded: true,
+      error: ''
     };
   }
 
@@ -28,47 +31,54 @@ class Lecture extends React.Component {
   componentWillMount() {
     const user = this.props.user.information[0];
     const pathUrl = this.props.params.roomId;
-    const realm = this;
+    this.props.dispatch(replaceNotes([]));
+
     if (!this.props.room.roomInfo) {
       this.setState({loaded: false});
       this.props.dispatch(setRoomInfo(pathUrl, user, (err, success) => {
         if (err) {
-          realm.context.router.push('/notebook');
-        } else {
-
-          // join socket room
-          realm.props.dispatch(joinSocketRoom(pathUrl, user, () => {
-            realm.setState({loaded: true});
-            realm.props.room.socket.on('lecture ended', ()=> {
-              this.setState({readyButtonDisplay: 'inline-block'});
-            })
-          }))
-        }
+          return this.context.router.push('/notebook');
+        } 
+        this.props.dispatch(joinSocketRoom(pathUrl, user, (error) => {
+          if (error) {
+            return this.setState({error});
+          }
+          this.setState({loaded: true});
+          this.checkHost();
+          this.applyListeners();
+          this.props.room.socket.on('old notes', (notes) => {
+            this.props.dispatch(replaceNotes(notes));
+          });
+          this.props.room.socket.emit('user reconnect');
+        }));
       }));
+    } else {
+      this.checkHost();
+      this.applyListeners();
     }
   }
 
-  componentDidMount() {
-    this.checkHost();
-
+  applyListeners() {
     var socket = this.props.room.socket;
     socket.on('lecture ended', () => {
       this.setState({readyButtonDisplay: 'inline-block'});
     });
+    
     socket.on('all ready', () => {
       // loading page
-
     });
 
     socket.on('all notes saved', () => {
       // redirect to compile view
       this.context.router.push(`/compile/${this.props.room.roomInfo.pathUrl}`);
     });
-    socket.on('user disconnected', this.checkHost.bind(this));
+  }
+
+  componentDidMount() {
+    this.props.room.socket && this.applyListeners();
   }
 
   checkHost() {
-    console.log('props here', this.props)
     let host = this.props.room.participants[0];
     let user = this.props.user.information[0];
     host.id === user.id && this.setState({isHost: true});
@@ -105,10 +115,10 @@ class Lecture extends React.Component {
             <LectureBox />
           </div>
           <div className="col-md-3">
-            <ParticipantList />
+            <ParticipantList checkHostLecture={this.checkHost.bind(this)}/>
           </div>
         </div>
-      </div>) : (<div></div>)
+      </div>) : (<h2>{this.state.error}</h2>)
     );
   }
 }
@@ -117,7 +127,8 @@ const mapStateToProps = (state) => {
   return {
     ...state,
     RoomReducer,
-    UserReducer
+    UserReducer,
+    NoteReducer,
   };
 };
 

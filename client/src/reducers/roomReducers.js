@@ -66,13 +66,13 @@ export default (state = {}, action) => {
         socket.on('join room error', () => {
           socket.disconnect();
           state.socket = null;
-          action.joinedRoom('join room error');
+          action.joinedRoom('Room was not found');
         });
-        socket.on('join room success', (participants, roomInfo) => {
+        socket.on('join room success', (participants, roomInfo, status) => {
           state.socket = socket;
           state.roomInfo = roomInfo;
           state.participants = participants;
-          action.joinedRoom(null, 'success', roomInfo, participants);
+          action.joinedRoom(null, 'success', roomInfo, participants, status);
         });
       }
     });
@@ -81,7 +81,7 @@ export default (state = {}, action) => {
   const findUser = (list, user) => list.findIndex( obj => obj.id === user.id);
 
   if (action.type === 'LEAVE_SOCKET_ROOM') {
-    state.socket.disconnect();
+    state.socket && state.socket.disconnect();
     return {
       ...state,
       socket: null

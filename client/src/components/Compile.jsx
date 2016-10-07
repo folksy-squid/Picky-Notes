@@ -24,7 +24,6 @@ class Compile extends React.Component {
 
   componentWillMount() {
     this.props.dispatch({type: 'LEAVE_SOCKET_ROOM'});
-    
     const user = this.props.user.information[0];
     const pathUrl = this.props.params.roomId;
     const realm = this;

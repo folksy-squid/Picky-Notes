@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {toggleNote} from '../../actions/noteActions.js';
+import {toggleNote, editNote} from '../../actions/noteActions.js';
 import NoteReducer from '../../reducers/noteReducers';
 import WaveformReducer from '../../reducers/waveformReducers';
 import {togglePlay, setPos, play} from '../../actions/waveformActions';
@@ -8,6 +8,9 @@ import {togglePlay, setPos, play} from '../../actions/waveformActions';
 class Note extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      edit: false
+    };
   }
 
   saveNote(note) {
@@ -32,6 +35,19 @@ class Note extends React.Component {
     return (minutes) ? `${minutes}m ${seconds}s` : `${seconds}s`;
   }
 
+  compileClickHandler() {
+    this.setState({edit: true});
+  }
+
+  editHandler(e) {
+    e.preventDefault();
+    let newText = this.refs.noteInput.value;
+    if (this.refs.noteInput.value.trim() !== '') {
+      this.props.dispatch(editNote(this.props.noteInfo.id, this.refs.noteInput.value));
+    }
+    this.setState({edit: false});
+  }
+
   render() {
     var view;
     //props.page will be obtained from redux store.
@@ -39,7 +55,12 @@ class Note extends React.Component {
       view = (
         <div className="note">
           <input type="checkbox" ref="checkbox" onChange={this.toggleNoteHandler.bind(this)} checked={this.props.noteInfo.show}/>
-          <span className="content">{this.props.noteInfo.content}</span>
+          {this.state.edit ? 
+              <form onSubmit={this.editHandler.bind(this)}>
+                <input ref="noteInput" type="text" className="content" defaultValue={this.props.noteInfo.content} />
+              </form>
+            : <span className="content" onClick={this.compileClickHandler.bind(this)}>{this.props.noteInfo.content}</span>
+          }
           <span className="audioTimestamp">{this.formatTime(this.props.noteInfo.audioTimestamp)}</span>
         </div>
       );
