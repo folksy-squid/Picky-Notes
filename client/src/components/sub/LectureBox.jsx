@@ -39,7 +39,7 @@ class LectureBox extends React.Component {
 const mapStateToProps = (state) => {
   return {
     ...state,
-  }
+  };
 };
 
 export default connect(mapStateToProps)(LectureBox);

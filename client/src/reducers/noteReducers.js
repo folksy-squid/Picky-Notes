@@ -61,6 +61,7 @@ export default (state = {notes: []}, action) => {
     console.log('triggering timer');
     var wavePos = action.wavePos;
     const updateNote = () => {
+      console.log('there is a timer', state.timer);
       if (state.timer) {
         clearTimeout(state.timer);
       }
