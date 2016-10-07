@@ -10,8 +10,6 @@ class Notebook extends React.Component {
     this.state = {
       loaded: false
     };
-    // console.log('state:', this.state);
-    // console.log('props:', props);
   }
 
   componentWillMount() {
@@ -24,9 +22,15 @@ class Notebook extends React.Component {
       success: (entries) => {
         let lectures = entries.filter((entry) => entry.startTimestamp !== null);
         lectures.sort((a, b) => b.startTimestamp - a.startTimestamp);
-        context.setState({loaded: true, entries: lectures});
+        context.setState({loaded: true, original: lectures, entries: lectures});
       }
     });
+  }
+
+  filterNotebooks(selectedClass) {
+    let filteredEntries = (selectedClass === 'All') ?
+      this.state.original : this.state.original.filter((entry) => entry.class === selectedClass);
+    this.setState({ entries: filteredEntries });
   }
 
   render() {
@@ -38,7 +42,7 @@ class Notebook extends React.Component {
             <h3>My Lectures</h3>
           </div>
           <div className="col-sm-4">
-            <SearchBar entries={this.state.entries}/>
+            <SearchBar entries={this.state.entries} filter={this.filterNotebooks.bind(this)} />
           </div>
         </div>
         <div className="row">

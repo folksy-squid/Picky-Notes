@@ -14,24 +14,27 @@ export default class Dropdown extends React.Component {
   }
 
   select (e) {
+    console.log('target', e.target.value);
     this.setState({ selectedValue: e.target.value });
+    this.props.filter(e.target.value);
   }
 
   renderListItems () {
-    var items = [<option>All</option>];
+    var allClasses = [<option key={-1}>All</option>];
     for (let i = 0; i < this.props.list.length; i++) {
-      items.push(
-        <option>{this.props.list[i]}</option>
+      allClasses.push(
+        <option key={i}>{this.props.list[i]}</option>
       );
     }
-    return items;
+    return allClasses;
   }
 
   render () {
-    var message = `You selected ${this.state.selectedValue}`;
-    return (<div>
-      <select value={this.state.selected} onChange={this.select.bind(this)}>{this.renderListItems()}</select>
-      <p> {message} </p>
+    return (
+      <div>
+        Classes: <select value={this.state.selected} onChange={this.select.bind(this)}>
+          {this.renderListItems()}
+        </select>
       </div>
     );
   }
