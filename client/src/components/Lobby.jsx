@@ -46,10 +46,6 @@ class Lobby extends React.Component {
           this.setState({completed: true});
           this.checkHost();
           this.applyListeners();
-          this.props.room.socket.on('old notes', (notes) => {
-            this.props.dispatch(replaceNotes(notes));
-          });
-          this.props.room.socket.emit('user reconnect');
         }));
       }));
     } else {
