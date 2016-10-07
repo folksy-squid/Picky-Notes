@@ -38,15 +38,17 @@ class Audio extends React.Component {
   }
 
   handleTogglePlay() {
-    setTimeout(() => {
-      let timestamps = this.props.note.audioTimestampArray;
-      let wavePos = this.props.waveform.pos;
-      for (var i = 0; i < timestamps.length; i++) {
-        if (timestamps[i] > wavePos) {
-          return this.props.dispatch(setTimer(i, wavePos));
+    if(!this.props.waveform.playing) {
+      setTimeout(() => {
+        let timestamps = this.props.note.audioTimestampArray;
+        let wavePos = this.props.waveform.pos;
+        for (var i = 0; i < timestamps.length; i++) {
+          if (timestamps[i] > wavePos) {
+            return this.props.dispatch(setTimer(i, wavePos));
+          }
         }
-      }
-    }, 10);
+      }, 10);
+    }
     this.props.dispatch(togglePlay());
     // this.setState({
     //   playing: !this.state.playing
@@ -81,6 +83,7 @@ class Audio extends React.Component {
     this.props.dispatch(removeTimer());
   }
   handleClick() {
+    this.props.dispatch(removeTimer());
     setTimeout(() => {
       let timestamps = this.props.note.audioTimestampArray;
       let wavePos = this.props.waveform.pos;

@@ -56,7 +56,12 @@ export default (state = {notes: []}, action) => {
   }
 
   if (action.type === 'SET_TIMER') {
-    state.timer && clearTimeout(state.timer);
+    if (!window.timer) {
+      window.timer;
+    }
+    if (window.timer) {
+      window.clearTimeout(window.timer);
+    }
     state.currentNoteSelected = action.index;
     state.wavePos = action.wavePos;
     state.diff = (state.audioTimestampArray[state.currentNoteSelected] - state.wavePos);
@@ -65,29 +70,32 @@ export default (state = {notes: []}, action) => {
     });
     const updateNote = () => {
       if (state.highlightedIndex >= 0) {
-        state.notes[state.highlightedIndex]['highlight'] = null;
+        state.notes.forEach((note) => {
+          note['highlight'] = null;
+        });
       }
       if (state.currentNoteSelected > -1) {
         state.notes[state.currentNoteSelected]['highlight'] = true;
         state.highlightedIndex = state.currentNoteSelected;
       }
 
-      state.timer && clearTimeout(state.timer);
+      window.timer && window.clearTimeout(window.timer);
       state.diff = (state.audioTimestampArray[state.currentNoteSelected] - state.wavePos);
       state.wavePos = state.wavePos + state.diff;
       state.currentNoteSelected++;
       if (state.audioTimestampArray[state.currentNoteSelected - 1]) {
-        state.timer = window.setTimeout(updateNote, state.diff * 1000 + 10);
+        window.timer = window.setTimeout(updateNote, state.diff * 1000 + 10);
       }
 
 
     };
     updateNote();
+    return state;
   }
   if (action.type === 'REMOVE_TIMER') {
-    console.log('removing the timer', state.timer);
-    if (state.timer) {
-      clearTimeout(state.timer);
+    console.log('removing the timer', window.timer);
+    if (window.timer) {
+      window.clearTimeout(window.timer);
     }
     return state;
   }
