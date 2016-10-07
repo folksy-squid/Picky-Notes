@@ -68,11 +68,11 @@ export default (state = {}, action) => {
           state.socket = null;
           action.joinedRoom('Room was not found');
         });
-        socket.on('join room success', (participants, roomInfo) => {
+        socket.on('join room success', (participants, roomInfo, status) => {
           state.socket = socket;
           state.roomInfo = roomInfo;
           state.participants = participants;
-          action.joinedRoom(null, 'success', roomInfo, participants);
+          action.joinedRoom(null, 'success', roomInfo, participants, status);
         });
       }
     });

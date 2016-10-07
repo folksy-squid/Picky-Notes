@@ -31,26 +31,26 @@ class Lobby extends React.Component {
     const user = this.props.user.information[0];
     const pathUrl = this.props.params.roomId;
     if (!this.props.room.roomInfo) {
-      console.log('you have no room info');
       this.setState({completed: false});
       this.props.dispatch(setRoomInfo(pathUrl, user, (err, success) => {
         if (err) {
-          this.context.router.push('/notebook');
-        } else {
-          // join socket room
-          this.props.dispatch(joinSocketRoom(pathUrl, user, (error) => {
-            if (error) {
-              return this.setState({error});
-            }
-            this.setState({completed: true});
-            this.checkHost();
-            this.applyListeners();
-            this.props.room.socket.on('old notes', (notes) => {
-              this.props.dispatch(replaceNotes(notes));
-            });
-            this.props.room.socket.emit('user reconnect');
-          }));
-        }
+          return this.context.router.push('/notebook');
+        } 
+        this.props.dispatch(joinSocketRoom(pathUrl, user, (error, ...args) => {
+          if (error) {
+            return this.setState({error});
+          }
+          if (args[3] === 'lecture') {
+            return this.context.router.push(`/lecture/${pathUrl}`);
+          }
+          this.setState({completed: true});
+          this.checkHost();
+          this.applyListeners();
+          this.props.room.socket.on('old notes', (notes) => {
+            this.props.dispatch(replaceNotes(notes));
+          });
+          this.props.room.socket.emit('user reconnect');
+        }));
       }));
     } else {
       this.checkHost();

@@ -70,6 +70,11 @@ const getNotesFromUser = (pathUrl, userId, cb) => {
   .then((notes) => cb(notes));
 };
 
+const getTimestampFromCache = (pathUrl, cb) => {
+  cache.get(`${pathUrl}:START`)
+  .then(cb);
+};
+
 module.exports = {
   addUserToCache,
   addNoteToCache,
@@ -78,4 +83,5 @@ module.exports = {
   addTimestampToCache,
   getUsersFromRoom,
   getNotesFromUser,
+  getTimestampFromCache,
 };

@@ -37,22 +37,20 @@ class Lecture extends React.Component {
       this.setState({loaded: false});
       this.props.dispatch(setRoomInfo(pathUrl, user, (err, success) => {
         if (err) {
-          this.context.router.push('/notebook');
-        } else {
-          // join socket room
-          this.props.dispatch(joinSocketRoom(pathUrl, user, (error) => {
-            if (error) {
-              return this.setState({error});
-            }
-            this.setState({loaded: true});
-            this.checkHost();
-            this.applyListeners();
-            this.props.room.socket.on('old notes', (notes) => {
-              this.props.dispatch(replaceNotes(notes));
-            });
-            this.props.room.socket.emit('user reconnect');
-          }));
-        }
+          return this.context.router.push('/notebook');
+        } 
+        this.props.dispatch(joinSocketRoom(pathUrl, user, (error) => {
+          if (error) {
+            return this.setState({error});
+          }
+          this.setState({loaded: true});
+          this.checkHost();
+          this.applyListeners();
+          this.props.room.socket.on('old notes', (notes) => {
+            this.props.dispatch(replaceNotes(notes));
+          });
+          this.props.room.socket.emit('user reconnect');
+        }));
       }));
     } else {
       this.checkHost();
