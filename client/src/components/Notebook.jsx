@@ -38,7 +38,7 @@ class Notebook extends React.Component {
             <h3>My Lectures</h3>
           </div>
           <div className="col-sm-4">
-            <SearchBar />
+            <SearchBar entries={this.state.entries}/>
           </div>
         </div>
         <div className="row">
