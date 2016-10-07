@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import {toggleNote, editNote} from '../../actions/noteActions.js';
 import NoteReducer from '../../reducers/noteReducers';
 import WaveformReducer from '../../reducers/waveformReducers';
-import {togglePlay, setPos, play} from '../../actions/waveformActions';
+import {setPos, play} from '../../actions/waveformActions';
 
 class Note extends React.Component {
   constructor(props) {
@@ -26,6 +26,7 @@ class Note extends React.Component {
 
   toggleNoteHandler(e) {
     this.props.dispatch(toggleNote(this.props.noteInfo.id));
+    this.forceUpdate();
   }
 
   formatTime(milliseconds) {
@@ -52,7 +53,7 @@ class Note extends React.Component {
     var view;
     //props.page will be obtained from redux store.
 
-    var highlighted = this.props.noteInfo.highlight ? "note highlighted" : "note";
+    var highlighted = this.props.noteInfo.highlight ? 'note highlighted' : 'note';
     if (this.props.view === 'compile') {
       view = (
         <div className={highlighted}>

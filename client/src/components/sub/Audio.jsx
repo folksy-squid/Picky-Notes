@@ -69,13 +69,13 @@ class Audio extends React.Component {
   }
 
   handleMouseup() {
-    let timestamps = this.props.note.audioTimestampArray;
-    let wavePos = this.props.waveform.pos;
-    for (var i = 0; i < timestamps.length; i++) {
-      if (timestamps[i] > wavePos > (timestamps[i-1] ? timestamps[i-1] : 0)) {
-        return this.props.dispatch(setTimer(i, wavePos));
-      }
-    }
+    // let timestamps = this.props.note.audioTimestampArray;
+    // let wavePos = this.props.waveform.pos;
+    // for (var i = 0; i < timestamps.length; i++) {
+    //   if (timestamps[i] > wavePos > (timestamps[i-1] ? timestamps[i-1] : 0)) {
+    //     return this.props.dispatch(setTimer(i, wavePos));
+    //   }
+    // }
   }
 
   render() {

@@ -28,6 +28,7 @@ export default (state = {notes: []}, action) => {
       return Number(note.audioTimestamp) / 1000;
     });
     action.cb();
+    return state;
   }
     // state = action.allNotes.sort((a, b) => Date.parse(a.audioTimestamp) - Date.parse(b.audioTimestamp));
 
@@ -44,23 +45,21 @@ export default (state = {notes: []}, action) => {
     state.notes = state.notes.map((note) => {
       if (note.id === action.noteId) {
         note.show = !note.show;
-        console.log('note', note.show);
-        // if (note.changed) {
-        //   delete note.changed;
-        // } else {
-        //   note.changed = true;
-        // }
+        if (note.changed) {
+          delete note.changed;
+        } else {
+          note.changed = true;
+        }
       }
       return note;
     });
-    console.log('helloooo', state.notes);
+    return state;
   }
 
   if (action.type === 'SET_TIMER') {
     let currentNoteSelected = action.index - 1;
     console.log('triggering timer');
     var wavePos = action.wavePos;
-
     const updateNote = () => {
       if (state.timer) {
         clearTimeout(state.timer);
@@ -75,9 +74,8 @@ export default (state = {notes: []}, action) => {
         state.timer = window.setTimeout(updateNote, diff * 1000);
       }
     };
-
     updateNote();
-
+    return state;
   }
 
   return state;
