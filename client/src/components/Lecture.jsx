@@ -74,10 +74,6 @@ class Lecture extends React.Component {
     });
   }
 
-  componentDidMount() {
-    this.props.room.socket && this.applyListeners();
-  }
-
   checkHost() {
     let host = this.props.room.participants[0];
     let user = this.props.user.information[0];

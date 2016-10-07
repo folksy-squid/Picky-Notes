@@ -27,7 +27,7 @@ export default (state = {notes: []}, action) => {
     state.audioTimestampArray = notes.map((note) => {
       return Number(note.audioTimestamp) / 1000;
     });
-    action.cb();
+    action.cb && action.cb();
     return state;
   }
     // state = action.allNotes.sort((a, b) => Date.parse(a.audioTimestamp) - Date.parse(b.audioTimestamp));
