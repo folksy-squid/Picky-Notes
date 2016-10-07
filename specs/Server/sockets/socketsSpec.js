@@ -1,6 +1,6 @@
 const expect = require('chai').expect;
 const {ioServer} = require('../../../server/server');
-const {db, User, Room, Note} = require('../../../server/database/db-config');
+const {db, User, Room} = require('../../../server/database/db-config');
 
 const ioClient = require('socket.io-client');
 const socketURL = 'http://0.0.0.0:3000';
@@ -28,7 +28,7 @@ const testRoom = {
   hostId: 9999
 };
 
-let roomCreator;
+let roomCreator, joiner;
 
 before((done) => {
   db.sync()
@@ -43,10 +43,11 @@ before((done) => {
 
 beforeEach(() => {
   roomCreator = ioClient.connect(socketURL, options);
-  roomCreator.emit('create room', 'TESTT', testUser1);
 });
 
-afterEach(() => roomCreator.disconnect());
+afterEach(() => {
+  roomCreator.disconnect();
+});
 
 describe('Server Side Socket Connection', () => {
 
@@ -57,7 +58,12 @@ describe('Server Side Socket Connection', () => {
     });
   });
 
+});
+
+describe('Room Creation', () => {
+
   it('should create rooms', (done) => {
+    roomCreator.emit('create room', 'TESTT', testUser1);
     roomCreator.on('create room success', () => {
       expect(ioServer.sockets.adapter.rooms).to.have.property('TESTT');
       done();
@@ -70,17 +76,20 @@ describe('Server Side Socket Connection', () => {
 
 });
 
+
 describe('Other Users Joining Room', () => {
 
-  var joiner;
-  var exampleNote = { content: 'Picky Notes is a collaborative note taking app.' };
+  const exampleNote = { content: 'Picky Notes is a collaborative note taking app.' };
 
   beforeEach(() => {
     joiner = ioClient.connect(socketURL, options);
+    roomCreator.emit('create room', 'TESTT', testUser1);
     roomCreator.on('create room success', () => joiner.emit('join room', 'TESTT', testUser2));
   });
 
-  afterEach(() => joiner.disconnect());
+  afterEach(() => {
+    joiner.disconnect();
+  });
 
   it('should put users in a room', (done) => {
     joiner.on('join room success', () => {
@@ -106,20 +115,21 @@ describe('Other Users Joining Room', () => {
 
 describe('Create Notes', () => {
 
-  var joiner;
-  var testNote = { content: 'This is the test note.' };
-  var creatorNote = { content: 'Picky Notes is a collaborative note taking app.' };
-  var joinerNote = { content: 'This is not a note taking app.' };
+  const creatorNote = { content: 'Picky Notes is a collaborative note taking app.' };
+  const joinerNote = { content: 'This is not a note taking app.' };
 
   beforeEach(() => {
     joiner = ioClient.connect(socketURL, options);
+    roomCreator.emit('create room', 'TESTT', testUser1);
     roomCreator.on('create room success', () => joiner.emit('join room', 'TESTT', testUser2));
   });
 
-  afterEach(() => joiner.disconnect());
+  afterEach(() => {
+    joiner.disconnect();
+  });
 
   it('should receive new notes from the client', (done) => {
-    roomCreator.on('create room success', () => roomCreator.emit('new note', testNote));
+    joiner.on('join room success', () => roomCreator.emit('new note', creatorNote));
     roomCreator.on('add note success', () => done());
   });
 

@@ -4,8 +4,6 @@ var express = require('express');
 var expect = require('chai').expect;
 var {app} = require('../../server/server');
 var {db, User, Room, Note} = require('../../server/database/db-config');
-var cache = require('../../server/cache/cache-config');
-var cacheHelpers = require('../../server/cache/cache-helpers');
 
 var testUser1 = {
   id: 9999,
@@ -32,9 +30,6 @@ before((done) => {
     User.destroy({where: { id: 9999 } })
     .then(() => User.destroy({where: { id: 6666 } }))
     .then(() => Room.destroy({ where: { hostId: 9999 } }))
-    .then(() => cache.del('TESTT'))
-    .then(() => cache.del('9999:TESTT'))
-    .then(() => cache.del('6666:TESTT'))
     .then(() => User.create(testUser1))
     .then(() => User.create(testUser2))
     .then(() => done());
