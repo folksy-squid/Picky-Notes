@@ -11,10 +11,14 @@ class NoteList extends React.Component {
 
   constructor(props) {
     super(props);
+    console.log('notelistprops', props);
     var pathname = props.routing.locationBeforeTransitions.pathname;
     var currentView = getCurrentView(pathname);
     this.state = {
       view: currentView,
+      noteTimestampArray: null,
+      loaded: true,
+      currentNoteSelected: 0
     };
   }
 
@@ -28,6 +32,10 @@ class NoteList extends React.Component {
     }
 
     if (this.state.view === 'compile') {
+      var context = this;
+      this.setState({
+        loaded: false
+      });
       this.getAllNotes(userId, roomId);
     }
 
@@ -43,8 +51,13 @@ class NoteList extends React.Component {
       contentType: 'application/json',
       success: (res, status) => {
         // replace current Notes with response
-        this.props.dispatch(replaceNotes(res));
-        // reassign with notes from server
+        console.log('got notes.');
+        this.props.dispatch(replaceNotes(res, () => {
+          console.log('getting all notes');
+          this.setState({
+            loaded: true
+          });
+        }));
       },
       error: ( res, status ) => {
         console.log(res);
@@ -68,12 +81,18 @@ class NoteList extends React.Component {
     });
   }
 
+
+  // <Note key={i} noteInfo={note} {this.ishighlighted.bind(this, i) && highlighted="true"} view={this.state.view} />
+
   render() {
     return (
+      this.state.loaded ? (
       <div className="note-list">
-        {this.props.note.map((note, i)=>(<Note key={i} noteInfo={note} view={this.state.view}/>)
+        {this.props.note.notes.map((note, i)=>(
+          <Note key={i} noteInfo={note} view={this.state.view} />
+          )
         )}
-      </div>
+      </div> ) : (<div></div>)
     );
   }
 }

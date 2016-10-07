@@ -15,7 +15,7 @@ class InputBox extends React.Component {
     if (this.refs.inputNote.value.trim() === '') { return; }
     if (getCurrentView(this.props.routing.locationBeforeTransitions.pathname) === 'compile') {
       let note = {
-        content: this.refs.inputNote.value, 
+        content: this.refs.inputNote.value,
         originalUserId: this.props.user.information[0].id,
         roomId: this.props.room.roomInfo.id
       };
@@ -25,6 +25,7 @@ class InputBox extends React.Component {
         contentType: 'application/json',
         data: JSON.stringify(note),
         success: (savedNote) => {
+          console.log(savedNote);
           this.props.dispatch(addNote(savedNote));
           this.refs.inputNote.value = '';
         },

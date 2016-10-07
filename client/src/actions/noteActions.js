@@ -28,10 +28,11 @@ export const editNote = (noteId, newText) => {
   };
 };
 
-export const replaceNotes = (allNotes) => {
+export const replaceNotes = (allNotes, cb) => {
   return {
     type: 'REPLACE_NOTES',
-    allNotes
+    allNotes,
+    cb
   };
 };
 
@@ -48,5 +49,13 @@ export const getNotesFromRoom = (pathUrl, user, cb) => {
     pathUrl,
     user,
     cb
+  };
+};
+
+export const setTimer = (index, wavePos) => {
+  return {
+    type: 'SET_TIMER',
+    index,
+    wavePos
   };
 };
