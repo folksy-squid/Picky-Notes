@@ -56,7 +56,7 @@ describe('/api/rooms/', () => {
 
   afterEach(() => Room.destroy({ where: { hostId: 9999 } }));
 
-  describe('Room Creation', () => {
+  describe('Room Creation /api/rooms', () => {
 
     it('should create a entry in the database', () => {
       Room.findOne({ where: { hostId: 9999 } })
@@ -79,32 +79,47 @@ describe('/api/rooms/', () => {
       expect(hash1).to.not.equal(hash2);
     });
   });
+
+  describe('Room Joining /api/rooms/:pathUrl', () => {
+    describe('POST', () => {
+      it('should have user join the room', () => {});
+      it('', () => {});
+    });
+  });
+
+  describe('Room Status /api/room/status', () => {
+    it('', () => {});
+  });
+
 });
 
 describe('/api/users', () => {
   beforeEach(() => {});
   afterEach(() => {});
-  describe('', () => {
-    it('', () => {});
-    it('', () => {});
+
+  describe('All Users in Rooms /api/users/rooms/:userId', () => {
+    describe('GET', () => {
+      it('should return all users and rooms', () => {});
+    });
   });
-  describe('', () => {
-    it('', () => {});
-    it('', () => {});
-  });
+
 });
 
 describe('/api/notes', () => {
   beforeEach(() => {});
   afterEach(() => {});
 
-  describe('', () => {
-    it('', () => {});
-    it('', () => {});
+  describe('Note Creation', () => {
+    describe('/api/notes/create', () => {
+      it('', () => {});
+      it('', () => {});
+    });
   });
-  describe('', () => {
-    it('', () => {});
-    it('', () => {});
+  describe('Note Editing', () => {
+    describe('/api/notes/:userId/:roomId', () => {
+      it('', () => {});
+      it('', () => {});
+    });
   });
 });
 
@@ -112,12 +127,10 @@ describe('/api/audio', () => {
   beforeEach(() => {});
   afterEach(() => {});
 
-  describe('', () => {
-    it('', () => {});
-    it('', () => {});
+  describe('Audio Retrieval', () => {
+    describe('GET /api/audio/:pathUrl', () => {
+      it('', () => {});
+    });
   });
-  describe('', () => {
-    it('', () => {});
-    it('', () => {});
-  });
+
 });
