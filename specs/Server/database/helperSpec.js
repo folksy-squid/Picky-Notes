@@ -7,10 +7,7 @@ describe('multiply notes', () => {
     {originalUserId: 2, editingUserId: 2}
   ];
 
-  const clients = [
-    {id: 0},
-    {id: 1},
-    {id: 2}];
+  const clients = ['0', '1', '2'];
 
   var test;
 
@@ -22,6 +19,6 @@ describe('multiply notes', () => {
   });
   it('should not mutate the original notes and clients', () => {
     expect(notes[0].editingUserId).to.equal(0);
-    expect(clients[0].id).to.equal(0);
+    expect(clients[0]).to.equal('0');
   });
 });

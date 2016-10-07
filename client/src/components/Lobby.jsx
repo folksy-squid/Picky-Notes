@@ -112,7 +112,7 @@ class Lobby extends React.Component {
           </div>
         </div>
       </div>
-    ) : (<div></div>)
+    ) : (<h2>{this.state.error}</h2>)
   );
   }
 }
