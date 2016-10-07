@@ -31,11 +31,10 @@ class SearchBar extends React.Component {
   render() {
     return (
       <form className="navbar-form" role="search">
+      <Dropdown list={this.state.allClasses} filter={this.props.filter} />
         <div className="form-group">
-          <input type="text" className="form-control" placeholder="Search" />
+          <input type="text" className="form-control" placeholder="Filter..." />
         </div>
-        <button type="submit" className="btn btn-default">Go</button>
-        <Dropdown list={this.state.allClasses} filter={this.props.filter} />
       </form>
     );
   }

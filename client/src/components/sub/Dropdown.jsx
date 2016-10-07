@@ -31,7 +31,7 @@ export default class Dropdown extends React.Component {
   render () {
     return (
       <div>
-        Classes: <select value={this.state.selected} onChange={this.select.bind(this)}>
+        <select value={this.state.selected} onChange={this.select.bind(this)}>
           {this.renderListItems()}
         </select>
       </div>
