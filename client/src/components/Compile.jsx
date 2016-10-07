@@ -16,11 +16,7 @@ class Compile extends React.Component {
       loaded: true
     };
   }
-  shouldComponentUpdate(nextProps) {
-    // if (this.props.waveform.pos !== nextProps.waveform.pos )
-    //   return false;
-    return true;
-  }
+
   static get contextTypes() {
     return {
       router: React.PropTypes.object.isRequired,

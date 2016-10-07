@@ -44,7 +44,7 @@ export default (state = {notes: []}, action) => {
     state.notes = state.notes.map((note) => {
       if (note.id === action.noteId) {
         note.show = !note.show;
-        console.log('note', note);
+        console.log('note', note.show);
         // if (note.changed) {
         //   delete note.changed;
         // } else {
@@ -53,6 +53,7 @@ export default (state = {notes: []}, action) => {
       }
       return note;
     });
+    console.log('helloooo', state.notes);
   }
 
   if (action.type === 'SET_TIMER') {

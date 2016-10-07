@@ -12,9 +12,6 @@ class Note extends React.Component {
       edit: false
     };
   }
-  shouldComponentUpdate(nextProps, nextState) {
-    return nextProps.highlight ? true : false;
-  }
 
   saveNote(note) {
     // this can be invoked when in the compiled view
