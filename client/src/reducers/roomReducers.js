@@ -81,7 +81,7 @@ export default (state = {}, action) => {
   const findUser = (list, user) => list.findIndex( obj => obj.id === user.id);
 
   if (action.type === 'LEAVE_SOCKET_ROOM') {
-    state.socket.disconnect();
+    state.socket && state.socket.disconnect();
     return {
       ...state,
       socket: null
