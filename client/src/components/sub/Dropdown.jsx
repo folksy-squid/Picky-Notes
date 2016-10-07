@@ -14,7 +14,6 @@ export default class Dropdown extends React.Component {
   }
 
   select (e) {
-    console.log('target', e.target.value);
     this.setState({ selectedValue: e.target.value });
     this.props.filter(e.target.value);
   }
