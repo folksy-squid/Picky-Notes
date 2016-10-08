@@ -28,6 +28,19 @@ export const editNote = (noteId, newText) => {
   };
 };
 
+export const deleteNote = (noteId) => {
+  return {
+    type: 'DELETE_NOTE',
+    noteId,
+  };
+};
+
+export const clearDeletedNotes = () => {
+  return {
+    type: 'CLEAR_DELETED_NOTES',
+  };
+};
+
 export const replaceNotes = (allNotes, cb) => {
   return {
     type: 'REPLACE_NOTES',

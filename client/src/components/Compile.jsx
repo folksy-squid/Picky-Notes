@@ -4,6 +4,7 @@ import {connect} from 'react-redux';
 import ParticipantList from './sub/ParticipantList.jsx';
 import LectureBox from './sub/LectureBox.jsx';
 import {setRoomInfo} from '../actions/roomActions';
+import {clearDeletedNotes} from '../actions/noteActions';
 import RoomReducer from '../reducers/roomReducers';
 import UserReducer from '../reducers/userReducers';
 import NoteReducer from '../reducers/noteReducers';
@@ -44,24 +45,46 @@ class Compile extends React.Component {
 
   reviewNotesHandler() {
     let changedNotes = this.props.note.notes.filter(note => note.changed);
-    if (changedNotes.length === 0) {
+    let deletedNotes = this.props.note.deleted;
+    let ajaxRequests = [];
+    if (changedNotes.length) {
+      // remove change property
+      changedNotes = JSON.parse(JSON.stringify(changedNotes));
+      changedNotes = changedNotes.map(note => {
+        delete note.changed;
+        return note;
+      });
+      // queue ajax request to update notes
+      ajaxRequests.push(
+        $.ajax({
+          method: 'PUT',
+          url: `/api/notes/${this.props.user.information[0].id}/${this.props.room.roomInfo.id}`,
+          contentType: 'application/json',
+          data: JSON.stringify(changedNotes),
+        })
+      );
+    } else if (deletedNotes.length) {
+      // remove deleted property
+      let noteIds = deletedNotes.map(note => note.id);
+      // queue ajax request to delete notes
+      ajaxRequests.push(
+        $.ajax({
+          method: 'DELETE',
+          url: `/api/notes/${this.props.user.information[0].id}/${this.props.room.roomInfo.id}`,
+          contentType: 'application/json',
+          data: JSON.stringify(noteIds),
+        })
+      );
+    } else {
       return this.context.router.push(`/review/${this.props.room.roomInfo.pathUrl}`);
     }
-    changedNotes = JSON.parse(JSON.stringify(changedNotes));
-    changedNotes = changedNotes.map(note => {
-      delete note.changed;
-      return note;
-    });
-    $.ajax({
-      method: 'PUT',
-      url: `/api/notes/${this.props.user.information[0].id}/${this.props.room.roomInfo.id}`,
-      contentType: 'application/json',
-      data: JSON.stringify(changedNotes),
-      success: (res) => {
-        this.context.router.push(`/review/${this.props.room.roomInfo.pathUrl}`);
-      },
-      error: (error) => console.log('Error updating changed notes', error),
-    });
+
+    $.when(...ajaxRequests)
+    .done((res) => {
+      this.props.dispatch(clearDeletedNotes());
+      this.context.router.push(`/review/${this.props.room.roomInfo.pathUrl}`);
+    })
+    .fail((error) => console.log('Error updating changed notes', error));
   }
 
 // IF this.props.roomInfo.audioUrl === 'audioUrl', render the audio loading component

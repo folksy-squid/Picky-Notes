@@ -1,5 +1,5 @@
 /*jshint esversion: 6 */
-const {createNewUser, createNewRoom, joinRoom, createNewNote, showAllNotes, showFilteredNotes, updateNotes, getAllUserRooms, getRoom, saveAudioToRoom, getAudioForRoom} = require ('../database/db-helpers');
+const {createNewUser, createNewRoom, joinRoom, createNewNote, showAllNotes, showFilteredNotes, updateNotes, getAllUserRooms, getRoom, saveAudioToRoom, getAudioForRoom, deleteNotes} = require ('../database/db-helpers');
 const passport = require('./passport');
 const path = require('path');
 const audioUpload = require('./audioUpload');
@@ -95,6 +95,15 @@ module.exports = (app, express, io) => {
       // [{id, show, content}]
       updateNotes(req.params.userId, req.params.roomId, req.body, (err) => {
         if (err) { res.status(400).send({ text: 'Bad Update Note Request', error: err }); }
+        res.status(204).send();
+      });
+    })
+    .delete((req, res) => {
+      deleteNotes(req.body, error => {
+        if (error) { 
+          console.log(error);
+          res.status(404).send(error); 
+        }
         res.status(204).send();
       });
     });

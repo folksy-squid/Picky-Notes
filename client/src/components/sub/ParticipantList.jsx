@@ -56,17 +56,19 @@ class ParticipantList extends React.Component {
   }
 
   render() {
-    var participantLength = this.props.room.participants.length;
-    var classColor = (i) => 'participant' + i;
+    const participants = this.props.room.participants;
+    const participantLength = participants.length;
+    const userId = this.props.user.information[0].id;
+    const classColor = (i) => 'participant' + i;
     return (
       <div className="participants">
         <h4>
           Participants ({participantLength}/10)
         </h4>
-        {this.props.room.participants.map(({name, readyStatus}, i) =>
+        {participants.map(({name, readyStatus}, i) =>
         <div key={i}>
           <i className={`fa fa-user ${classColor(`${i}`)}`} aria-hidden="true"></i>
-          <span>{name}</span>&nbsp;
+          <span>{`${name} ${i === 0 ? '(Host)' : ''}`}</span>&nbsp;
           <span className={`btn-ready ${classColor(`${i}`)}`} style={{display: this.state.readyStatusDisplay}}>{readyStatus ? 'Ready' : 'Not Ready'}</span>
         </div>)}
       </div>

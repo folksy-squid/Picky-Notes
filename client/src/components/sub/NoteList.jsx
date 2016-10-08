@@ -11,7 +11,6 @@ class NoteList extends React.Component {
 
   constructor(props) {
     super(props);
-    console.log('notelistprops', props);
     var pathname = props.routing.locationBeforeTransitions.pathname;
     var currentView = getCurrentView(pathname);
     this.state = {
@@ -32,12 +31,9 @@ class NoteList extends React.Component {
     }
     if (this.state.view === 'lecture') {
       this.setState({ loaded: true });
-    }
-    if (this.state.view === 'compile') {
+    } else if (this.state.view === 'compile') {
       this.getAllNotes(userId, roomId);
-    }
-
-    if (this.state.view === 'review') {
+    } else if (this.state.view === 'review') {
       this.getReviewNotes(userId, roomId);
     }
   }

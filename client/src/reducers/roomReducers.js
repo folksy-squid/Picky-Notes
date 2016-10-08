@@ -3,6 +3,10 @@
 import ss from 'socket.io-stream';
 
 const createSocketRoom = (state, host, pathUrl, createRoom) => {
+  if (state.socket) {
+    state.socket.disconnect();
+    state.socket = null;
+  }
   // this is if server is localhost
   var socket = io();
   // if server is not localhost,
@@ -61,6 +65,10 @@ export default (state = {}, action) => {
       contentType: 'application/json',
       data: JSON.stringify({userId: action.user.id}),
       success: (response) => {
+        if (state.socket) {
+          state.socket.disconnect();
+          state.socket = null;
+        }
         var socket = io();
         socket.emit('join room', action.pathUrl, action.user);
         socket.on('join room error', () => {
