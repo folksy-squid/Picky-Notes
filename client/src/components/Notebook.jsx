@@ -8,6 +8,7 @@ class Notebook extends React.Component {
   constructor (props) {
     super(props);
     this.state = {
+      selectedClass: 'All',
       loaded: false
     };
   }
@@ -27,10 +28,21 @@ class Notebook extends React.Component {
     });
   }
 
-  filterNotebooks(selectedClass) {
+  filterTopic(search) {
+    let filtered = [];
+    this.state.original.forEach((notebook) => {
+      if (notebook.topic.indexOf(search) === -1 && notebook.lecturer.indexOf(search) === -1) { return; }
+      if (notebook.class === this.state.selectedClass || this.state.selectedClass === 'All') {
+        filtered.push(notebook);
+      }
+    });
+    this.setState({ entries: filtered });
+  }
+
+  filterClass(selectedClass) {
     let filteredEntries = (selectedClass === 'All') ?
       this.state.original : this.state.original.filter((entry) => entry.class === selectedClass);
-    this.setState({ entries: filteredEntries });
+    this.setState({ entries: filteredEntries, selectedClass: selectedClass});
   }
 
   render() {
@@ -42,7 +54,7 @@ class Notebook extends React.Component {
             <h3>My Lectures</h3>
           </div>
           <div className="col-sm-4">
-            <SearchBar entries={this.state.entries} filter={this.filterNotebooks.bind(this)} />
+            <SearchBar entries={this.state.entries} filterClass={this.filterClass.bind(this)} filterTopic={this.filterTopic.bind(this)} />
           </div>
         </div>
         <div className="row">
