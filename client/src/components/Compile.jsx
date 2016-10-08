@@ -4,6 +4,7 @@ import {connect} from 'react-redux';
 import ParticipantList from './sub/ParticipantList.jsx';
 import LectureBox from './sub/LectureBox.jsx';
 import {setRoomInfo} from '../actions/roomActions';
+import {clearDeletedNotes} from '../actions/noteActions';
 import RoomReducer from '../reducers/roomReducers';
 import UserReducer from '../reducers/userReducers';
 import NoteReducer from '../reducers/noteReducers';
@@ -46,7 +47,6 @@ class Compile extends React.Component {
     let changedNotes = this.props.note.notes.filter(note => note.changed);
     let deletedNotes = this.props.note.deleted;
     let ajaxRequests = [];
-    
     if (changedNotes.length) {
       // remove change property
       changedNotes = JSON.parse(JSON.stringify(changedNotes));
@@ -81,6 +81,7 @@ class Compile extends React.Component {
 
     $.when(...ajaxRequests)
     .done((res) => {
+      this.props.dispatch(clearDeletedNotes());
       this.context.router.push(`/review/${this.props.room.roomInfo.pathUrl}`);
     })
     .fail((error) => console.log('Error updating changed notes', error));

@@ -55,6 +55,13 @@ export default (state = {notes: [], deleted: []}, action) => {
     };
   }
 
+  if (action.type === 'CLEAR_DELETED_NOTES') {
+    return {
+      ...state,
+      deleted: [],
+    };
+  }
+
   if (action.type === 'SELECT_NOTE') {
     let notes = state.notes;
 
