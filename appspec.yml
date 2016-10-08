@@ -8,11 +8,11 @@ permissions:
      pattern: "**"
 hooks:
    ApplicationStop:
-   - location: bin/app-stop
+   - location: bin/app-stop.sh
      timeout: 10
 
    AfterInstall:
-   - location: bin/install-pkgs
+   - location: bin/install-pkgs.sh
 
    ApplicationStart:
-   - location: bin/app-start
+   - location: bin/app-start.sh
