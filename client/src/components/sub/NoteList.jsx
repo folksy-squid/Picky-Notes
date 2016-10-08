@@ -1,6 +1,6 @@
 import React from 'react';
 import Note from './Note.jsx';
-import {addNote, replaceNotes} from '../../actions/noteActions.js';
+import {addNote, replaceNotes, removeTimer, setTimer} from '../../actions/noteActions.js';
 import NoteReducer from '../../reducers/noteReducers';
 import RoomReducer from '../../reducers/roomReducers';
 import UserReducer from '../../reducers/userReducers';
@@ -17,7 +17,7 @@ class NoteList extends React.Component {
     this.state = {
       view: currentView,
       noteTimestampArray: null,
-      loaded: true,
+      loaded: false,
       currentNoteSelected: 0
     };
   }
@@ -32,10 +32,6 @@ class NoteList extends React.Component {
     }
 
     if (this.state.view === 'compile') {
-      var context = this;
-      this.setState({
-        loaded: false
-      });
       this.getAllNotes(userId, roomId);
     }
 
@@ -58,6 +54,18 @@ class NoteList extends React.Component {
             loaded: true
           });
         }));
+        this.props.dispatch(removeTimer());
+        setTimeout(() => {
+          console.log('setting a new timer');
+          let timestamps = this.props.note.audioTimestampArray;
+          let wavePos = this.props.waveform.pos;
+          for (var i = 0; i < timestamps.length; i++) {
+            if (timestamps[i] > wavePos) {
+              console.log('this is the next timestamp', timestamps[i]);
+              return this.props.dispatch(setTimer(i, wavePos));
+            }
+          }
+        }, 10);
       },
       error: ( res, status ) => {
         console.log(res);
@@ -72,7 +80,12 @@ class NoteList extends React.Component {
       url: `/api/notes/${userId}/${roomId}?filter=show`,
       success: (res, status) => {
         // replace current Notes with response
-        this.props.dispatch(replaceNotes(res));
+        this.props.dispatch(replaceNotes(res, () => {
+          console.log('getting all notes');
+          this.setState({
+            loaded: true
+          });
+        }));
         // reassign with notes from server
       },
       error: (res, status) => {
@@ -90,9 +103,8 @@ class NoteList extends React.Component {
       this.state.loaded ? (
       <div className={listClass}>
         {this.props.note.notes.map((note, i)=>(
-          <Note key={i} noteInfo={note} view={this.state.view} />
-          )
-        )}
+            <Note key={i} noteInfo={note} view={this.state.view} />
+        ))}
       </div> ) : (<div></div>)
     );
   }

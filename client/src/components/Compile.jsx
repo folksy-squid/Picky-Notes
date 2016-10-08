@@ -8,6 +8,7 @@ import RoomReducer from '../reducers/roomReducers';
 import UserReducer from '../reducers/userReducers';
 import NoteReducer from '../reducers/noteReducers';
 import Audio from './sub/Audio.jsx';
+import LectureTitle from './sub/LectureTitle.jsx';
 
 class Compile extends React.Component {
   constructor (props) {
@@ -35,6 +36,7 @@ class Compile extends React.Component {
           realm.context.router.push('/notebook');
         } else {
           realm.setState({loaded: true});
+
         }
       }));
     }
@@ -67,12 +69,9 @@ class Compile extends React.Component {
     return (
       this.state.loaded ? (
     <div className="container-fluid">
+      <LectureTitle />
       <div className="row">
-        <h3>Edit Notes</h3>
-        <div className= "col-md-11">
           <Audio />
-        </div>
-
       </div>
       <div className="row">
         <div className="col-md-9">

@@ -52,11 +52,16 @@ class Note extends React.Component {
   render() {
     var view;
     //props.page will be obtained from redux store.
-
     if (this.props.view === 'compile') {
+      if (!this.props.noteInfo.content) {
+        if (this.props.noteInfo.highlight) {
+          return (<div className='pointer'></div>);
+        } else {
+          return (<div></div>);
+        }
+      }
 
       view = (
-        this.props.noteInfo.highlight ? (
         <div>
           <div className='note'>
             <input type="checkbox" ref="checkbox" onChange={this.toggleNoteHandler.bind(this)} checked={this.props.noteInfo.show}/>
@@ -71,31 +76,25 @@ class Note extends React.Component {
             }
             <span className="audioTimestamp">{this.formatTime(this.props.noteInfo.audioTimestamp)}</span>
           </div>
-          <div className='pointer' />
-        </div>
-        ) : (
-        <div className='note'>
-          <input type="checkbox" ref="checkbox" onChange={this.toggleNoteHandler.bind(this)} checked={this.props.noteInfo.show}/>
-          {this.state.edit ?
-            <span className="content">
-              <form onSubmit={this.editHandler.bind(this)}>
-                <input ref="noteInput" type="text" defaultValue={this.props.noteInfo.content} />
-              </form>
-            </span>
-            :
-            <span className="content" onClick={this.compileClickHandler.bind(this)}>{this.props.noteInfo.content}</span>
+          {this.props.noteInfo.highlight && (
+          <div className='pointer' />)
           }
-          <span className="audioTimestamp">{this.formatTime(this.props.noteInfo.audioTimestamp)}</span>
         </div>
-        )
       );
     } else if (this.props.view === 'lecture') {
+      if (!this.props.noteInfo.content) {
+        return (<div></div>);
+      }
       view = (
         <div className="note">
           <span className="content">{this.props.noteInfo.content}</span>
           <span className="audioTimestamp">{this.formatTime(this.props.noteInfo.audioTimestamp)}</span>
         </div>);
-    } else if (this.props.view === 'review') {
+    } else
+    if (this.props.view === 'review') {
+      if (!this.props.noteInfo.content) {
+        return (<div></div>);
+      }
       view = (
         <div className="note">
           <i className="fa fa-play-circle" aria-hidden="true" onClick={this.playNote.bind(this)}></i>

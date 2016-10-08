@@ -59,3 +59,9 @@ export const setTimer = (index, wavePos) => {
     wavePos
   };
 };
+
+export const removeTimer = () => {
+  return {
+    type: 'REMOVE_TIMER'
+  };
+};

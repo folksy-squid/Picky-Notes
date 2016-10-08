@@ -24,7 +24,7 @@ export default (state = {notes: []}, action) => {
   if (action.type === 'REPLACE_NOTES') {
     var notes = action.allNotes.sort((a, b) => Date.parse(a.audioTimestamp) - Date.parse(b.audioTimestamp));
 
-    state.notes = notes;
+    state.notes = [{audioTimestamp: 0}].concat(notes);
     state.audioTimestampArray = notes.map((note) => {
       return Number(note.audioTimestamp) / 1000;
     });
@@ -56,34 +56,48 @@ export default (state = {notes: []}, action) => {
   }
 
   if (action.type === 'SET_TIMER') {
-    let currentNoteSelected = action.index - 1;
-    let wavePos = action.wavePos;
-
+    if (!window.timer) {
+      window.timer;
+    }
+    if (window.timer) {
+      window.clearTimeout(window.timer);
+    }
+    state.currentNoteSelected = action.index;
+    state.wavePos = action.wavePos;
+    state.diff = (state.audioTimestampArray[state.currentNoteSelected] - state.wavePos);
+    state.notes.forEach((note) => {
+      note['highlight'] = null;
+    });
     const updateNote = () => {
-
       if (state.highlightedIndex >= 0) {
-        state.notes[state.highlightedIndex]['highlight'] = null;
+        state.notes.forEach((note) => {
+          note['highlight'] = null;
+        });
+      }
+      if (state.currentNoteSelected > -1) {
+        state.notes[state.currentNoteSelected]['highlight'] = true;
+        state.highlightedIndex = state.currentNoteSelected;
       }
 
-      state.timer && clearTimeout(state.timer);
-
-      if (currentNoteSelected > -1) {
-        state.notes[currentNoteSelected]['highlight'] = true;
-        state.highlightedIndex = currentNoteSelected;
+      window.timer && window.clearTimeout(window.timer);
+      state.diff = (state.audioTimestampArray[state.currentNoteSelected] - state.wavePos);
+      state.wavePos = state.wavePos + state.diff;
+      state.currentNoteSelected++;
+      if (state.audioTimestampArray[state.currentNoteSelected - 1]) {
+        window.timer = window.setTimeout(updateNote, state.diff * 1000 + 10);
       }
 
-      let diff = (state.audioTimestampArray[++currentNoteSelected] - wavePos);
-      wavePos += diff;
-
-      if (state.audioTimestampArray.length > currentNoteSelected) {
-        state.timer = window.setTimeout(updateNote, diff * 1000);
-      }
 
     };
-
     updateNote();
     return state;
   }
-
-  return state;
+  if (action.type === 'REMOVE_TIMER') {
+    console.log('removing the timer', window.timer);
+    if (window.timer) {
+      window.clearTimeout(window.timer);
+    }
+    return state;
+  }
+  return {...state};
 };

@@ -40,13 +40,15 @@ class Review extends React.Component {
   render() {
     return (
       this.state.loaded ? (
-      <div className="container">
+      <div className="container-fluid">
         <LectureTitle />
+        <div className="row">
+        {this.props.room.roomInfo.audioUrl === 'audio url' ? (<div>Audio does not exist</div>) : <Audio />}
+        </div>
         <NoteList />
         <button className="btn btn-md btn-primary" onClick={this.goToCompiledView.bind(this)}>
           Add / Edit Notes
         </button>
-        {this.props.room.roomInfo.audioUrl === 'audio url' ? (<div>Audio does not exist</div>) : <Audio />}
       </div>
     ) : (<div></div>)
     );
