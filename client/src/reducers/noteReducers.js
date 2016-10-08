@@ -5,7 +5,7 @@ export default (state = {notes: [], deleted: []}, action) => {
 
   if (action.type === 'ADD_NOTE') {
     let notes = state.notes.concat([action.note]);
-    notes.sort((a, b) => Date.parse(a.audioTimestamp) - Date.parse(b.audioTimestamp));
+    notes.sort((a, b) => a.audioTimestamp - b.audioTimestamp);
     return {
       ...state,
       notes,
@@ -23,7 +23,7 @@ export default (state = {notes: [], deleted: []}, action) => {
   }
 
   if (action.type === 'REPLACE_NOTES') {
-    let notes = action.allNotes.sort((a, b) => Date.parse(a.audioTimestamp) - Date.parse(b.audioTimestamp));
+    let notes = action.allNotes.sort((a, b) => a.audioTimestamp - b.audioTimestamp);
 
     state.notes = [{audioTimestamp: 0}].concat(notes);
     state.audioTimestampArray = notes.map((note) => {
