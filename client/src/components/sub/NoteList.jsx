@@ -11,7 +11,6 @@ class NoteList extends React.Component {
 
   constructor(props) {
     super(props);
-    console.log('notelistprops', props);
     var pathname = props.routing.locationBeforeTransitions.pathname;
     var currentView = getCurrentView(pathname);
     this.state = {

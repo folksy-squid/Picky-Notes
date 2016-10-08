@@ -44,24 +44,44 @@ class Compile extends React.Component {
 
   reviewNotesHandler() {
     let changedNotes = this.props.note.notes.filter(note => note.changed);
-    if (changedNotes.length === 0) {
+    let deletedNotes = this.props.note.deleted;
+    let ajaxRequests = [];
+    console.log('changed', changedNotes);
+    
+    if (changedNotes.length) {
+      // remove change property
+      changedNotes = JSON.parse(JSON.stringify(changedNotes));
+      changedNotes = changedNotes.map(note => {
+        delete note.changed;
+        return note;
+      });
+      // queue ajax request to update notes
+      ajaxRequests.push(
+        $.ajax({
+          method: 'PUT',
+          url: `/api/notes/${this.props.user.information[0].id}/${this.props.room.roomInfo.id}`,
+          contentType: 'application/json',
+          data: JSON.stringify(changedNotes),
+        })
+      );
+    } else if (deletedNotes.length) {
+      // remove deleted property
+      deletedNotes = JSON.parse(JSON.stringify(deletedNotes));
+      deletedNotes = deletedNotes.map(note => {
+        if (note.changed) { delete note.changed; }
+        return note;
+      });
+      console.log('deleted notes', deletedNotes)
+      // queue ajax request to delete notes
+    } else {
       return this.context.router.push(`/review/${this.props.room.roomInfo.pathUrl}`);
     }
-    changedNotes = JSON.parse(JSON.stringify(changedNotes));
-    changedNotes = changedNotes.map(note => {
-      delete note.changed;
-      return note;
-    });
-    $.ajax({
-      method: 'PUT',
-      url: `/api/notes/${this.props.user.information[0].id}/${this.props.room.roomInfo.id}`,
-      contentType: 'application/json',
-      data: JSON.stringify(changedNotes),
-      success: (res) => {
-        this.context.router.push(`/review/${this.props.room.roomInfo.pathUrl}`);
-      },
-      error: (error) => console.log('Error updating changed notes', error),
-    });
+
+    $.when(...ajaxRequests)
+    .done((res) => {
+      this.context.router.push(`/review/${this.props.room.roomInfo.pathUrl}`);
+    })
+    .fail((error) => console.log('Error updating changed notes', error));
   }
 
 // IF this.props.roomInfo.audioUrl === 'audioUrl', render the audio loading component

@@ -66,7 +66,6 @@ class Audio extends React.Component {
     this.setState({waveformDisplay: 'visible', loadingDisplay: 'none'});
     // this.props.dispatch(play());
     // this.props.dispatch(setTimer(0, .001));
-
   }
 
   handleVolumeChange(e) {

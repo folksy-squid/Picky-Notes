@@ -232,8 +232,28 @@ small.text-muted {
   margin-left: 15px;
 }
 
+input[type=checkbox] {
+  margin-right: 10px;
+}
+
 .audioTimestamp {
   margin-left: auto;
+}
+
+.deleteNoteButton {
+  margin-left: 10px;
+  background: #d9534f;
+  width: 20px;
+  text-align: center;
+  border-radius: 5px;
+}
+
+.deleteNoteButton:hover {
+  background: #c9302c;
+}
+
+.deleteNoteIcon {
+  color: white;
 }
 
 
