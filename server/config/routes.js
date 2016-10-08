@@ -97,6 +97,10 @@ module.exports = (app, express, io) => {
         if (err) { res.status(400).send({ text: 'Bad Update Note Request', error: err }); }
         res.status(204).send();
       });
+    })
+    .delete((req, res) => {
+      console.log(req);
+      res.status(204).send();
     });
 
   app.get('*/index.bundle.js', function (request, response) {
