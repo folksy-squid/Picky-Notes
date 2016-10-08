@@ -24,11 +24,11 @@ module.exports = {
       dbName: 'POSTGRES_PRODUCTION_DBNAME'
     },
     client: {
-      username: 'POSTGRES_DEV_USERNAME',
-      password: 'POSTGRES_DEV_PASSWORD',
-      host: 'POSTGRES_DEV_HOST',
-      port: 'POSTGRES_DEV_PORT',
-      dbName: 'POSTGRES_DEV_DBNAME'
+      username: 'POSTGRES_CLIENT_USERNAME',
+      password: 'POSTGRES_CLIENT_PASSWORD',
+      host: 'POSTGRES_CLIENT_HOST',
+      port: 'POSTGRES_CLIENT_PORT',
+      dbName: 'POSTGRES_CLIENT_DBNAME'
     }
   },
 };

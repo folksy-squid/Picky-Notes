@@ -29,7 +29,7 @@ class Navbar extends React.Component {
               <Link className="nav-link " to="/new">New Room</Link>
             </li>
             <li className="nav-item">
-              <Link className="nav-link" onClick={this.logout.bind(this)} to="/">Logout</Link>
+              <a href="/" className="nav-link" onClick={this.logout.bind(this)} >Logout</a>
             </li>
           </ul>
         </div>
