@@ -16,6 +16,10 @@ class SearchBar extends React.Component {
     this.getClassList();
   }
 
+  getUserInput (e) {
+    this.props.filterKeyword(e.target.value);
+  }
+
   getClassList () {
     var classList = {};
     var result = [];
@@ -31,9 +35,9 @@ class SearchBar extends React.Component {
   render() {
     return (
       <form className="navbar-form" role="search">
-      <Dropdown list={this.state.allClasses} filter={this.props.filter} />
+      <Dropdown list={this.state.allClasses} filterClass={this.props.filterClass} />
         <div className="form-group">
-          <input type="text" className="form-control" placeholder="Filter..." />
+          <input type="text" className="form-control" placeholder="Filter by Title/Lecturer..." onChange={this.getUserInput.bind(this)} />
         </div>
       </form>
     );
