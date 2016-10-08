@@ -101,7 +101,7 @@ class Compile extends React.Component {
           <LectureBox />
         </div>
         <div className="col-md-3">
-          <button className="btn btn-lg btn-success" onClick={this.reviewNotesHandler.bind(this)}>Review</button>
+          <button className="btn btn-lg btn-success" onClick={this.reviewNotesHandler.bind(this)}>Save & Review</button>
           {
             this.props.room.participants ? (
               <ParticipantList />

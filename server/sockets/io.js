@@ -92,12 +92,19 @@ module.exports = (listen) => {
     });
 
     socket.on('user ready', () => {
-      socket.ready = true;
-      io.in(socket.pathUrl).emit('user ready', socket.user);
-      if (isAllReady(socket.pathUrl, rooms, connected)) {
-        io.in(socket.pathUrl).emit('all ready');
-        saveAllNotes(socket.pathUrl, () => {
-          io.in(socket.pathUrl).emit('all notes saved');
+      const pathUrl = socket.pathUrl;
+      const socketIds = Object.keys(rooms[pathUrl].sockets);
+      socketIds.forEach(socketId => {
+        if (socket.user.id === connected[socketId].user.id) {
+          connected[socketId].ready = true;
+        }
+      }); 
+
+      io.in(pathUrl).emit('user ready', socket.user);
+      if (isAllReady(pathUrl, rooms, connected)) {
+        io.in(pathUrl).emit('all ready');
+        saveAllNotes(pathUrl, () => {
+          io.in(pathUrl).emit('all notes saved');
         });
       }
     });
