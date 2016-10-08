@@ -1,6 +1,6 @@
 import React from 'react';
 import Note from './Note.jsx';
-import {addNote, replaceNotes} from '../../actions/noteActions.js';
+import {addNote, replaceNotes, removeTimer, setTimer} from '../../actions/noteActions.js';
 import NoteReducer from '../../reducers/noteReducers';
 import RoomReducer from '../../reducers/roomReducers';
 import UserReducer from '../../reducers/userReducers';
@@ -58,6 +58,18 @@ class NoteList extends React.Component {
             loaded: true
           });
         }));
+        this.props.dispatch(removeTimer());
+        setTimeout(() => {
+          console.log('setting a new timer');
+          let timestamps = this.props.note.audioTimestampArray;
+          let wavePos = this.props.waveform.pos;
+          for (var i = 0; i < timestamps.length; i++) {
+            if (timestamps[i] > wavePos) {
+              console.log('this is the next timestamp', timestamps[i]);
+              return this.props.dispatch(setTimer(i, wavePos));
+            }
+          }
+        }, 10);
       },
       error: ( res, status ) => {
         console.log(res);

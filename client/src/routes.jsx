@@ -57,9 +57,9 @@ export default (store) => {
         <Route path="/lobby/:roomId" component={Lobby}/>
         <Route path='/review/:roomId' component={Review} />
         <Route path='/review' component={Review} />
+        <Route path='/lecture/:roomId' component={Lecture} onEnter={authCheck}/>
+        <Route path='/compile/:roomId' component={Compile} onEnter={authCheck}/>
       </Route>
-      <Route path='/lecture/:roomId' component={Lecture} onEnter={authCheck}/>
-      <Route path='/compile/:roomId' component={Compile} onEnter={authCheck}/>
     </Route>
   );
 };

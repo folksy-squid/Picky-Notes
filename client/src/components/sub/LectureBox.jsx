@@ -2,7 +2,6 @@ import React from 'react';
 import {connect} from 'react-redux';
 import NoteList from './NoteList.jsx';
 import InputBox from './InputBox.jsx';
-
 class LectureBox extends React.Component {
   constructor (props) {
     super(props);

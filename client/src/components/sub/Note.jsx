@@ -82,12 +82,19 @@ class Note extends React.Component {
         </div>
       );
     } else if (this.props.view === 'lecture') {
+      if (!this.props.noteInfo.content) {
+        return (<div></div>);
+      }
       view = (
         <div className="note">
           <span className="content">{this.props.noteInfo.content}</span>
           <span className="audioTimestamp">{this.formatTime(this.props.noteInfo.audioTimestamp)}</span>
         </div>);
-    } else if (this.props.view === 'review') {
+    } else
+    if (this.props.view === 'review') {
+      if (!this.props.noteInfo.content) {
+        return (<div></div>);
+      }
       view = (
         <div className="note">
           <i className="fa fa-play-circle" aria-hidden="true" onClick={this.playNote.bind(this)}></i>
