@@ -17,7 +17,7 @@ class NoteList extends React.Component {
     this.state = {
       view: currentView,
       noteTimestampArray: null,
-      loaded: true,
+      loaded: false,
       currentNoteSelected: 0
     };
   }
@@ -32,10 +32,6 @@ class NoteList extends React.Component {
     }
 
     if (this.state.view === 'compile') {
-      var context = this;
-      this.setState({
-        loaded: false
-      });
       this.getAllNotes(userId, roomId);
     }
 
@@ -84,7 +80,12 @@ class NoteList extends React.Component {
       url: `/api/notes/${userId}/${roomId}?filter=show`,
       success: (res, status) => {
         // replace current Notes with response
-        this.props.dispatch(replaceNotes(res));
+        this.props.dispatch(replaceNotes(res, () => {
+          console.log('getting all notes');
+          this.setState({
+            loaded: true
+          });
+        }));
         // reassign with notes from server
       },
       error: (res, status) => {
