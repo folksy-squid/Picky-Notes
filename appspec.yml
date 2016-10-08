@@ -1,0 +1,18 @@
+version: 0.0
+os: linux
+files:
+   - source: /
+     destination: /home/ec2-user/picky-notes
+permissions:
+   - object: /
+     pattern: "**"
+hooks:
+   ApplicationStop:
+   - location: bin/app-stop
+     timeout: 10
+
+   AfterInstall:
+   - location: bin/install-pkgs
+
+   ApplicationStart:
+   - location: bin/app-start
