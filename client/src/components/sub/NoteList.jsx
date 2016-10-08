@@ -30,7 +30,9 @@ class NoteList extends React.Component {
         this.props.dispatch(addNote(note));
       });
     }
-
+    if (this.state.view === 'lecture') {
+      this.setState({ loaded: true });
+    }
     if (this.state.view === 'compile') {
       this.getAllNotes(userId, roomId);
     }
