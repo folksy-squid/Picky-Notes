@@ -1,5 +1,4 @@
-/*jshint esversion: 6 */
-export default (state = {notes: []}, action) => {
+export default (state = {notes: [], deleted: []}, action) => {
   if (action.type === 'SUBMIT_NOTE') {
     action.socket.emit('new note', {content: action.content});
   }
@@ -22,14 +21,14 @@ export default (state = {notes: []}, action) => {
   }
 
   if (action.type === 'REPLACE_NOTES') {
-    var notes = action.allNotes.sort((a, b) => Date.parse(a.audioTimestamp) - Date.parse(b.audioTimestamp));
+    let notes = action.allNotes.sort((a, b) => Date.parse(a.audioTimestamp) - Date.parse(b.audioTimestamp));
 
     state.notes = [{audioTimestamp: 0}].concat(notes);
     state.audioTimestampArray = notes.map((note) => {
       return Number(note.audioTimestamp) / 1000;
     });
     action.cb && action.cb();
-    return state;
+    return {...state};
   }
 
   if (action.type === 'REMOVE_NOTES') {
@@ -40,19 +39,34 @@ export default (state = {notes: []}, action) => {
     };
   }
 
-  if (action.type === 'SELECT_NOTE') {
-    state.notes = state.notes.map((note) => {
-      if (note.id === action.noteId) {
-        note.show = !note.show;
-        if (note.changed) {
-          delete note.changed;
-        } else {
-          note.changed = true;
-        }
+  if (action.type === 'DELETE_NOTE') {
+    let index = -1;
+    for (let i = 0; i < state.notes.length; i++) {
+      if (state.notes[i].id === action.noteId) {
+        index = i;
+        break;
       }
-      return note;
-    });
-    return state;
+    }
+    state.deleted.push(state.notes.splice(index, 1));
+    console.log(state.deleted)
+    return {...state};
+  }
+
+  if (action.type === 'SELECT_NOTE') {
+    let notes = state.notes;
+
+    for (let i = 0; i < notes.length; i++) {
+      if (notes[i].id === action.noteId) {
+        notes[i].show = !notes[i].show;
+        if (notes[i].changed) {
+          delete notes[i].changed;
+        } else {
+          notes[i].changed = true;
+        }
+        break;
+      }
+    }
+    return {...state};
   }
 
   if (action.type === 'SET_TIMER') {

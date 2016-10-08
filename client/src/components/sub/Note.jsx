@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {toggleNote, editNote} from '../../actions/noteActions.js';
+import {toggleNote, editNote, deleteNote} from '../../actions/noteActions.js';
 import NoteReducer from '../../reducers/noteReducers';
 import WaveformReducer from '../../reducers/waveformReducers';
 import {setPos, play} from '../../actions/waveformActions';
@@ -26,7 +26,6 @@ class Note extends React.Component {
 
   toggleNoteHandler(e) {
     this.props.dispatch(toggleNote(this.props.noteInfo.id));
-    this.forceUpdate();
   }
 
   formatTime(milliseconds) {
@@ -47,6 +46,11 @@ class Note extends React.Component {
       this.props.dispatch(editNote(this.props.noteInfo.id, this.refs.noteInput.value));
     }
     this.setState({edit: false});
+  }
+
+  deleteHandler(e) {
+    console.log('click!', this.props.noteInfo.id);
+    this.props.dispatch(deleteNote(this.props.noteInfo.id));
   }
 
   render() {
@@ -75,6 +79,7 @@ class Note extends React.Component {
               <span className="content" onClick={this.compileClickHandler.bind(this)}>{this.props.noteInfo.content}</span>
             }
             <span className="audioTimestamp">{this.formatTime(this.props.noteInfo.audioTimestamp)}</span>
+            <span className="deleteNoteButton" onClick={this.deleteHandler.bind(this)}><i className="ion ion-close-round deleteNoteIcon"></i></span>
           </div>
           {this.props.noteInfo.highlight && (
           <div className='pointer' />)
