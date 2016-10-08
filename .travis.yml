@@ -5,5 +5,5 @@ services:
   - postgresql
   - redis-server
 env:
-  - NODE_ENV="test"
+  - NODE_ENV="dev"
 install: ./database-setup.bash
