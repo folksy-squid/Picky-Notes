@@ -10,18 +10,18 @@ module.exports = {
   },
   db: {
     dev: {
-      dbName: 'POSTGRES_DBNAME',
+      username: 'POSTGRES_DEV_USERNAME',
+      password: 'POSTGRES_DEV_PASSWORD',
       host: 'POSTGRES_DEV_HOST',
       port: 'POSTGRES_DEV_PORT',
-      username: 'POSTGRES_DEV_USERNAME',
-      password: 'POSTGRES_DEV_PASSWORD'
+      dbName: 'POSTGRES_DEV_DBNAME'
     },
     production: {
-      dbName: 'POSTGRES_DBNAME',
+      username: 'POSTGRES_PRODUCTION_USERNAME',
+      password: 'POSTGRES_PRODUCTION_PASSWORD',
       host: 'POSTGRES_PRODUCTION_HOST',
       port: 'POSTGRES_PRODUCTION_PORT',
-      username: 'POSTGRES_PRODUCTION_USERNAME',
-      password: 'POSTGRES_PRODUCTION_PASSWORD'
+      dbName: 'POSTGRES_PRODUCTION_DBNAME'
     }
   },
 };
