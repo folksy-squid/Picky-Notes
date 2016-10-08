@@ -17,7 +17,8 @@ class InputBox extends React.Component {
       let note = {
         content: this.refs.inputNote.value,
         originalUserId: this.props.user.information[0].id,
-        roomId: this.props.room.roomInfo.id
+        roomId: this.props.room.roomInfo.id,
+        audioTimestamp: ~~(this.props.waveform.pos * 1000)
       };
       $.ajax({
         method: 'POST',

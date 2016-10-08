@@ -4,9 +4,11 @@ export default (state = {notes: [], deleted: []}, action) => {
   }
 
   if (action.type === 'ADD_NOTE') {
+    let notes = state.notes.concat([action.note]);
+    notes.sort((a, b) => Date.parse(a.audioTimestamp) - Date.parse(b.audioTimestamp));
     return {
       ...state,
-      notes: state.notes.concat([action.note])
+      notes,
     };
   }
 
@@ -47,9 +49,10 @@ export default (state = {notes: [], deleted: []}, action) => {
         break;
       }
     }
-    state.deleted.push(state.notes.splice(index, 1));
-    console.log(state.deleted)
-    return {...state};
+    return {
+      ...state,
+      deleted: state.deleted.concat(state.notes.splice(index, 1)),
+    };
   }
 
   if (action.type === 'SELECT_NOTE') {

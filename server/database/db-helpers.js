@@ -47,16 +47,11 @@ const joinRoom = (userId, pathUrl, cb) => {
 
 const createNewNote = (note, cb) => {
   // content, audioTimestamp, show, roomId, editingUserId, originalUserId
-  const createdAt = Date.now();
   note.editingUserId = note.originalUserId;
   note.show = true;
 
-  Room.findOne({where: {id: note.roomId}, raw: true})
-  .then((room) => {
-    note.audioTimestamp = createdAt - room.startTimestamp;
-    return Note.create(note)
-    .then((note) => { cb(note.dataValues); });
-  });
+  Note.create(note)
+  .then((note) => { cb(note.dataValues); });
 };
 
 const multiplyNotes = (notes, arrOfClients) => {
@@ -178,6 +173,18 @@ const getAudioForRoom = (pathUrl, cb) => {
   .then(room => cb(room.audioUrl));
 };
 
+const deleteNotes = (noteIds, cb) => {
+  const promises = noteIds.map((id) => {
+    return Note.destroy({ where: {id} });
+  });
+
+  Promise.all(promises)
+  .then(
+    data => cb(null, data),
+    cb
+  );
+};
+
 module.exports = {
   createNewUser,
   createNewRoom,
@@ -194,5 +201,6 @@ module.exports = {
   createNewNote,
   saveStartTimestamp,
   saveTimeLength,
-  getAudioForRoom
+  getAudioForRoom,
+  deleteNotes,
 };

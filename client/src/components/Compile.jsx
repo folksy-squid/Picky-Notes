@@ -46,7 +46,6 @@ class Compile extends React.Component {
     let changedNotes = this.props.note.notes.filter(note => note.changed);
     let deletedNotes = this.props.note.deleted;
     let ajaxRequests = [];
-    console.log('changed', changedNotes);
     
     if (changedNotes.length) {
       // remove change property
@@ -66,13 +65,16 @@ class Compile extends React.Component {
       );
     } else if (deletedNotes.length) {
       // remove deleted property
-      deletedNotes = JSON.parse(JSON.stringify(deletedNotes));
-      deletedNotes = deletedNotes.map(note => {
-        if (note.changed) { delete note.changed; }
-        return note;
-      });
-      console.log('deleted notes', deletedNotes)
+      let noteIds = deletedNotes.map(note => note.id);
       // queue ajax request to delete notes
+      ajaxRequests.push(
+        $.ajax({
+          method: 'DELETE',
+          url: `/api/notes/${this.props.user.information[0].id}/${this.props.room.roomInfo.id}`,
+          contentType: 'application/json',
+          data: JSON.stringify(noteIds),
+        })
+      );
     } else {
       return this.context.router.push(`/review/${this.props.room.roomInfo.pathUrl}`);
     }
