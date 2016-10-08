@@ -2,18 +2,8 @@
 var request = require('supertest');
 var express = require('express');
 var expect = require('chai').expect;
-var {app, ioServer} = require('../../server/server');
+var {app} = require('../../server/server');
 var {db, User, Room, Note} = require('../../server/database/db-config');
-var cache = require('../../server/cache/cache-config');
-var cacheHelpers = require('../../server/cache/cache-helpers');
-
-var ioClient = require('socket.io-client');
-var socketURL = 'http://0.0.0.0:3000';
-
-var options = {
-  transports: ['websocket'],
-  'force new connection': true
-};
 
 var testUser1 = {
   id: 9999,
@@ -40,17 +30,10 @@ before((done) => {
     User.destroy({where: { id: 9999 } })
     .then(() => User.destroy({where: { id: 6666 } }))
     .then(() => Room.destroy({ where: { hostId: 9999 } }))
-    .then(() => cache.del('TESTT'))
-    .then(() => cache.del('9999:TESTT'))
-    .then(() => cache.del('6666:TESTT'))
     .then(() => User.create(testUser1))
     .then(() => User.create(testUser2))
     .then(() => done());
   });
-});
-
-describe('test', () => {
-  it('should pass this test', () => expect(true).to.equal.true);
 });
 
 describe('/api/rooms/', () => {
@@ -73,7 +56,7 @@ describe('/api/rooms/', () => {
 
   afterEach(() => Room.destroy({ where: { hostId: 9999 } }));
 
-  describe('Room Creation', () => {
+  describe('Room Creation /api/rooms', () => {
 
     it('should create a entry in the database', () => {
       Room.findOne({ where: { hostId: 9999 } })
@@ -96,124 +79,58 @@ describe('/api/rooms/', () => {
       expect(hash1).to.not.equal(hash2);
     });
   });
+
+  describe('Room Joining /api/rooms/:pathUrl', () => {
+    describe('POST', () => {
+      it('should have user join the room', () => {});
+      it('', () => {});
+    });
+  });
+
+  describe('Room Status /api/room/status', () => {
+    it('', () => {});
+  });
+
 });
 
-describe('Server Side Socket Connection', () => {
+describe('/api/users', () => {
+  beforeEach(() => {});
+  afterEach(() => {});
 
-  var testRoom = {
-    id: 12345,
-    pathUrl: 'TESTT',
-    topic: 'Toy Problems',
-    class: 'HackReactor',
-    lecturer: 'AllenP',
-    audioUrl: 'http://www.test.com/audio.mp3',
-    hostId: 9999
-  };
-
-  var roomCreator;
-
-  before((done) => {
-    Room.destroy({ where: { id: 12345 }})
-    .then(() => Room.create(testRoom))
-    .then(()=>done());
-  });
-
-  beforeEach(() => {
-    roomCreator = ioClient.connect(socketURL, options);
-    roomCreator.emit('create room', 'TESTT', testUser1);
-  });
-
-  afterEach(() => roomCreator.disconnect());
-
-  it('should connect to incoming sockets', (done) => {
-    roomCreator.on('connect', () => {
-      roomCreator.disconnect();
-      done();
+  describe('All Users in Rooms /api/users/rooms/:userId', () => {
+    describe('GET', () => {
+      it('should return all users and rooms', () => {});
     });
   });
 
-  it('should create rooms', (done) => {
-    roomCreator.on('create room success', () => {
-      expect(ioServer.sockets.adapter.rooms).to.have.property('TESTT');
-      done();
+});
+
+describe('/api/notes', () => {
+  beforeEach(() => {});
+  afterEach(() => {});
+
+  describe('Note Creation', () => {
+    describe('/api/notes/create', () => {
+      it('', () => {});
+      it('', () => {});
     });
-    roomCreator.on('create room error', (error) => {
-      expect(error).to.not.exist;
-      done();
+  });
+  describe('Note Editing', () => {
+    describe('/api/notes/:userId/:roomId', () => {
+      it('', () => {});
+      it('', () => {});
+    });
+  });
+});
+
+describe('/api/audio', () => {
+  beforeEach(() => {});
+  afterEach(() => {});
+
+  describe('Audio Retrieval', () => {
+    describe('GET /api/audio/:pathUrl', () => {
+      it('', () => {});
     });
   });
 
-  describe('Other Users Joining Room', () => {
-
-    var joiner;
-    var exampleNote = { content: 'Picky Notes is a collaborative note taking app.' };
-
-    beforeEach(() => {
-      joiner = ioClient.connect(socketURL, options);
-      roomCreator.on('create room success', () => joiner.emit('join room', 'TESTT', testUser2));
-    });
-
-    afterEach(() => joiner.disconnect());
-
-    it('should put users in a room', (done) => {
-      joiner.on('join room success', () => {
-        expect(ioServer.sockets.adapter.rooms['TESTT'].length).to.equal(2);
-        done();
-      });
-      joiner.on('join room error', (error) => {
-        expect(error).to.be.true;
-        done();
-      });
-    });
-
-    it('should notify members of a room when a lecture starts', (done) => {
-      joiner.on('join room success', () => roomCreator.emit('lecture start'));
-      joiner.on('lecture started', () => done());
-    });
-
-    it('should notify members of a room when a lecture ends', (done) => {
-      joiner.on('join room success', () => roomCreator.emit('lecture end'));
-      joiner.on('lecture ended', () => done());
-    });
-  });
-
-  describe('Create Notes', () => {
-
-    var joiner;
-    var testNote = { content: 'This is the test note.' };
-    var creatorNote = { content: 'Picky Notes is a collaborative note taking app.' };
-    var joinerNote = { content: 'This is not a note taking app.' };
-
-    beforeEach(() => {
-      joiner = ioClient.connect(socketURL, options);
-      roomCreator.on('create room success', () => joiner.emit('join room', 'TESTT', testUser2));
-    });
-
-    afterEach(() => joiner.disconnect());
-
-    it('should receive new notes from the client', (done) => {
-      roomCreator.on('create room success', () => roomCreator.emit('new note', testNote));
-      roomCreator.on('add note success', () => done());
-    });
-
-    it('should emit "all ready" when all sockets are ready', (done) => {
-      joiner.on('join room success', () => {
-        roomCreator.emit('user ready');
-        joiner.emit('user ready');
-      });
-      joiner.on('all ready', () => done());
-    });
-
-    it('should save all notes from cache and retrieve from database', (done) => {
-      joiner.on('join room success', () => {
-        roomCreator.emit('new note', creatorNote);
-        joiner.emit('new note', joinerNote);
-      });
-      joiner.on('add note success', () => {
-        roomCreator.emit('user ready');
-        joiner.emit('user ready');
-      });
-      joiner.on('all notes saved', () => done());
-    });
-  });
 });

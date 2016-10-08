@@ -8,21 +8,23 @@ const addUserToCache = (pathUrl, userId, cb) => {
 const addNoteToCache = (pathUrl, userId, note, cb) => {
   cache.get(`${pathUrl}:START`)
   .then((startTime) => {
+
+    // set default values of note
     note.audioTimestamp = Date.now() - startTime;
     note.show = true;
     note.originalUserId = userId;
     note.editingUserId = note.originalUserId;
+
+    // insert stringified note into cache
     cache.rpush(`${userId}:${pathUrl}`, JSON.stringify(note))
+
+    // return most recently inserted note in cache
     .then(() => cache.lrange(`${userId}:${pathUrl}`, -1, -1))
     .then((note) => cb && cb(JSON.parse(note[0])));
-    // .then(() => cache.lrange(`${userId}:${pathUrl}`, 0, -1))
-    // .then((data) => console.log(data));
   });
 };
 
-/************************* DEV *************************/
-
-const deleteAllNotesAndRoom = (pathUrl) => {
+const deleteAllNotesAndRoom = (pathUrl, cb) => {
   getUsersFromRoom(pathUrl)
   .then((allUserIds) => {
     let pipeline = cache.pipeline();
@@ -31,15 +33,14 @@ const deleteAllNotesAndRoom = (pathUrl) => {
     allUserIds.forEach((userId) => {
       pipeline.del(`${userId}:${pathUrl}`);
     });
-    pipeline.exec();
+    pipeline.exec()
+    .then(() => cb && cb());
   });
 };
 
 const getUsersFromRoom = pathUrl => cache.smembers(pathUrl);
 
-
 const getNotesFromRoom = (pathUrl, cb) => {
-  // getUsersFromRoom
   var pipeline = cache.pipeline();
   getUsersFromRoom(pathUrl)
   .then((allUserIds) => {
@@ -55,14 +56,9 @@ const getNotesFromRoom = (pathUrl, cb) => {
       }));
     });
   });
-  // iterate through users in room
-  // do something
-  // delete Notes From user
 };
 
-const addTimestampToCache = (pathUrl, startTime) => {
-  cache.set(`${pathUrl}:START`, startTime);
-};
+const addTimestampToCache = (pathUrl, startTime) => cache.set(`${pathUrl}:START`, startTime);
 
 const getNotesFromUser = (pathUrl, userId, cb) => {
   cache.lrange(`${userId}:${pathUrl}`, 0, -1)
@@ -78,10 +74,10 @@ const getTimestampFromCache = (pathUrl, cb) => {
 module.exports = {
   addUserToCache,
   addNoteToCache,
-  getNotesFromRoom,
-  deleteAllNotesAndRoom,
   addTimestampToCache,
+  deleteAllNotesAndRoom,
   getUsersFromRoom,
+  getNotesFromRoom,
   getNotesFromUser,
   getTimestampFromCache,
 };

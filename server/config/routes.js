@@ -25,21 +25,6 @@ module.exports = (app, express, io) => {
     res.redirect('/');
   });
 
-  // User Creation
-  app.post('/api/users/', (req, res) => {
-    createNewUser(req.body, (user, created) => {
-      if (!created) {
-        res.send('User already exists!'); // dummy response, can change this
-      } else {
-        res.send(user); // if new user, send back user data
-      }
-    });
-  });
-  app.get('/api/users/rooms/:userId', (req, res) => {
-    getAllUserRooms(req.params.userId, (allUserRooms) => {
-      res.send(allUserRooms);
-    });
-  });
   // User Info Update
   app.route('/api/users/:userId')
     .get((req, res) => {
@@ -59,26 +44,31 @@ module.exports = (app, express, io) => {
   // Room Creation
   app.post('/api/rooms', (req, res) => {
     // create and return hash for room path Url
-    // { topic, className, lecturer, hostId }
-    /*** Example Data sent back to Client ***
-    {
-      "audioUrl": "audio url",
-      "id": 10,
-      "pathUrl": "65ad3",
-      "topic": "Data Structures",
-      "class": "Hack Reactor",
-      "lecturer": "Fred",
-      "hostId": 1,
-      "updatedAt": "2016-09-24T22:58:19.623Z",
-      "createdAt": "2016-09-24T22:58:19.623Z"
-    }
-    ******************************************/
     createNewRoom(req.body, (roomInfo) => res.send(roomInfo));
   });
 
   app.post('/api/rooms/:pathUrl', (req, res) => {
-  // Have user join the room at 'pathUrl'
+    // Have user join the room at 'pathUrl'
     joinRoom(req.body.userId, req.params.pathUrl, (currentRoom) => res.send(currentRoom));
+  });
+
+  app.get('/api/users/rooms/:userId', (req, res) => {
+    getAllUserRooms(req.params.userId, (allUserRooms) => {
+      res.send(allUserRooms);
+    });
+  });
+
+  app.route('/api/rooms/')
+    .post((req, res) => {
+    // Have user join the room at 'pathUrl'
+      joinRoom(req.body.userId, req.query.pathUrl, (currentRoom) => res.send(currentRoom));
+    })
+    .get((req, res) => {
+      getAllUserRooms(req.query.userId, (allUserRooms) => res.send(allUserRooms));
+    });
+
+  app.post('/api/room/status', (req, res) => {
+    res.status(201).send({active: !!io.sockets.adapter.rooms[req.body.pathUrl]});
   });
 
   app.get('/api/audio/:pathUrl', (req, res) => {
@@ -88,24 +78,16 @@ module.exports = (app, express, io) => {
   // Note Creation
   app.post('/api/notes/create', (req, res) => {
     // pass the notes in cache (redis) to database (postgres)
-    // {content, audioTimestamp, show, roomId, editingUserId, originalUserId}
-    // res.send('End of lecture, and create all new notes for each user');
-    createNewNote(req.body, (newNote) => res.send(newNote));
-  });
-
-  app.post('/api/room/status', (req, res) => {
-    res.status(201).send({active: !!io.sockets.adapter.rooms[req.body.pathUrl]});
+    createNewNote(req.body, newNote => res.send(newNote));
   });
 
   // Note Editing
   app.route('/api/notes/:userId/:roomId')
     .get((req, res) => {
       if (req.query.filter === 'show') {
-        // res.send('Show filtered notes for user #' + req.params.userId + ' inside room #' + req.params.roomId);
-        showFilteredNotes(req.params, (allNotes) => res.send(allNotes));
+        showFilteredNotes(req.params, allNotes => res.send(allNotes));
       } else {
-        // res.send('Compare all notes for user #' + req.params.userId + ' inside room #' + req.params.roomId);
-        showAllNotes(req.params, (allNotes) => res.send(allNotes));
+        showAllNotes(req.params, allNotes => res.send(allNotes));
       }
     })
     .put((req, res) => {
@@ -115,16 +97,7 @@ module.exports = (app, express, io) => {
         if (err) { res.status(400).send({ text: 'Bad Update Note Request', error: err }); }
         res.status(204).send();
       });
-    })
-    .post((req, res) => {
-      // potentially instead of using this endpoint, reuse /api/notes/create?
-      res.send('Add new notes (save button) for user #' + req.params.userId + ' inside room #' + req.params.roomId);
     });
-
-  app.get('*/:wavPath.wav', function(request, response) {
-    console.log(request.params);
-    response.sendFile(path.resolve(__dirname, '../../client', 'sample/audio/' + request.params.wavPath + '.wav'));
-  });
 
   app.get('*/index.bundle.js', function (request, response) {
     response.sendFile(path.resolve(__dirname, '../../dist/index.bundle.js'));
@@ -136,19 +109,4 @@ module.exports = (app, express, io) => {
   app.get('*', function(request, response) {
     response.sendFile(path.resolve(__dirname, '../../client', 'index.html'));
   });
-  // app.get('/review/*', function(request, response) {
-  //   response.sendFile(path.resolve(__dirname, '../../client', 'index.html'));
-  // });
-  // app.get('/compile/*', function(request, response) {
-  //   response.sendFile(path.resolve(__dirname, '../../client', 'index.html'));
-  // });
-  // app.get('/notebook', function(request, response) {
-  //   response.sendFile(path.resolve(__dirname, '../../client', 'index.html'));
-  // });
-  // app.get('/lobby/*', function(request, response) {
-  //   response.sendFile(path.resolve(__dirname, '../../client', 'index.html'));
-  // });
-  // app.get('/lecture/*', function(request, response) {
-  //   response.sendFile(path.resolve(__dirname, '../../client', 'index.html'));
-  // });
 };
