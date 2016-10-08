@@ -3,6 +3,13 @@ if (process.env.NODE_ENV === 'test') {
 } else {
   var keys = require('../../keys').facebook;
 }
+
+let callbackURL = 'http://localhost:3000/auth/facebook/callback';
+
+if (process.env.NODE_ENV == 'production') {
+  callbackURL = 'http://54.148.49.146/auth/facebook/callback';
+}
+
 var passport = require('passport');
 var FacebookStrategy = require('passport-facebook').Strategy;
 
@@ -12,7 +19,7 @@ var {db, User} = require('../database/db-config.js');
 passport.use(new FacebookStrategy({
   clientID: keys.FACEBOOK_APP_ID,
   clientSecret: keys.FACEBOOK_APP_SECRET,
-  callbackURL: 'http://localhost:3000/auth/facebook/callback',
+  callbackURL: callbackURL,
   profileFields: ['id', 'name', 'picture.type(large)', 'email', 'gender']
 }, function(accessToken, refreshToken, profile, done) {
   let newUser = {
