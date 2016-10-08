@@ -104,7 +104,7 @@ class Audio extends React.Component {
     };
     return (
       <span className="audioPlayer">
-        {this.state.loadingDisplay === 'block' && 
+        {this.state.loadingDisplay === 'block' &&
           <div>
             LOADING AUDIO FILE {this.state.loadVal}
           </div>
