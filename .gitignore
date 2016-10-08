@@ -129,7 +129,7 @@ dist/
 .tmp/
 
 ### audio files ###
-audio/*
+audio/*.mp3
 
 ### Redis ###
 # Ignore redis binary dump (dump.rdb) files

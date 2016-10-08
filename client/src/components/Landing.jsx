@@ -8,9 +8,22 @@ class Landing extends React.Component {
 
   render() {
     return (
-      <div className="landing">
-        <h1>Picky Notes</h1>
-        <a href="auth/facebook"><i className="ion ion-social-facebook" aria-hidden="true"></i><span>Login</span></a>
+      <div className="homepage-hero-module">
+        <div className="video-container">
+          <div className="title-container">
+            <a href="auth/facebook">
+              <h1>Picky Notes</h1>
+            </a>
+          </div>
+          <div className="filter"></div>
+          <video autoPlay loop className="fillWidth">
+            <source src="https://s3-us-west-2.amazonaws.com/coverr/mp4/abcd.mp4" type="video/mp4" />Your browser does not support the video tag. I suggest you upgrade your browser.
+            <source src="https://s3-us-west-2.amazonaws.com/coverr/mp4/abcd.mp4" type="video/webm" />Your browser does not support the video tag. I suggest you upgrade your browser.
+          </video>
+          <div className="poster hidden">
+            <img src="https://s3-us-west-2.amazonaws.com/coverr/poster/abcd.jpg" alt="" />
+          </div>
+        </div>
       </div>
     );
   }

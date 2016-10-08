@@ -6,6 +6,17 @@
   =================================
 */
 
+.title-container > a > h1 {
+  font-size: 8em;
+  font-family: 'Crafty Girls', cursive;
+  color: white;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: none;
+}
+
 h2 {
   text-align: center;
   font-size: 54px;
@@ -36,10 +47,6 @@ h4 {
   align-items: center;
 }
 
-.landing > h1 {
-  font-size: 4em;
-  font-family: 'Crafty Girls', cursive;
-}
 
 .landing > a {
   background: #4267b2;
@@ -56,6 +63,57 @@ h4 {
 .landing > a > span {
   margin-left: 4px;
   font-family: helvetica;
+}
+
+.homepage-hero-module {
+    border-right: none;
+    border-left: none;
+    position: relative;
+}
+.no-video .video-container video,
+.touch .video-container video {
+    display: none;
+}
+.no-video .video-container .poster,
+.touch .video-container .poster {
+    display: block !important;
+}
+.video-container {
+    position: relative;
+    bottom: 0%;
+    left: 0%;
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    background: #000;
+}
+.video-container .poster img {
+    width: 100%;
+    bottom: 0;
+    top: 0;
+    position: absolute;
+}
+.video-container .filter {
+    z-index: 100;
+    position: absolute;
+    background: rgba(0, 0, 0, 0.4);
+    width: 100%;
+}
+.video-container video {
+    position: absolute;
+    z-index: 0;
+    bottom: 0;
+}
+.video-container video.fillWidth {
+    width: 100%;
+}
+
+.video-container .title-container {
+  z-index: 1000;
+  text-align: center;
+  top: 35%;
+  width: 100%;
+  position: absolute;
 }
 
 /*
