@@ -17,7 +17,7 @@ class SearchBar extends React.Component {
   }
 
   getUserInput (e) {
-    this.props.filterTopic(e.target.value);
+    this.props.filterKeyword(e.target.value);
   }
 
   getClassList () {

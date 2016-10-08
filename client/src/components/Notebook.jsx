@@ -28,7 +28,7 @@ class Notebook extends React.Component {
     });
   }
 
-  filterTopic(search) {
+  filterKeyword(search) {
     let filtered = [];
     this.state.original.forEach((notebook) => {
       if (notebook.topic.indexOf(search) === -1 && notebook.lecturer.indexOf(search) === -1) { return; }
@@ -54,7 +54,7 @@ class Notebook extends React.Component {
             <h3>My Lectures</h3>
           </div>
           <div className="col-sm-4">
-            <SearchBar entries={this.state.entries} filterClass={this.filterClass.bind(this)} filterTopic={this.filterTopic.bind(this)} />
+            <SearchBar entries={this.state.entries} filterClass={this.filterClass.bind(this)} filterKeyword={this.filterKeyword.bind(this)} />
           </div>
         </div>
         <div className="row">
