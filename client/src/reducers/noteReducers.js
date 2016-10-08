@@ -1,3 +1,4 @@
+/*jshint esversion: 6 */
 export default (state = {notes: [], deleted: []}, action) => {
   if (action.type === 'SUBMIT_NOTE') {
     action.socket.emit('new note', {content: action.content});
