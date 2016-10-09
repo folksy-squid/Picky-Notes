@@ -85,7 +85,7 @@ class NewRoom extends React.Component {
           </div>
           <div className="form-group">
             <div className="col-sm-offset-2 col-sm-10">
-              <button type="submit" className="btn btn-default create-room">Create</button>
+              <button type="submit" className="btn btn-primary create-room">Create</button>
             </div>
           </div>
         </form>

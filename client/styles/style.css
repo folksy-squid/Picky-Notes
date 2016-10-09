@@ -406,3 +406,14 @@ input[type=checkbox] {
 .highlighted {
   background-color: 'black';
 }
+
+
+/*
+  =================================
+    Navbar
+  =================================
+*/
+
+.navbar {
+  border-radius: 0px;
+}
