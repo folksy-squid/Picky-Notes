@@ -1,9 +1,10 @@
 /*jshint esversion: 6 */
-export const submitNote = (socket, content) => {
+export const submitNote = (socket, content, thought) => {
   return {
     type: 'SUBMIT_NOTE',
     socket,
-    content
+    content,
+    thought
   };
 };
 
