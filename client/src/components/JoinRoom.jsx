@@ -26,9 +26,11 @@ class JoinRoom extends React.Component {
     var realm = this;
     var pathUrl = this.state.value;
     var user = this.props.getState().user.information[0];
-    var joinedRoom = (err, success) => {
+    var joinedRoom = (err, success, ...args) => {
       if (err) {
         console.log(err);
+      } else if (args[2] === 'lecture') {
+        realm.context.router.push(`/lecture/${realm.state.value}`);
       } else {
         realm.context.router.push(`/lobby/${realm.state.value}`);
       }

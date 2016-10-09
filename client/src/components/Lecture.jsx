@@ -61,7 +61,7 @@ class Lecture extends React.Component {
   applyListeners() {
     var socket = this.props.room.socket;
     socket.on('lecture ended', () => {
-      this.setState({readyButtonDisplay: 'inline-block'});
+      this.setState({endLectureDisplay: 'none', readyButtonDisplay: 'inline-block'});
     });
 
     socket.on('all ready', () => {
@@ -80,9 +80,13 @@ class Lecture extends React.Component {
     host.id === user.id && this.setState({isHost: true});
   }
 
+  hideReadyButton() {
+    this.setState({readyButtonDisplay: 'none'});
+  }
+
   sendReady() {
     this.props.room.socket.emit('user ready');
-    this.setState({readyButtonDisplay: 'none'});
+    this.hideReadyButton();
   }
 
   endLecture() {
@@ -111,7 +115,7 @@ class Lecture extends React.Component {
             <LectureBox />
           </div>
           <div className="col-md-3">
-            <ParticipantList checkHostLecture={this.checkHost.bind(this)}/>
+            <ParticipantList checkHostLecture={this.checkHost.bind(this)} hideReadyButton={this.hideReadyButton.bind(this)}/>
           </div>
         </div>
       </div>) : (<h2>{this.state.error}</h2>)

@@ -113,10 +113,14 @@ export default (state = {}, action) => {
   }
 
   if (action.type === 'READY_PARTICIPANT') {
-    state.participants[findUser(state.participants, action.participant)].readyStatus = true;
+    const userId = action.participant.id;
+    state.participants.forEach((participant) => {
+      if (userId === participant.id) {
+        participant.readyStatus = true;
+      }
+    });
     return {
       ...state,
-      participants: state.participants
     };
   }
 

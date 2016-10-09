@@ -25,6 +25,8 @@ class ParticipantList extends React.Component {
   }
 
   userReady(user) {
+    const clientId = this.props.user.information[0].id;
+    clientId === user.id && this.props.hideReadyButton();
     this.props.dispatch(readyParticipant(user));
   }
 
