@@ -56,6 +56,7 @@ class Note extends React.Component {
   render() {
     var view;
     //props.page will be obtained from redux store.
+
     if (this.props.view === 'compile') {
       if (!this.props.noteInfo.content) {
         if (this.props.noteInfo.highlight) {

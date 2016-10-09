@@ -12,9 +12,9 @@ class InputBox extends React.Component {
 
   keyDownHandler(e) {
     if (e.shiftKey && e.keyCode === 13) {
-      submitNoteHandler(e, true);
+      this.submitNoteHandler(e, true);
     } else if (e.keyCode === 13) {
-      submitNoteHandler(e, false);
+      this.submitNoteHandler(e, false);
     }
   }
 
