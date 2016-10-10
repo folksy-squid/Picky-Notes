@@ -94,6 +94,9 @@ class Compile extends React.Component {
     <div className="container">
       <LectureTitle />
       <div className="row">
+        <Audio />
+      </div>
+      <div className="row">
         <div className="col-md-9">
           <LectureBox />
         </div>
@@ -105,9 +108,6 @@ class Compile extends React.Component {
             ) : (<div></div>)
           }
         </div>
-      </div>
-      <div className="row">
-        <Audio />
       </div>
     </div>) : (<div></div>)
     );
