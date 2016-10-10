@@ -12,7 +12,7 @@ export default (state = defaultState, action) => {
   case 'TOGGLE_PLAY':
     let instr = action.instr === 'stop' ? false : true;
     return {
-      ...state,
+      state,
       playing: instr
     };
   case 'SET_POS':
