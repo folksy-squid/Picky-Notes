@@ -35,7 +35,7 @@ class Lobby extends React.Component {
       this.props.dispatch(setRoomInfo(pathUrl, user, (err, success) => {
         if (err) {
           return this.context.router.push('/notebook');
-        } 
+        }
         this.props.dispatch(joinSocketRoom(pathUrl, user, (error, ...args) => {
           if (error) {
             return this.setState({error});
@@ -97,7 +97,7 @@ class Lobby extends React.Component {
           <div className="col-sm-3 panel">
           { this.state.isHost && (
             <button className="btn btn-lg btn-success" onClick={this.startLecture.bind(this)}>
-              Start Lecture
+              Start Recording
             </button>)}
             <div className="panel-item">
               <ShareLink pathUrl={this.state.pathUrl}/>

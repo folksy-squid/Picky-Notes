@@ -104,7 +104,7 @@ class Lecture extends React.Component {
             <LectureTitle />
           </div>
           {this.state.isHost && (<button className="btn btn-lg btn-danger" style={{display: this.state.endLectureDisplay}} onClick={this.endLecture.bind(this)}>
-            End Lecture
+            Stop Recording
           </button>)}
           <button className="btn btn-lg btn-success" style={{display: this.state.readyButtonDisplay}} onClick={this.sendReady.bind(this)}>
             Ready
