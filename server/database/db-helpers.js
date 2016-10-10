@@ -58,7 +58,7 @@ const multiplyNotes = (notes, arrOfClients) => {
   let multipliedNotes = [];
   for (let i = 0; i < notes.length; i++) {
     for (let j = 0; j < arrOfClients.length; j++) {
-      if (notes[i].originalUserId !== Number(arrOfClients[j])) {
+      if (notes[i].originalUserId !== Number(arrOfClients[j]) && !notes[i].thought) {
         var copy = JSON.parse(JSON.stringify(notes[i]));
         copy.editingUserId = arrOfClients[j];
         copy.show = false;
@@ -71,7 +71,7 @@ const multiplyNotes = (notes, arrOfClients) => {
 };
 
 const createRoomNotes = (notes, roomId, arrOfClients, cb) => {
-  notes = notes.filter(note => !note.thought).map(note => {
+  notes = notes.map(note => {
     note.roomId = roomId;
     return note;
   });

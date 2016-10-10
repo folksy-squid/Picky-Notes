@@ -1,6 +1,7 @@
 /*jshint esversion: 6 */
 export default (state = {notes: [], deleted: []}, action) => {
   if (action.type === 'SUBMIT_NOTE') {
+    console.log('(noteReducer) - is this a thought?', action.thought);
     action.socket.emit('new note', {content: action.content, thought: action.thought});
   }
 
