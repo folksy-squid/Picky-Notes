@@ -1,9 +1,9 @@
 import React from 'react';
-import Connection from '../Connection.js'
+import Connection from '../Connection.js';
 import { Link } from 'react-router';
 
 class Navbar extends React.Component {
-  constructor(props){
+  constructor(props) {
     super(props);
   }
 

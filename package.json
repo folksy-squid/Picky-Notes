@@ -54,6 +54,7 @@
     "ioredis": "^2.4.0",
     "js-md5": "^0.4.1",
     "lame": "^1.2.4",
+    "letsencrypt-express": "^2.0.3",
     "morgan": "^1.7.0",
     "passport": "^0.3.2",
     "passport-facebook": "^2.1.1",
