@@ -175,7 +175,7 @@ export default (state = {}, action) => {
       // connections
       audioInput.connect(recorder);
       recorder.connect(context.destination);
-      cb && cb();
+      action.cb && action.cb();
     };
 
 
