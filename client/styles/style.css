@@ -6,6 +6,11 @@
   =================================
 */
 
+.container-fluid {
+  padding-left: 0px;
+  padding-right: 0px;
+}
+
 .title-container > a > h1 {
   font-size: 8em;
   font-family: 'Crafty Girls', cursive;
@@ -27,6 +32,12 @@ h3 {
   text-align: center;
   font-size: 40px;
   font-family: 'PT Serif', serif;
+}
+
+.notebook-header > div > h3 {
+  text-align: left;
+  margin-top: 0px;
+  margin-bottom: 0px;
 }
 
 h4 {
@@ -342,6 +353,11 @@ input[type=checkbox] {
     My Lectures
   =================================
 */
+
+.notebook-header {
+  margin-bottom: 15px;
+}
+
 .notebook-entry {
   cursor: pointer;
   transition: opacity 0.2s;

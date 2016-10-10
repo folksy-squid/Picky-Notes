@@ -29,7 +29,7 @@ class LectureBox extends React.Component {
       <div className="lecture-box">
         <ul className="nav nav-tabs">
           <li className="active">
-            <h4>Notes and Thoughts</h4>
+            <h4>Notes & Thoughts</h4>
           </li>
         </ul>
         <div>
