@@ -51,7 +51,7 @@ module.exports = (listen) => {
             findRoom(socket.pathUrl, (found) => {
               getClientNames(socket.pathUrl, (participants) => {
                 getTimestampFromRoom(socket.pathUrl, (started) => {
-                  const status = (started) ? 'lecture' : 'lobby'; 
+                  const status = (started) ? 'lecture' : 'lobby';
                   socket.emit('join room success', participants, found.dataValues, status);
                 });
               });
@@ -98,7 +98,7 @@ module.exports = (listen) => {
         if (socket.user.id === connected[socketId].user.id) {
           connected[socketId].ready = true;
         }
-      }); 
+      });
 
       io.in(pathUrl).emit('user ready', socket.user);
       if (isAllReady(pathUrl, rooms, connected)) {

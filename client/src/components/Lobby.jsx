@@ -61,8 +61,7 @@ class Lobby extends React.Component {
     if (host.id === user.id) {
       // switch host status to user
       this.setState({isHost: true});
-      // and switch audio stream to host
-      this.props.dispatch(createAudioStream());
+
     }
   }
 
@@ -72,9 +71,13 @@ class Lobby extends React.Component {
   }
 
   startLecture() {
+    if (this.state.isHost) {
+      // start streaming recorded audio
+      // and switch audio stream to host
+      this.props.dispatch(createAudioStream(() => this.props.dispatch(startRecording()) ));
+    }
     this.props.room.socket.emit('lecture start');
-    // start streaming recorded audio
-    this.props.dispatch(startRecording());
+
   }
 
   goToLecture() {

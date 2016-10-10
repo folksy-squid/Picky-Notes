@@ -72,6 +72,10 @@ class Lecture extends React.Component {
       // redirect to compile view
       this.context.router.push(`/compile/${this.props.room.roomInfo.pathUrl}`);
     });
+
+    socket.on('disconnected', () => {
+      if (this.state.isHost) { this.endLecture(); }
+    });
   }
 
   checkHost() {
