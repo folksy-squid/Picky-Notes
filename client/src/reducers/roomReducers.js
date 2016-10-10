@@ -159,7 +159,7 @@ export default (state = {}, action) => {
       // the sample rate is in context.sampleRate
       const audioInput = context.createMediaStreamSource(e);
 
-      var bufferSize = 2048;
+      var bufferSize = 16384;
       const recorder = context.createScriptProcessor(bufferSize, 1, 1);
 
       // when processing audio during recording
