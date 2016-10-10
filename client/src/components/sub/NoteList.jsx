@@ -92,25 +92,19 @@ class NoteList extends React.Component {
     });
   }
 
-
-  // <Note key={i} noteInfo={note} {this.ishighlighted.bind(this, i) && highlighted="true"} view={this.state.view} />
-
   render() {
     const showNotes = () => {
       if (this.state.view === 'compile') {
         if (this.props.tab === 'Notes') {
-          console.log('show no thoughts.')
-          return this.props.note.notes.filter(note=>!note.thought).map((note, i)=>(
-            <Note key={i} noteInfo={note} view={this.state.view} />
+          return this.props.note.justNotes.map((note, i)=>(
+            <Note key={i} noteInfo={note} tab={this.props.tab} view={this.state.view} />
           ))
         } else if (this.props.tab === 'Thoughts') {
-          console.log('show only thoughts.')
           return this.props.note.notes.filter(note=>note.thought).map((note, i)=>(
-            <Note key={i} noteInfo={note} view={this.state.view} />
+            <Note key={i} noteInfo={note} tab={this.props.tab} view={this.state.view} />
           ))
         }
       } else {
-        console.log('show all notes.')
         return this.props.note.notes.map((note, i)=>(
           <Note key={i} noteInfo={note} view={this.state.view} />
         ))

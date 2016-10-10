@@ -27,9 +27,10 @@ export default (state = {notes: [], deleted: []}, action) => {
     let notes = action.allNotes.sort((a, b) => a.audioTimestamp - b.audioTimestamp);
 
     state.notes = [{audioTimestamp: 0}].concat(notes);
-    state.audioTimestampArray = notes.map((note) => {
-      return Number(note.audioTimestamp) / 1000;
-    });
+    console.log('state.notes in noteReducer', notes);
+    state.justNotes = notes.filter(note=>!note.thought);
+    state.audioTimestampArray = state.justNotes.map(note=> Number(note.audioTimestamp) / 1000);
+    console.log('notes in justNotes', state.justNotes);
     action.cb && action.cb();
     return {...state};
   }
@@ -90,20 +91,13 @@ export default (state = {notes: [], deleted: []}, action) => {
     state.currentNoteSelected = action.index;
     state.wavePos = action.wavePos;
     state.diff = (state.audioTimestampArray[state.currentNoteSelected] - state.wavePos);
-    state.notes.forEach((note) => {
-      note['highlight'] = null;
-    });
+
     const updateNote = () => {
-      if (state.highlightedIndex >= 0) {
-        state.notes.forEach((note) => {
-          note['highlight'] = null;
-        });
-      }
+      state.justNotes.forEach(note => note['highlight'] = null);
       if (state.currentNoteSelected > -1) {
-        state.notes[state.currentNoteSelected]['highlight'] = true;
+        state.justNotes[state.currentNoteSelected]['highlight'] = true;
         state.highlightedIndex = state.currentNoteSelected;
       }
-
       window.timer && window.clearTimeout(window.timer);
       state.diff = (state.audioTimestampArray[state.currentNoteSelected] - state.wavePos);
       state.wavePos = state.wavePos + state.diff;
