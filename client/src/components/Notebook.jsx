@@ -49,11 +49,11 @@ class Notebook extends React.Component {
     return (
       this.state.loaded ? (
       <div className="container">
-        <div className="row">
-          <div className="col-sm-8">
+        <div className="row notebook-header">
+          <div className="col-sm-6">
             <h3>My Lectures</h3>
           </div>
-          <div className="col-sm-4">
+          <div className="col-sm-6">
             <SearchBar entries={this.state.entries} filterClass={this.filterClass.bind(this)} filterKeyword={this.filterKeyword.bind(this)} />
           </div>
         </div>

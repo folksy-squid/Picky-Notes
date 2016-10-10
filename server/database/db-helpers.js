@@ -71,7 +71,7 @@ const multiplyNotes = (notes, arrOfClients) => {
 };
 
 const createRoomNotes = (notes, roomId, arrOfClients, cb) => {
-  notes = notes.map(note => {
+  notes = notes.filter(note => !note.thought).map(note => {
     note.roomId = roomId;
     return note;
   });

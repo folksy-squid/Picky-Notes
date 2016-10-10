@@ -98,7 +98,7 @@ class Audio extends React.Component {
   render() {
     const waveOptions = {
       scrollParent: true,
-      height: 140,
+      height: 50,
       progressColor: 'rgba(48,125,125,1)',
       waveColor: 'rgba(131, 187, 187, 0.6)',
       autoCenter: true,

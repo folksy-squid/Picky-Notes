@@ -10,15 +10,25 @@ class InputBox extends React.Component {
     super(props);
   }
 
-  submitNoteHandler(e) {
+  keyDownHandler(e) {
+    if (e.shiftKey && e.keyCode === 13) {
+      this.submitNoteHandler(e, true);
+    } else if (e.keyCode === 13) {
+      this.submitNoteHandler(e, false);
+    }
+  }
+
+  submitNoteHandler(e, thought) {
     e.preventDefault();
     if (this.refs.inputNote.value.trim() === '') { return; }
+
     if (getCurrentView(this.props.routing.locationBeforeTransitions.pathname) === 'compile') {
       let note = {
         content: this.refs.inputNote.value,
         originalUserId: this.props.user.information[0].id,
         roomId: this.props.room.roomInfo.id,
-        audioTimestamp: ~~(this.props.waveform.pos * 1000)
+        audioTimestamp: ~~(this.props.waveform.pos * 1000),
+        thought: thought
       };
       $.ajax({
         method: 'POST',
@@ -34,7 +44,8 @@ class InputBox extends React.Component {
       });
       return;
     }
-    this.props.dispatch(submitNote(this.props.room.socket, this.refs.inputNote.value));
+
+    this.props.dispatch(submitNote(this.props.room.socket, this.refs.inputNote.value, thought));
     this.refs.inputNote.value = '';
   }
 
@@ -48,7 +59,7 @@ class InputBox extends React.Component {
         </input>
       );
     } else {
-      view = <form id="lectureForm" onSubmit={this.submitNoteHandler.bind(this)}><input ref="inputNote" id="lectureInput" type="text"/></form>;
+      view = <form id="lectureForm" ><input ref="inputNote" id="lectureInput" type="text" onKeyDown={this.keyDownHandler.bind(this)} /></form>;
     }
 
     return view;

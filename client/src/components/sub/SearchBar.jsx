@@ -35,10 +35,10 @@ class SearchBar extends React.Component {
   render() {
     return (
       <form className="navbar-form" role="search">
-      <Dropdown list={this.state.allClasses} filterClass={this.props.filterClass} />
         <div className="form-group">
           <input type="text" className="form-control" placeholder="Filter by Title/Lecturer..." onChange={this.getUserInput.bind(this)} />
         </div>
+        <Dropdown list={this.state.allClasses} filterClass={this.props.filterClass} />
       </form>
     );
   }

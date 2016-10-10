@@ -91,10 +91,10 @@ class Compile extends React.Component {
   render() {
     return (
       this.state.loaded ? (
-    <div className="container-fluid">
+    <div className="container">
       <LectureTitle />
       <div className="row">
-          <Audio />
+        <Audio />
       </div>
       <div className="row">
         <div className="col-md-9">

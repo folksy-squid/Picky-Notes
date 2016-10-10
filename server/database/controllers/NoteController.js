@@ -10,14 +10,10 @@ module.exports = (db, Sequelize) => {
       type: Sequelize.BOOLEAN,
       defaultValue: false
     },
-    // edittingUserId: {
-    //   type: Sequelize.BOOLEAN,
-    //   allowNull: false,
-    //   references: {
-    //     model: User,
-    //     foreignKey: 'facebookId'
-    //   }
-    // }
+    thought: {
+      type: Sequelize.BOOLEAN,
+      defaultValue: false
+    }
   });
 
   return {

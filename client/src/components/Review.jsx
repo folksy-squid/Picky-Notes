@@ -40,7 +40,7 @@ class Review extends React.Component {
   render() {
     return (
       this.state.loaded ? (
-      <div className="container-fluid">
+      <div className="container">
         <LectureTitle />
         <div className="row">
         {this.props.room.roomInfo.audioUrl === 'audio url' ? (<div>Audio does not exist</div>) : <Audio />}

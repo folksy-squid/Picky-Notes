@@ -38,6 +38,6 @@ describe('<Navbar />', () => {
   it('should have Navbar links', () => {
     expect(wrapper.find('.nav').length).to.equal(2);
     expect(wrapper.find('.nav-item').length).to.equal(4);
-    expect(wrapper.find('.nav-link').length).to.equal(4);
+    expect(wrapper.find('.nav-link').length).to.equal(3);
   });
 });

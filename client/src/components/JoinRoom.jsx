@@ -47,7 +47,7 @@ class JoinRoom extends React.Component {
           <div className="form-group">
             <input ref="joinRoomInput" onChange={this.updateInput.bind(this)} type="text" className="form-control" placeholder="Access Code" />
             <span className="input-group-btn">
-              <button className="btn btn-default">Join</button>
+              <button className="btn btn-primary">Join</button>
             </span>
             {(this.state.error) ?
               (<div className="alert alert-danger">

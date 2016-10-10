@@ -2,36 +2,63 @@ import React from 'react';
 import {connect} from 'react-redux';
 import NoteList from './NoteList.jsx';
 import InputBox from './InputBox.jsx';
+import {getCurrentView} from '../../helpers.js';
+
+
 class LectureBox extends React.Component {
   constructor (props) {
     super(props);
+    var pathname = props.routing.locationBeforeTransitions.pathname;
+    var currentView = getCurrentView(pathname);
+    this.state = {
+      view: currentView,
+      tab: 'Notes'
+    }
   }
 
-  toggleView(tab = 'notes') {
-    if (tab === 'notes') {
-      return true;
+  toggleView(type) {
+    if (type === 'Notes') {
+      this.setState({tab: 'Notes'});
+    } else if (type === 'Thoughts') {
+      this.setState({tab: 'Thoughts'});
     }
-    return false;
   }
 
   render() {
-    return (
-    <div className="lecture-box">
-      <ul className="nav nav-tabs">
-        <li className="active">
-          <a href="#">Notes</a>
-        </li>
-        <li onClick={this.toggleView}>
-          <a href="#">Thoughts</a>
-        </li>
-      </ul>
-    { this.toggleView() ? (
-      <div>
-        <NoteList />
-        <InputBox />
-      </div>) : <div></div> }
-    </div>
-  );
+    let view = (
+      <div className="lecture-box">
+        <ul className="nav nav-tabs">
+          <li className="active">
+            <h4>Notes & Thoughts</h4>
+          </li>
+        </ul>
+        <div>
+          <NoteList />
+          <InputBox />
+        </div>
+      </div>
+    )
+
+    if (this.state.view === 'compile') {
+
+      view = (
+      <div className="lecture-box">
+        <ul className="nav nav-tabs">
+          <li className={this.state.tab === 'Notes' ? "active" : ""}>
+            <a onClick={this.toggleView.bind(this, 'Notes')}>Notes</a>
+          </li>
+          <li className={this.state.tab === 'Thoughts' ? "active" : ""}>
+            <a onClick={this.toggleView.bind(this, 'Thoughts')}>Thoughts</a>
+          </li>
+        </ul>
+        <div>
+          <NoteList tab={this.state.tab}/>
+          <InputBox tab={this.state.tab}/>
+        </div>
+      </div>
+      )
+    }
+    return view;
   }
 }
 
