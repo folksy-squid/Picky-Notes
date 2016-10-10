@@ -77,6 +77,7 @@ class Lecture extends React.Component {
     let host = this.props.room.participants[0];
     let user = this.props.user.information[0];
     host.id === user.id && (!this.state.isHost) && this.setState({isHost: true});
+    
   }
 
   hideReadyButton() {
