@@ -29,10 +29,10 @@ class Note extends React.Component {
   }
 
   formatTime(milliseconds) {
-    let totalSeconds = ~~(milliseconds / 1000);
-    let minutes = ~~(totalSeconds / 60);
-    let seconds = totalSeconds % 60;
-    return (minutes) ? `${minutes}m ${seconds}s` : `${seconds}s`;
+    const totalSeconds = ~~(milliseconds / 1000);
+    const minutes = ~~(totalSeconds / 60);
+    const seconds = totalSeconds % 60;
+    return minutes ? `${minutes}m ${seconds}s` : `${seconds}s`;
   }
 
   compileClickHandler() {
@@ -41,9 +41,9 @@ class Note extends React.Component {
 
   editHandler(e) {
     e.preventDefault();
-    let newText = this.refs.noteInput.value;
-    if (this.refs.noteInput.value.trim() !== '') {
-      this.props.dispatch(editNote(this.props.noteInfo.id, this.refs.noteInput.value));
+    const newText = this.refs.noteInput.value;
+    if (newText.trim() !== '' && newText.value !== this.props.noteInfo.content) {
+      this.props.dispatch(editNote(this.props.noteInfo.id, newText));
     }
     this.setState({edit: false});
   }

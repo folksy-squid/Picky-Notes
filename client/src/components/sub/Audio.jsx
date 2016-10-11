@@ -50,11 +50,11 @@ class Audio extends React.Component {
 
   handleTogglePlay() {
     if (this.props.waveform.playing) {
-      this.sendStatus('paused')
+      this.sendStatus('paused');
     } else {
-      this.sendStatus('playing')
+      this.sendStatus('playing');
     }
-    this.props.dispatch(togglePlay())
+    this.props.dispatch(togglePlay());
   }
 
   handlePosChange(e) {
@@ -83,7 +83,7 @@ class Audio extends React.Component {
 
   onFinish() {
     this.props.dispatch(removeTimer());
-    this.props.dispatch(togglePlay('stop'));
+    this.props.dispatch(togglePlay());
   }
 
   handleClick() {
@@ -92,7 +92,7 @@ class Audio extends React.Component {
 
   render() {
     const waveOptions = {
-      scrollParent: true,
+      fillParent: true,
       height: 50,
       progressColor: 'rgba(48,125,125,1)',
       waveColor: 'rgba(131, 187, 187, 0.6)',
@@ -103,46 +103,14 @@ class Audio extends React.Component {
       cursorColor: 'rgba(100, 50, 50, 1)'
     };
     return (
-      <div className="example col-xs-12">
-        <div className="row">
-          <div className="form-group col-xs-4">
-            <label htmlFor="simple-volume">Volume:</label>
-            <input
-              name="simple-volume"
-              type="range"
-              min={0}
-              max={1}
-              step="0.01"
-              value={this.props.waveform.volume}
-              onChange={this.handleVolumeChange.bind(this)}
-              className="form-control"
-            />
-            <input
-              className="form-control prop-value"
-              type="text"
-              placeholder={String(this.props.waveform.volume)}
-              readOnly
-            />
+      <span className="audioPlayer">
+        {this.state.loadingDisplay === 'block' && 
+          <div>
+            LOADING AUDIO FILE {this.state.loadVal}
           </div>
-
-          <div className="form-group col-xs-4">
-            <label htmlFor="simple-playing">Playing:</label>
-            <button onClick={this.handleTogglePlay.bind(this)} className="btn btn-primary btn-block">
-              toggle play
-            </button>
-            <input
-              name="simple-playing"
-              className="form-control prop-value"
-              type="text"
-              placeholder={String(this.props.waveform.playing)}
-              readOnly
-            />
-          </div>
-        </div>
-        <div style={{display: this.state.loadingDisplay}}>
-          LOADING AUDIO FILE {this.state.loadVal}
-        </div>
-        <div ref="wavesurfContainer" onClick={this.handleClick.bind(this)} style={{visibility: this.state.waveformDisplay}}>
+        }
+        <i onClick={this.handleTogglePlay.bind(this)} className={`fa ${this.props.waveform.playing ? 'fa-pause-circle' : 'fa-play-circle'} fa-3x text-primary playButton`}></i>
+        <span className="waveform" ref="wavesurfContainer" onClick={this.handleClick.bind(this)} style={{visibility: this.state.waveformDisplay}}>
           <Wavesurfer
             volume={this.props.waveform.volume}
             pos={this.props.waveform.pos}
@@ -154,8 +122,19 @@ class Audio extends React.Component {
             onLoading={this.handleLoading.bind(this)}
             onFinish={this.onFinish.bind(this)}
           />
-        </div>
-      </div>
+        </span>
+        <input
+          name="simple-volume"
+          type="range"
+          min={0}
+          max={1}
+          step="0.01"
+          value={this.props.waveform.volume}
+          onChange={this.handleVolumeChange.bind(this)}
+          className="form-control"
+          orient="vertical"
+        />
+      </span>
   );
   }
 }
