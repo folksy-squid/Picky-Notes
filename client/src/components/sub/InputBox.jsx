@@ -90,7 +90,7 @@ class InputBox extends React.Component {
       return <span className="lectureForm" >
         <i className={'fa ion-arrow-right-c fa-2x col-xs-1 ion-arrow-right-c'} style={{color: '#872100'}}></i>
         <input ref="inputNote" className="lectureInput" type="text" onKeyUp={this.keyUpHandler.bind(this)} autoFocus/>
-        <span>{this.formatTime(this.state.stopTimestamp ? this.state.timestamp : this.props.waveform.pos)}</span>
+        <span className="insertTimestamp">{this.formatTime(this.state.stopTimestamp ? this.state.timestamp : this.props.waveform.pos)}</span>
       </span>;
     }
 
