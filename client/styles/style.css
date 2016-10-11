@@ -280,10 +280,6 @@ small.text-muted {
 .note-list {
 }
 
-.note-list.compiled {
-  border-left: 1px solid black
-}
-
 .pointer {
   height: 1px;
   width: 80px;
@@ -358,6 +354,10 @@ input[type=checkbox] {
   font-size: 20px;
 }
 
+.review.thought {
+  text-align: right;
+}
+
 /*
   =================================
     Compile
@@ -366,6 +366,10 @@ input[type=checkbox] {
 
 .nav.nav-tabs > li > a:hover {
   cursor: pointer;
+}
+
+.note.highlighted.compile {
+  border: 1px purple solid;
 }
 
 /*

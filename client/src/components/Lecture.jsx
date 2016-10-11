@@ -78,7 +78,7 @@ class Lecture extends React.Component {
     let host = this.props.room.participants[0];
     let user = this.props.user.information[0];
     host.id === user.id && (!this.state.isHost) && this.setState({isHost: true});
-    
+
   }
 
   hideReadyButton() {
@@ -105,10 +105,10 @@ class Lecture extends React.Component {
             <div className="col-md-9">
               <LectureTitle />
             </div>
-            {this.state.isHost && (<button className="btn btn-lg btn-danger" style={{display: this.state.endLectureDisplay}} onClick={this.endLecture.bind(this)}>
+            {this.state.isHost && (<button className="btn btn-md btn-danger" style={{display: this.state.endLectureDisplay}} onClick={this.endLecture.bind(this)}>
               Stop Recording
             </button>)}
-            <button className="btn btn-lg btn-success" style={{display: this.state.readyButtonDisplay}} onClick={this.sendReady.bind(this)}>
+            <button className="btn btn-md btn-success" style={{display: this.state.readyButtonDisplay}} onClick={this.sendReady.bind(this)}>
               Ready
             </button>
           </div>
