@@ -26,7 +26,7 @@ const convertoFloat32ToInt16 = buffer => {
   let buf = new Int16Array(l);
 
   while (l--) {
-    buf[l] = buffer[l] * 0xFFFF;    //convert to 16 bit
+    buf[l] = buffer[l] * (0xFFFF - 0.5) + 0.5;    //convert to 16 bit
   }
   return buf.buffer;
 };
@@ -152,7 +152,15 @@ export default (state = {}, action) => {
     const audioSuccess = e => {
       const audioContext = window.AudioContext || window.webkitAudioContext;
       const context = new audioContext();
+      // const lowPassfilter = context.createBiquadFilter();
+      //   lowPassfilter.Q.value = 10;
+      //   lowPassfilter.frequency.value = 100;
+      //   lowPassfilter.type = 'lowpass';
 
+      // const compressor = context.createDynamicsCompressor();
+      //   compressor.ratio.value = 12;
+      //   compressor.attack.value = 0;
+      //   compressor.release.value = 0.5;
       // assign current audioStream to stop later
       audioStream = e;
 
@@ -166,7 +174,6 @@ export default (state = {}, action) => {
       recorder.onaudioprocess = e => {
         // if currently not in recording state, return
         if (!state.recording) { return; }
-
         // if currently recording, send audio through socket.io stream to server
         var left = e.inputBuffer.getChannelData(0);
         state.stream.write(new ss.Buffer(convertoFloat32ToInt16(left)));
@@ -174,6 +181,9 @@ export default (state = {}, action) => {
 
       // connections
       audioInput.connect(recorder);
+      // compressor.connect(recorder);
+      // highPassfilter.connect(lowPassfilter);
+      // highPassfilter.connect(recorder);
       recorder.connect(context.destination);
       action.cb && action.cb();
     };
