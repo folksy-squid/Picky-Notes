@@ -39,7 +39,7 @@ class Note extends React.Component {
     let time = hours ? hours + ':' : '';
     time += minutes < 10 ? '0' + minutes + ':' : minutes + ':';
     time += seconds < 10 ? '0' + seconds : seconds;
-    
+
     return time;
   }
 
@@ -74,70 +74,65 @@ class Note extends React.Component {
   }
 
   render() {
+
+    const noteClass = () => {
+      let retVal = this.props.view;
+      if (this.props.noteInfo.thought) {
+        retVal+=' thought'
+      } else {
+        retVal+= this.props.noteInfo.highlight ? ' note highlighted' : ' note'
+      }
+      return retVal;
+    }
+
+    if (!this.props.noteInfo.content) {
+      return (<div></div>);
+    }
+
     var view;
-    //props.page will be obtained from redux store.
 
     if (this.props.view === 'compile') {
-
-      if (!this.props.noteInfo.content) {
-        if (this.props.noteInfo.highlight) {
-          return (<div className='pointer'></div>);
-        }
-        return (<div></div>);
-      }
-
       view = (
-        <div>
-          <div className='note'>
-            <input type="checkbox" ref="checkbox" onChange={this.toggleNoteHandler.bind(this)} checked={this.props.noteInfo.show}/>
-            {this.state.editContent ?
-              <span className="content">
-                <form onSubmit={this.editContentHandler.bind(this)}>
-                  <input ref="noteInput" type="text" defaultValue={this.props.noteInfo.content} />
-                </form>
-              </span>
-              :
-              <span className="content" onClick={this.contentClickHandler.bind(this)}>{this.props.noteInfo.content}</span>
-            }
-            {this.state.editTimestamp ? 
-              <span className="audioTimestamp">
-                <form onSubmit={this.editTimestampHandler.bind(this)}>
-                  <button className="btn btn-success btn-xs">Save</button>
-                  <input ref="editMin" type="number" min={0} max={59} defaultValue={~~(this.props.noteInfo.audioTimestamp / 60000) % 60} />:
-                  <input ref="editSec" type="number" min={0} max={59} defaultValue={~~(this.props.noteInfo.audioTimestamp / 1000) % 60} />
-                </form>
-              </span>
+        <div className={noteClass()}>
+          <input type="checkbox" ref="checkbox" onChange={this.toggleNoteHandler.bind(this)} checked={this.props.noteInfo.show}/>
+          {this.state.editContent ?
+            <span className="content">
+              <form onSubmit={this.editContentHandler.bind(this)}>
+                <input ref="noteInput" type="text" defaultValue={this.props.noteInfo.content} />
+              </form>
+            </span>
             :
-              <span className="audioTimestamp" onClick={this.timestampClickHandler.bind(this)}>
-                {this.formatTime(this.props.noteInfo.audioTimestamp)}
-              </span>
-            }
-            <span className="deleteNoteButton" onClick={this.deleteHandler.bind(this)}><i className="ion ion-close-round deleteNoteIcon"></i></span>
-          </div>
-          {this.props.noteInfo.highlight && (
-          <div className='pointer' />)
+            <span className="content" onClick={this.contentClickHandler.bind(this)}>{this.props.noteInfo.content}</span>
           }
+          {this.state.editTimestamp ?
+            <span className="audioTimestamp">
+              <form onSubmit={this.editTimestampHandler.bind(this)}>
+                <button className="btn btn-success btn-xs">Save</button>
+                <input ref="editMin" type="number" min={0} max={59} defaultValue={~~(this.props.noteInfo.audioTimestamp / 60000) % 60} />:
+                <input ref="editSec" type="number" min={0} max={59} defaultValue={~~(this.props.noteInfo.audioTimestamp / 1000) % 60} />
+              </form>
+            </span>
+          :
+            <span className="audioTimestamp" onClick={this.timestampClickHandler.bind(this)}>
+              {this.formatTime(this.props.noteInfo.audioTimestamp)}
+            </span>
+          }
+          <span className="deleteNoteButton" onClick={this.deleteHandler.bind(this)}><i className="ion ion-close-round deleteNoteIcon"></i></span>
         </div>
       );
 
     } else if (this.props.view === 'lecture') {
-      if (!this.props.noteInfo.content) {
-        return (<div></div>);
-      }
       view = (
-        <div className="note">
+        <div className={noteClass()}>
           <span className="content">{this.props.noteInfo.content}</span>
           <span className="audioTimestamp">{this.formatTime(this.props.noteInfo.audioTimestamp)}</span>
         </div>
       );
 
     } else if (this.props.view === 'review') {
-      if (!this.props.noteInfo.content) {
-        return (<div></div>);
-      }
       view = (
-        <div className="note">
-          <i className="fa fa-play-circle" aria-hidden="true" onClick={this.playNote.bind(this)}></i>
+        <div className={noteClass()}>
+          {!this.props.noteInfo.thought && (<i className="fa fa-play-circle" aria-hidden="true" onClick={this.playNote.bind(this)}></i>)}
           {this.props.noteInfo.content}
         </div>
       );
