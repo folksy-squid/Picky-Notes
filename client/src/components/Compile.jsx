@@ -113,11 +113,6 @@ class Compile extends React.Component {
           </div>
           <div className="col-md-3">
             <button className="btn btn-md btn-success" onClick={this.reviewNotesHandler.bind(this)}>Save & Review</button>
-            {
-              this.props.room.participants ? (
-                <ParticipantList />
-              ) : (<div></div>)
-            }
           </div>
         </div>
       </div>
