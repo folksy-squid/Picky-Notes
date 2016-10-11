@@ -78,19 +78,15 @@ class NoteList extends React.Component {
   }
 
   getReviewNotes(userId, roomId) {
-    // var context = this;
     $.ajax({
       method: 'GET',
       url: `/api/notes/${userId}/${roomId}?filter=show`,
       success: (res, status) => {
-        // replace current Notes with response
         this.props.dispatch(replaceNotes(res, () => {
-          // console.log('getting all notes');
           this.setState({
             loaded: true
           });
         }));
-        // reassign with notes from server
       },
       error: (res, status) => {
         console.log(res);
@@ -121,7 +117,7 @@ class NoteList extends React.Component {
           <Note key={i} noteInfo={note} view={this.state.view} />
         ))
       } else {
-        return this.props.note.notes.map((note, i)=>(
+        return this.props.note.justNotes.map((note, i)=>(
           <Note key={i} noteInfo={note} view={this.state.view} />
         ));
       }
