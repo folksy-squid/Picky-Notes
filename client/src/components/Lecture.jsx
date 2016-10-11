@@ -44,7 +44,6 @@ class Lecture extends React.Component {
             return this.setState({error});
           }
           this.setState({loaded: true});
-          this.checkHost();
           this.applyListeners();
           this.props.room.socket.on('old notes', (notes) => {
             this.props.dispatch(replaceNotes(notes, () =>{}));
@@ -77,7 +76,7 @@ class Lecture extends React.Component {
   checkHost() {
     let host = this.props.room.participants[0];
     let user = this.props.user.information[0];
-    host.id === user.id && this.setState({isHost: true});
+    host.id === user.id && (!this.state.isHost) && this.setState({isHost: true});
   }
 
   hideReadyButton() {
