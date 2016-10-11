@@ -101,3 +101,10 @@ export const removeArrow = () => {
     type: 'REMOVE_ARROW'
   };
 };
+
+export const showHideThoughts = (load) => {
+  return {
+    type: 'SHOW_HIDE_THOUGHTS',
+    load
+  };
+};

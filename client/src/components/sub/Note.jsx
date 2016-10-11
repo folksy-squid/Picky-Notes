@@ -8,6 +8,7 @@ import {setPos, play} from '../../actions/waveformActions';
 class Note extends React.Component {
   constructor(props) {
     super(props);
+    console.log('noteprops:', props)
     this.state = {
       editContent: false,
       editTimestamp: false,
@@ -92,6 +93,7 @@ class Note extends React.Component {
   }
 
   render() {
+    console.log(this.props.note.showThoughts)
 
     const noteClass = () => {
       let retVal = this.props.view;
@@ -141,8 +143,9 @@ class Note extends React.Component {
           <span className="deleteNoteButton" onClick={this.deleteHandler.bind(this)}><i className="ion ion-close-round deleteNoteIcon"></i></span>
         </div>
       );
+    }
 
-    } else if (this.props.view === 'lecture') {
+    else if (this.props.view === 'lecture') {
       view = (
         <div className={noteClass()}>
           <span className="content">{this.props.noteInfo.content}</span>
@@ -150,13 +153,30 @@ class Note extends React.Component {
         </div>
       );
 
-    } else if (this.props.view === 'review') {
-      view = (
-        <div className={noteClass()}>
-          {!this.props.noteInfo.thought && (<i className="fa fa-play-circle" aria-hidden="true" onClick={this.playNote.bind(this)}></i>)}
-          {this.props.noteInfo.content}
-        </div>
-      );
+    }
+
+    else if (this.props.view === 'review') {
+      if (this.props.noteInfo.thought) {
+      //if the note is a thought,
+        if (this.props.note.showThoughts) {
+          console.log('show thoughts')
+          view = (
+            <div className={noteClass()}>
+              {this.props.noteInfo.content}
+            </div>
+          )
+        } else {
+          view = (<div></div>)
+        }
+      } else {
+      // if the note is a note
+        view = (
+          <div className={noteClass()}>
+            {!this.props.noteInfo.thought && (<i className="fa fa-play-circle" aria-hidden="true" onClick={this.playNote.bind(this)}></i>)}
+            {this.props.noteInfo.content}
+          </div>
+        );
+      }
     }
 
     return view;

@@ -1,5 +1,10 @@
 /*jshint esversion: 6 */
-export default (state = {notes: [], deleted: []}, action) => {
+const defaultState = {
+  notes: [],
+  deleted: [],
+  showThoughts: false
+}
+export default (state = defaultState, action) => {
   if (action.type === 'SUBMIT_NOTE') {
     action.socket.emit('new note', {content: action.content, thought: action.thought});
   }
@@ -155,16 +160,27 @@ export default (state = {notes: [], deleted: []}, action) => {
     }
     return state;
   }
+
   if (action.type === 'SET_ARROW') {
     state.justNotes.forEach(note => delete note['arrow']);
     state.justNotes[action.arrowPos]['arrow'] = true;
     return {...state};
   }
+
   if (action.type === 'REMOVE_ARROW') {
     console.log('removing arrows');
     state.justNotes.forEach(note => delete note['arrow']);
     return {...state};
   }
+
+  if (action.type === 'SHOW_HIDE_THOUGHTS') {
+    if (action.load) {
+      state.showThoughts = false;
+    } else {
+      state.showThoughts = !state.showThoughts;
+    }
+    return {...state};
+  };
 
   return {...state};
 };

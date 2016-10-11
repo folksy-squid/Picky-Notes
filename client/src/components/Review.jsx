@@ -4,14 +4,18 @@ import NoteList from './sub/NoteList.jsx';
 import LectureTitle from './sub/LectureTitle.jsx';
 import {connect} from 'react-redux';
 import {setRoomInfo} from '../actions/roomActions';
+import {showHideThoughts} from '../actions/noteActions';
 import Audio from './sub/Audio.jsx';
 import UserReducer from '../reducers/userReducers';
 import RoomReducer from '../reducers/roomReducers';
+import NoteReducer from '../reducers/noteReducers';
+
 class Review extends React.Component {
   constructor (props) {
     super(props);
     this.state = {
-      loaded: false
+      loaded: false,
+      thoughtButton: 'Show thoughts'
     };
   }
   componentWillMount() {
@@ -25,6 +29,7 @@ class Review extends React.Component {
         realm.setState({loaded: true});
       }
     }));
+    this.props.dispatch(showHideThoughts(true));
   }
 
   static get contextTypes() {
@@ -37,18 +42,35 @@ class Review extends React.Component {
     this.context.router.push(`/compile/${this.props.room.roomInfo.pathUrl}`);
   }
 
+  toggleThoughts() {
+    if (this.state.thoughtButton === 'Show thoughts') {
+      this.setState({
+        thoughtButton: 'Hide thoughts'
+      })
+    } else {
+      this.setState({
+        thoughtButton: 'Show thoughts'
+      })
+    }
+    this.props.dispatch(showHideThoughts());
+  }
+
   render() {
     return (
       this.state.loaded ? (
       <div className="container">
-        <LectureTitle />
-        <div className="row">
-        {this.props.room.roomInfo.audioUrl === 'audio url' ? (<div>Audio does not exist</div>) : <Audio />}
+        <div className="col-sm-10 panel panel-default">
+          <LectureTitle />
+          <NoteList />
         </div>
-        <NoteList />
-        <button className="btn btn-md btn-primary" onClick={this.goToCompiledView.bind(this)}>
-          Add / Edit Notes
-        </button>
+        <div className="col-sm-2">
+          <button className="btn btn-md btn-primary" onClick={this.goToCompiledView.bind(this)}>
+            Add / Edit Notes
+          </button>
+          <button className="btn btn-md btn-info" onClick={this.toggleThoughts.bind(this)}>
+            {this.state.thoughtButton}
+          </button>
+        </div>
       </div>
     ) : (<div></div>)
     );
@@ -59,7 +81,8 @@ const mapStateToProps = (state) => {
   return {
     ...state,
     UserReducer,
-    RoomReducer
+    RoomReducer,
+    NoteReducer
   };
 };
 
