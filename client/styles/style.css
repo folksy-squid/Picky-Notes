@@ -7,7 +7,7 @@
 */
 
 body {
-  padding-bottom: 50px;
+  padding-bottom: 90px;
 }
 
 .container-fluid {
@@ -397,11 +397,11 @@ input[type=checkbox] {
   =================================
 */
 
-.slideUp {
+/*.slideUp {
   animation: slideUp 0.3s ease 0.6s forwards;
   -moz-animation: slideUp 0.3s ease 0.6s forwards;
   -webkit-animation: slideUp 0.3s ease 0.6s forwards;
-}
+}*/
 
 @keyframes slideUp {
   0% {
@@ -418,16 +418,25 @@ input[type=checkbox] {
   position: fixed;
   width: 100%;
   align-items: center;
-  bottom: -50px;
-  height: 50px;
+  bottom: 0px;
+  flex-wrap: wrap;
 }
 
-.footer > * > * {
+.footer > * {
+  min-width: 320px;
+}
+
+.lectureForm > * {
   margin: 0 12px;
 }
 
 .audioPlayer {
-  display: inline-block;
+  display: flex;
+  flex: 1;
+}
+
+.audioPlayer > * {
+  margin: 0 12px;
 }
 
 .waveform {
