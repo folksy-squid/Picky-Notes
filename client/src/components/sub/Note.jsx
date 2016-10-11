@@ -109,8 +109,7 @@ class Note extends React.Component {
               <span className="audioTimestamp">
                 <form onSubmit={this.editTimestampHandler.bind(this)}>
                   <button className="btn btn-success btn-xs">Save</button>
-                  {this.props.noteInfo.audioTimestamp >= 3600000 && <input ref="editMin" type="number" min={0} defaultValue={ ~~(this.props.noteInfo.audioTimestamp / 3600000) } />}
-                  {this.props.noteInfo.audioTimestamp >= 3600000 ? ':' : ''}
+                  {this.props.room.roomInfo.timeLength >= 3600000 && <input ref="editHour" type="number" min={0} defaultValue={ ~~(this.props.noteInfo.audioTimestamp / 3600000) } />{':'}}
                   <input ref="editMin" type="number" min={0} max={59} defaultValue={~~(this.props.noteInfo.audioTimestamp / 60000) % 60} />:
                   <input ref="editSec" type="number" min={0} max={59} defaultValue={~~(this.props.noteInfo.audioTimestamp / 1000) % 60} />
                 </form>
