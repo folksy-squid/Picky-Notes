@@ -22,9 +22,8 @@ class InputBox extends React.Component {
       let timestamps = this.props.note.audioTimestampArray;
       this.setState({ showInsertPos: true, insertPos });
 
-      for (var i = 0; i < this.props.note.audioTimestampArray.length; i++) {
-        if (this.props.note.audioTimestampArray[i] > insertPos) {
-          
+      for (var i = 0; i < timestamps.length; i++) {
+        if (timestamps[i] > insertPos) {
           return this.props.dispatch(setArrow(i - 1));
         }
       }
