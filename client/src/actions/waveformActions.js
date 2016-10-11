@@ -1,7 +1,8 @@
 /*jshint esversion: 6 */
-export const togglePlay = () => {
+export const togglePlay = (instr) => {
   return {
-    type: 'TOGGLE_PLAY'
+    type: 'TOGGLE_PLAY',
+    instr
   };
 };
 export const setPos = (pos) => {
@@ -14,17 +15,5 @@ export const setVolume = (volume) => {
   return {
     type: 'SET_VOLUME',
     volume
-  };
-};
-export const setAudioRateChange = (audioRate) => {
-  return {
-    type: 'SET_AUDIO_RATE_CHANGE',
-    audioRate
-  };
-};
-
-export const play = () => {
-  return {
-    type: 'START_PLAY'
   };
 };

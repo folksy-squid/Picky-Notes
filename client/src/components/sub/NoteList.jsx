@@ -62,7 +62,6 @@ class NoteList extends React.Component {
       url: `/api/notes/${userId}/${roomId}`,
       contentType: 'application/json',
       success: (res, status) => {
-        // replace current Notes with response
         console.log('got notes.');
         this.props.dispatch(replaceNotes(res, () => {
           this.setState({

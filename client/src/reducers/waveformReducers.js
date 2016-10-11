@@ -10,9 +10,10 @@ const defaultState = {
 export default (state = defaultState, action) => {
   switch (action.type) {
   case 'TOGGLE_PLAY':
+    let instr = action.instr === 'stop' ? false : true;
     return {
       ...state,
-      playing: !state.playing
+      playing: instr
     };
   case 'SET_POS':
     return {
@@ -25,16 +26,18 @@ export default (state = defaultState, action) => {
       ...state,
       volume: action.volume
     };
-  case 'SET_AUDIO_RATE_CHANGE':
-    return {
-      ...state,
-      audioRate: action.audioRate
-    };
   case 'START_PLAY':
     return {
       ...state,
       playing: true
     };
+
+  // case 'SET_AUDIO_RATE_CHANGE':
+  //   return {
+  //     ...state,
+  //     audioRate: action.audioRate
+  //   };
+
   // case 'SETS_TIMER':
   //   state.currentNoteSelected = action.nextIndex-1;
   //   console.log('triggering timer');

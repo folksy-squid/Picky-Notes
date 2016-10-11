@@ -15,7 +15,8 @@ class Audio extends React.Component {
       loaded: 'false',
       waveformDisplay: 'hidden',
       loadingDisplay: 'block',
-      loadVal: 0
+      loadVal: 0,
+      clicked: false
     };
     this.handleClick = this.handleClick.bind(this);
   }
@@ -82,10 +83,10 @@ class Audio extends React.Component {
 
   onFinish() {
     this.props.dispatch(removeTimer());
+    this.props.dispatch(togglePlay('stop'));
   }
 
   handleClick() {
-    // this.props.dispatch(removeTimer());
     window.setTimeout(this.setState.bind(this, {clicked: true}), 10);
   }
 
@@ -141,7 +142,7 @@ class Audio extends React.Component {
         <div style={{display: this.state.loadingDisplay}}>
           LOADING AUDIO FILE {this.state.loadVal}
         </div>
-        <div ref="wavesurfContainer" onClick = {this.handleClick} style={{visibility: this.state.waveformDisplay}}>
+        <div ref="wavesurfContainer" onClick={this.handleClick.bind(this)} style={{visibility: this.state.waveformDisplay}}>
           <Wavesurfer
             volume={this.props.waveform.volume}
             pos={this.props.waveform.pos}
