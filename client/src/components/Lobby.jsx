@@ -44,7 +44,6 @@ class Lobby extends React.Component {
             return this.context.router.push(`/lecture/${pathUrl}`);
           }
           this.setState({completed: true});
-          // this.checkHost();
           this.applyListeners();
         }));
       }));
@@ -61,7 +60,6 @@ class Lobby extends React.Component {
     if (host.id === user.id) {
       // switch host status to user
       this.setState({isHost: true});
-
     }
   }
 
@@ -73,8 +71,7 @@ class Lobby extends React.Component {
   startLecture() {
     const socket = this.props.room.socket;
     if (this.state.isHost) {
-      // start streaming recorded audio
-      // and switch audio stream to host
+      // if current client is the host, set Socket as Host Socket
       socket.emit('lecture host');
       this.props.dispatch(createAudioStream(() => this.props.dispatch(startRecording()) ));
     }
