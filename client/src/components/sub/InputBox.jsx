@@ -23,13 +23,12 @@ class InputBox extends React.Component {
       let wavePos = this.props.waveform.pos;
       let timestamps = this.props.note.audioTimestampArray;
       console.log(timestamps, wavePos);
-      for (var i = 0; i < timestamps.length; i++) {
-        if (timestamps[i] > wavePos) {
-          console.log('setting arrow at ', wavePos);
+      for (var i = 0; i < this.props.note.audioTimestampArray.length; i++) {
+        if (this.props.note.audioTimestampArray[i] > wavePos) {
           return this.props.dispatch(setArrow(i - 1));
         }
       }
-      return this.props.dispatch(setArrow(i - 1));
+      return this.props.dispatch(setArrow(this.props.note.audioTimestampArray.length - 1));
     } else if (e.target.value.trim() === '' && this.state.stopTimestamp) {
       this.props.dispatch(removeArrow());
       this.setState({ stopTimestamp: false });
