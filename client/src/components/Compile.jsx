@@ -96,7 +96,7 @@ class Compile extends React.Component {
     let time = hours > 0 ? hours + ':' : '';
     time += minutes < 10 ? '0' + minutes + ':' : minutes + ':';
     time += seconds < 10 ? '0' + seconds : seconds;
-    
+
     return time;
   }
 
@@ -112,7 +112,7 @@ class Compile extends React.Component {
             <LectureBox />
           </div>
           <div className="col-md-3">
-            <button className="btn btn-lg btn-success" onClick={this.reviewNotesHandler.bind(this)}>Save & Review</button>
+            <button className="btn btn-md btn-success" onClick={this.reviewNotesHandler.bind(this)}>Save & Review</button>
             {
               this.props.room.participants ? (
                 <ParticipantList />
