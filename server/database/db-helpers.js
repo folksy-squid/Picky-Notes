@@ -220,5 +220,4 @@ module.exports = {
   saveTimeLength,
   getAudioForRoom,
   deleteNotes,
-  getRoomParticipants,
 };
