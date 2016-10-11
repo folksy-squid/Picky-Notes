@@ -369,7 +369,9 @@ input[type=checkbox] {
 }
 
 .note.highlighted.compile {
-  border: 1px purple solid;
+  background-color: #006687;
+  color: white;
+  /*border: 1px purple solid;*/
 }
 
 /*

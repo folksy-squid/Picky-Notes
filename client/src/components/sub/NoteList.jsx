@@ -104,7 +104,12 @@ class NoteList extends React.Component {
     const showNotes = () => {
       if (this.state.view === 'compile') {
         if (this.props.tab === 'Notes') {
-          return this.props.note.justNotes.map((note, i)=> (<Note key={i} noteInfo={note} tab={this.props.tab} view={this.state.view} colorClass={roomParticipants[note.originalUserId]} />));
+          return this.props.note.justNotes.map((note, i)=>{
+            return (<div key={i}>
+              <Note key={i} noteInfo={note} tab={this.props.tab} view={this.state.view} colorClass={roomParticipants[note.originalUserId]} />
+              {note.arrow ? (<div className='row'><i className={'fa ion-arrow-right-c fa-2x col-xs-1 ion-arrow-right-c'} style={{color: '#872100'}}></i></div>)
+            : ('')
+          }</div>); });
         } else if (this.props.tab === 'Thoughts') {
           return this.props.note.justThoughts.map((note, i)=>(
             <Note key={i} noteInfo={note} tab={this.props.tab} view={this.state.view} />

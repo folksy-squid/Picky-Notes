@@ -88,3 +88,16 @@ export const removeTimer = () => {
     type: 'REMOVE_TIMER'
   };
 };
+
+export const setArrow = (arrowPos) => {
+  return {
+    type: 'SET_ARROW',
+    arrowPos
+  };
+};
+
+export const removeArrow = () => {
+  return {
+    type: 'REMOVE_ARROW'
+  };
+};

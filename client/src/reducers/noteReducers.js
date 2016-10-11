@@ -6,10 +6,18 @@ export default (state = {notes: [], deleted: []}, action) => {
 
   if (action.type === 'ADD_NOTE') {
     let notes = state.notes.concat([action.note]);
-    notes.sort((a, b) => a.audioTimestamp - b.audioTimestamp);
+    notes = notes.sort((a, b) => a.audioTimestamp - b.audioTimestamp);
+
+    let justNotes = notes.filter(note=>!note.thought);
+    let justThoughts = notes.filter(note=>note.thought);
+    let audioTimestampArray = state.justNotes.map(note=> Number(note.audioTimestamp) / 1000);
+
     return {
       ...state,
       notes,
+      justNotes,
+      justThoughts,
+      audioTimestampArray
     };
   }
 
@@ -66,9 +74,22 @@ export default (state = {notes: [], deleted: []}, action) => {
         break;
       }
     }
+    let justNotesIndex = -1;
+    for (let i = 0; i < state.justNotes.length; i++) {
+      if (state.justNotes[i].id === action.noteId) {
+        justNotesIndex = i;
+        break;
+      }
+    }
+    let deletedNotes = state.notes.splice(index, 1);
+    let justNotes = state.notes.filter(note=>!note.thought);
+    let audioTimestampArray = justNotes.map(note=> Number(note.audioTimestamp) / 1000);
+
     return {
       ...state,
-      deleted: state.deleted.concat(state.notes.splice(index, 1)),
+      deleted: state.deleted.concat(deletedNotes),
+      audioTimestampArray,
+      justNotes
     };
   }
 
@@ -106,12 +127,13 @@ export default (state = {notes: [], deleted: []}, action) => {
     let wavePos = action.wavePos;
 
     const updateNote = (idx) => {
+      let audioTimestamps = state.audioTimestampArray;
       state.justNotes.forEach(note => note['highlight'] = null);
       state.justNotes[idx]['highlight'] = true;
-      let diff = state.audioTimestampArray[idx + 1] - wavePos;
+      let diff = audioTimestamps[idx + 1] - wavePos;
       wavePos = wavePos + diff;
       idx++;
-      if (state.audioTimestampArray[idx] > -1) {
+      if (audioTimestamps[idx] > -1) {
         window.timer = window.setTimeout(updateNote.bind(this, idx), diff * 1000);
       }
     };
@@ -133,5 +155,16 @@ export default (state = {notes: [], deleted: []}, action) => {
     }
     return state;
   }
+  if (action.type === 'SET_ARROW') {
+    state.justNotes.forEach(note => delete note['arrow']);
+    state.justNotes[action.arrowPos]['arrow'] = true;
+    return {...state};
+  }
+  if (action.type === 'REMOVE_ARROW') {
+    console.log('removing arrows');
+    state.justNotes.forEach(note => delete note['arrow']);
+    return {...state};
+  }
+
   return {...state};
 };
