@@ -9,29 +9,30 @@ class InputBox extends React.Component {
   constructor (props) {
     super(props);
     this.state = {
-      timestamp: 0,
-      stopTimestamp: false,
-
+      insertPos: 0,
+      showInsertPos: false,
     };
   }
 
   keyUpHandler(e) {
 
-    if (e.target.value.trim() !== '' && !this.state.stopTimestamp) {
-      this.setState({ stopTimestamp: true, timestamp: this.props.waveform.pos });
+    if (e.target.value.trim() !== '' && !this.state.showInsertPos) {
 
-      let wavePos = this.props.waveform.pos;
+      let insertPos = this.props.waveform.pos;
       let timestamps = this.props.note.audioTimestampArray;
-      console.log(timestamps, wavePos);
+      this.setState({ showInsertPos: true, insertPos });
+
       for (var i = 0; i < this.props.note.audioTimestampArray.length; i++) {
-        if (this.props.note.audioTimestampArray[i] > wavePos) {
+        if (this.props.note.audioTimestampArray[i] > insertPos) {
+          
           return this.props.dispatch(setArrow(i - 1));
         }
       }
+
       return this.props.dispatch(setArrow(this.props.note.audioTimestampArray.length - 1));
-    } else if (e.target.value.trim() === '' && this.state.stopTimestamp) {
+    } else if (e.target.value.trim() === '' && this.state.showInsertPos) {
       this.props.dispatch(removeArrow());
-      this.setState({ stopTimestamp: false });
+      this.setState({ showInsertPos: false });
     }
     if (e.keyCode === 13) {
       this.submitNoteHandler(e, e.shiftKey);
@@ -46,7 +47,7 @@ class InputBox extends React.Component {
         content: this.refs.inputNote.value,
         originalUserId: this.props.user.information[0].id,
         roomId: this.props.room.roomInfo.id,
-        audioTimestamp: ~~(this.state.timestamp * 1000),
+        audioTimestamp: ~~(this.state.insertPos * 1000),
         thought: thought
       };
       $.ajax({
@@ -59,7 +60,7 @@ class InputBox extends React.Component {
           this.props.dispatch(addNote(savedNote));
           this.props.dispatch(removeArrow());
           this.refs.inputNote.value = '';
-          this.setState({ stopTimestamp: false });
+          this.setState({ showInsertPos: false });
         },
         error: console.log.bind(this)
       });
@@ -90,7 +91,7 @@ class InputBox extends React.Component {
       return <span className="lectureForm" >
         <i className={'fa ion-arrow-right-c fa-2x col-xs-1 ion-arrow-right-c'} style={{color: '#872100'}}></i>
         <input ref="inputNote" className="lectureInput" type="text" onKeyUp={this.keyUpHandler.bind(this)} autoFocus/>
-        <span className="insertTimestamp">{this.formatTime(this.state.stopTimestamp ? this.state.timestamp : this.props.waveform.pos)}</span>
+        {this.state.showInsertPos && <span className="insertTimestamp">{this.formatTime(this.state.insertPos)}</span>}
       </span>;
     }
 

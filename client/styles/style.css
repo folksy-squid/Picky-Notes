@@ -477,6 +477,13 @@ input[type=checkbox] {
   margin: 0 8px;
 }
 
+.audioContainer { 
+  display: flex; 
+  flex: 1; 
+  align-items: center;
+  justify-content: center;
+}
+
 .audioPlayer {
   display: flex;
   flex: 1;
@@ -516,6 +523,7 @@ input[type=range][orient=vertical] {
 .playButton:hover {
   color: #006687;
 }
+
 
 
 /*

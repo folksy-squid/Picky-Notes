@@ -120,7 +120,7 @@ class Audio extends React.Component {
       normalize: true
     };
     return (
-      <span style={{ display: 'flex', flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+      <span className="audioContainer">
         <div style={{ display: this.state.loadingDisplay, position: 'absolute' }}>
           LOADING AUDIO FILE {this.state.loadVal}
         </div>
