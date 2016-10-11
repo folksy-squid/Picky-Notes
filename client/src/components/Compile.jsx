@@ -117,12 +117,8 @@ class Compile extends React.Component {
         </div>
       </div>
       <div className="container footer slideUp">
-        <div className="col-md-6">
           <InputBox tab={this.state.tab}/>
-        </div>
-        <div className="col-md-6">
           <Audio />
-        </div>
       </div>
     </div>
     ) : (<div></div>)

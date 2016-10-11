@@ -16,7 +16,7 @@ class Audio extends React.Component {
       waveformDisplay: 'hidden',
       loadingDisplay: 'block',
       loadVal: 0,
-      clicked: false
+      clicked: false,
     };
     this.handleClick = this.handleClick.bind(this);
   }
@@ -104,40 +104,39 @@ class Audio extends React.Component {
       normalize: true
     };
     return (
-      <div className="row">
-        <div style={{display: this.state.loadingDisplay}}>
-            LOADING AUDIO FILE {this.state.loadVal}
+      <span style={{ display: 'flex', flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+        <div style={{ display: this.state.loadingDisplay, position: 'absolute' }}>
+          LOADING AUDIO FILE {this.state.loadVal}
         </div>
-        <div className="col-md-1">
+        <span className="audioPlayer" style={{visibility: this.state.waveformDisplay}}>
           <i onClick={this.handleTogglePlay.bind(this)} className={`fa ${this.props.waveform.playing ? 'fa-pause-circle' : 'fa-play-circle'} fa-3x text-primary playButton`}></i>
-        </div>
-        <div className="col-md-10" ref="wavesurfContainer" onClick={this.handleClick.bind(this)} style={{visibility: this.state.waveformDisplay}}>
-          <Wavesurfer
-            volume={this.props.waveform.volume}
-            pos={this.props.waveform.pos}
-            options={waveOptions}
-            onPosChange={this.handlePosChange.bind(this)}
-            audioFile={this.props.room.roomInfo.audioUrl}
-            playing={this.props.waveform.playing}
-            onReady={this.handleReady.bind(this)}
-            onLoading={this.handleLoading.bind(this)}
-            onFinish={this.onFinish.bind(this)}
+          <span className="waveform" ref="wavesurfContainer" onClick={this.handleClick.bind(this)} >
+            <Wavesurfer
+              volume={this.props.waveform.volume}
+              pos={this.props.waveform.pos}
+              options={waveOptions}
+              onPosChange={this.handlePosChange.bind(this)}
+              audioFile={this.props.room.roomInfo.audioUrl}
+              playing={this.props.waveform.playing}
+              onReady={this.handleReady.bind(this)}
+              onLoading={this.handleLoading.bind(this)}
+              onFinish={this.onFinish.bind(this)}
+              isLoaded={this.state.shouldBeLoaded}
+            />
+          </span>
+          <input
+            name="simple-volume"
+            type="range"
+            min={0}
+            max={1}
+            step="0.01"
+            value={this.props.waveform.volume}
+            onChange={this.handleVolumeChange.bind(this)}
+            className="form-control"
+            orient="vertical"
           />
-        </div>
-        <div className="col-md-1">
-        <input
-          name="simple-volume"
-          type="range"
-          min={0}
-          max={1}
-          step="0.01"
-          value={this.props.waveform.volume}
-          onChange={this.handleVolumeChange.bind(this)}
-          className="form-control"
-          orient="vertical"
-        />
-        </div>
-      </div>
+        </span>
+      </span>
   );
   }
 }
