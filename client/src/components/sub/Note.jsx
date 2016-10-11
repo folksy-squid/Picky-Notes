@@ -8,7 +8,6 @@ import {setPos, play} from '../../actions/waveformActions';
 class Note extends React.Component {
   constructor(props) {
     super(props);
-    console.log('noteprops:', props)
     this.state = {
       editContent: false,
       editTimestamp: false,
@@ -93,7 +92,6 @@ class Note extends React.Component {
   }
 
   render() {
-    console.log(this.props.note.showThoughts)
 
     const noteClass = () => {
       let retVal = this.props.view;
@@ -159,7 +157,6 @@ class Note extends React.Component {
       if (this.props.noteInfo.thought) {
       //if the note is a thought,
         if (this.props.note.showThoughts) {
-          console.log('show thoughts')
           view = (
             <div className={noteClass()}>
               {this.props.noteInfo.content}

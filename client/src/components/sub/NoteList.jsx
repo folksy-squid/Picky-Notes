@@ -117,7 +117,7 @@ class NoteList extends React.Component {
           <Note key={i} noteInfo={note} view={this.state.view} />
         ))
       } else {
-        return this.props.note.justNotes.map((note, i)=>(
+        return this.props.note.notes.map((note, i)=>(
           <Note key={i} noteInfo={note} view={this.state.view} />
         ));
       }
