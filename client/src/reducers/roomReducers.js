@@ -42,7 +42,7 @@ export default (state = {}, action) => {
       success: (res, status) => {
         $.ajax({
           method: 'POST',
-          url: `/api/rooms/${res.pathUrl}`,
+          url: `/api/rooms?pathUrl=${res.pathUrl}`,
           contentType: 'application/json',
           data: JSON.stringify({userId: action.user.id}),
           success: (response) => {
@@ -61,7 +61,7 @@ export default (state = {}, action) => {
   if (action.type === 'JOIN_SOCKET_ROOM') {
     $.ajax({
       method: 'POST',
-      url: `/api/rooms/${action.pathUrl}`,
+      url: `/api/rooms?pathUrl=${action.pathUrl}`,
       contentType: 'application/json',
       data: JSON.stringify({userId: action.user.id}),
       success: (response) => {
@@ -132,8 +132,8 @@ export default (state = {}, action) => {
         if (res === 'error') {
           action.cb(res);
         } else {
-          console.log('RESPONSE', res);
           state.roomInfo = res;
+          console.log('STATE', state);
           action.cb(null, res);
         }
       }

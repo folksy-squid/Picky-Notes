@@ -185,6 +185,18 @@ const deleteNotes = (noteIds, cb) => {
   );
 };
 
+const getRoomParticipants = (pathUrl, cb) => {
+  Room.findOne({
+    attributes: [],
+    where: { pathUrl },
+    include: {
+      model: User,
+      through: { attributes: [] }
+    }
+  })
+  .then(cb);
+};
+
 module.exports = {
   createNewUser,
   createNewRoom,
@@ -203,4 +215,5 @@ module.exports = {
   saveTimeLength,
   getAudioForRoom,
   deleteNotes,
+  getRoomParticipants,
 };
