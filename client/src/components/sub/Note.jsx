@@ -92,6 +92,7 @@ class Note extends React.Component {
     var view;
 
     if (this.props.view === 'compile') {
+      const classColor = (i) => 'participant' + i;
       view = (
         <div className={noteClass()}>
           <input type="checkbox" ref="checkbox" onChange={this.toggleNoteHandler.bind(this)} checked={this.props.noteInfo.show}/>
@@ -102,7 +103,7 @@ class Note extends React.Component {
               </form>
             </span>
             :
-            <span className="content" onClick={this.contentClickHandler.bind(this)}>{this.props.noteInfo.content}</span>
+            <span className={`content ${classColor(`${this.props.colorClass}`)}`} onClick={this.contentClickHandler.bind(this)}>{this.props.noteInfo.content}</span>
           }
           {this.state.editTimestamp ?
             <span className="audioTimestamp">
