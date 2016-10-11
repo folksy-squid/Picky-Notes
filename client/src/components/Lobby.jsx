@@ -35,7 +35,7 @@ class Lobby extends React.Component {
       this.props.dispatch(setRoomInfo(pathUrl, user, (err, success) => {
         if (err) {
           return this.context.router.push('/notebook');
-        } 
+        }
         this.props.dispatch(joinSocketRoom(pathUrl, user, (error, ...args) => {
           if (error) {
             return this.setState({error});
@@ -44,7 +44,6 @@ class Lobby extends React.Component {
             return this.context.router.push(`/lecture/${pathUrl}`);
           }
           this.setState({completed: true});
-          this.checkHost();
           this.applyListeners();
         }));
       }));
@@ -61,8 +60,6 @@ class Lobby extends React.Component {
     if (host.id === user.id) {
       // switch host status to user
       this.setState({isHost: true});
-      // and switch audio stream to host
-      this.props.dispatch(createAudioStream());
     }
   }
 
@@ -72,9 +69,14 @@ class Lobby extends React.Component {
   }
 
   startLecture() {
-    this.props.room.socket.emit('lecture start');
-    // start streaming recorded audio
-    this.props.dispatch(startRecording());
+    const socket = this.props.room.socket;
+    if (this.state.isHost) {
+      // if current client is the host, set Socket as Host Socket
+      socket.emit('lecture host');
+      this.props.dispatch(createAudioStream(() => this.props.dispatch(startRecording()) ));
+    }
+    socket.emit('lecture start');
+
   }
 
   goToLecture() {
@@ -97,7 +99,7 @@ class Lobby extends React.Component {
           <div className="col-sm-3 panel">
           { this.state.isHost && (
             <button className="btn btn-lg btn-success" onClick={this.startLecture.bind(this)}>
-              Start Lecture
+              Start Recording
             </button>)}
             <div className="panel-item">
               <ShareLink pathUrl={this.state.pathUrl}/>

@@ -14,17 +14,26 @@ module.exports = (listen) => {
 
   io.on('connection', (socket) => {
 
-    var getClientNames = (roomId, cb) => {
-      var result = [];
-      var roomIds = rooms[roomId].sockets;
+    const getClientNames = (roomId, cb) => {
+      let result = [];
+      const roomIds = rooms[roomId].sockets;
       if (roomIds) {
-        for (var id in roomIds) {
-          var sockets = io.sockets;
+        for (let id in roomIds) {
+          let sockets = io.sockets;
           socketUser = connected[id].user;
           result.push(socketUser);
         }
       }
       return cb(result);
+    };
+
+    const endLecture = () => {
+      if (socket.pathUrl) {
+        saveLectureTimeLength(socket.pathUrl, Date.now());
+        io.in(socket.pathUrl).emit('lecture ended');
+      } else {
+        socket.emit('lecture end error', 'You do not belong to a room');
+      }
     };
 
     socket.on('create room', (pathUrl, user) => {
@@ -51,7 +60,7 @@ module.exports = (listen) => {
             findRoom(socket.pathUrl, (found) => {
               getClientNames(socket.pathUrl, (participants) => {
                 getTimestampFromRoom(socket.pathUrl, (started) => {
-                  const status = (started) ? 'lecture' : 'lobby'; 
+                  const status = (started) ? 'lecture' : 'lobby';
                   socket.emit('join room success', participants, found.dataValues, status);
                 });
               });
@@ -82,14 +91,7 @@ module.exports = (listen) => {
       }
     });
 
-    socket.on('lecture end', () => {
-      if (socket.pathUrl) {
-        saveLectureTimeLength(socket.pathUrl, Date.now());
-        io.in(socket.pathUrl).emit('lecture ended');
-      } else {
-        socket.emit('lecture end error', 'You do not belong to a room');
-      }
-    });
+    socket.on('lecture end', endLecture);
 
     socket.on('user ready', () => {
       const pathUrl = socket.pathUrl;
@@ -98,7 +100,7 @@ module.exports = (listen) => {
         if (socket.user.id === connected[socketId].user.id) {
           connected[socketId].ready = true;
         }
-      }); 
+      });
 
       io.in(pathUrl).emit('user ready', socket.user);
       if (isAllReady(pathUrl, rooms, connected)) {
@@ -123,7 +125,16 @@ module.exports = (listen) => {
       });
     });
 
+    socket.on('lecture host', () => {
+      socket.host = true;
+    });
+
     socket.on('disconnect', () => {
+      if (socket.host) {
+        console.log('lecture host disconnected');
+        io.in(socket.pathUrl).emit('host disconnected');
+        endLecture();
+      }
       io.in(socket.pathUrl).emit('user disconnected', socket.user);
       if (isAllReady(socket.pathUrl, rooms, connected)) {
         io.in(socket.pathUrl).emit('all ready');
@@ -145,11 +156,7 @@ module.exports = (listen) => {
       const encoder = new lame.Encoder({ channels: 1, bitDepth: 16 });
       console.log('inside stream');
 
-      // pipe from stream, through encoder, to the outputFile
-      stream.pipe(encoder).pipe(outputFile);
-
-      // when stream has ended, attempt to upload to S3
-      stream.on('end', () => {
+      const uploadToAWS = () => {
         var count = 0;
         let endStreamCB = (err, data) => {
           if (err) {
@@ -170,7 +177,17 @@ module.exports = (listen) => {
         };
 
         encoder.end(null, null, startUploading(filePath, pathUrl, endStreamCB));
-      });
+      };
+
+      // pipe from stream, through encoder, to the outputFile
+      stream.pipe(encoder).pipe(outputFile);
+
+      // when stream has ended, attempt to upload to S3
+      stream.on('end', uploadToAWS);
+
+      // when stream ends unexpectedly, attempt to upload to S3
+      stream.on('close', uploadToAWS);
+
     });
   });
   return io;
