@@ -6,10 +6,10 @@ export default (state = {notes: [], deleted: []}, action) => {
 
   if (action.type === 'ADD_NOTE') {
     let notes = state.notes.concat([action.note]);
-    notes.sort((a, b) => a.audioTimestamp - b.audioTimestamp);
+    notes = notes.sort((a, b) => a.audioTimestamp - b.audioTimestamp);
     return {
       ...state,
-      notes,
+      notes: notes,
     };
   }
 
