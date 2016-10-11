@@ -1,9 +1,11 @@
 import React from 'react';
 import Note from './Note.jsx';
-import {addNote, replaceNotes, removeTimer, setTimer} from '../../actions/noteActions.js';
+import {addNote, replaceNotes, removeTimer, setClass} from '../../actions/noteActions.js';
 import NoteReducer from '../../reducers/noteReducers';
 import RoomReducer from '../../reducers/roomReducers';
 import UserReducer from '../../reducers/userReducers';
+import WaveformReducer from '../../reducers/waveformReducers';
+
 import {connect} from 'react-redux';
 import {getCurrentView} from '../../helpers.js';
 
@@ -38,32 +40,36 @@ class NoteList extends React.Component {
     }
   }
 
+  sendStatus() {
+    const wavePos = this.props.waveform.pos;
+    const timestamps = this.props.note.audioTimestampArray;
+    var actionState;
+    if (this.props.waveform.playing) {
+      actionState = 'playing';
+    } else {
+      actionState = 'paused';
+    }
+    for (var i = 0; i < timestamps.length; i++) {
+      if (timestamps[i] > wavePos) {
+        return this.props.dispatch(setClass(i, wavePos, actionState));
+      }
+    }
+  }
+
   getAllNotes(userId, roomId) {
     $.ajax({
       method: 'GET',
       url: `/api/notes/${userId}/${roomId}`,
       contentType: 'application/json',
       success: (res, status) => {
-        // replace current Notes with response
         console.log('got notes.');
         this.props.dispatch(replaceNotes(res, () => {
-          console.log('getting all notes');
           this.setState({
             loaded: true
           });
         }));
         this.props.dispatch(removeTimer());
-        setTimeout(() => {
-          console.log('setting a new timer');
-          let timestamps = this.props.note.audioTimestampArray;
-          let wavePos = this.props.waveform.pos;
-          for (var i = 0; i < timestamps.length; i++) {
-            if (timestamps[i] > wavePos) {
-              console.log('this is the next timestamp', timestamps[i]);
-              return this.props.dispatch(setTimer(i, wavePos));
-            }
-          }
-        }, 10);
+        this.sendStatus();
       },
       error: ( res, status ) => {
         console.log(res);
@@ -92,25 +98,19 @@ class NoteList extends React.Component {
     });
   }
 
-
-  // <Note key={i} noteInfo={note} {this.ishighlighted.bind(this, i) && highlighted="true"} view={this.state.view} />
-
   render() {
     const showNotes = () => {
       if (this.state.view === 'compile') {
         if (this.props.tab === 'Notes') {
-          console.log('show no thoughts.')
-          return this.props.note.notes.filter(note=>!note.thought).map((note, i)=>(
-            <Note key={i} noteInfo={note} view={this.state.view} />
+          return this.props.note.justNotes.map((note, i)=>(
+            <Note key={i} noteInfo={note} tab={this.props.tab} view={this.state.view} />
           ))
         } else if (this.props.tab === 'Thoughts') {
-          console.log('show only thoughts.')
-          return this.props.note.notes.filter(note=>note.thought).map((note, i)=>(
-            <Note key={i} noteInfo={note} view={this.state.view} />
+          return this.props.note.justThoughts.map((note, i)=>(
+            <Note key={i} noteInfo={note} tab={this.props.tab} view={this.state.view} />
           ))
         }
       } else {
-        console.log('show all notes.')
         return this.props.note.notes.map((note, i)=>(
           <Note key={i} noteInfo={note} view={this.state.view} />
         ))
@@ -131,7 +131,8 @@ const mapStateToProps = (state) => {
     ...state,
     NoteReducer,
     RoomReducer,
-    UserReducer
+    UserReducer,
+    WaveformReducer
   };
 };
 

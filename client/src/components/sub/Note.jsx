@@ -58,6 +58,7 @@ class Note extends React.Component {
     //props.page will be obtained from redux store.
 
     if (this.props.view === 'compile') {
+
       if (!this.props.noteInfo.content) {
         if (this.props.noteInfo.highlight) {
           return (<div className='pointer'></div>);
@@ -87,6 +88,7 @@ class Note extends React.Component {
           }
         </div>
       );
+
     } else if (this.props.view === 'lecture') {
       if (!this.props.noteInfo.content) {
         return (<div></div>);
@@ -95,9 +97,10 @@ class Note extends React.Component {
         <div className="note">
           <span className="content">{this.props.noteInfo.content}</span>
           <span className="audioTimestamp">{this.formatTime(this.props.noteInfo.audioTimestamp)}</span>
-        </div>);
-    } else
-    if (this.props.view === 'review') {
+        </div>
+      );
+
+    } else if (this.props.view === 'review') {
       if (!this.props.noteInfo.content) {
         return (<div></div>);
       }

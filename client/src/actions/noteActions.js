@@ -66,11 +66,12 @@ export const getNotesFromRoom = (pathUrl, user, cb) => {
   };
 };
 
-export const setTimer = (index, wavePos) => {
+export const setClass = (index, wavePos, actionState) => {
   return {
-    type: 'SET_TIMER',
+    type: 'SET_CLASS',
     index,
-    wavePos
+    wavePos,
+    actionState
   };
 };
 

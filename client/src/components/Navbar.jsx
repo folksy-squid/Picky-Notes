@@ -17,10 +17,10 @@ class Navbar extends React.Component {
         <div className="container">
           <div className="navbar-header">
             <button type="button" className="navbar-toggle collapsed btn-info" data-toggle="collapse" data-target="#navbar-collapse">
-              <span class="sr-only">Toggle Navigation</span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
+              <span className="sr-only">Toggle Navigation</span>
+              <span className="icon-bar"></span>
+              <span className="icon-bar"></span>
+              <span className="icon-bar"></span>
             </button>
             <a className="navbar-brand" href="#">Picky Notes</a>
           </div>

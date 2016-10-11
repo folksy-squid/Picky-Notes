@@ -5,7 +5,7 @@ import Wavesurfer from 'react-wavesurfer';
 import WaveformReducer from '../../reducers/waveformReducers';
 import RoomReducer from '../../reducers/roomReducers';
 import {getRoomAudio, setRoomInfo} from '../../actions/roomActions';
-import {highlightNote, setTimer, removeTimer} from '../../actions/noteActions';
+import {highlightNote, setClass, removeTimer} from '../../actions/noteActions';
 import {togglePlay, setPos, setVolume, play, setAudioRateChange, checkWavePos} from '../../actions/waveformActions';
 
 class Audio extends React.Component {
@@ -15,7 +15,8 @@ class Audio extends React.Component {
       loaded: 'false',
       waveformDisplay: 'hidden',
       loadingDisplay: 'block',
-      loadVal: 0
+      loadVal: 0,
+      clicked: false
     };
     this.handleClick = this.handleClick.bind(this);
   }
@@ -37,62 +38,56 @@ class Audio extends React.Component {
     // });
   }
 
-  handleTogglePlay() {
-    if(!this.props.waveform.playing) {
-      setTimeout(() => {
-        let timestamps = this.props.note.audioTimestampArray;
-        let wavePos = this.props.waveform.pos;
-        for (var i = 0; i < timestamps.length; i++) {
-          if (timestamps[i] > wavePos) {
-            return this.props.dispatch(setTimer(i, wavePos));
-          }
-        }
-      }, 10);
+  sendStatus(actionState) {
+    const wavePos = this.props.waveform.pos;
+    const timestamps = this.props.note.audioTimestampArray;
+    for (var i = 0; i < timestamps.length; i++) {
+      if (timestamps[i] > wavePos) {
+        return this.props.dispatch(setClass(i, wavePos, actionState));
+      }
     }
-    this.props.dispatch(togglePlay());
-    // this.setState({
-    //   playing: !this.state.playing
-    // });
+  }
+
+  handleTogglePlay() {
+    if (this.props.waveform.playing) {
+      this.sendStatus('paused')
+    } else {
+      this.sendStatus('playing')
+    }
+    this.props.dispatch(togglePlay())
   }
 
   handlePosChange(e) {
     this.props.dispatch(setPos(e.originalArgs ? e.originalArgs[0] : +e.target.value));
-    // this.setState({
-    //   pos: e.originalArgs ? e.originalArgs[0] : +e.target.value
-    // });
+    if (this.state.clicked === true) {
+      this.setState({clicked: false});
+      if (this.props.waveform.playing) {
+        this.sendStatus('playing');
+      } else {
+        this.sendStatus('paused');
+      }
+    }
   }
 
   handleReady() {
     this.setState({waveformDisplay: 'visible', loadingDisplay: 'none'});
-    // this.props.dispatch(play());
-    // this.props.dispatch(setTimer(0, .001));
   }
 
   handleVolumeChange(e) {
     this.props.dispatch(setVolume(+e.target.value));
-    // this.setState({
-    //   volume: +e.target.value
-    // });
   }
 
   handleLoading(e) {
     this.setState({loadVal: e.originalArgs[0]});
   }
+
   onFinish() {
     this.props.dispatch(removeTimer());
+    this.props.dispatch(togglePlay('stop'));
   }
+
   handleClick() {
-    this.props.dispatch(removeTimer());
-    setTimeout(() => {
-      let timestamps = this.props.note.audioTimestampArray;
-      let wavePos = this.props.waveform.pos;
-      for (var i = 0; i < timestamps.length; i++) {
-        if (timestamps[i] > wavePos) {
-          console.log('this is the next timestamp', timestamps[i]);
-          return this.props.dispatch(setTimer(i, wavePos));
-        }
-      }
-    }, 10);
+    window.setTimeout(this.setState.bind(this, {clicked: true}), 10);
   }
 
   render() {
@@ -147,7 +142,7 @@ class Audio extends React.Component {
         <div style={{display: this.state.loadingDisplay}}>
           LOADING AUDIO FILE {this.state.loadVal}
         </div>
-        <div ref="wavesurfContainer" onClick = {this.handleClick} style={{visibility: this.state.waveformDisplay}}>
+        <div ref="wavesurfContainer" onClick={this.handleClick.bind(this)} style={{visibility: this.state.waveformDisplay}}>
           <Wavesurfer
             volume={this.props.waveform.volume}
             pos={this.props.waveform.pos}
