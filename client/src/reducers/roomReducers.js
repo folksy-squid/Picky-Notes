@@ -140,6 +140,13 @@ export default (state = {}, action) => {
     });
   }
 
+  // if (action.type === 'GET_PARTICIPANTS') {
+  //   $.ajax({
+  //     method: 'GET',
+  //     url: `/api/users/`
+  //   });
+  // }
+
   if (action.type === 'CREATE_STREAM_TO_SERVER') {
     // initiate audio stream
     state.stream = ss.createStream();

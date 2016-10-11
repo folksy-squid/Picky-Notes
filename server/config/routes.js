@@ -55,6 +55,10 @@ module.exports = (app, express, io) => {
       getAllUserRooms(req.query.userId, (allUserRooms) => res.send(allUserRooms));
     });
 
+  app.get('/test/:pathUrl', (req, res) => {
+    getRoomParticipants(req.params.pathUrl, ({users}) => res.send(users));
+  });
+
   app.post('/api/room/status', (req, res) => {
     res.status(201).send({active: !!io.sockets.adapter.rooms[req.body.pathUrl]});
   });
@@ -95,10 +99,6 @@ module.exports = (app, express, io) => {
         res.status(204).send();
       });
     });
-
-  app.get('/test/:pathUrl', (req, res) => {
-    getRoomParticipants(req.params.pathUrl, ({users}) => res.send(users));
-  });
 
   app.get('*/index.bundle.js', function (request, response) {
     response.sendFile(path.resolve(__dirname, '../../dist/index.bundle.js'));
