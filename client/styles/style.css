@@ -415,6 +415,7 @@ input[type=checkbox] {
 
 .notebook-class {
   padding-left: 5em;
+  font-style: italic;
 }
 
 .notebook0 {
