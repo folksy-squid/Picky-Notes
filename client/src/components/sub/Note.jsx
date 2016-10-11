@@ -57,7 +57,7 @@ class Note extends React.Component {
   }
 
   deleteHandler() {
-    this.props.dispatch(deleteNote(this.props.noteInfo.id));
+    this.props.dispatch(deleteNote(this.props.noteInfo.id, this.props.noteInfo.thought));
     setTimeout(() => {
       const wavePos = this.props.waveform.pos;
       const timestamps = this.props.note.audioTimestampArray;
@@ -94,11 +94,11 @@ class Note extends React.Component {
   render() {
 
     const noteClass = () => {
-      let retVal = this.props.view;
+      let retVal = this.props.view + ' note';
       if (this.props.noteInfo.thought) {
-        retVal += ' thought';
+        retVal += ' justThought';
       } else {
-        retVal += this.props.noteInfo.highlight ? ' note highlighted' : ' note';
+        retVal += this.props.noteInfo.highlight ? ' justNote highlighted' : ' justNote';
       }
       return retVal;
     };
@@ -141,8 +141,9 @@ class Note extends React.Component {
           <span className="deleteNoteButton" onClick={this.deleteHandler.bind(this)}><i className="ion ion-close-round deleteNoteIcon"></i></span>
         </div>
       );
+    }
 
-    } else if (this.props.view === 'lecture') {
+    else if (this.props.view === 'lecture') {
       view = (
         <div className={noteClass()}>
           <span className="content">{this.props.noteInfo.content}</span>
@@ -150,13 +151,29 @@ class Note extends React.Component {
         </div>
       );
 
-    } else if (this.props.view === 'review') {
-      view = (
-        <div className={noteClass()}>
-          {!this.props.noteInfo.thought && (<i className="fa fa-play-circle" aria-hidden="true" onClick={this.playNote.bind(this)}></i>)}
-          {this.props.noteInfo.content}
-        </div>
-      );
+    }
+
+    else if (this.props.view === 'review') {
+      if (this.props.noteInfo.thought) {
+      //if the note is a thought,
+        if (this.props.note.showThoughts) {
+          view = (
+            <div className={noteClass()}>
+              {this.props.noteInfo.content}
+            </div>
+          )
+        } else {
+          view = (<div></div>)
+        }
+      } else {
+      // if the note is a note
+        view = (
+          <div className={noteClass()}>
+            <i className="fa fa-play-circle" aria-hidden="true" onClick={this.playNote.bind(this)}></i>
+            {this.props.noteInfo.content}
+          </div>
+        );
+      }
     }
 
     return view;

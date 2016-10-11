@@ -1,5 +1,10 @@
 /*jshint esversion: 6 */
-export default (state = {notes: [], deleted: []}, action) => {
+const defaultState = {
+  notes: [],
+  deleted: [],
+  showThoughts: false
+}
+export default (state = defaultState, action) => {
   if (action.type === 'SUBMIT_NOTE') {
     action.socket.emit('new note', {content: action.content, thought: action.thought});
   }
@@ -74,22 +79,33 @@ export default (state = {notes: [], deleted: []}, action) => {
         break;
       }
     }
-    let justNotesIndex = -1;
-    for (let i = 0; i < state.justNotes.length; i++) {
-      if (state.justNotes[i].id === action.noteId) {
-        justNotesIndex = i;
-        break;
-      }
-    }
+
     let deletedNotes = state.notes.splice(index, 1);
-    let justNotes = state.notes.filter(note=>!note.thought);
-    let audioTimestampArray = justNotes.map(note=> Number(note.audioTimestamp) / 1000);
+
+    let justNotesIndex = -1;
+
+    if (action.thought) {
+      for (let i = 0; i < state.justThoughts.length; i++) {
+        if (state.justThoughts[i].id === action.noteId) {
+          justNotesIndex = i;
+          break;
+        }
+      }
+      state.justThoughts = state.notes.filter(note=>note.thought);
+    } else {
+      for (let i = 0; i < state.justNotes.length; i++) {
+        if (state.justNotes[i].id === action.noteId) {
+          justNotesIndex = i;
+          break;
+        }
+      }
+      state.justNotes = state.notes.filter(note=>!note.thought);
+      state.audioTimestampArray = state.justNotes.map(note=> Number(note.audioTimestamp) / 1000);
+    }
 
     return {
       ...state,
-      deleted: state.deleted.concat(deletedNotes),
-      audioTimestampArray,
-      justNotes
+      deleted: state.deleted.concat(deletedNotes)
     };
   }
 
@@ -155,16 +171,27 @@ export default (state = {notes: [], deleted: []}, action) => {
     }
     return state;
   }
+
   if (action.type === 'SET_ARROW') {
     state.justNotes.forEach(note => delete note['arrow']);
     state.justNotes[action.arrowPos]['arrow'] = true;
     return {...state};
   }
+
   if (action.type === 'REMOVE_ARROW') {
     console.log('removing arrows');
     state.justNotes.forEach(note => delete note['arrow']);
     return {...state};
   }
+
+  if (action.type === 'SHOW_HIDE_THOUGHTS') {
+    if (action.load) {
+      state.showThoughts = false;
+    } else {
+      state.showThoughts = !state.showThoughts;
+    }
+    return {...state};
+  };
 
   return {...state};
 };

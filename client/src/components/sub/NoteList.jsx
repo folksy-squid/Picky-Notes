@@ -78,19 +78,15 @@ class NoteList extends React.Component {
   }
 
   getReviewNotes(userId, roomId) {
-    // var context = this;
     $.ajax({
       method: 'GET',
       url: `/api/notes/${userId}/${roomId}?filter=show`,
       success: (res, status) => {
-        // replace current Notes with response
         this.props.dispatch(replaceNotes(res, () => {
-          // console.log('getting all notes');
           this.setState({
             loaded: true
           });
         }));
-        // reassign with notes from server
       },
       error: (res, status) => {
         console.log(res);
@@ -101,6 +97,7 @@ class NoteList extends React.Component {
   render() {
     var roomParticipants = {};
     this.props.room.participants.forEach((participant, i) => roomParticipants[participant.id] = i);
+
     const showNotes = () => {
       if (this.state.view === 'compile') {
         if (this.props.tab === 'Notes') {
@@ -115,12 +112,17 @@ class NoteList extends React.Component {
             <Note key={i} noteInfo={note} tab={this.props.tab} view={this.state.view} />
           ));
         }
+      } else if (this.state.view === 'review') {
+        return this.props.note.justNotes.map((note, i)=>(
+          <Note key={i} noteInfo={note} view={this.state.view} />
+        ))
       } else {
         return this.props.note.notes.map((note, i)=>(
           <Note key={i} noteInfo={note} view={this.state.view} />
         ));
       }
     };
+
     let listClass = this.state.view === 'compile' ? 'note-list compiled' : 'note-list';
     return (
       this.state.loaded ? (
