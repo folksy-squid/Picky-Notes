@@ -103,9 +103,9 @@ class Note extends React.Component {
                 </form>
               </span>
               :
-              <span className="content" onClick={this.contentClickHandler.bind(this)}>{this.props.noteInfo.content}</span>
+              <span className={`content ${classColor(`${this.props.colorClass}`)}`} onClick={this.contentClickHandler.bind(this)}>{this.props.noteInfo.content}</span>
             }
-            {this.state.editTimestamp ? 
+            {this.state.editTimestamp ?
               <span className="audioTimestamp">
                 <form onSubmit={this.editTimestampHandler.bind(this)}>
                   <button className="btn btn-success btn-xs">Save</button>
@@ -116,21 +116,10 @@ class Note extends React.Component {
                 </form>
               </span>
             :
-            <span className={`content ${classColor(`${this.props.colorClass}`)}`} onClick={this.contentClickHandler.bind(this)}>{this.props.noteInfo.content}</span>
-          }
-          {this.state.editTimestamp ?
-            <span className="audioTimestamp">
-              <form onSubmit={this.editTimestampHandler.bind(this)}>
-                <button className="btn btn-success btn-xs">Save</button>
-                <input ref="editMin" type="number" min={0} max={59} defaultValue={~~(this.props.noteInfo.audioTimestamp / 60000) % 60} />:
-                <input ref="editSec" type="number" min={0} max={59} defaultValue={~~(this.props.noteInfo.audioTimestamp / 1000) % 60} />
-              </form>
-            </span>
-          :
-            <span className="audioTimestamp" onClick={this.timestampClickHandler.bind(this)}>
-              {this.formatTime(this.props.noteInfo.audioTimestamp)}
-            </span>
-          }
+              <span className="audioTimestamp" onClick={this.timestampClickHandler.bind(this)}>
+                {this.formatTime(this.props.noteInfo.audioTimestamp)}
+              </span>
+            }
           <span className="deleteNoteButton" onClick={this.deleteHandler.bind(this)}><i className="ion ion-close-round deleteNoteIcon"></i></span>
         </div>
       );
