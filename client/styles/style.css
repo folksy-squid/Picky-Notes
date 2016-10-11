@@ -7,7 +7,7 @@
 */
 
 body {
-  padding-bottom: 50px;
+  padding-bottom: 90px;
 }
 
 .container-fluid {
@@ -419,6 +419,11 @@ input[type=checkbox] {
   width: 100%;
   align-items: center;
   bottom: 0px;
+  flex-wrap: wrap;
+}
+
+.footer > * {
+  min-width: 320px;
 }
 
 .lectureForm > * {
