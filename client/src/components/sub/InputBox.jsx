@@ -10,15 +10,15 @@ class InputBox extends React.Component {
     super(props);
     this.state = {
       timestamp: 0,
-      displayTimestamp: 'none',
+      stopTimestamp: false,
     };
   }
 
   keyUpHandler(e) {
-    if (e.target.value.trim() !== '' && this.state.displayTimestamp === 'none') {
-      this.setState({displayTimestamp: 'inline', timestamp: this.props.waveform.pos });
-    } else if (e.target.value.trim() === '' && this.state.displayTimestamp === 'inline') {
-      this.setState({displayTimestamp: 'none'});
+    if (e.target.value.trim() !== '' && !this.state.stopTimestamp) {
+      this.setState({ stopTimestamp: true, timestamp: this.props.waveform.pos });
+    } else if (e.target.value.trim() === '' && this.state.stopTimestamp) {
+      this.setState({ stopTimestamp: false });
     }
 
     if (e.keyCode === 13) {
@@ -46,7 +46,7 @@ class InputBox extends React.Component {
           console.log(savedNote);
           this.props.dispatch(addNote(savedNote));
           this.refs.inputNote.value = '';
-          this.setState({displayTimestamp: 'none'});
+          this.setState({ stopTimestamp: false });
         },
         error: console.log.bind(this)
       });
@@ -76,7 +76,7 @@ class InputBox extends React.Component {
     if (getCurrentView(this.props.routing.locationBeforeTransitions.pathname) === 'compile') {
       return <span className="lectureForm" >
         <input ref="inputNote" className="lectureInput" type="text" onKeyUp={this.keyUpHandler.bind(this)} autoFocus/>
-        <span style={{display: this.state.displayTimestamp}}>{this.formatTime(this.state.timestamp)}</span>
+        <span>{this.formatTime(this.state.stopTimestamp ? this.state.timestamp : this.props.waveform.pos)}</span>
       </span>;
     } 
       
@@ -90,8 +90,8 @@ const mapStateToProps = (state) => {
   return {
     ...state,
     NoteReducer,
-    RoomReducer
-  }
+    RoomReducer,
+  };
 };
 
 export default connect(mapStateToProps)(InputBox);

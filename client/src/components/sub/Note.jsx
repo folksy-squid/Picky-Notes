@@ -94,14 +94,27 @@ class Note extends React.Component {
     if (this.props.view === 'compile') {
       const classColor = (i) => 'participant' + i;
       view = (
-        <div className={noteClass()}>
-          <input type="checkbox" ref="checkbox" onChange={this.toggleNoteHandler.bind(this)} checked={this.props.noteInfo.show}/>
-          {this.state.editContent ?
-            <span className="content">
-              <form onSubmit={this.editContentHandler.bind(this)}>
-                <input ref="noteInput" type="text" defaultValue={this.props.noteInfo.content} />
-              </form>
-            </span>
+          <div className={noteClass()}>
+            <input type="checkbox" ref="checkbox" onChange={this.toggleNoteHandler.bind(this)} checked={this.props.noteInfo.show}/>
+            {this.state.editContent ?
+              <span className="content">
+                <form onSubmit={this.editContentHandler.bind(this)}>
+                  <input ref="noteInput" type="text" defaultValue={this.props.noteInfo.content} />
+                </form>
+              </span>
+              :
+              <span className="content" onClick={this.contentClickHandler.bind(this)}>{this.props.noteInfo.content}</span>
+            }
+            {this.state.editTimestamp ? 
+              <span className="audioTimestamp">
+                <form onSubmit={this.editTimestampHandler.bind(this)}>
+                  <button className="btn btn-success btn-xs">Save</button>
+                  {this.props.noteInfo.audioTimestamp >= 3600000 && <input ref="editMin" type="number" min={0} defaultValue={ ~~(this.props.noteInfo.audioTimestamp / 3600000) } />}
+                  {this.props.noteInfo.audioTimestamp >= 3600000 ? ':' : ''}
+                  <input ref="editMin" type="number" min={0} max={59} defaultValue={~~(this.props.noteInfo.audioTimestamp / 60000) % 60} />:
+                  <input ref="editSec" type="number" min={0} max={59} defaultValue={~~(this.props.noteInfo.audioTimestamp / 1000) % 60} />
+                </form>
+              </span>
             :
             <span className={`content ${classColor(`${this.props.colorClass}`)}`} onClick={this.contentClickHandler.bind(this)}>{this.props.noteInfo.content}</span>
           }
