@@ -14,17 +14,26 @@ module.exports = (listen) => {
 
   io.on('connection', (socket) => {
 
-    var getClientNames = (roomId, cb) => {
-      var result = [];
-      var roomIds = rooms[roomId].sockets;
+    const getClientNames = (roomId, cb) => {
+      let result = [];
+      const roomIds = rooms[roomId].sockets;
       if (roomIds) {
-        for (var id in roomIds) {
-          var sockets = io.sockets;
+        for (let id in roomIds) {
+          let sockets = io.sockets;
           socketUser = connected[id].user;
           result.push(socketUser);
         }
       }
       return cb(result);
+    };
+
+    const endLecture = () => {
+      if (socket.pathUrl) {
+        saveLectureTimeLength(socket.pathUrl, Date.now());
+        io.in(socket.pathUrl).emit('lecture ended');
+      } else {
+        socket.emit('lecture end error', 'You do not belong to a room');
+      }
     };
 
     socket.on('create room', (pathUrl, user) => {
@@ -82,15 +91,7 @@ module.exports = (listen) => {
       }
     });
 
-    socket.on('lecture end', () => {
-      console.log('inside lecture end');
-      if (socket.pathUrl) {
-        saveLectureTimeLength(socket.pathUrl, Date.now());
-        io.in(socket.pathUrl).emit('lecture ended');
-      } else {
-        socket.emit('lecture end error', 'You do not belong to a room');
-      }
-    });
+    socket.on('lecture end', endLecture);
 
     socket.on('user ready', () => {
       const pathUrl = socket.pathUrl;
@@ -132,12 +133,7 @@ module.exports = (listen) => {
       if (socket.host) {
         console.log('lecture host disconnected');
         io.in(socket.pathUrl).emit('host disconnected');
-        if (socket.pathUrl) {
-          saveLectureTimeLength(socket.pathUrl, Date.now());
-          io.in(socket.pathUrl).emit('lecture ended');
-        } else {
-          socket.emit('lecture end error', 'You do not belong to a room');
-        }
+        endLecture();
       }
       io.in(socket.pathUrl).emit('user disconnected', socket.user);
       if (isAllReady(socket.pathUrl, rooms, connected)) {
@@ -160,58 +156,38 @@ module.exports = (listen) => {
       const encoder = new lame.Encoder({ channels: 1, bitDepth: 16 });
       console.log('inside stream');
 
+      const uploadToAWS = () => {
+        var count = 0;
+        let endStreamCB = (err, data) => {
+          if (err) {
+            console.log('error in uploading stream, retrying.', err);
+            if (count < 5) {
+              count++;
+              return startUploading(filePath, pathUrl, endStreamCB);
+            }
+            console.log('Error persisted. Stop trying to upload again.', err);
+          } else {
+            saveAudioToRoom(pathUrl, data.Location, () => {
+              console.log('saved audioUrl to database');
+              fs.unlink(filePath, () => {
+                console.log('successfully deleted audio from filesystem');
+              });
+            });
+          }
+        };
+
+        encoder.end(null, null, startUploading(filePath, pathUrl, endStreamCB));
+      };
+
       // pipe from stream, through encoder, to the outputFile
       stream.pipe(encoder).pipe(outputFile);
 
       // when stream has ended, attempt to upload to S3
-      stream.on('end', () => {
-        console.log('stream ended properly');
-        var count = 0;
-        let endStreamCB = (err, data) => {
-          if (err) {
-            console.log('error in uploading stream, retrying.', err);
-            if (count < 5) {
-              count++;
-              return startUploading(filePath, pathUrl, endStreamCB);
-            }
-            console.log('Error persisted. Stop trying to upload again.', err);
-          } else {
-            saveAudioToRoom(pathUrl, data.Location, () => {
-              console.log('saved audioUrl to database');
-              fs.unlink(filePath, () => {
-                console.log('successfully deleted audio from filesystem');
-              });
-            });
-          }
-        };
-
-        encoder.end(null, null, startUploading(filePath, pathUrl, endStreamCB));
-      });
+      stream.on('end', uploadToAWS);
 
       // when stream ends unexpectedly, attempt to upload to S3
-      stream.on('close', () => {
-        console.log('stream ended unexpectedly');
-        var count = 0;
-        let endStreamCB = (err, data) => {
-          if (err) {
-            console.log('error in uploading stream, retrying.', err);
-            if (count < 5) {
-              count++;
-              return startUploading(filePath, pathUrl, endStreamCB);
-            }
-            console.log('Error persisted. Stop trying to upload again.', err);
-          } else {
-            saveAudioToRoom(pathUrl, data.Location, () => {
-              console.log('saved audioUrl to database');
-              fs.unlink(filePath, () => {
-                console.log('successfully deleted audio from filesystem');
-              });
-            });
-          }
-        };
+      stream.on('close', uploadToAWS);
 
-        encoder.end(null, null, startUploading(filePath, pathUrl, endStreamCB));
-      });
     });
   });
   return io;
