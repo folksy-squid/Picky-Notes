@@ -133,5 +133,16 @@ export default (state = {notes: [], deleted: []}, action) => {
     }
     return state;
   }
+  if (action.type === 'SET_ARROW') {
+    state.justNotes.forEach(note => delete note['arrow']);
+    state.justNotes[action.arrowPos]['arrow'] = true;
+    return {...state};
+  }
+  if (action.type === 'REMOVE_ARROW') {
+    console.log('removing arrows');
+    state.justNotes.forEach(note => delete note['arrow']);
+    return {...state};
+  }
+
   return {...state};
 };

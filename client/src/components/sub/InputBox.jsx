@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {addNote, submitNote} from '../../actions/noteActions.js';
+import {addNote, submitNote, setArrow, removeArrow} from '../../actions/noteActions.js';
 import NoteReducer from '../../reducers/noteReducers';
 import RoomReducer from '../../reducers/roomReducers';
 import {getCurrentView} from '../../helpers.js';
@@ -15,12 +15,20 @@ class InputBox extends React.Component {
   }
 
   keyUpHandler(e) {
-    if (e.target.value.trim() !== '' && !this.state.stopTimestamp) {
-      this.setState({ stopTimestamp: true, timestamp: this.props.waveform.pos });
-    } else if (e.target.value.trim() === '' && this.state.stopTimestamp) {
-      this.setState({ stopTimestamp: false });
-    }
 
+    if (e.target.value.trim() !== '' && this.state.displayTimestamp === 'none') {
+      this.setState({displayTimestamp: 'inline', timestamp: this.props.waveform.pos });
+      const wavePos = this.props.waveform.pos;
+      const timestamps = this.props.note.audioTimestampArray;
+      for (var i = 0; i < timestamps.length; i++) {
+        if (timestamps[i] > wavePos) {
+          return this.props.dispatch(setArrow(i - 1));
+        }
+      }
+    } else if (e.target.value.trim() === '' && this.state.displayTimestamp === 'inline') {
+      this.props.dispatch(removeArrow());
+      this.setState({displayTimestamp: 'none'});
+    }
     if (e.keyCode === 13) {
       this.submitNoteHandler(e, e.shiftKey);
     }
@@ -44,6 +52,7 @@ class InputBox extends React.Component {
         data: JSON.stringify(note),
         success: (savedNote) => {
           console.log(savedNote);
+          this.props.dispatch(removeArrow());
           this.props.dispatch(addNote(savedNote));
           this.refs.inputNote.value = '';
           this.setState({ stopTimestamp: false });
@@ -67,7 +76,7 @@ class InputBox extends React.Component {
     let time = hours ? hours + ':' : '';
     time += minutes < 10 ? '0' + minutes + ':' : minutes + ':';
     time += seconds < 10 ? '0' + seconds : seconds;
-    
+
     return time;
   }
 
@@ -75,11 +84,12 @@ class InputBox extends React.Component {
   render() {
     if (getCurrentView(this.props.routing.locationBeforeTransitions.pathname) === 'compile') {
       return <span className="lectureForm" >
+        <i className={'fa ion-arrow-right-c fa-2x col-xs-1 ion-arrow-right-c'} style={{color: '#872100'}}></i>
         <input ref="inputNote" className="lectureInput" type="text" onKeyUp={this.keyUpHandler.bind(this)} autoFocus/>
         <span>{this.formatTime(this.state.stopTimestamp ? this.state.timestamp : this.props.waveform.pos)}</span>
       </span>;
-    } 
-      
+    }
+
     return <span className="lectureForm" >
       <input ref="inputNote" className="lectureInput" type="text" onKeyUp={this.keyUpHandler.bind(this)} autoFocus/>
     </span>;
