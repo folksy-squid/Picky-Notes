@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import Message from './Message.jsx'
+import Message from './Message.jsx';
 
 class ChatBox extends Component {
   constructor(props) {
@@ -22,7 +22,7 @@ class ChatBox extends Component {
     var messageItem = [message, timestamp, user.name, user.pictureUrl];
     this.setState({
       messages: this.state.messages.concat([messageItem])
-    })
+    });
 
     let messagelist = document.getElementById('message-list');
     messagelist.scrollTop = messagelist.scrollHeight;
@@ -69,4 +69,4 @@ class ChatBox extends Component {
 
 const mapStateToProps = (state) => ({...state});
 
-export default connect(mapStateToProps)(ChatBox)
+export default connect(mapStateToProps)(ChatBox);

@@ -141,19 +141,14 @@ class Note extends React.Component {
           <span className="deleteNoteButton" onClick={this.deleteHandler.bind(this)}><i className="ion ion-close-round deleteNoteIcon"></i></span>
         </div>
       );
-    }
-
-    else if (this.props.view === 'lecture') {
+    } else if (this.props.view === 'lecture') {
       view = (
         <div className={noteClass()}>
           <span className="content">{this.props.noteInfo.content}</span>
           <span className="audioTimestamp">{this.formatTime(this.props.noteInfo.audioTimestamp)}</span>
         </div>
       );
-
-    }
-
-    else if (this.props.view === 'review') {
+    } else if (this.props.view === 'review') {
       if (this.props.noteInfo.thought) {
       //if the note is a thought,
         if (this.props.note.showThoughts) {

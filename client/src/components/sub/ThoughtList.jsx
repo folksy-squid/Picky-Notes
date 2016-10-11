@@ -8,14 +8,14 @@ const ThoughtList = (props) => {
     <div key={i} className="review thought">
       {thought.content}
     </div>
-  ))
+  ));
 
   return props.note.showThoughts ? (
     <div className="thought-list">
       {thoughtView}
     </div>
-  ) : (<div></div>)
-}
+  ) : (<div></div>);
+};
 
 const mapStateToProps = (state) => {
   return {
