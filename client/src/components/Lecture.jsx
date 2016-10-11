@@ -121,7 +121,7 @@ class Lecture extends React.Component {
             </div>
           </div>
         </div>
-        <span className="footer">
+        <span className="footer slideUp">
           <InputBox />
         </span>
       </div>
