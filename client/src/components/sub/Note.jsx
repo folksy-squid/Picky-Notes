@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {toggleNote, editNote, deleteNote, editTimestamp} from '../../actions/noteActions.js';
+import {toggleNote, editNote, deleteNote, editTimestamp, setClass} from '../../actions/noteActions.js';
 import NoteReducer from '../../reducers/noteReducers';
 import WaveformReducer from '../../reducers/waveformReducers';
 import {setPos, play} from '../../actions/waveformActions';
@@ -58,6 +58,21 @@ class Note extends React.Component {
 
   deleteHandler() {
     this.props.dispatch(deleteNote(this.props.noteInfo.id));
+    setTimeout(() => {
+      const wavePos = this.props.waveform.pos;
+      const timestamps = this.props.note.audioTimestampArray;
+      var actionState;
+      if (this.props.waveform.playing) {
+        actionState = 'playing';
+      } else {
+        actionState = 'paused';
+      }
+      for (var i = 0; i < timestamps.length; i++) {
+        if (timestamps[i] > wavePos) {
+          return this.props.dispatch(setClass(i, wavePos, actionState));
+        }
+      }
+    }, 10);
   }
 
   timestampClickHandler() {
