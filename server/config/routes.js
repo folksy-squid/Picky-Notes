@@ -29,6 +29,7 @@ module.exports = (app, express, io) => {
   app.route('/api/users/:userId')
     .get((req, res) => {
       if (req.query.pathUrl) {
+        // can be optimized with promises... nice to have later
         getRoom(req.query.pathUrl, req.params.userId, (room) => res.send(room));
       } else {
         res.send('Retrieve the info for user #' + req.params.userId);

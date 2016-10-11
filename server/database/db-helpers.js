@@ -144,7 +144,12 @@ const getAllUserRooms = (userId, cb) => {
 const getRoom = (pathUrl, userId, cb) => {
   User.findById(userId)
   .then((user) => user.getRooms({where: {pathUrl: pathUrl}, raw: true}))
-  .then((room) => cb(room[0]));
+  .then((room) => {
+    // can be optimized with promises... nice to have later
+    getRoomParticipants(pathUrl, ({users}) => {
+      cb({ roomInfo: room[0], participants: users });
+    });
+  });
 };
 
 const saveAudioToRoom = (pathUrl, audioUrl, cb) => {

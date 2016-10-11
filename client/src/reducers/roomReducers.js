@@ -132,20 +132,13 @@ export default (state = {}, action) => {
         if (res === 'error') {
           action.cb(res);
         } else {
-          state.roomInfo = res;
-          console.log('STATE', state);
+          state.roomInfo = res.roomInfo;
+          state.participants = res.participants;
           action.cb(null, res);
         }
       }
     });
   }
-
-  // if (action.type === 'GET_PARTICIPANTS') {
-  //   $.ajax({
-  //     method: 'GET',
-  //     url: `/api/users/`
-  //   });
-  // }
 
   if (action.type === 'CREATE_STREAM_TO_SERVER') {
     // initiate audio stream
