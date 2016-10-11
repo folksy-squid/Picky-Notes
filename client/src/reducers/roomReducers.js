@@ -132,7 +132,7 @@ export default (state = {}, action) => {
         if (res === 'error') {
           action.cb(res);
         } else {
-
+          console.log('RESPONSE', res);
           state.roomInfo = res;
           action.cb(null, res);
         }

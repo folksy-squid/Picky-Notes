@@ -38,7 +38,6 @@ class Compile extends React.Component {
           realm.context.router.push('/notebook');
         } else {
           realm.setState({loaded: true});
-
         }
       }));
     }
