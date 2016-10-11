@@ -38,6 +38,10 @@ class ParticipantList extends React.Component {
       socket.on('user ready', this.userReady.bind(this));
     }
 
+    if (this.state.view === 'compile') {
+      console.log('this.state.room', this.props.room.participants);
+    }
+
     if (this.state.view === 'lecture') {
       this.state.readyStatusDisplay = 'inline-block';
       socket.on('user disconnected', this.props.checkHostLecture);
@@ -70,7 +74,7 @@ class ParticipantList extends React.Component {
         {participants.map(({name, readyStatus}, i) =>
         <div key={i}>
           <i className={`fa fa-user ${classColor(`${i}`)}`} aria-hidden="true"></i>
-          <span>{`${name} ${i === 0 ? '(Host)' : ''}`}</span>&nbsp;
+          <span>{`${name} ${i === 0 && this.state.view !== 'compile' ? '(Host)' : ''}`}</span>&nbsp;
           <span className={`btn-ready ${classColor(`${i}`)}`} style={{display: this.state.readyStatusDisplay}}>{readyStatus ? 'Ready' : 'Not Ready'}</span>
         </div>)}
       </div>

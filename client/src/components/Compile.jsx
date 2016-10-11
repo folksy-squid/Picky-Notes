@@ -112,6 +112,7 @@ class Compile extends React.Component {
           </div>
           <div className="col-md-3">
             <button className="btn btn-md btn-success" onClick={this.reviewNotesHandler.bind(this)}>Save & Review</button>
+              <ParticipantList />
           </div>
         </div>
       </div>
