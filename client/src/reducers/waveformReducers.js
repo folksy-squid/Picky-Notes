@@ -10,10 +10,9 @@ const defaultState = {
 export default (state = defaultState, action) => {
   switch (action.type) {
   case 'TOGGLE_PLAY':
-    let instr = action.instr === 'stop' ? false : true;
     return {
-      state,
-      playing: instr
+      ...state,
+      playing: !state.playing, 
     };
   case 'SET_POS':
     return {
