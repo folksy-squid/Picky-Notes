@@ -4,8 +4,6 @@ import RoomReducer from '../../reducers/roomReducers';
 import {connect} from 'react-redux';
 
 const ThoughtList = (props) => {
-  console.log('thought props.', props, 'justThoughts', props.note.justThoughts);
-
   let thoughtView = props.note.justThoughts.map((thought, i)=>(
     <div key={i} className="review thought">
       {thought.content}
