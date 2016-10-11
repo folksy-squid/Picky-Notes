@@ -11,23 +11,28 @@ class InputBox extends React.Component {
     this.state = {
       timestamp: 0,
       stopTimestamp: false,
+
     };
   }
 
   keyUpHandler(e) {
 
-    if (e.target.value.trim() !== '' && this.state.displayTimestamp === 'none') {
-      this.setState({displayTimestamp: 'inline', timestamp: this.props.waveform.pos });
+    if (e.target.value.trim() !== '' && !this.state.stopTimestamp) {
+      this.setState({ stopTimestamp: true, timestamp: this.props.waveform.pos });
+
       let wavePos = this.props.waveform.pos;
       let timestamps = this.props.note.audioTimestampArray;
+      console.log(timestamps, wavePos);
       for (var i = 0; i < timestamps.length; i++) {
         if (timestamps[i] > wavePos) {
+          console.log('setting arrow at ', wavePos);
           return this.props.dispatch(setArrow(i - 1));
         }
       }
-    } else if (e.target.value.trim() === '' && this.state.displayTimestamp === 'inline') {
+      return this.props.dispatch(setArrow(i - 1));
+    } else if (e.target.value.trim() === '' && this.state.stopTimestamp) {
       this.props.dispatch(removeArrow());
-      this.setState({displayTimestamp: 'none'});
+      this.setState({ stopTimestamp: false });
     }
     if (e.keyCode === 13) {
       this.submitNoteHandler(e, e.shiftKey);
