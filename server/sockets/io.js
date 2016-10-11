@@ -83,6 +83,7 @@ module.exports = (listen) => {
     });
 
     socket.on('lecture end', () => {
+      console.log('inside lecture end');
       if (socket.pathUrl) {
         saveLectureTimeLength(socket.pathUrl, Date.now());
         io.in(socket.pathUrl).emit('lecture ended');
@@ -123,7 +124,21 @@ module.exports = (listen) => {
       });
     });
 
+    socket.on('lecture host', () => {
+      socket.host = true;
+    });
+
     socket.on('disconnect', () => {
+      if (socket.host) {
+        console.log('lecture host disconnected');
+        io.in(socket.pathUrl).emit('host disconnected');
+        if (socket.pathUrl) {
+          saveLectureTimeLength(socket.pathUrl, Date.now());
+          io.in(socket.pathUrl).emit('lecture ended');
+        } else {
+          socket.emit('lecture end error', 'You do not belong to a room');
+        }
+      }
       io.in(socket.pathUrl).emit('user disconnected', socket.user);
       if (isAllReady(socket.pathUrl, rooms, connected)) {
         io.in(socket.pathUrl).emit('all ready');
@@ -150,6 +165,32 @@ module.exports = (listen) => {
 
       // when stream has ended, attempt to upload to S3
       stream.on('end', () => {
+        console.log('stream ended properly');
+        var count = 0;
+        let endStreamCB = (err, data) => {
+          if (err) {
+            console.log('error in uploading stream, retrying.', err);
+            if (count < 5) {
+              count++;
+              return startUploading(filePath, pathUrl, endStreamCB);
+            }
+            console.log('Error persisted. Stop trying to upload again.', err);
+          } else {
+            saveAudioToRoom(pathUrl, data.Location, () => {
+              console.log('saved audioUrl to database');
+              fs.unlink(filePath, () => {
+                console.log('successfully deleted audio from filesystem');
+              });
+            });
+          }
+        };
+
+        encoder.end(null, null, startUploading(filePath, pathUrl, endStreamCB));
+      });
+
+      // when stream ends unexpectedly, attempt to upload to S3
+      stream.on('close', () => {
+        console.log('stream ended unexpectedly');
         var count = 0;
         let endStreamCB = (err, data) => {
           if (err) {
