@@ -66,7 +66,10 @@ class Note extends React.Component {
 
   editTimestampHandler(e) {
     e.preventDefault();
-    const newTimestamp = (+this.refs.editHour.value * 3600 + +this.refs.editMin.value * 60 + +this.refs.editSec.value) * 1000;
+    let newTimestamp = (+this.refs.editMin.value * 60 + +this.refs.editSec.value) * 1000;
+    if (this.refs.editHour) {
+      newTimestamp += this.refs.editHour.value * 3600;
+    }
     if (newTimestamp <= +this.props.room.roomInfo.timeLength) {
       this.props.dispatch(editTimestamp(this.props.noteInfo.id, newTimestamp));
     }
