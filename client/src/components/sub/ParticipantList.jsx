@@ -38,10 +38,6 @@ class ParticipantList extends React.Component {
       socket.on('user ready', this.userReady.bind(this));
     }
 
-    if (this.state.view === 'compile') {
-      console.log('this.state.room', this.props.room.participants);
-    }
-
     if (this.state.view === 'lecture') {
       this.state.readyStatusDisplay = 'inline-block';
       socket.on('user disconnected', this.props.checkHostLecture);
