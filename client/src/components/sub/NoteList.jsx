@@ -62,7 +62,7 @@ class NoteList extends React.Component {
       url: `/api/notes/${userId}/${roomId}`,
       contentType: 'application/json',
       success: (res, status) => {
-        console.log('got notes.');
+        // console.log('got notes.');
         this.props.dispatch(replaceNotes(res, () => {
           this.setState({
             loaded: true
@@ -85,7 +85,7 @@ class NoteList extends React.Component {
       success: (res, status) => {
         // replace current Notes with response
         this.props.dispatch(replaceNotes(res, () => {
-          console.log('getting all notes');
+          // console.log('getting all notes');
           this.setState({
             loaded: true
           });
@@ -104,18 +104,18 @@ class NoteList extends React.Component {
         if (this.props.tab === 'Notes') {
           return this.props.note.justNotes.map((note, i)=>(
             <Note key={i} noteInfo={note} tab={this.props.tab} view={this.state.view} />
-          ))
+          ));
         } else if (this.props.tab === 'Thoughts') {
           return this.props.note.justThoughts.map((note, i)=>(
             <Note key={i} noteInfo={note} tab={this.props.tab} view={this.state.view} />
-          ))
+          ));
         }
       } else {
         return this.props.note.notes.map((note, i)=>(
           <Note key={i} noteInfo={note} view={this.state.view} />
-        ))
+        ));
       }
-    }
+    };
     let listClass = this.state.view === 'compile' ? 'note-list compiled' : 'note-list';
     return (
       this.state.loaded ? (

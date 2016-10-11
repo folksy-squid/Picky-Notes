@@ -16,10 +16,9 @@ class Notebook extends React.Component {
   componentWillMount() {
     const user = this.props.getState().user.information[0];
     const context = this;
-    console.log('user', user);
     $.ajax({
       method: 'GET',
-      url: `/api/users/rooms/${user.id}`,
+      url: `/api/rooms?userId=${user.id}`,
       success: (entries) => {
         let lectures = entries.filter((entry) => entry.startTimestamp !== null);
         lectures.sort((a, b) => b.startTimestamp - a.startTimestamp);

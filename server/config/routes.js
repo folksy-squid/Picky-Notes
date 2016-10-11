@@ -29,6 +29,7 @@ module.exports = (app, express, io) => {
   app.route('/api/users/:userId')
     .get((req, res) => {
       if (req.query.pathUrl) {
+        // can be optimized with promises... nice to have later
         getRoom(req.query.pathUrl, req.params.userId, (room) => res.send(room));
       } else {
         res.send('Retrieve the info for user #' + req.params.userId);
@@ -41,31 +42,23 @@ module.exports = (app, express, io) => {
       res.send('Delete user #' + req.params.userId);
     });
 
-  // Room Creation
-  app.post('/api/rooms', (req, res) => {
-    // create and return hash for room path Url
-    createNewRoom(req.body, (roomInfo) => res.send(roomInfo));
-  });
-
-  app.post('/api/rooms/:pathUrl', (req, res) => {
-    // Have user join the room at 'pathUrl'
-    joinRoom(req.body.userId, req.params.pathUrl, (currentRoom) => res.send(currentRoom));
-  });
-
-  app.get('/api/users/rooms/:userId', (req, res) => {
-    getAllUserRooms(req.params.userId, (allUserRooms) => {
-      res.send(allUserRooms);
-    });
-  });
-
   app.route('/api/rooms/')
     .post((req, res) => {
-    // Have user join the room at 'pathUrl'
-      joinRoom(req.body.userId, req.query.pathUrl, (currentRoom) => res.send(currentRoom));
+      if (req.query.pathUrl) {
+        // Have user join the room at 'pathUrl'
+        joinRoom(req.body.userId, req.query.pathUrl, (currentRoom) => res.send(currentRoom));
+      } else {
+        // create and return hash for room path Url
+        createNewRoom(req.body, (roomInfo) => res.send(roomInfo));
+      }
     })
     .get((req, res) => {
       getAllUserRooms(req.query.userId, (allUserRooms) => res.send(allUserRooms));
     });
+
+  app.get('/test/:pathUrl', (req, res) => {
+    getRoomParticipants(req.params.pathUrl, ({users}) => res.send(users));
+  });
 
   app.post('/api/room/status', (req, res) => {
     res.status(201).send({active: !!io.sockets.adapter.rooms[req.body.pathUrl]});
@@ -100,9 +93,9 @@ module.exports = (app, express, io) => {
     })
     .delete((req, res) => {
       deleteNotes(req.body, error => {
-        if (error) { 
+        if (error) {
           console.log(error);
-          res.status(404).send(error); 
+          res.status(404).send(error);
         }
         res.status(204).send();
       });

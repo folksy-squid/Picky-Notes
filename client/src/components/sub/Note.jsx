@@ -78,12 +78,12 @@ class Note extends React.Component {
     const noteClass = () => {
       let retVal = this.props.view;
       if (this.props.noteInfo.thought) {
-        retVal+=' thought'
+        retVal += ' thought';
       } else {
-        retVal+= this.props.noteInfo.highlight ? ' note highlighted' : ' note'
+        retVal += this.props.noteInfo.highlight ? ' note highlighted' : ' note';
       }
       return retVal;
-    }
+    };
 
     if (!this.props.noteInfo.content) {
       return (<div></div>);
