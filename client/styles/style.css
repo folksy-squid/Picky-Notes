@@ -398,6 +398,46 @@ input[type=checkbox] {
   opacity: 0.6;
 }
 
+.notebook-icon {
+  float: left;
+  font-size: 5em;
+}
+
+.notebook-topic {
+  padding-top: 0.25em;
+  padding-left: 5em;
+  font-weight: bold;
+}
+
+.notebook-lecturer {
+  padding-left: 5em;
+}
+
+.notebook-class {
+  padding-left: 5em;
+  font-style: italic;
+}
+
+.notebook0 {
+  color: rgb(239, 68, 146);
+}
+
+.notebook1 {
+  color: rgb(255, 146, 67);
+}
+
+.notebook2 {
+  color: rgb(253, 217, 0);
+}
+
+.notebook3 {
+  color: rgb(184, 209, 92);
+}
+
+.notebook4 {
+  color: rgb(12, 188, 227);
+}
+
 /*
   =================================
     Footer
