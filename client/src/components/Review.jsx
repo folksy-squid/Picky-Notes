@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router';
 import NoteList from './sub/NoteList.jsx';
+import ThoughtList from './sub/ThoughtList.jsx';
 import LectureTitle from './sub/LectureTitle.jsx';
 import {connect} from 'react-redux';
 import {setRoomInfo} from '../actions/roomActions';
@@ -59,17 +60,18 @@ class Review extends React.Component {
     return (
       this.state.loaded ? (
       <div className="container">
-        <div className="col-sm-10 panel panel-default">
+        <div className="col-sm-8 panel panel-default">
           <LectureTitle />
           <NoteList />
         </div>
-        <div className="col-sm-2">
+        <div className="col-sm-4">
           <button className="btn btn-md btn-primary" onClick={this.goToCompiledView.bind(this)}>
             Add / Edit Notes
           </button>
           <button className="btn btn-md btn-info" onClick={this.toggleThoughts.bind(this)}>
             {this.state.thoughtButton}
           </button>
+          <ThoughtList />
         </div>
       </div>
     ) : (<div></div>)
