@@ -16,9 +16,9 @@ const listen = app.listen(port, () => {
 });
 
 const ioServer = require('./sockets/io.js')(listen);
-require('./config/routes.js')(app, express, ioServer);
 
 
 // add routes
+require('./config/routes.js')(app, express, ioServer);
 
 module.exports = {app, ioServer};

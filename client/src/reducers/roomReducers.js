@@ -113,10 +113,14 @@ export default (state = {}, action) => {
   }
 
   if (action.type === 'READY_PARTICIPANT') {
-    state.participants[findUser(state.participants, action.participant)].readyStatus = true;
+    const userId = action.participant.id;
+    state.participants.forEach((participant) => {
+      if (userId === participant.id) {
+        participant.readyStatus = true;
+      }
+    });
     return {
       ...state,
-      participants: state.participants
     };
   }
 
@@ -153,7 +157,7 @@ export default (state = {}, action) => {
       //   lowPassfilter.frequency.value = 100;
       //   lowPassfilter.type = 'lowpass';
 
-      const compressor = context.createDynamicsCompressor();
+      // const compressor = context.createDynamicsCompressor();
       //   compressor.ratio.value = 12;
       //   compressor.attack.value = 0;
       //   compressor.release.value = 0.5;
@@ -176,8 +180,8 @@ export default (state = {}, action) => {
       };
 
       // connections
-      audioInput.connect(compressor);
-      compressor.connect(recorder);
+      audioInput.connect(recorder);
+      // compressor.connect(recorder);
       // highPassfilter.connect(lowPassfilter);
       // highPassfilter.connect(recorder);
       recorder.connect(context.destination);
