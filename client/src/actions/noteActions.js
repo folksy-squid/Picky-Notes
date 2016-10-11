@@ -29,6 +29,14 @@ export const editNote = (noteId, newText) => {
   };
 };
 
+export const editTimestamp = (noteId, newTimestamp) => {
+  return {
+    type: 'EDIT_TIMESTAMP',
+    noteId,
+    newTimestamp,
+  };
+};
+
 export const deleteNote = (noteId) => {
   return {
     type: 'DELETE_NOTE',

@@ -58,9 +58,11 @@ class InputBox extends React.Component {
   }
 
   formatTime(decimalSeconds) {
-    const seconds = ~~decimalSeconds;
-    const minutes = ~~(seconds / 60);
-    const hours = ~~(minutes % 60);
+    let seconds = ~~decimalSeconds;
+    let minutes = ~~(seconds / 60);
+    let hours = ~~(minutes / 60);
+    seconds = seconds % 60;
+    minutes = minutes % 60;
 
     let time = hours ? hours + ':' : '';
     time += minutes < 10 ? '0' + minutes + ':' : minutes + ':';

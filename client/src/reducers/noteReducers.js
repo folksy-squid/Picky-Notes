@@ -23,6 +23,20 @@ export default (state = {notes: [], deleted: []}, action) => {
     });
   }
 
+  if (action.type === 'EDIT_TIMESTAMP') {
+    const notes = state.notes.map((note, i) => {
+      if (note.id === action.noteId) {
+        note.audioTimestamp = action.newTimestamp;
+        note.changed = true;
+      }
+      return note;
+    });
+    return {
+      ...state,
+      notes,
+    };
+  }
+
   if (action.type === 'REPLACE_NOTES') {
     let notes = action.allNotes.sort((a, b) => a.audioTimestamp - b.audioTimestamp);
 
