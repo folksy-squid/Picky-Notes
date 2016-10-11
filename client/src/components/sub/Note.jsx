@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {toggleNote, editNote, deleteNote} from '../../actions/noteActions.js';
+import {toggleNote, editNote, deleteNote, editTimestamp} from '../../actions/noteActions.js';
 import NoteReducer from '../../reducers/noteReducers';
 import WaveformReducer from '../../reducers/waveformReducers';
 import {setPos, play} from '../../actions/waveformActions';
@@ -9,7 +9,8 @@ class Note extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      edit: false
+      editContent: false,
+      editTimestamp: false,
     };
   }
 
@@ -29,28 +30,47 @@ class Note extends React.Component {
   }
 
   formatTime(milliseconds) {
-    let totalSeconds = ~~(milliseconds / 1000);
-    let minutes = ~~(totalSeconds / 60);
-    let seconds = totalSeconds % 60;
-    return (minutes) ? `${minutes}m ${seconds}s` : `${seconds}s`;
+    let seconds = ~~(milliseconds / 1000);
+    let minutes = ~~(seconds / 60);
+    let hours = ~~(minutes / 60);
+    seconds = seconds % 60;
+    minutes = minutes % 60;
+
+    let time = hours ? hours + ':' : '';
+    time += minutes < 10 ? '0' + minutes + ':' : minutes + ':';
+    time += seconds < 10 ? '0' + seconds : seconds;
+    
+    return time;
   }
 
-  compileClickHandler() {
-    this.setState({edit: true});
+  contentClickHandler() {
+    this.setState({editContent: true});
   }
 
-  editHandler(e) {
+  editContentHandler(e) {
     e.preventDefault();
-    let newText = this.refs.noteInput.value;
-    if (this.refs.noteInput.value.trim() !== '') {
-      this.props.dispatch(editNote(this.props.noteInfo.id, this.refs.noteInput.value));
+    const newText = this.refs.noteInput.value;
+    if (newText.trim() !== '' && newText.value !== this.props.noteInfo.content) {
+      this.props.dispatch(editNote(this.props.noteInfo.id, newText));
     }
-    this.setState({edit: false});
+    this.setState({ editContent: false });
   }
 
-  deleteHandler(e) {
-    console.log('click!', this.props.noteInfo.id);
+  deleteHandler() {
     this.props.dispatch(deleteNote(this.props.noteInfo.id));
+  }
+
+  timestampClickHandler() {
+    this.setState({ editTimestamp: true });
+  }
+
+  editTimestampHandler(e) {
+    e.preventDefault();
+    const newTimestamp = (+this.refs.editMin.value * 60 + +this.refs.editSec.value) * 1000;
+    if (newTimestamp <= +this.props.room.roomInfo.timeLength) {
+      this.props.dispatch(editTimestamp(this.props.noteInfo.id, newTimestamp));
+    }
+    this.setState({ editTimestamp: false });
   }
 
   render() {
@@ -62,25 +82,36 @@ class Note extends React.Component {
       if (!this.props.noteInfo.content) {
         if (this.props.noteInfo.highlight) {
           return (<div className='pointer'></div>);
-        } else {
-          return (<div></div>);
         }
+        return (<div></div>);
       }
 
       view = (
         <div>
           <div className='note'>
             <input type="checkbox" ref="checkbox" onChange={this.toggleNoteHandler.bind(this)} checked={this.props.noteInfo.show}/>
-            {this.state.edit ?
+            {this.state.editContent ?
               <span className="content">
-                <form onSubmit={this.editHandler.bind(this)}>
+                <form onSubmit={this.editContentHandler.bind(this)}>
                   <input ref="noteInput" type="text" defaultValue={this.props.noteInfo.content} />
                 </form>
               </span>
               :
-              <span className="content" onClick={this.compileClickHandler.bind(this)}>{this.props.noteInfo.content}</span>
+              <span className="content" onClick={this.contentClickHandler.bind(this)}>{this.props.noteInfo.content}</span>
             }
-            <span className="audioTimestamp">{this.formatTime(this.props.noteInfo.audioTimestamp)}</span>
+            {this.state.editTimestamp ? 
+              <span className="audioTimestamp">
+                <form onSubmit={this.editTimestampHandler.bind(this)}>
+                  <button className="btn btn-success btn-xs">Save</button>
+                  <input ref="editMin" type="number" min={0} max={59} defaultValue={~~(this.props.noteInfo.audioTimestamp / 60000) % 60} />:
+                  <input ref="editSec" type="number" min={0} max={59} defaultValue={~~(this.props.noteInfo.audioTimestamp / 1000) % 60} />
+                </form>
+              </span>
+            :
+              <span className="audioTimestamp" onClick={this.timestampClickHandler.bind(this)}>
+                {this.formatTime(this.props.noteInfo.audioTimestamp)}
+              </span>
+            }
             <span className="deleteNoteButton" onClick={this.deleteHandler.bind(this)}><i className="ion ion-close-round deleteNoteIcon"></i></span>
           </div>
           {this.props.noteInfo.highlight && (

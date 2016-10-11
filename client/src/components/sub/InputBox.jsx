@@ -8,18 +8,25 @@ import {getCurrentView} from '../../helpers.js';
 class InputBox extends React.Component {
   constructor (props) {
     super(props);
+    this.state = {
+      timestamp: 0,
+      displayTimestamp: 'none',
+    };
   }
 
-  keyDownHandler(e) {
-    if (e.shiftKey && e.keyCode === 13) {
-      this.submitNoteHandler(e, true);
-    } else if (e.keyCode === 13) {
-      this.submitNoteHandler(e, false);
+  keyUpHandler(e) {
+    if (e.target.value.trim() !== '' && this.state.displayTimestamp === 'none') {
+      this.setState({displayTimestamp: 'inline', timestamp: this.props.waveform.pos });
+    } else if (e.target.value.trim() === '' && this.state.displayTimestamp === 'inline') {
+      this.setState({displayTimestamp: 'none'});
+    }
+
+    if (e.keyCode === 13) {
+      this.submitNoteHandler(e, e.shiftKey);
     }
   }
 
   submitNoteHandler(e, thought) {
-    e.preventDefault();
     if (this.refs.inputNote.value.trim() === '') { return; }
 
     if (getCurrentView(this.props.routing.locationBeforeTransitions.pathname) === 'compile') {
@@ -27,7 +34,7 @@ class InputBox extends React.Component {
         content: this.refs.inputNote.value,
         originalUserId: this.props.user.information[0].id,
         roomId: this.props.room.roomInfo.id,
-        audioTimestamp: ~~(this.props.waveform.pos * 1000),
+        audioTimestamp: ~~(this.state.timestamp * 1000),
         thought: thought
       };
       $.ajax({
@@ -39,6 +46,7 @@ class InputBox extends React.Component {
           console.log(savedNote);
           this.props.dispatch(addNote(savedNote));
           this.refs.inputNote.value = '';
+          this.setState({displayTimestamp: 'none'});
         },
         error: console.log.bind(this)
       });
@@ -49,20 +57,32 @@ class InputBox extends React.Component {
     this.refs.inputNote.value = '';
   }
 
+  formatTime(decimalSeconds) {
+    let seconds = ~~decimalSeconds;
+    let minutes = ~~(seconds / 60);
+    let hours = ~~(minutes / 60);
+    seconds = seconds % 60;
+    minutes = minutes % 60;
+
+    let time = hours ? hours + ':' : '';
+    time += minutes < 10 ? '0' + minutes + ':' : minutes + ':';
+    time += seconds < 10 ? '0' + seconds : seconds;
+    
+    return time;
+  }
+
   // view will alter depending on the page it's on.
   render() {
-    var view;
-    if (this.props.page === 'compile') {
-      view = (
-        <input>
-          'this is the input box for Compile'
-        </input>
-      );
-    } else {
-      view = <form id="lectureForm" ><input ref="inputNote" id="lectureInput" type="text" onKeyDown={this.keyDownHandler.bind(this)} /></form>;
-    }
-
-    return view;
+    if (getCurrentView(this.props.routing.locationBeforeTransitions.pathname) === 'compile') {
+      return <span className="lectureForm" >
+        <input ref="inputNote" className="lectureInput" type="text" onKeyUp={this.keyUpHandler.bind(this)} autoFocus/>
+        <span style={{display: this.state.displayTimestamp}}>{this.formatTime(this.state.timestamp)}</span>
+      </span>;
+    } 
+      
+    return <span className="lectureForm" >
+      <input ref="inputNote" className="lectureInput" type="text" onKeyUp={this.keyUpHandler.bind(this)} autoFocus/>
+    </span>;
   }
 }
 

@@ -3,6 +3,7 @@ import { Link } from 'react-router';
 import {connect} from 'react-redux';
 import LectureTitle from './sub/LectureTitle.jsx';
 import LectureBox from './sub/LectureBox.jsx';
+import InputBox from './sub/InputBox.jsx';
 import ParticipantList from './sub/ParticipantList.jsx';
 import RoomReducer from '../reducers/roomReducers';
 import {stopRecording, setRoomInfo, joinSocketRoom} from '../actions/roomActions';
@@ -77,6 +78,7 @@ class Lecture extends React.Component {
     let host = this.props.room.participants[0];
     let user = this.props.user.information[0];
     host.id === user.id && (!this.state.isHost) && this.setState({isHost: true});
+    
   }
 
   hideReadyButton() {
@@ -97,27 +99,33 @@ class Lecture extends React.Component {
   render() {
     return (
       this.state.loaded ? (
-      <div className="container-fluid">
-        <div className="row">
-          <div className="col-md-9">
-            <LectureTitle />
+      <div>
+        <div className="container-fluid">
+          <div className="row">
+            <div className="col-md-9">
+              <LectureTitle />
+            </div>
+            {this.state.isHost && (<button className="btn btn-lg btn-danger" style={{display: this.state.endLectureDisplay}} onClick={this.endLecture.bind(this)}>
+              Stop Recording
+            </button>)}
+            <button className="btn btn-lg btn-success" style={{display: this.state.readyButtonDisplay}} onClick={this.sendReady.bind(this)}>
+              Ready
+            </button>
           </div>
-          {this.state.isHost && (<button className="btn btn-lg btn-danger" style={{display: this.state.endLectureDisplay}} onClick={this.endLecture.bind(this)}>
-            Stop Recording
-          </button>)}
-          <button className="btn btn-lg btn-success" style={{display: this.state.readyButtonDisplay}} onClick={this.sendReady.bind(this)}>
-            Ready
-          </button>
+          <div className="row">
+            <div className="col-md-9">
+              <LectureBox />
+            </div>
+            <div className="col-md-3">
+              <ParticipantList checkHostLecture={this.checkHost.bind(this)} hideReadyButton={this.hideReadyButton.bind(this)}/>
+            </div>
+          </div>
         </div>
-        <div className="row">
-          <div className="col-md-9">
-            <LectureBox />
-          </div>
-          <div className="col-md-3">
-            <ParticipantList checkHostLecture={this.checkHost.bind(this)} hideReadyButton={this.hideReadyButton.bind(this)}/>
-          </div>
-        </div>
-      </div>) : (<h2>{this.state.error}</h2>)
+        <span className="footer slideUp">
+          <InputBox />
+        </span>
+      </div>
+      ) : (<h2>{this.state.error}</h2>)
     );
   }
 }

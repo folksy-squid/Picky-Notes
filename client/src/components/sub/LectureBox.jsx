@@ -34,7 +34,6 @@ class LectureBox extends React.Component {
         </ul>
         <div>
           <NoteList />
-          <InputBox />
         </div>
       </div>
     )
@@ -53,7 +52,6 @@ class LectureBox extends React.Component {
         </ul>
         <div>
           <NoteList tab={this.state.tab}/>
-          <InputBox tab={this.state.tab}/>
         </div>
       </div>
       )

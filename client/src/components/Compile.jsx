@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router';
 import {connect} from 'react-redux';
+import InputBox from './sub/InputBox.jsx';
 import ParticipantList from './sub/ParticipantList.jsx';
 import LectureBox from './sub/LectureBox.jsx';
 import {setRoomInfo} from '../actions/roomActions';
@@ -87,29 +88,45 @@ class Compile extends React.Component {
     .fail((error) => console.log('Error updating changed notes', error));
   }
 
+  formatTime(decimalSeconds) {
+    const seconds = ~~decimalSeconds;
+    const minutes = ~~(seconds / 60);
+    const hours = ~~(minutes % 60);
+
+    let time = hours > 0 ? hours + ':' : '';
+    time += minutes < 10 ? '0' + minutes + ':' : minutes + ':';
+    time += seconds < 10 ? '0' + seconds : seconds;
+    
+    return time;
+  }
+
 // IF this.props.roomInfo.audioUrl === 'audioUrl', render the audio loading component
   render() {
     return (
       this.state.loaded ? (
-    <div className="container">
-      <LectureTitle />
-      <div className="row">
+    <div>
+      <div className="container">
+        <LectureTitle />
+        <div className="row">
+          <div className="col-md-9">
+            <LectureBox />
+          </div>
+          <div className="col-md-3">
+            <button className="btn btn-lg btn-success" onClick={this.reviewNotesHandler.bind(this)}>Save & Review</button>
+            {
+              this.props.room.participants ? (
+                <ParticipantList />
+              ) : (<div></div>)
+            }
+          </div>
+        </div>
+      </div>
+      <span className="footer slideUp">
+        <InputBox tab={this.state.tab}/>
         <Audio />
-      </div>
-      <div className="row">
-        <div className="col-md-9">
-          <LectureBox />
-        </div>
-        <div className="col-md-3">
-          <button className="btn btn-lg btn-success" onClick={this.reviewNotesHandler.bind(this)}>Save & Review</button>
-          {
-            this.props.room.participants ? (
-              <ParticipantList />
-            ) : (<div></div>)
-          }
-        </div>
-      </div>
-    </div>) : (<div></div>)
+      </span>
+    </div>
+    ) : (<div></div>)
     );
   }
 }

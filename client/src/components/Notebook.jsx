@@ -31,7 +31,7 @@ class Notebook extends React.Component {
   filterKeyword(search) {
     let filtered = [];
     this.state.original.forEach((notebook) => {
-      if (notebook.topic.indexOf(search) === -1 && notebook.lecturer.indexOf(search) === -1) { return; }
+      if (notebook.topic.toLowerCase().indexOf(search.toLowerCase()) === -1 && notebook.lecturer.toLowerCase().indexOf(search.toLowerCase()) === -1) { return; }
       if (notebook.class === this.state.selectedClass || this.state.selectedClass === 'All') {
         filtered.push(notebook);
       }
@@ -41,7 +41,7 @@ class Notebook extends React.Component {
 
   filterClass(selectedClass) {
     let filteredEntries = (selectedClass === 'All') ?
-      this.state.original : this.state.original.filter((entry) => entry.class === selectedClass);
+      this.state.original : this.state.original.filter((entry) => entry.class.toLowerCase() === selectedClass.toLowerCase());
     this.setState({ entries: filteredEntries, selectedClass: selectedClass});
   }
 
