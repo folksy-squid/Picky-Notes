@@ -7,9 +7,17 @@ export default (state = {notes: [], deleted: []}, action) => {
   if (action.type === 'ADD_NOTE') {
     let notes = state.notes.concat([action.note]);
     notes = notes.sort((a, b) => a.audioTimestamp - b.audioTimestamp);
+
+    let justNotes = notes.filter(note=>!note.thought);
+    let justThoughts = notes.filter(note=>note.thought);
+    let audioTimestampArray = state.justNotes.map(note=> Number(note.audioTimestamp) / 1000);
+
     return {
       ...state,
-      notes: notes,
+      notes,
+      justNotes,
+      justThoughts,
+      audioTimestampArray
     };
   }
 

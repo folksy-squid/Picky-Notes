@@ -18,8 +18,8 @@ class InputBox extends React.Component {
 
     if (e.target.value.trim() !== '' && this.state.displayTimestamp === 'none') {
       this.setState({displayTimestamp: 'inline', timestamp: this.props.waveform.pos });
-      const wavePos = this.props.waveform.pos;
-      const timestamps = this.props.note.audioTimestampArray;
+      let wavePos = this.props.waveform.pos;
+      let timestamps = this.props.note.audioTimestampArray;
       for (var i = 0; i < timestamps.length; i++) {
         if (timestamps[i] > wavePos) {
           return this.props.dispatch(setArrow(i - 1));
@@ -52,8 +52,8 @@ class InputBox extends React.Component {
         data: JSON.stringify(note),
         success: (savedNote) => {
           console.log(savedNote);
-          this.props.dispatch(removeArrow());
           this.props.dispatch(addNote(savedNote));
+          this.props.dispatch(removeArrow());
           this.refs.inputNote.value = '';
           this.setState({ stopTimestamp: false });
         },
