@@ -35,9 +35,10 @@ export default class Entry extends React.Component {
     // (use map)
     return (
       <div className="col-sm-6 col-md-4 notebook-entry" onClick={this.clickHandler.bind(this)}>
-        <div>{`${this.props.entry.topic} by ${this.props.entry.lecturer}`}</div>
-        <img style={{maxHeight: '200px', maxWidth: '200px'}} src='https://image.freepik.com/free-icon/file-interface-symbol-of-a-white-page-with-one-folded-corner_318-41811.jpg' />
-        <div>{`${this.props.entry.class}`}</div>
+        <i className={`fa fa-sticky-note-o fa-5x notebook${this.props.classColor} notebook-icon`} aria-hidden="true"></i>
+        <div className='notebook-topic'>{`${this.props.entry.topic}`}</div>
+        <div className='notebook-lecturer'>{`by ${this.props.entry.lecturer}`}</div>
+        <div className='notebook-class'>{`${this.props.entry.class}`}</div>
       </div>
     );
   }

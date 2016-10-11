@@ -14,7 +14,7 @@ import Entry from './Entry.jsx';
 
 const EntryList = (props) => (
   <div className="container-fluid">
-    {props.entries.map((entry, i) => <Entry key = {i} entry={entry}/>)}
+    {props.entries.map((entry, i) => <Entry key = {i} entry={entry} classColor={i % 5}/>)}
   </div>
 );
 
