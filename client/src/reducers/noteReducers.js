@@ -108,13 +108,13 @@ export default (state = {notes: [], deleted: []}, action) => {
     const updateNote = (idx) => {
       state.justNotes.forEach(note => note['highlight'] = null);
       state.justNotes[idx]['highlight'] = true;
-      let diff = state.audioTimestampArray[idx+1] - wavePos;
+      let diff = state.audioTimestampArray[idx + 1] - wavePos;
       wavePos = wavePos + diff;
       idx++;
       if (state.audioTimestampArray[idx] > -1) {
         window.timer = window.setTimeout(updateNote.bind(this, idx), diff * 1000);
       }
-    }
+    };
     let idx = upcomingNoteIndex - 1 < 0 ? 0 : upcomingNoteIndex - 1;
     if (action.actionState === 'paused') {
       state.justNotes.forEach(note => note['highlight'] = null);
