@@ -60,13 +60,13 @@ class Review extends React.Component {
     return (
       this.state.loaded ? (
       <div className="container">
-        <div className="col-sm-8 panel panel-default">
+        <div className="col-sm-9 panel panel-default">
           <LectureTitle />
           <NoteList />
         </div>
-        <div className="col-sm-4">
+        <div className="col-sm-3">
           <button className="btn btn-md btn-primary" onClick={this.goToCompiledView.bind(this)}>
-            Add / Edit Notes
+            Add / Edit
           </button>
           <button className="btn btn-md btn-info" onClick={this.toggleThoughts.bind(this)}>
             {this.state.thoughtButton}

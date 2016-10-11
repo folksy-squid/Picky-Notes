@@ -101,6 +101,7 @@ class NoteList extends React.Component {
   render() {
     var roomParticipants = {};
     this.props.room.participants.forEach((participant, i) => roomParticipants[participant.id] = i);
+
     const showNotes = () => {
       if (this.state.view === 'compile') {
         if (this.props.tab === 'Notes') {
@@ -115,12 +116,17 @@ class NoteList extends React.Component {
             <Note key={i} noteInfo={note} tab={this.props.tab} view={this.state.view} />
           ));
         }
+      } else if (this.state.view === 'review') {
+        return this.props.note.justNotes.map((note, i)=>(
+          <Note key={i} noteInfo={note} view={this.state.view} />
+        ))
       } else {
         return this.props.note.notes.map((note, i)=>(
           <Note key={i} noteInfo={note} view={this.state.view} />
         ));
       }
     };
+
     let listClass = this.state.view === 'compile' ? 'note-list compiled' : 'note-list';
     return (
       this.state.loaded ? (

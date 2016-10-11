@@ -172,7 +172,7 @@ class Note extends React.Component {
       // if the note is a note
         view = (
           <div className={noteClass()}>
-            {!this.props.noteInfo.thought && (<i className="fa fa-play-circle" aria-hidden="true" onClick={this.playNote.bind(this)}></i>)}
+            <i className="fa fa-play-circle" aria-hidden="true" onClick={this.playNote.bind(this)}></i>
             {this.props.noteInfo.content}
           </div>
         );
