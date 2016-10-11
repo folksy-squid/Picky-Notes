@@ -96,21 +96,22 @@ class Audio extends React.Component {
       height: 50,
       progressColor: 'rgba(48,125,125,1)',
       waveColor: 'rgba(131, 187, 187, 0.6)',
-      autoCenter: true,
-      barWidth: 4,
+      autoCenter: false,
+      barWidth: 3,
       audioRate: this.props.waveform.audioRate,
-      cursorWidth: 3,
-      cursorColor: 'rgba(100, 50, 50, 1)'
+      cursorWidth: 2,
+      cursorColor: 'rgba(100, 50, 50, 1)',
+      normalize: true
     };
     return (
-      <span className="audioPlayer">
-        {this.state.loadingDisplay === 'block' &&
-          <div>
+      <div className="row">
+        <div style={{display: this.state.loadingDisplay}}>
             LOADING AUDIO FILE {this.state.loadVal}
-          </div>
-        }
-        <i onClick={this.handleTogglePlay.bind(this)} className={`fa ${this.props.waveform.playing ? 'fa-pause-circle' : 'fa-play-circle'} fa-3x text-primary playButton`}></i>
-        <span className="waveform" ref="wavesurfContainer" onClick={this.handleClick.bind(this)} style={{visibility: this.state.waveformDisplay}}>
+        </div>
+        <div className="col-md-1">
+          <i onClick={this.handleTogglePlay.bind(this)} className={`fa ${this.props.waveform.playing ? 'fa-pause-circle' : 'fa-play-circle'} fa-3x text-primary playButton`}></i>
+        </div>
+        <div className="col-md-10" ref="wavesurfContainer" onClick={this.handleClick.bind(this)} style={{visibility: this.state.waveformDisplay}}>
           <Wavesurfer
             volume={this.props.waveform.volume}
             pos={this.props.waveform.pos}
@@ -122,7 +123,8 @@ class Audio extends React.Component {
             onLoading={this.handleLoading.bind(this)}
             onFinish={this.onFinish.bind(this)}
           />
-        </span>
+        </div>
+        <div className="col-md-1">
         <input
           name="simple-volume"
           type="range"
@@ -134,7 +136,8 @@ class Audio extends React.Component {
           className="form-control"
           orient="vertical"
         />
-      </span>
+        </div>
+      </div>
   );
   }
 }

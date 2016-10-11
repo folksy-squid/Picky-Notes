@@ -427,11 +427,11 @@ input[type=checkbox] {
 }
 
 .audioPlayer {
-  flex: 1;
-  display: flex;
+  display: inline-block;
 }
 
 .waveform {
+
   flex: 1;
 }
 
