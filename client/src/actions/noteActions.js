@@ -37,10 +37,11 @@ export const editTimestamp = (noteId, newTimestamp) => {
   };
 };
 
-export const deleteNote = (noteId) => {
+export const deleteNote = (noteId, thought) => {
   return {
     type: 'DELETE_NOTE',
     noteId,
+    thought
   };
 };
 

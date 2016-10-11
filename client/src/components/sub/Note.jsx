@@ -57,7 +57,7 @@ class Note extends React.Component {
   }
 
   deleteHandler() {
-    this.props.dispatch(deleteNote(this.props.noteInfo.id));
+    this.props.dispatch(deleteNote(this.props.noteInfo.id, this.props.noteInfo.thought));
     setTimeout(() => {
       const wavePos = this.props.waveform.pos;
       const timestamps = this.props.note.audioTimestampArray;
