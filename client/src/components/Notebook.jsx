@@ -50,7 +50,6 @@ class Notebook extends React.Component {
       <div className="container">
         <div className="row notebook-header">
           <div className="col-sm-6">
-            <h2>My Lectures</h2>
           </div>
           <div className="col-sm-6">
             <SearchBar entries={this.state.entries} filterClass={this.filterClass.bind(this)} filterKeyword={this.filterKeyword.bind(this)} />
