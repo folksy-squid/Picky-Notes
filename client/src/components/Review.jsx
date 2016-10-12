@@ -76,7 +76,9 @@ class Review extends React.Component {
           </div>
         </div>
         <div className="footer reviewFooter slideUp">
-          <Audio />
+          <div className="container">
+            <Audio />
+          </div>
         </div>
       </div>
     ) : (<div></div>)
