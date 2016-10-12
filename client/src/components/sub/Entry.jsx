@@ -1,8 +1,8 @@
 import React from 'react';
-import Connection from '../../Connection.js';
+import { connect } from 'react-redux';
 import { Link } from 'react-router';
 
-export default class Entry extends React.Component {
+class Entry extends React.Component {
   constructor (props) {
     super(props);
   }
@@ -31,7 +31,13 @@ export default class Entry extends React.Component {
   }
 
   deleteHandler() {
-    console.log('delete!!');
+    console.log(this.props.user.information[0].id);
+    console.log(this.props.entry.id);
+    // $.ajax({
+    //   method: 'DELETE',
+    //   url: `/api/rooms?userId=${this.props.user.userId}&roomId=${this.props.entry.id}`,
+    //
+    // })
   }
 
   render() {
@@ -62,3 +68,11 @@ export default class Entry extends React.Component {
     // );
   }
 }
+
+const mapStateToProps = (state) => {
+  return {
+    ...state
+  };
+};
+
+export default connect(mapStateToProps)(Entry);
