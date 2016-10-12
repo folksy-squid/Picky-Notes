@@ -100,13 +100,15 @@ class Compile extends React.Component {
   }
 
   componentDidMount() {
+    if (!this.state.loaded) { return; }
     const $arrow = $('.ion-arrow-right-c');
     const $column = $('.col-xs-9');
     const $form = $('.compileForm');
     const $footer = $('.footer');
     
     $form.width( $column.width() );
-    $footer.css({ paddingLeft: $column.css('marginLeft') });
+    $footer.css({ paddingLeft: +$container.css('marginLeft').slice(0, -2) + +$container.css('paddingLeft').slice(0, -2) - $arrow.width() - +$column.css('marginLeft').slice(0, -2) - 24 });
+
     $( window ).resize(() => {
       const $arrow = $('.ion-arrow-right-c');
       const $column = $('.col-xs-9');
