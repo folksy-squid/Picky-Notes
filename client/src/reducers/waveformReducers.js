@@ -12,7 +12,7 @@ export default (state = defaultState, action) => {
   case 'TOGGLE_PLAY':
     return {
       ...state,
-      playing: !state.playing, 
+      playing: !state.playing,
     };
   case 'SET_POS':
     return {
@@ -29,6 +29,11 @@ export default (state = defaultState, action) => {
     return {
       ...state,
       playing: true
+    };
+  case 'STOP_PLAY':
+    return {
+      ...state,
+      playing: false
     };
 
   // case 'SET_AUDIO_RATE_CHANGE':

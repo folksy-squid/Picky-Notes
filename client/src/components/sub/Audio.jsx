@@ -83,7 +83,8 @@ class Audio extends React.Component {
 
   onFinish() {
     this.props.dispatch(removeTimer());
-    this.props.dispatch(togglePlay());
+    this.props.dispatch({type: 'STOP_PLAY'});
+    this.props.dispatch(setPos(0));
   }
 
   handleClick() {

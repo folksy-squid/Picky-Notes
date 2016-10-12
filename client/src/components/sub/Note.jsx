@@ -121,7 +121,7 @@ class Note extends React.Component {
                 </form>
               </span>
               :
-              <span className={`content ${classColor(`${this.props.classColor}`)}`} onClick={this.contentClickHandler.bind(this)}>{this.props.noteInfo.content}</span>
+              <span className={`content ${this.props.noteInfo.highlight ? '' : classColor(`${this.props.colorClass}`)}`} onClick={this.contentClickHandler.bind(this)}>{this.props.noteInfo.content}</span>
             }
             {this.state.editTimestamp ?
               <span className="audioTimestamp">
@@ -161,9 +161,9 @@ class Note extends React.Component {
             <div className={noteClass()}>
               {this.props.noteInfo.content}
             </div>
-          )
+          );
         } else {
-          view = (<div></div>)
+          view = (<div></div>);
         }
       } else {
       // if the note is a note

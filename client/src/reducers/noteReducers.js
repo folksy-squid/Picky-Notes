@@ -15,7 +15,7 @@ export default (state = defaultState, action) => {
 
     let justNotes = notes.filter(note=>!note.thought);
     let justThoughts = notes.filter(note=>note.thought);
-    let audioTimestampArray = state.justNotes.map(note=> Number(note.audioTimestamp) / 1000);
+    let audioTimestampArray = justNotes.map(note=> Number(note.audioTimestamp) / 1000);
 
     return {
       ...state,
