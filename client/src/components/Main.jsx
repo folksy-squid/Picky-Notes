@@ -1,6 +1,6 @@
 import React from 'react';
-import Connection from '../Connection.js'
-import Navbar from './Navbar.jsx'
+import Connection from '../Connection.js';
+import Navbar from './Navbar.jsx';
 import { Link } from 'react-router';
 
 class Main extends React.Component {

@@ -22,4 +22,4 @@ export default ({message, timestamp, sender, pictureUrl})=>(
       </div>
     </div>
   </li>
-)
+);

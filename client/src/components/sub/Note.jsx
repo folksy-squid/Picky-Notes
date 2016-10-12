@@ -121,7 +121,7 @@ class Note extends React.Component {
                 </form>
               </span>
               :
-              <span className={`content ${this.props.noteInfo.highlight ? '' : classColor(`${this.props.colorClass}`)}`} onClick={this.contentClickHandler.bind(this)}>{this.props.noteInfo.content}</span>
+              <span className={`content ${this.props.noteInfo.highlight ? '' : classColor(`${this.props.classColor}`)}`} onClick={this.contentClickHandler.bind(this)}>{this.props.noteInfo.content}</span>
             }
             {this.state.editTimestamp ?
               <span className="audioTimestamp">
@@ -141,19 +141,14 @@ class Note extends React.Component {
           <span className="deleteNoteButton" onClick={this.deleteHandler.bind(this)}><i className="ion ion-close-round deleteNoteIcon"></i></span>
         </div>
       );
-    }
-
-    else if (this.props.view === 'lecture') {
+    } else if (this.props.view === 'lecture') {
       view = (
         <div className={noteClass()}>
           <span className="content">{this.props.noteInfo.content}</span>
           <span className="audioTimestamp">{this.formatTime(this.props.noteInfo.audioTimestamp)}</span>
         </div>
       );
-
-    }
-
-    else if (this.props.view === 'review') {
+    } else if (this.props.view === 'review') {
       if (this.props.noteInfo.thought) {
       //if the note is a thought,
         if (this.props.note.showThoughts) {

@@ -13,7 +13,7 @@ class LectureBox extends React.Component {
     this.state = {
       view: currentView,
       tab: 'Notes'
-    }
+    };
   }
 
   toggleView(type) {
@@ -36,25 +36,24 @@ class LectureBox extends React.Component {
           <NoteList />
         </div>
       </div>
-    )
+    );
 
     if (this.state.view === 'compile') {
-
       view = (
-      <div className="lecture-box">
-        <ul className="nav nav-tabs">
-          <li className={this.state.tab === 'Notes' ? "active" : ""}>
-            <a onClick={this.toggleView.bind(this, 'Notes')}>Notes</a>
-          </li>
-          <li className={this.state.tab === 'Thoughts' ? "active" : ""}>
-            <a onClick={this.toggleView.bind(this, 'Thoughts')}>Thoughts</a>
-          </li>
-        </ul>
-        <div>
-          <NoteList tab={this.state.tab}/>
+        <div className="lecture-box">
+          <ul className="nav nav-tabs">
+            <li className={this.state.tab === 'Notes' ? 'active' : ''}>
+              <a onClick={this.toggleView.bind(this, 'Notes')}>Notes</a>
+            </li>
+            <li className={this.state.tab === 'Thoughts' ? 'active' : ''}>
+              <a onClick={this.toggleView.bind(this, 'Thoughts')}>Thoughts</a>
+            </li>
+          </ul>
+          <div>
+            <NoteList tab={this.state.tab}/>
+          </div>
         </div>
-      </div>
-      )
+      );
     }
     return view;
   }

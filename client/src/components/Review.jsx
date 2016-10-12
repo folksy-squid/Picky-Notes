@@ -47,11 +47,11 @@ class Review extends React.Component {
     if (this.state.thoughtButton === 'Show thoughts') {
       this.setState({
         thoughtButton: 'Hide thoughts'
-      })
+      });
     } else {
       this.setState({
         thoughtButton: 'Show thoughts'
-      })
+      });
     }
     this.props.dispatch(showHideThoughts());
   }
