@@ -3,6 +3,7 @@ import { Link, Router } from 'react-router';
 import {connect} from 'react-redux';
 import {IndexLinkContainer, LinkContainer} from 'react-router-bootstrap';
 import {joinSocketRoom} from '../actions/roomActions';
+import {logOut} from '../actions/userActions';
 import {Navbar as Navigation, Nav, NavItem, NavDropdown, MenuItem, FormGroup, FormControl, Modal, Button} from 'react-bootstrap';
 
 class Navbar extends React.Component {
@@ -21,7 +22,7 @@ class Navbar extends React.Component {
   }
 
   logout() {
-    this.props.dispatch(this.props.logOut());
+    this.props.dispatch(logOut());
   }
 
   showModal() {
