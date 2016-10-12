@@ -520,17 +520,15 @@ small.text-muted {
 */
 
 .notebook-header {
-  margin-top: 15px;
   margin-bottom: 30px;
 }
 
+.searchbar {
+  float:right;
+}
 .navbar {
   padding-top: 15px;
   min-height: 90px;
-}
-
-.navbar-form {
-  text-align: right;
 }
 
 .navbar-default {

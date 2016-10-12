@@ -55,11 +55,7 @@ export class Notebook extends React.Component {
       this.state.loaded ? (
       <div className="container">
         <div className="row notebook-header">
-          <div className="col-sm-6">
-          </div>
-          <div className="col-sm-6">
-            <SearchBar entries={this.state.entries} filterClass={this.filterClass.bind(this)} filterKeyword={this.filterKeyword.bind(this)} />
-          </div>
+          <SearchBar entries={this.state.entries} filterClass={this.filterClass.bind(this)} filterKeyword={this.filterKeyword.bind(this)} />
         </div>
         <div className="row">
           <EntryList entries={this.state.entries} removeEntry={this.removeEntry.bind(this)}/>
