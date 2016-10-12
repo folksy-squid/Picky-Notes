@@ -65,7 +65,7 @@ class Navbar extends React.Component {
     =============================*/
 
     let modal = (
-      <Modal show={this.state.show} onHide={close}>
+      <Modal show={this.state.show} bsSize="small" onHide={close}>
         <Modal.Header closeButton>
           <Modal.Title id="modal-title">Join Room</Modal.Title>
         </Modal.Header>

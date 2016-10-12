@@ -10,6 +10,11 @@ body {
   padding-bottom: 90px;
 }
 
+.fixed-div {
+  position: fixed;
+  top: 100px;
+}
+
 .container-fluid {
   padding-left: 0px;
   padding-right: 0px;
@@ -45,7 +50,7 @@ h3 {
 }
 
 h4 {
-  font-size: 30px;
+  font-size: 24px;
   font-family: 'PT Serif', serif;
 }
 
@@ -377,6 +382,7 @@ small.text-muted {
 
 .participants {
   font-size: 1.3em;
+  margin-top: 40px;
 }
 
 .participants i {
