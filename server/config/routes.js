@@ -1,5 +1,5 @@
 /*jshint esversion: 6 */
-const {createNewUser, createNewRoom, joinRoom, createNewNote, showAllNotes, showFilteredNotes, updateNotes, getAllUserRooms, getRoom, saveAudioToRoom, getAudioForRoom, deleteNotes, deleteNotebook} = require ('../database/db-helpers');
+const {createNewRoom, joinRoom, createNewNote, showAllNotes, showFilteredNotes, updateNotes, getAllUserRooms, getRoom, saveAudioToRoom, getAudioForRoom, deleteNotes, deleteNotebook} = require ('../database/db-helpers');
 const passport = require('./passport');
 const path = require('path');
 const audioUpload = require('./audioUpload');
