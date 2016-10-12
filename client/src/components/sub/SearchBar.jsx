@@ -40,6 +40,7 @@ class SearchBar extends React.Component {
         <div className="form-group">
           <input type="text" className="form-control" placeholder="Search!" onChange={this.getUserInput.bind(this)} />
         </div>
+        <Dropdown list={this.state.allClasses} filterClass={this.props.filterClass} />
       </form>
     );
   }
