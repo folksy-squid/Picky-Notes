@@ -6,7 +6,7 @@ import {joinSocketRoom} from '../actions/roomActions';
 import {logOut} from '../actions/userActions';
 import {Navbar as Navigation, Nav, NavItem, NavDropdown, MenuItem, FormGroup, FormControl, Modal, Button} from 'react-bootstrap';
 
-class Navbar extends React.Component {
+export class Navbar extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -15,11 +15,11 @@ class Navbar extends React.Component {
       value: null
     };
   }
-  static get contextTypes() {
-    return {
-      router: React.PropTypes.object.isRequired,
-    };
-  }
+  // static get contextTypes() {
+  //   return {
+  //     router: React.PropTypes.object.isRequired,
+  //   };
+  // }
 
   logout() {
     this.props.dispatch(logOut());
@@ -47,9 +47,9 @@ class Navbar extends React.Component {
       if (err) {
         console.log(err);
       } else if (args[2] === 'lecture') {
-        realm.context.router.push(`/lecture/${realm.state.value}`);
+        this.props.dispatch(push(`/lecture/${realm.state.value}`));
       } else {
-        realm.context.router.push(`/lobby/${realm.state.value}`);
+        this.props.dispatch(push(`/lobby/${realm.state.value}`));
       }
     };
     this.props.dispatch(joinSocketRoom(pathUrl, user, joinedRoom));

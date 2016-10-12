@@ -17,3 +17,9 @@ export const setVolume = (volume) => {
     volume
   };
 };
+
+export const play = () => {
+  return {
+    type: 'START_PLAY'
+  };
+};

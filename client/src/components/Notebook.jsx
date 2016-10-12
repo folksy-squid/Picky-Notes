@@ -1,10 +1,10 @@
 import React from 'react';
-import Connection from '../Connection.js';
+import {connect} from 'react-redux';
 import EntryList from './sub/EntryList.jsx';
 import SearchBar from './sub/SearchBar.jsx';
 import { Link } from 'react-router';
 
-class Notebook extends React.Component {
+export class Notebook extends React.Component {
   constructor (props) {
     super(props);
     this.state = {
@@ -14,7 +14,7 @@ class Notebook extends React.Component {
   }
 
   componentWillMount() {
-    const user = this.props.getState().user.information[0];
+    const user = this.props.user.information[0];
     const context = this;
     $.ajax({
       method: 'GET',
@@ -70,4 +70,10 @@ class Notebook extends React.Component {
   }
 }
 
-export default Connection(Notebook);
+const mapStateToProps = (state) => {
+  return {
+    ...state
+  };
+};
+
+export default connect(mapStateToProps)(Notebook);
