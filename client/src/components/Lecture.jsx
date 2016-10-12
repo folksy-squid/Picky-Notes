@@ -96,6 +96,21 @@ class Lecture extends React.Component {
     this.props.dispatch(stopRecording());
   }
 
+  componentDidMount() {
+    const $footer = $('.footer');
+    const $column = $('.col-xs-9');
+    const $container = $('.container');
+    const $form = $('.lectureForm');
+
+    $form.width( $column.width() );
+    $footer.css({ paddingLeft: +$container.css('marginLeft').slice(0, -2) + +$container.css('paddingLeft').slice(0, -2) });
+
+    $( window ).resize(function() {
+      $form.width( $column.width() );
+      $footer.css({ paddingLeft: +$container.css('marginLeft').slice(0, -2) + +$container.css('paddingLeft').slice(0, -2) });
+    });
+  }
+
   render() {
     return (
       this.state.loaded ? (
@@ -103,13 +118,10 @@ class Lecture extends React.Component {
         <div className="container">
           <LectureTitle />
           <div className="row">
-            <div className="col-md-9">
+            <div className="col-xs-9" >
               <LectureBox />
-              <span className="footer slideUp">
-                <InputBox />
-              </span>
             </div>
-            <div className="col-md-3">
+            <div className="col-xs-3">
               <div className="fixed-div">
                 {this.state.isHost && (<button className="btn btn-md btn-danger" style={{display: this.state.endLectureDisplay}} onClick={this.endLecture.bind(this)}>
                   Stop Recording
@@ -122,6 +134,9 @@ class Lecture extends React.Component {
             </div>
           </div>
         </div>
+        <span className="footer compileFooter slideUp" >
+          <InputBox />
+        </span> 
       </div>
       ) : (<h2>{this.state.error}</h2>)
     );

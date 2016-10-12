@@ -99,6 +99,38 @@ class Compile extends React.Component {
     return time;
   }
 
+  componentDidMount() {
+    const $arrow = $('.ion-arrow-right-c');
+    const $column = $('.col-xs-9');
+    const $form = $('.compileForm');
+    const $footer = $('.footer');
+    
+    $form.width( $column.width() );
+    $footer.css({ paddingLeft: $column.css('marginLeft') });
+    $( window ).resize(() => {
+      const $arrow = $('.ion-arrow-right-c');
+      const $column = $('.col-xs-9');
+      const $container = $('.container');
+      const $input = $('.compileInput');
+      const $footer = $('.footer');
+
+      $input.width( $column.width() - 6 );
+      $footer.css({ paddingLeft: +$container.css('marginLeft').slice(0, -2) + +$container.css('paddingLeft').slice(0, -2) - $arrow.width() - +$column.css('marginLeft').slice(0, -2) - 24 });
+    }); 
+  }
+
+  componentDidUpdate() {
+    if (!this.state.loaded) { return; }
+    const $arrow = $('.ion-arrow-right-c');
+    const $column = $('.col-xs-9');
+    const $container = $('.container');
+    const $input = $('.compileInput');
+    const $footer = $('.footer');
+    
+    $input.width( $column.width() - 6 );
+    $footer.css({ paddingLeft: +$container.css('marginLeft').slice(0, -2) + +$container.css('paddingLeft').slice(0, -2) - $arrow.width() - +$column.css('marginLeft').slice(0, -2) - 24 });
+  }
+
 // IF this.props.roomInfo.audioUrl === 'audioUrl', render the audio loading component
   render() {
     return (
@@ -107,17 +139,17 @@ class Compile extends React.Component {
       <div className="container">
         <LectureTitle />
         <div className="row">
-          <div className="col-md-9">
+          <div className="col-xs-9">
             <LectureBox />
           </div>
-          <div className="col-md-3">
+          <div className="col-xs-3">
             <button className="btn btn-md btn-success" onClick={this.reviewNotesHandler.bind(this)}>Save & Review</button>
               <ParticipantList />
           </div>
         </div>
       </div>
       <div className="footer slideUp">
-          <InputBox tab={this.state.tab}/>
+          <InputBox />
           <Audio />
       </div>
     </div>
