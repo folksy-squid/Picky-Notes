@@ -30,6 +30,10 @@ export default class Entry extends React.Component {
     });
   }
 
+  deleteHandler() {
+    console.log('delete!!');
+  }
+
   render() {
     // Render an Entry component for each entry
     // (use map)
@@ -41,11 +45,12 @@ export default class Entry extends React.Component {
             <div className='notebook-topic'>{`${this.props.entry.topic}`}</div>
             <div className='notebook-lecturer'>{`by ${this.props.entry.lecturer}`}</div>
             <div className='notebook-class'>{`${this.props.entry.class}`}</div>
+            <span className='deleteNoteButton' onClick={this.deleteHandler.bind(this)}><i className='ion ion-close-round deleteNoteIcon'>DELETE</i></span>
             <br />
           </div>
         </div>
       </div>
-    )
+    );
 
     // return (
     //   <div className="col-sm-6 col-md-4 notebook-entry" onClick={this.clickHandler.bind(this)}>
