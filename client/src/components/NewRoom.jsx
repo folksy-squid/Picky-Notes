@@ -65,27 +65,27 @@ class NewRoom extends React.Component {
           <div className="form-group">
             <label className="control-label col-sm-2">Topic:</label>
             <div className="col-sm-10">
-              <input type="text" className="form-control" id="topic" placeholder="(i.e. The Battle of Waterloo)" onChange={this.handleInput.bind(this)}>
+              <input type="text" className="form-control" id="topic" placeholder="(i.e. Data Structures - Hash Tables)" onChange={this.handleInput.bind(this)}>
               </input>
             </div>
           </div>
           <div className="form-group">
             <label className="control-label col-sm-2">Class:</label>
             <div className="col-sm-10">
-              <input type="text" className="form-control" id="class" placeholder="(i.e. World History)" onChange={this.handleInput.bind(this)}>
+              <input type="text" className="form-control" id="class" placeholder="(i.e. Hack Reactor)" onChange={this.handleInput.bind(this)}>
               </input>
             </div>
           </div>
           <div className="form-group">
             <label className="control-label col-sm-2">Lecturer:</label>
             <div className="col-sm-10">
-              <input type="text" className="form-control" id="lecturer" placeholder="(optional)" onChange={this.handleInput.bind(this)}>
+              <input type="text" className="form-control" id="lecturer" placeholder="(i.e. Allen Price)" onChange={this.handleInput.bind(this)}>
               </input>
             </div>
           </div>
           <div className="form-group">
             <div className="col-sm-offset-2 col-sm-10">
-              <button type="submit" className="btn btn-primary create-room">Create</button>
+              <button type="submit" className="btn btn-primary create-room">Create New Room</button>
             </div>
           </div>
         </form>
