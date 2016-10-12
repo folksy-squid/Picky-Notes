@@ -31,13 +31,15 @@ class Entry extends React.Component {
   }
 
   deleteHandler() {
-    console.log(this.props.user.information[0].id);
-    console.log(this.props.entry.id);
-    // $.ajax({
-    //   method: 'DELETE',
-    //   url: `/api/rooms?userId=${this.props.user.userId}&roomId=${this.props.entry.id}`,
-    //
-    // })
+    let userId = this.props.user.information[0].id;
+    let roomId = this.props.entry.id;
+    $.ajax({
+      method: 'DELETE',
+      url: `/api/rooms?userId=${userId}&roomId=${roomId}`,
+      success: (res) => {
+        console.log('SUCCESS!');
+      }
+    });
   }
 
   render() {
