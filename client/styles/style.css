@@ -305,21 +305,6 @@ small.text-muted {
   margin-left: 15px;
 }
 
-input[type=checkbox] {
-  margin-right: 10px;
-}
-
-.lectureInput {
-  flex: 1;
-  display: inline;
-}
-
-.lectureForm {
-  flex: 1;
-  display: flex;
-  align-items: center;
-}
-
 .audioTimestamp {
   margin-left: auto;
 }
@@ -498,9 +483,22 @@ input[type=checkbox] {
   flex: 1;
 }
 
+
+input[type=checkbox] {
+  margin-right: 10px;
+}
+
 .lectureForm {
   position: relative;
+  flex: 1;
+  display: flex;
+  align-items: center;
 }
+.lectureInput {
+  flex: 1;
+  display: inline;
+}
+
 
 input[type=range][orient=vertical] {
   writing-mode: bt-lr; /* IE */
