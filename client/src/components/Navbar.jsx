@@ -26,29 +26,28 @@ class Navbar extends React.Component {
     return (
       <Navigation>
         <Navigation.Header>
-          <Navigation.Brand>
-            <a href="#">Picky Notes</a>
-          </Navigation.Brand>
+          <IndexLinkContainer to="/">
+            <a href='#'>
+              <Navigation.Brand>
+                Picky Notes
+              </Navigation.Brand>
+            </a>
+          </IndexLinkContainer>
           <Navigation.Toggle />
         </Navigation.Header>
         <Navigation.Collapse>
           <Nav pullRight>
-            <IndexLinkContainer to="/">
-              <NavItem eventKey={1}>
-                My Lectures
-              </NavItem>
-            </IndexLinkContainer>
             <LinkContainer to="/join">
-              <NavItem eventKey={2}>
+              <NavItem eventKey={1}>
                 Join Room
               </NavItem>
             </LinkContainer>
             <LinkContainer to="/new">
-              <NavItem eventKey={3}>
+              <NavItem eventKey={2}>
                 New Room
               </NavItem>
             </LinkContainer>
-            <NavItem eventKey={4} href="/" onClick={this.logout.bind(this)}>
+            <NavItem eventKey={3} href="/" onClick={this.logout.bind(this)}>
               Logout
             </NavItem>
           </Nav>
