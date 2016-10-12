@@ -305,21 +305,6 @@ small.text-muted {
   margin-left: 15px;
 }
 
-input[type=checkbox] {
-  margin-right: 10px;
-}
-
-.lectureInput {
-  flex: 1;
-  display: inline;
-}
-
-.lectureForm {
-  flex: 1;
-  display: flex;
-  align-items: center;
-}
-
 .audioTimestamp {
   margin-left: auto;
 }
@@ -470,26 +455,50 @@ input[type=checkbox] {
 }
 
 .footer > * {
-  min-width: 320px;
+  min-width: 330px;
 }
 
 .lectureForm > * {
-  margin: 0 12px;
+  margin: 0 8px;
+}
+
+.audioContainer { 
+  display: flex; 
+  flex: 1; 
+  align-items: center;
+  justify-content: center;
 }
 
 .audioPlayer {
   display: flex;
   flex: 1;
+  align-items: center;
 }
 
 .audioPlayer > * {
-  margin: 0 12px;
+  margin: 0 8px;
 }
 
 .waveform {
-
   flex: 1;
 }
+
+
+input[type=checkbox] {
+  margin-right: 10px;
+}
+
+.lectureForm {
+  position: relative;
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+.lectureInput {
+  flex: 1;
+  display: inline;
+}
+
 
 input[type=range][orient=vertical] {
   writing-mode: bt-lr; /* IE */
@@ -499,13 +508,20 @@ input[type=range][orient=vertical] {
   padding: 0 5px;
 }
 
+.insertTimestamp {
+  position: absolute;
+  right: 8px;
+  color: #777;
+}
+
 .playButton {
-  z-index: 3;
+
 }
 
 .playButton:hover {
   color: #006687;
 }
+
 
 
 /*

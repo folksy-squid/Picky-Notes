@@ -18,6 +18,7 @@ class Audio extends React.Component {
       loadVal: 0,
       clicked: false,
     };
+    this.audioLength = this.formatTime(this.props.room.roomInfo.timeLength / 1000);
     this.handleClick = this.handleClick.bind(this);
   }
 
@@ -91,6 +92,20 @@ class Audio extends React.Component {
     window.setTimeout(this.setState.bind(this, {clicked: true}), 10);
   }
 
+  formatTime(decimalSeconds) {
+    let seconds = ~~decimalSeconds;
+    let minutes = ~~(seconds / 60);
+    let hours = ~~(minutes / 60);
+    seconds = seconds % 60;
+    minutes = minutes % 60;
+
+    let time = hours ? hours + ':' : '';
+    time += minutes < 10 ? '0' + minutes + ':' : minutes + ':';
+    time += seconds < 10 ? '0' + seconds : seconds;
+
+    return time;
+  }
+
   render() {
     const waveOptions = {
       fillParent: true,
@@ -105,12 +120,15 @@ class Audio extends React.Component {
       normalize: true
     };
     return (
-      <span style={{ display: 'flex', flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+      <span className="audioContainer">
         <div style={{ display: this.state.loadingDisplay, position: 'absolute' }}>
           LOADING AUDIO FILE {this.state.loadVal}
         </div>
         <span className="audioPlayer" style={{visibility: this.state.waveformDisplay}}>
           <i onClick={this.handleTogglePlay.bind(this)} className={`fa ${this.props.waveform.playing ? 'fa-pause-circle' : 'fa-play-circle'} fa-3x text-primary playButton`}></i>
+          
+          <span>{this.formatTime(this.props.waveform.pos)}</span>
+
           <span className="waveform" ref="wavesurfContainer" onClick={this.handleClick.bind(this)} >
             <Wavesurfer
               volume={this.props.waveform.volume}
@@ -125,6 +143,9 @@ class Audio extends React.Component {
               isLoaded={this.state.shouldBeLoaded}
             />
           </span>
+
+          <span>{this.audioLength}</span>
+
           <input
             name="simple-volume"
             type="range"
