@@ -2,7 +2,7 @@ import React from 'react';
 import { Link, Router } from 'react-router';
 import {connect} from 'react-redux';
 import {IndexLinkContainer, LinkContainer} from 'react-router-bootstrap';
-import {mapStateToProps} from '../Connection.js'
+import {mapStateToProps} from '../Connection.js';
 import {joinSocketRoom} from '../actions/roomActions';
 import {Navbar as Navigation, Nav, NavItem, NavDropdown, MenuItem, FormGroup, FormControl, Modal, Button} from 'react-bootstrap';
 
@@ -13,7 +13,7 @@ class Navbar extends React.Component {
       show: false,
       error: false,
       value: null
-    }
+    };
   }
   static get contextTypes() {
     return {
@@ -30,7 +30,7 @@ class Navbar extends React.Component {
   }
 
   hideModal() {
-    this.setState({show: false})
+    this.setState({show: false});
   }
 
   updateInput(e) {
@@ -96,7 +96,7 @@ class Navbar extends React.Component {
           <button onClick={this.submitInput.bind(this)}className="btn btn-primary">Join</button>
         </Modal.Footer>
       </Modal>
-    )
+    );
 
     /*==============================
     =            Navbar            =
@@ -131,7 +131,7 @@ class Navbar extends React.Component {
         </Navigation.Collapse>
         {modal}
       </Navigation>
-    )
+    );
 
   }
 }

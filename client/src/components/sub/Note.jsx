@@ -4,6 +4,7 @@ import {toggleNote, editNote, deleteNote, editTimestamp, setClass} from '../../a
 import NoteReducer from '../../reducers/noteReducers';
 import WaveformReducer from '../../reducers/waveformReducers';
 import {setPos, play} from '../../actions/waveformActions';
+import ReactMarkdown from 'react-markdown';
 
 class Note extends React.Component {
   constructor(props) {
@@ -115,13 +116,13 @@ class Note extends React.Component {
           <div className={noteClass()}>
             <input type="checkbox" ref="checkbox" onChange={this.toggleNoteHandler.bind(this)} checked={this.props.noteInfo.show}/>
             {this.state.editContent ?
-              <span className="content">
+              <span className={`content ${classColor(`${this.props.classColor}`)}`}>
                 <form onSubmit={this.editContentHandler.bind(this)}>
                   <input ref="noteInput" type="text" defaultValue={this.props.noteInfo.content} />
                 </form>
               </span>
               :
-              <span className={`content ${this.props.noteInfo.highlight ? '' : classColor(`${this.props.classColor}`)}`} onClick={this.contentClickHandler.bind(this)}>{this.props.noteInfo.content}</span>
+              <span className={`content ${this.props.noteInfo.highlight ? '' : classColor(`${this.props.classColor}`)}`} onClick={this.contentClickHandler.bind(this)}><ReactMarkdown source={this.props.noteInfo.content} /></span>
             }
             {this.state.editTimestamp ?
               <span className="audioTimestamp">
@@ -144,7 +145,7 @@ class Note extends React.Component {
     } else if (this.props.view === 'lecture') {
       view = (
         <div className={noteClass()}>
-          <span className="content">{this.props.noteInfo.content}</span>
+          <span className="content"><ReactMarkdown source={this.props.noteInfo.content} /></span>
           <span className="audioTimestamp">{this.formatTime(this.props.noteInfo.audioTimestamp)}</span>
         </div>
       );
@@ -154,7 +155,7 @@ class Note extends React.Component {
         if (this.props.note.showThoughts) {
           view = (
             <div className={noteClass()}>
-              {this.props.noteInfo.content}
+              <ReactMarkdown source={this.props.noteInfo.content} />
             </div>
           );
         } else {
@@ -165,7 +166,7 @@ class Note extends React.Component {
         view = (
           <div className={noteClass()}>
             <i className="fa fa-play-circle" aria-hidden="true" onClick={this.playNote.bind(this)}></i>
-            {this.props.noteInfo.content}
+            <ReactMarkdown source={this.props.noteInfo.content} />
           </div>
         );
       }
