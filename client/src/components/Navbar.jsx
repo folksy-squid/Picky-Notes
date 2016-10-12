@@ -2,8 +2,8 @@ import React from 'react';
 import { Link, Router } from 'react-router';
 import {connect} from 'react-redux';
 import {IndexLinkContainer, LinkContainer} from 'react-router-bootstrap';
-import {mapStateToProps} from '../Connection.js'
 import {joinSocketRoom} from '../actions/roomActions';
+import {logOut} from '../actions/userActions';
 import {Navbar as Navigation, Nav, NavItem, NavDropdown, MenuItem, FormGroup, FormControl, Modal, Button} from 'react-bootstrap';
 
 class Navbar extends React.Component {
@@ -13,7 +13,7 @@ class Navbar extends React.Component {
       show: false,
       error: false,
       value: null
-    }
+    };
   }
   static get contextTypes() {
     return {
@@ -22,7 +22,7 @@ class Navbar extends React.Component {
   }
 
   logout() {
-    this.props.dispatch(this.props.logOut());
+    this.props.dispatch(logOut());
   }
 
   showModal() {
@@ -30,7 +30,7 @@ class Navbar extends React.Component {
   }
 
   hideModal() {
-    this.setState({show: false})
+    this.setState({show: false});
   }
 
   updateInput(e) {
@@ -41,7 +41,7 @@ class Navbar extends React.Component {
     e.preventDefault();
     var realm = this;
     var pathUrl = this.state.value;
-    var user = this.props.getState().user.information[0];
+    var user = this.props.user.information[0];
     var joinedRoom = (err, success, ...args) => {
       this.setState({ show: false });
       if (err) {
@@ -96,7 +96,7 @@ class Navbar extends React.Component {
           <button onClick={this.submitInput.bind(this)}className="btn btn-primary">Join</button>
         </Modal.Footer>
       </Modal>
-    )
+    );
 
     /*==============================
     =            Navbar            =
@@ -131,9 +131,15 @@ class Navbar extends React.Component {
         </Navigation.Collapse>
         {modal}
       </Navigation>
-    )
+    );
 
   }
 }
+
+const mapStateToProps = (state) => {
+  return {
+    ...state
+  };
+};
 
 export default connect(mapStateToProps)(Navbar);
