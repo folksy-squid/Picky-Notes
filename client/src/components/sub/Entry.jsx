@@ -35,7 +35,7 @@ export default class Entry extends React.Component {
     // (use map)
     return (
       <div className="col-xs-6 col-sm-4 col-md-3 notebook-entry" onClick={this.clickHandler.bind(this)}>
-        <div className={`w3-card-2 notebook${this.props.classColor}`}>
+        <div className={`w3-card-4 notebook${this.props.classColor}`}>
           <div className="w3-container">
             <br />
             <div className='notebook-topic'>{`${this.props.entry.topic}`}</div>
