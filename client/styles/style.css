@@ -529,6 +529,7 @@ small.text-muted {
 .navbar {
   padding-top: 15px;
   min-height: 90px;
+  font-family: inherit;
 }
 
 .navbar-default {

@@ -10,7 +10,7 @@ export class Main extends React.Component {
   render() {
     return (
       <div className="main">
-        <Navbar/>
+        <Navbar checkFilter={this.props.route.checkFilter}/>
         {this.props.children}
       </div>
     );

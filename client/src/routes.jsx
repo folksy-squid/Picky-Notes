@@ -46,11 +46,24 @@ export default (store) => {
     }
   };
 
+  let showFilter = false;
+  const checkFilter = () => showFilter;
+
+  const leaveNotebookView = (prevState) => {
+    console.log('leaving');
+    showFilter = false;
+  }
+
+  const enterNotebookView = (nextState, replace) => {
+    console.log('entering');
+    showFilter = true;
+  }
+
   return (
     <Route path='/' component={App} >
       <IndexRoute component={Landing} onEnter={authCheck}/>
-      <Route component={Main} onEnter={authCheck}>
-        <Route path='/notebook' component={Notebook} />
+      <Route component={Main} onEnter={authCheck} checkFilter={checkFilter.bind(this)} >
+        <Route path='/notebook' onLeave={leaveNotebookView.bind(this)} onEnter={enterNotebookView.bind(this)} component={Notebook} />
         <Route path='/new' component={NewRoom} />
         <Route path="/lobby/:roomId" component={Lobby}/>
         <Route path='/review/:roomId' component={Review} />

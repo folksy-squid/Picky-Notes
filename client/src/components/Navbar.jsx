@@ -4,7 +4,11 @@ import {connect} from 'react-redux';
 import {IndexLinkContainer, LinkContainer} from 'react-router-bootstrap';
 import {joinSocketRoom} from '../actions/roomActions';
 import {logOut} from '../actions/userActions';
+import NoteReducer from '../reducers/noteReducers';
+import RoomReducer from '../reducers/roomReducers';
+import UserReducer from '../reducers/userReducers';
 import {Navbar as Navigation, Nav, NavItem, NavDropdown, MenuItem, FormGroup, FormControl, Modal, Button} from 'react-bootstrap';
+import Dropdown from './sub/Dropdown2.jsx'
 
 export class Navbar extends React.Component {
   constructor(props) {
@@ -116,15 +120,25 @@ export class Navbar extends React.Component {
         </Navigation.Header>
         <Navigation.Collapse>
           <Nav pullRight>
-            <NavItem active={false} eventKey={1} onClick={this.showModal.bind(this)}>
+          {this.props.checkFilter() && (
+            <li role="presentation">
+              <Navigation.Form>
+                <FormGroup>
+                  <FormControl type="text" placeholder="Search" />
+                </FormGroup>
+              </Navigation.Form>
+            </li>
+            <Dropdown2 />
+          )}
+            <NavItem eventKey={1} onClick={this.showModal.bind(this)}>
               Join Room
             </NavItem>
             <LinkContainer to="/new">
-              <NavItem active={false} eventKey={2}>
+              <NavItem eventKey={2}>
                 New Room
               </NavItem>
             </LinkContainer>
-            <NavItem active={false} eventKey={3} href="/" onClick={this.logout.bind(this)}>
+            <NavItem eventKey={3} href="/" onClick={this.logout.bind(this)}>
               Logout
             </NavItem>
           </Nav>
@@ -138,7 +152,10 @@ export class Navbar extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    ...state
+    ...state,
+    RoomReducer,
+    UserReducer,
+    NoteReducer,
   };
 };
 

@@ -3,6 +3,13 @@ import {connect} from 'react-redux';
 import EntryList from './sub/EntryList.jsx';
 import SearchBar from './sub/SearchBar.jsx';
 import { Link } from 'react-router';
+import {connect} from 'react-redux';
+
+import {getRooms} from '../actions/roomActions.jsx'
+
+import NoteReducer from '../reducers/noteReducers';
+import RoomReducer from '../reducers/roomReducers';
+import UserReducer from '../reducers/userReducers';
 
 export class Notebook extends React.Component {
   constructor (props) {
