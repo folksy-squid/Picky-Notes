@@ -31,15 +31,15 @@ class Entry extends React.Component {
   }
 
   deleteHandler() {
-    let userId = this.props.user.information[0].id;
-    let roomId = this.props.entry.id;
-    $.ajax({
-      method: 'DELETE',
-      url: `/api/rooms?userId=${userId}&roomId=${roomId}`,
-      success: (res) => {
-        console.log('SUCCESS!');
-      }
-    });
+    // let userId = this.props.user.information[0].id;
+    // let roomId = this.props.entry.id;
+    // $.ajax({
+    //   method: 'DELETE',
+    //   url: `/api/rooms?userId=${userId}&roomId=${roomId}`,
+    //   success: (res) => {
+    //     console.log('SUCCESS!');
+    //   }
+    // });
   }
 
   render() {
@@ -53,7 +53,7 @@ class Entry extends React.Component {
             <div className='notebook-topic'>{`${this.props.entry.topic}`}</div>
             <div className='notebook-lecturer'>{`by ${this.props.entry.lecturer}`}</div>
             <div className='notebook-class'>{`${this.props.entry.class}`}</div>
-            <span className='deleteNoteButton' onClick={this.deleteHandler.bind(this)}><i className='ion ion-close-round deleteNoteIcon'>DELETE</i></span>
+            {/* <span className='deleteNoteButton' onClick={this.deleteHandler.bind(this)}><i className='ion ion-close-round deleteNoteIcon'>DELETE</i></span> */}
             <br />
           </div>
         </div>
