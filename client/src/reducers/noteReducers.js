@@ -63,14 +63,6 @@ export default (state = defaultState, action) => {
     return {...state};
   }
 
-  if (action.type === 'REMOVE_NOTES') {
-    return {
-      ...state,
-      notes: [],
-      audioTimestamp: []
-    };
-  }
-
   if (action.type === 'DELETE_NOTE') {
     let index = -1;
     for (let i = 0; i < state.notes.length; i++) {

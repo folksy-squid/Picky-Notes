@@ -8,12 +8,6 @@ export const submitNote = (socket, content, thought) => {
   };
 };
 
-export const removeNotes = () => {
-  return {
-    type: 'REMOVE_NOTES'
-  };
-};
-
 export const addNote = (note) => {
   return {
     type: 'ADD_NOTE',

@@ -31,32 +31,30 @@ class Entry extends React.Component {
   }
 
   deleteHandler() {
-    // let userId = this.props.user.information[0].id;
-    // let roomId = this.props.entry.id;
-    // $.ajax({
-    //   method: 'DELETE',
-    //   url: `/api/rooms?userId=${userId}&roomId=${roomId}`,
-    //   success: (res) => {
-    //     console.log('SUCCESS!');
-    //   }
-    // });
+    let userId = this.props.user.information[0].id;
+    let roomId = this.props.entry.id;
+    $.ajax({
+      method: 'DELETE',
+      url: `/api/rooms?userId=${userId}&roomId=${roomId}`,
+    });
+    this.props.removeEntry(this.props.index);
   }
 
   render() {
     // Render an Entry component for each entry
     // (use map)
     return (
-      <div className="col-xs-6 col-sm-4 col-md-3 notebook-entry" onClick={this.clickHandler.bind(this)}>
-        <div className={`w3-card-4 notebook${this.props.classColor}`}>
+      <div className="col-xs-6 col-sm-4 col-md-3 notebook-entry" >
+        <div className={`w3-card-4 notebook${this.props.classColor}`} onClick={this.clickHandler.bind(this)}>
           <div className="w3-container">
             <br />
             <div className='notebook-topic'>{`${this.props.entry.topic}`}</div>
             <div className='notebook-lecturer'>{`by ${this.props.entry.lecturer}`}</div>
             <div className='notebook-class'>{`${this.props.entry.class}`}</div>
-            {/* <span className='deleteNoteButton' onClick={this.deleteHandler.bind(this)}><i className='ion ion-close-round deleteNoteIcon'>DELETE</i></span> */}
             <br />
           </div>
         </div>
+        <span className='deleteNoteButton' onClick={this.deleteHandler.bind(this)}><i className='ion ion-close-round deleteNoteIcon'>DELETE</i></span>
       </div>
     );
 

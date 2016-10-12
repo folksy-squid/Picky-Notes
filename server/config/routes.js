@@ -56,19 +56,11 @@ module.exports = (app, express, io) => {
       getAllUserRooms(req.query.userId, (allUserRooms) => res.send(allUserRooms));
     })
     .delete((req, res) => {
-      console.log('inside delete!~');
-      res.send();
-      // deleteNotebook(req.query.userId, req.query.roomId, (found) => {
-      //   if (!found) { res.status(400).send('Room Not Found'); }
-      //   res.status(204).send();
-      // });
+      deleteNotebook(req.query.userId, req.query.roomId, (found) => {
+        if (!found) { res.status(400).send('Room Not Found'); }
+        res.status(204).send();
+      });
     });
-
-  // app.get('/test', (req, res) => {
-  //   deleteNotebook(req.query.userId, req.query.roomId, (found) => {
-  //     if(!found) { res.status(400).send('Room Not Found'); }
-  //     res.status(204).send();
-  //   });
 
   app.post('/api/room/status', (req, res) => {
     res.status(201).send({active: !!io.sockets.adapter.rooms[req.body.pathUrl]});
