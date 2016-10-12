@@ -8,7 +8,6 @@ import Landing from './components/Landing.jsx';
 import Lecture from './components/Lecture.jsx';
 import Compile from './components/Compile.jsx';
 import NewRoom from './components/NewRoom.jsx';
-import JoinRoom from './components/JoinRoom.jsx';
 import Lobby from './components/Lobby.jsx';
 import Notebook from './components/Notebook.jsx';
 import Review from './components/Review.jsx';
@@ -53,7 +52,6 @@ export default (store) => {
       <Route component={Main} onEnter={authCheck}>
         <Route path='/notebook' component={Notebook} />
         <Route path='/new' component={NewRoom} />
-        <Route path='/join' component={JoinRoom} />
         <Route path="/lobby/:roomId" component={Lobby}/>
         <Route path='/review/:roomId' component={Review} />
         <Route path='/compile/:roomId' component={Compile} onEnter={authCheck}/>

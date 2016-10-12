@@ -32,13 +32,14 @@ class SearchBar extends React.Component {
     }
   }
 
+  /* <Dropdown list={this.state.allClasses} filterClass={this.props.filterClass} /> */
+
   render() {
     return (
       <form className="navbar-form" role="search">
         <div className="form-group">
-          <input type="text" className="form-control" placeholder="Filter by Title/Lecturer..." onChange={this.getUserInput.bind(this)} />
+          <input type="text" className="form-control" placeholder="Search!" onChange={this.getUserInput.bind(this)} />
         </div>
-        <Dropdown list={this.state.allClasses} filterClass={this.props.filterClass} />
       </form>
     );
   }

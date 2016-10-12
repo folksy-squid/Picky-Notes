@@ -1,49 +1,139 @@
 import React from 'react';
-import Connection from '../Connection.js';
-import { Link } from 'react-router';
+import { Link, Router } from 'react-router';
+import {connect} from 'react-redux';
+import {IndexLinkContainer, LinkContainer} from 'react-router-bootstrap';
+import {mapStateToProps} from '../Connection.js'
+import {joinSocketRoom} from '../actions/roomActions';
+import {Navbar as Navigation, Nav, NavItem, NavDropdown, MenuItem, FormGroup, FormControl, Modal, Button} from 'react-bootstrap';
 
 class Navbar extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      show: false,
+      error: false,
+      value: null
+    }
+  }
+  static get contextTypes() {
+    return {
+      router: React.PropTypes.object.isRequired,
+    };
   }
 
   logout() {
     this.props.dispatch(this.props.logOut());
   }
 
+  showModal() {
+    this.setState({show: true});
+  }
+
+  hideModal() {
+    this.setState({show: false})
+  }
+
+  updateInput(e) {
+    this.setState({value: e.target.value});
+  }
+
+  submitInput(e) {
+    e.preventDefault();
+    var realm = this;
+    var pathUrl = this.state.value;
+    var user = this.props.getState().user.information[0];
+    var joinedRoom = (err, success, ...args) => {
+      this.setState({ show: false });
+      if (err) {
+        console.log(err);
+      } else if (args[2] === 'lecture') {
+        realm.context.router.push(`/lecture/${realm.state.value}`);
+      } else {
+        realm.context.router.push(`/lobby/${realm.state.value}`);
+      }
+    };
+    this.props.dispatch(joinSocketRoom(pathUrl, user, joinedRoom));
+    this.refs.joinRoomInput.value = '';
+  }
+
   render() {
+
+    let close = () => this.setState({ show: false });
+
+    /*=============================
+    =            Modal            =
+    =============================*/
+
+    let modal = (
+      <Modal show={this.state.show} onHide={close}>
+        <Modal.Header closeButton>
+          <Modal.Title id="modal-title">Join Room</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <div>
+          <form onSubmit={this.submitInput.bind(this)} className="" role="join">
+            <div className="form-group form__nao">
+              <span className="input input--nao">
+                <input className="input__field input__field--nao" type="text" id="input-1" onChange={this.updateInput.bind(this)}/>
+                <label className="input__label input__label--nao" for="input-1">
+                  <span className="input__label-content input__label-content--nao">Enter Access Code</span>
+                </label>
+                <svg className="graphic graphic--nao" width="300%" height="100%" viewBox="0 0 1200 60" preserveAspectRatio="none">
+                  <path d="M0,56.5c0,0,298.666,0,399.333,0C448.336,56.5,513.994,46,597,46c77.327,0,135,10.5,200.999,10.5c95.996,0,402.001,0,402.001,0"/>
+                </svg>
+              </span>
+
+            {(this.state.error) ?
+              (<div className="alert alert-danger">
+                <a data-dismiss="alert">&times;</a>
+                <strong>Error!</strong> Invalid Access Code. Try again!
+              </div>) : ''}
+            </div>
+          </form>
+          </div>
+        </Modal.Body>
+        <Modal.Footer>
+          <button onClick={this.submitInput.bind(this)}className="btn btn-primary">Join</button>
+        </Modal.Footer>
+      </Modal>
+    )
+
+    /*==============================
+    =            Navbar            =
+    ==============================*/
+
     return (
-      <nav className="navbar navbar-default navbar-static-top">
-        <div className="container">
-          <div className="navbar-header">
-            <button type="button" className="navbar-toggle collapsed btn-info" data-toggle="collapse" data-target="#navbar-collapse">
-              <span className="sr-only">Toggle Navigation</span>
-              <span className="icon-bar"></span>
-              <span className="icon-bar"></span>
-              <span className="icon-bar"></span>
-            </button>
-            <a className="navbar-brand" href="#">Picky Notes</a>
-          </div>
-          <div className="collapse navbar-collapse" id="navbar-collapse">
-            <ul className="nav navbar-nav navbar-right">
-              <li className="nav-item">
-                <Link className="nav-link " to="/notebook">My Lectures</Link>
-              </li>
-              <li className="nav-item">
-                <Link className="nav-link" to="/join">Join Room</Link>
-              </li>
-              <li className="nav-item">
-                <Link className="nav-link " to="/new">New Room</Link>
-              </li>
-              <li className="nav-item">
-                <a href="/" className="nav-link" onClick={this.logout.bind(this)} >Logout</a>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </nav>
-    );
+      <Navigation>
+        <Navigation.Header>
+          <IndexLinkContainer to="/">
+            <a href='#'>
+              <Navigation.Brand>
+                Picky Notes
+              </Navigation.Brand>
+            </a>
+          </IndexLinkContainer>
+          <Navigation.Toggle />
+        </Navigation.Header>
+        <Navigation.Collapse>
+          <Nav pullRight>
+            <NavItem active={false} eventKey={1} onClick={this.showModal.bind(this)}>
+              Join Room
+            </NavItem>
+            <LinkContainer to="/new">
+              <NavItem active={false} eventKey={2}>
+                New Room
+              </NavItem>
+            </LinkContainer>
+            <NavItem active={false} eventKey={3} href="/" onClick={this.logout.bind(this)}>
+              Logout
+            </NavItem>
+          </Nav>
+        </Navigation.Collapse>
+        {modal}
+      </Navigation>
+    )
+
   }
 }
 
-export default Connection(Navbar);
+export default connect(mapStateToProps)(Navbar);
