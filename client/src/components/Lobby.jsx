@@ -98,8 +98,8 @@ class Lobby extends React.Component {
           </div>
           <div className="col-sm-3 panel">
           { this.state.isHost && (
-            <button className="btn btn-md btn-success" onClick={this.startLecture.bind(this)}>
-              Start Recording
+            <button className="btn btn-lg btn-success" onClick={this.startLecture.bind(this)}>
+              Start Lecture
             </button>)}
             <div className="panel-item">
               <ShareLink pathUrl={this.state.pathUrl}/>

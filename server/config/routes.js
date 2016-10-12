@@ -112,6 +112,11 @@ module.exports = (app, express, io) => {
   app.get('*/style.css', function (request, response) {
     response.sendFile(path.resolve(__dirname, '../../client/styles/style.css'));
   });
+
+  app.get('*/w3schools.css', function (request, response) {
+    response.sendFile(path.resolve(__dirname, '../../client/styles/w3schools.css'));
+  });
+
   app.get('*', function(request, response) {
     response.sendFile(path.resolve(__dirname, '../../client', 'index.html'));
   });

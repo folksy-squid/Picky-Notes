@@ -100,30 +100,28 @@ class Lecture extends React.Component {
     return (
       this.state.loaded ? (
       <div>
-        <div className="container-fluid">
-          <div className="row">
-            <div className="col-md-9">
-              <LectureTitle />
-            </div>
-            {this.state.isHost && (<button className="btn btn-md btn-danger" style={{display: this.state.endLectureDisplay}} onClick={this.endLecture.bind(this)}>
-              Stop Recording
-            </button>)}
-            <button className="btn btn-md btn-success" style={{display: this.state.readyButtonDisplay}} onClick={this.sendReady.bind(this)}>
-              Ready
-            </button>
-          </div>
+        <div className="container">
+          <LectureTitle />
           <div className="row">
             <div className="col-md-9">
               <LectureBox />
+              <span className="footer slideUp">
+                <InputBox />
+              </span>
             </div>
             <div className="col-md-3">
-              <ParticipantList checkHostLecture={this.checkHost.bind(this)} hideReadyButton={this.hideReadyButton.bind(this)}/>
+              <div className="fixed-div">
+                {this.state.isHost && (<button className="btn btn-md btn-danger" style={{display: this.state.endLectureDisplay}} onClick={this.endLecture.bind(this)}>
+                  Stop Recording
+                </button>)}
+                <button className="btn btn-md btn-success" style={{display: this.state.readyButtonDisplay}} onClick={this.sendReady.bind(this)}>
+                  Ready
+                </button>
+                <ParticipantList checkHostLecture={this.checkHost.bind(this)} hideReadyButton={this.hideReadyButton.bind(this)}/>
+              </div>
             </div>
           </div>
         </div>
-        <span className="footer slideUp">
-          <InputBox />
-        </span>
       </div>
       ) : (<h2>{this.state.error}</h2>)
     );

@@ -1,4 +1,4 @@
-@import 'https://fonts.googleapis.com/css?family=Crafty+Girls|PT+Serif|Bungee+Hairline';
+@import 'https://fonts.googleapis.com/css?family=Crafty+Girls|Maven+Pro|Alegreya';
 
 /*
   =================================
@@ -7,7 +7,13 @@
 */
 
 body {
+  font-family: 'Maven Pro', sans-serif;
   padding-bottom: 90px;
+}
+
+.fixed-div {
+  position: fixed;
+  top: 100px;
 }
 
 .container-fluid {
@@ -28,25 +34,25 @@ a:hover {
 
 h2 {
   text-align: center;
-  font-size: 54px;
-  font-family: 'PT Serif', serif;
+  font-size: 44px;
+  font-family: 'Maven Pro', sans-serif;
 }
 
 h3 {
   text-align: center;
   font-size: 40px;
-  font-family: 'PT Serif', serif;
+  font-family: 'Maven Pro', sans-serif;
 }
 
-.notebook-header > div > h3 {
+.notebook-header > div > h2 {
   text-align: left;
   margin-top: 0px;
   margin-bottom: 0px;
 }
 
 h4 {
-  font-size: 30px;
-  font-family: 'PT Serif', serif;
+  font-size: 24px;
+  font-family: 'Maven Pro', sans-serif;
 }
 
 .panel {
@@ -97,7 +103,6 @@ h4 {
 
 .landing > a > span {
   margin-left: 4px;
-  font-family: helvetica;
 }
 
 .homepage-hero-module {
@@ -232,7 +237,6 @@ h4 {
   padding: 0.5em 0em 0.25em;
   width: 100%;
   background: transparent;
-  font-family: 'Bungee+Hairline', cursive;
   font-size: 1.25em;
 }
 
@@ -291,7 +295,7 @@ h4 {
 }
 
 h2.new-room-title {
-  margin-bottom: 40px;
+  margin-bottom: 25px;
 }
 
 .btn.create-room {
@@ -377,6 +381,7 @@ small.text-muted {
 
 .participants {
   font-size: 1.3em;
+  margin-top: 40px;
 }
 
 .participants i {
@@ -515,13 +520,35 @@ small.text-muted {
 */
 
 .notebook-header {
-  margin-bottom: 15px;
+  margin-top: 15px;
+  margin-bottom: 30px;
+}
+
+.navbar {
+  padding-top: 15px;
+  min-height: 90px;
+}
+
+.navbar-form {
+  text-align: right;
+}
+
+.navbar-default {
+  border: 0px;
+}
+
+a > span.navbar-brand {
+  font-size: 44px;
+  font-color: black;
+  font-family: 'Maven Pro', sans-serif;
 }
 
 .notebook-entry {
   cursor: pointer;
   transition: opacity 0.2s;
+  padding: 10px 20px;
 }
+
 
 .notebook-entry:hover {
   opacity: 0.6;
@@ -548,23 +575,23 @@ small.text-muted {
 }
 
 .notebook0 {
-  color: rgb(239, 68, 146);
+  background-color: rgb(239, 68, 146);
 }
 
 .notebook1 {
-  color: rgb(255, 146, 67);
+  background-color: rgb(255, 146, 67);
 }
 
 .notebook2 {
-  color: rgb(253, 217, 0);
+  background-color: rgb(253, 217, 0);
 }
 
 .notebook3 {
-  color: rgb(184, 209, 92);
+  background-color: rgb(184, 209, 92);
 }
 
 .notebook4 {
-  color: rgb(12, 188, 227);
+  background-color: rgb(12, 188, 227);
 }
 
 /*
