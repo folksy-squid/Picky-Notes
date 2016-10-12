@@ -45,7 +45,14 @@ class JoinRoom extends React.Component {
         <div>
         <form onSubmit={this.submitInput.bind(this)} className="" role="join">
           <div className="form-group">
-            <input ref="joinRoomInput" onChange={this.updateInput.bind(this)} type="text" className="form-control" placeholder="Access Code" />
+            <span className="input input--minoru">
+              <input className="input__field input__field--minoru" id="input-13" type="text" onChange={this.updateInput.bind(this)} />
+              <label className="input__label input__label--minoru" for="input-13">
+                <span className="input__label-content input__label-content--minoru">
+                  Access Code
+                </span>
+              </label>
+            </span>
             <span className="input-group-btn">
               <button className="btn btn-primary">Join</button>
             </span>
@@ -59,6 +66,27 @@ class JoinRoom extends React.Component {
         </div>
       </div>
     );
+
+    // return (
+    //   <div className="container">
+    //     <h2>Join Room</h2>
+    //     <div>
+    //     <form onSubmit={this.submitInput.bind(this)} className="" role="join">
+    //       <div className="form-group">
+    //         <input ref="joinRoomInput" onChange={this.updateInput.bind(this)} type="text" className="form-control" placeholder="Access Code" />
+    //         <span className="input-group-btn">
+    //           <button className="btn btn-primary">Join</button>
+    //         </span>
+    //         {(this.state.error) ?
+    //           (<div className="alert alert-danger">
+    //             <a data-dismiss="alert">&times;</a>
+    //             <strong>Error!</strong> Invalid Access Code. Try again!
+    //           </div>) : ''}
+    //       </div>
+    //     </form>
+    //     </div>
+    //   </div>
+    // );
   }
 }
 
