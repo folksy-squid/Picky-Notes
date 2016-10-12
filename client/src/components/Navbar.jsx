@@ -7,8 +7,16 @@ class Navbar extends React.Component {
     super(props);
   }
 
+  componentDidMount() {
+
+  }
+
   logout() {
     this.props.dispatch(this.props.logOut());
+  }
+
+  toggleNav() {
+    document.getElementById('navbar-collapse1')
   }
 
   render() {
@@ -16,7 +24,7 @@ class Navbar extends React.Component {
       <nav className="navbar navbar-default navbar-static-top">
         <div className="container">
           <div className="navbar-header">
-            <button type="button" className="navbar-toggle collapsed btn-info" data-toggle="collapse" data-target="#navbar-collapse">
+            <button type="button" className="navbar-toggle collapsed btn-info" data-toggle="collapse" data-target="#navbar-collapse1" onClick={toggleNav}>
               <span className="sr-only">Toggle Navigation</span>
               <span className="icon-bar"></span>
               <span className="icon-bar"></span>
@@ -24,7 +32,7 @@ class Navbar extends React.Component {
             </button>
             <a className="navbar-brand" href="#">Picky Notes</a>
           </div>
-          <div className="collapse navbar-collapse" id="navbar-collapse">
+          <div className="navbar-collapse collapse" id="navbar-collapse1">
             <ul className="nav navbar-nav navbar-right">
               <li className="nav-item">
                 <Link className="nav-link " to="/notebook">My Lectures</Link>
