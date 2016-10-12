@@ -135,6 +135,3 @@ audio/*.mp3
 # Ignore redis binary dump (dump.rdb) files
 
 *.rdb
-
-### Yarn ###
-yarn.lock
