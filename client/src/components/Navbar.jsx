@@ -64,7 +64,7 @@ export class Navbar extends React.Component {
   }
 
   render() {
-
+    console.log('checkfilter', this.props.checkFilter);
     let close = () => this.setState({ show: false });
 
     /*=============================

@@ -1,5 +1,4 @@
 import React from 'react';
-import {connect} from 'react-redux';
 import EntryList from './sub/EntryList.jsx';
 import SearchBar from './sub/SearchBar.jsx';
 import { Link } from 'react-router';
@@ -10,7 +9,7 @@ import RoomReducer from '../reducers/roomReducers';
 import UserReducer from '../reducers/userReducers';
 import EntryReducer from '../reducers/entryReducers';
 
-import {loadEntries} from '../actions/entryActions'
+import {loadEntries, removeEntry} from '../actions/entryActions'
 
 export class Notebook extends React.Component {
   constructor (props) {
@@ -18,9 +17,7 @@ export class Notebook extends React.Component {
   }
 
   removeEntry(i) {
-    let newEntries = this.state.entries.slice();
-    newEntries.splice(i, 1);
-    this.setState({ entries: newEntries });
+    this.props.dispatch(removeEntry(i));
   }
 
   render() {

@@ -91,41 +91,28 @@ const store = createStore(mockReducer);
 let router = { push: sinon.stub() };
 const context = {router};
 
-describe('<Navbar />', () => {
-  let wrapper = shallow(<Navbar />);
-  it('should have a navigation element inside', () => {
-    expect(wrapper.find(Navigation).length).to.equal(1);
-  });
-  it('should have a nav element inside', () => {
-    expect(wrapper.find(Nav).length).to.equal(1);
-  });
-  it('should have an IndexLinkContainer element inside', () => {
-    expect(wrapper.find(IndexLinkContainer).length).to.equal(1);
-  });
-  it('should have a LinkContainer element inside', () => {
-    expect(wrapper.find(LinkContainer).length).to.equal(1);
-  });
-  it('should have a Modal element inside', () => {
-    expect(wrapper.find(Modal).length).to.equal(1);
-  });
-});
+// describe('<Navbar />', () => {
+//   let wrapper = shallow(<Navbar />);
+//   it('should have a navigation element inside', () => {
+//     expect(wrapper.find(Navigation).length).to.equal(1);
+//   });
+//   it('should have a nav element inside', () => {
+//     expect(wrapper.find(Nav).length).to.equal(1);
+//   });
+//   it('should have an IndexLinkContainer element inside', () => {
+//     expect(wrapper.find(IndexLinkContainer).length).to.equal(1);
+//   });
+//   it('should have a LinkContainer element inside', () => {
+//     expect(wrapper.find(LinkContainer).length).to.equal(1);
+//   });
+//   it('should have a Modal element inside', () => {
+//     expect(wrapper.find(Modal).length).to.equal(1);
+//   });
+// });
 
 describe('<Notebook />', () => {
-  let wrapper = shallow(<Notebook user={fakeStore.user}/>);
-  describe('should not load on initial load while loaded is false', () => {
-    it('does not load any child components', () => {
-      expect(wrapper.state().loaded).to.equal(false);
-      expect(wrapper.find(SearchBar).length).to.equal(0);
-      expect(wrapper.find(EntryList).length).to.equal(0);
-    });
-  });
+  let wrapper = shallow(<Notebook entry={{entries: []}} user={fakeStore.user}/>);
   describe('should load when loaded is true', () => {
-    before(() => {
-      wrapper.setState({loaded: true});
-    });
-    it('should load a search bar', () => {
-      expect(wrapper.find(SearchBar).length).to.equal(1);
-    });
     it('should load an entry list', () => {
       expect(wrapper.find(EntryList).length).to.equal(1);
     });

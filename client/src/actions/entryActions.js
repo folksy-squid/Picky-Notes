@@ -13,6 +13,13 @@ export const loadEntries = (lectures) => {
   };
 };
 
+export const removeEntry = (index) => {
+  return {
+    type: 'REMOVE_ENTRY',
+    index
+  };
+};
+
 export const loadClassList = (cb) => {
   return {
     type: 'LOAD_CLASSLIST',

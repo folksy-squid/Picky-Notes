@@ -13,6 +13,14 @@ export default (state=defaultState, action) => {
     return {...state};
   }
 
+  if (action.type === 'REMOVE_ENTRY') {
+    let i = action.index;
+    let newEntries = state.entries.slice();
+    newEntries.splice(i, 1);
+    state.entries = newEntries;
+    return {...state};
+  }
+
   if (action.type === 'FILTER_KEYWORD') {
     let search = action.search;
     let filtered = [];
