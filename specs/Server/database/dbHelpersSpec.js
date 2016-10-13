@@ -351,7 +351,15 @@ describe('showAllNotes', () => {
   });
 });
 
-xdescribe('updateNotes', () => {});
+describe('updateNotes', () => {
+  beforeEach((done) => {
+    User.create(testUser1)
+    .then(() => Room.create(testRoom))
+    .then(() => Note.create(testNote1))
+    .then(() => Note.create(testNote2))
+    .then(() => done());
+  });
+});
 // describe('updateOneNote', () => {});
 xdescribe('findRoom', () => {});
 xdescribe('getAllUserRooms', () => {});
