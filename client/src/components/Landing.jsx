@@ -6,6 +6,14 @@ class Landing extends React.Component {
     super(props);
   }
 
+  componentDidMount() {
+    setTimeout(() => {
+      console.log('load it now.');
+      scaleVideoContainer();
+      initVideo();
+    }, 600);
+  }
+
   render() {
     return (
       <div className="homepage-hero-module">
@@ -25,7 +33,7 @@ class Landing extends React.Component {
           </div>
         </div>
       </div>
-    );
+    )
   }
 }
 

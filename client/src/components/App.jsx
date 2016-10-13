@@ -20,7 +20,7 @@ export class App extends React.Component {
       this.setState({
         ready: true
       });
-    }, 700);
+    }, 400);
   }
 
   componentDidUpdate(prevProps, prevState) {

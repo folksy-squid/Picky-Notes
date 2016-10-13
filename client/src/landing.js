@@ -1,8 +1,6 @@
 $( document ).ready(function() {
   scaleVideoContainer();
-  initBannerVideoSize('.video-container .poster img');
-  initBannerVideoSize('.video-container .filter');
-  initBannerVideoSize('.video-container video');
+  initVideo();
 
   $( window ).on('resize', function() {
     scaleVideoContainer();
@@ -11,6 +9,12 @@ $( document ).ready(function() {
     scaleBannerVideoSize('.video-container video');
   });
 });
+
+function initVideo () {
+  initBannerVideoSize('.video-container .poster img');
+  initBannerVideoSize('.video-container .filter');
+  initBannerVideoSize('.video-container video');
+}
 
 function scaleVideoContainer() {
   var height = $(window).height() + 5;

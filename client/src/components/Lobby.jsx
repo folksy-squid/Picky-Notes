@@ -90,7 +90,7 @@ export class Lobby extends React.Component {
   render() {
     return (
         this.state.completed ? (
-      <div className="container lobby">
+      <div className="container lobby page-content">
         <LectureTitle />
         <div className="row">
           <div className="col-sm-9">
