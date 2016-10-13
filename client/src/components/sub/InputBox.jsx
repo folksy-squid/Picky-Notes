@@ -15,7 +15,6 @@ class InputBox extends React.Component {
   }
 
   keyUpHandler(e) {
-
     if (e.target.value.trim() !== '' && !this.state.showInsertPos) {
 
       let insertPos = this.props.waveform.pos;
@@ -87,16 +86,20 @@ class InputBox extends React.Component {
   // view will alter depending on the page it's on.
   render() {
     if (getCurrentView(this.props.routing.locationBeforeTransitions.pathname) === 'compile') {
-      return <span className="lectureForm" >
-        <i className={'fa ion-arrow-right-c fa-2x col-xs-1 ion-arrow-right-c'} style={{color: '#872100'}}></i>
-        <input ref="inputNote" className="lectureInput" type="text" onKeyUp={this.keyUpHandler.bind(this)} autoFocus/>
-        {this.state.showInsertPos && <span className="insertTimestamp">{this.formatTime(this.state.insertPos)}</span>}
-      </span>;
+      return (
+        <span className="compileForm" >
+          <i className='ion ion-arrow-right-c fa-2x inputArrow' style={{ color: '#872100' }}></i>
+          <input ref="inputNote" className="compileInput" type="text" onKeyUp={this.keyUpHandler.bind(this)} autoFocus/>
+          {this.state.showInsertPos && <span className="insertTimestamp">{this.formatTime(this.state.insertPos)}</span>}
+        </span>
+      );
     }
 
-    return <span className="lectureForm" >
-      <input ref="inputNote" className="lectureInput" type="text" onKeyUp={this.keyUpHandler.bind(this)} autoFocus/>
-    </span>;
+    return (
+      <span className="lectureForm" >
+        <input ref="inputNote" className="lectureInput" type="text" onKeyUp={this.keyUpHandler.bind(this)} autoFocus/>
+      </span>
+    );
   }
 }
 

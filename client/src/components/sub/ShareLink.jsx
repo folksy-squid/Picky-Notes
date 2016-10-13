@@ -13,10 +13,14 @@ export default class extends React.Component {
     });
   }
 
+  selectText() {
+    this.refs.copyButton.click();
+  }
+
   render () {
     return (
       <div className="clipboard">
-        <input ref="shareLink" className="shareLink" value={`${window.location.host}/lobby/${this.props.pathUrl}`} readOnly/>
+        <input ref="shareLink" className="shareLink" value={`${window.location.host}/lobby/${this.props.pathUrl}`} onClick={this.selectText.bind(this)} readOnly/>
         <div className="buttonCell">
           <button ref="copyButton" className="copyButton" data-clipboard-target=".shareLink">
             <i className="ion ion-clipboard"></i>

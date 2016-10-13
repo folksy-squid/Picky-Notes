@@ -13,7 +13,7 @@ body {
 
 .fixed-div {
   position: fixed;
-  top: 100px;
+  transform: translateY(0%);
 }
 
 .container-fluid {
@@ -459,7 +459,7 @@ small.text-muted {
 }
 
 .deleteNoteButton {
-  margin-left: 10px;
+  margin: 0 10px;
   background: #d9534f;
   width: 20px;
   height: 21px;
@@ -625,11 +625,15 @@ a > span.navbar-brand {
   flex-wrap: wrap;
 }
 
+.compileFooter {
+  height: 50px;
+}
+
 .footer > * {
   min-width: 330px;
 }
 
-.lectureForm > * {
+.compileForm > * {
   margin: 0 8px;
 }
 
@@ -659,13 +663,19 @@ input[type=checkbox] {
   margin-right: 10px;
 }
 
-.lectureForm {
+.compileForm {
   position: relative;
-  flex: 1;
   display: flex;
   align-items: center;
 }
-.lectureInput {
+
+.lectureForm {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.lectureInput, .compileInput {
   flex: 1;
   display: inline;
 }
