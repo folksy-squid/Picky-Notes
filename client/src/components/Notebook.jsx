@@ -44,6 +44,12 @@ class Notebook extends React.Component {
     this.setState({ entries: filteredEntries, selectedClass: selectedClass});
   }
 
+  removeEntry(i) {
+    let newEntries = this.state.entries.slice();
+    newEntries.splice(i, 1);
+    this.setState({ entries: newEntries });
+  }
+
   render() {
     return (
       this.state.loaded ? (
@@ -56,7 +62,7 @@ class Notebook extends React.Component {
           </div>
         </div>
         <div className="row">
-          <EntryList entries={this.state.entries}/>
+          <EntryList entries={this.state.entries} removeEntry={this.removeEntry.bind(this)}/>
         </div>
       </div>
     ) : (<div></div>)

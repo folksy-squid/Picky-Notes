@@ -1,5 +1,5 @@
 /*jshint esversion: 6 */
-const {createNewUser, createNewRoom, joinRoom, createNewNote, showAllNotes, showFilteredNotes, updateNotes, getAllUserRooms, getRoom, saveAudioToRoom, getAudioForRoom, deleteNotes} = require ('../database/db-helpers');
+const {createNewUser, createNewRoom, joinRoom, createNewNote, showAllNotes, showFilteredNotes, updateNotes, getAllUserRooms, getRoom, saveAudioToRoom, getAudioForRoom, deleteNotes, deleteNotebook} = require ('../database/db-helpers');
 const passport = require('./passport');
 const path = require('path');
 const audioUpload = require('./audioUpload');
@@ -54,11 +54,13 @@ module.exports = (app, express, io) => {
     })
     .get((req, res) => {
       getAllUserRooms(req.query.userId, (allUserRooms) => res.send(allUserRooms));
+    })
+    .delete((req, res) => {
+      deleteNotebook(req.query.userId, req.query.roomId, (found) => {
+        if (!found) { res.status(400).send('Room Not Found'); }
+        res.status(204).send();
+      });
     });
-
-  app.get('/test/:pathUrl', (req, res) => {
-    getRoomParticipants(req.params.pathUrl, ({users}) => res.send(users));
-  });
 
   app.post('/api/room/status', (req, res) => {
     res.status(201).send({active: !!io.sockets.adapter.rooms[req.body.pathUrl]});

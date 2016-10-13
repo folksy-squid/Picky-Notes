@@ -202,6 +202,12 @@ const getRoomParticipants = (pathUrl, cb) => {
   .then(cb);
 };
 
+const deleteNotebook = (userId, roomId, cb) => {
+  User.findById(userId)
+  .then((user) => user.removeRoom(roomId))
+  .then(cb);
+};
+
 module.exports = {
   createNewUser,
   createNewRoom,
@@ -220,4 +226,5 @@ module.exports = {
   saveTimeLength,
   getAudioForRoom,
   deleteNotes,
+  deleteNotebook,
 };
