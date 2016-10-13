@@ -55,7 +55,6 @@
     "body-parser": "^1.15.2",
     "express": "^4.14.0",
     "forever": "^0.15.2",
-    "intro.js": "^2.3.0",
     "ioredis": "^2.4.0",
     "js-md5": "^0.4.1",
     "json-loader": "^0.5.4",
