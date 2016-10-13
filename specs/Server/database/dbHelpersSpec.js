@@ -284,8 +284,73 @@ describe('createRoomNotes', () => {
   });
 
 });
-xdescribe('showAllNotes', () => {});
-xdescribe('showFilteredNotes', () => {});
+
+describe('showAllNotes', () => {
+
+  const testNote = {
+    content: 'TestNote',
+    thought: false,
+    audioTimestamp: '2248',
+    show: true,
+    roomId: testRoom.id,
+    originalUserId: testUser2.id,
+    editingUserId: testUser1.id
+  };
+
+  let allNotes;
+
+  beforeEach((done) => {
+    User.create(testUser1)
+    .then(() => User.create(testUser2))
+    .then(() => Room.create(testRoom))
+    .then(() => Note.create(testNote))
+    .then(() => Note.create(testNote))
+    .then(() => Note.create(testNote))
+    .then(() => {
+      showAllNotes({userId: 4242, roomId: 5353}, (data) => {
+        allNotes = data;
+        done();
+      });
+    })
+    .catch(err => done(err));
+  });
+
+  it('should return only the Notes for editing User', () => {
+    expect(allNotes).to.have.lengthOf(3);
+    allNotes.forEach(note => expect(note.editingUserId).to.equal(testUser1.id));
+  });
+
+  describe('showFilteredNotes', () => {
+
+    const testNoteHide = {
+      content: 'TestNote',
+      thought: false,
+      audioTimestamp: '2248',
+      show: false,
+      roomId: testRoom.id,
+      originalUserId: testUser1.id,
+      editingUserId: testUser2.id
+    };
+
+    let filteredNotes;
+
+    beforeEach(done => {
+      Note.create(testNoteHide)
+      .then(() => {
+        showFilteredNotes({userId: 4242, roomId: 5353}, (data) => {
+          filteredNotes = data;
+          done();
+        });
+      });
+    });
+
+    it('should only show nows that have show:true property', () => {
+      expect(filteredNotes).to.have.lengthOf(3);
+    });
+
+  });
+});
+
 xdescribe('updateNotes', () => {});
 // describe('updateOneNote', () => {});
 xdescribe('findRoom', () => {});
