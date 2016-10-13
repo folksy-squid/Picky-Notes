@@ -22,7 +22,7 @@ export class Notebook extends React.Component {
 
   render() {
     return (
-      <div className="container">
+      <div className="container page-content">
         <div className="row">
           <EntryList entries={this.props.entry.entries} removeEntry={this.removeEntry.bind(this)}/>
         </div>

@@ -59,7 +59,7 @@ class NewRoom extends React.Component {
 
   render() {
     return (
-      <div className="container new-room">
+      <div className="container new-room page-content">
         <h2 className="new-room-title">New Room</h2>
         <form onSubmit={this.formSubmit.bind(this)} className="form-horizontal">
           <div className="form-group">

@@ -65,7 +65,7 @@ export class Review extends React.Component {
   render() {
     return (
       this.state.loaded ? (
-      <div>
+      <div className="page-content">
         <div className="container">
           <div className="col-sm-9 panel panel-default">
             <LectureTitle />

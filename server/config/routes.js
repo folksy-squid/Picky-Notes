@@ -111,6 +111,10 @@ module.exports = (app, express, io) => {
     response.sendFile(path.resolve(__dirname, '../../client/src/landing.js'));
   });
 
+  app.get('*/scrollStuff.js', function (request, response) {
+    response.sendFile(path.resolve(__dirname, '../../client/src/scrollStuff.js'));
+  });
+
   app.get('*/style.css', function (request, response) {
     response.sendFile(path.resolve(__dirname, '../../client/styles/style.css'));
   });

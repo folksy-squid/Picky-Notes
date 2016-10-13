@@ -11,6 +11,10 @@ body {
   padding-bottom: 90px;
 }
 
+div.main > div.page-content {
+  padding-top: 90px;
+}
+
 .fixed-div {
   position: fixed;
   transform: translateY(0%);
@@ -315,6 +319,10 @@ h2.new-room-title {
   flex-direction: column;
 }
 
+.lobby > .row {
+  margin-top: 20px;
+}
+
 .panel-item {
   margin-top: 25px;
   margin-bottom: 10px;
@@ -337,15 +345,22 @@ h2.new-room-title {
   height: 20%;
 }
 
+.media-list {
+  margin-bottom: 0px;
+}
+
 #message-list {
-  height: 80%;
+  height: 84%;
   overflow: scroll;
+}
+
+.chatbox > .panel-footer {
+  border: 1px solid #dddddd;
 }
 
 .message-picture {
   max-width: 80px;
   height: auto;
-  border-radius: 5px;
 }
 
 .message-body {
@@ -382,6 +397,8 @@ small.text-muted {
 .participants {
   font-size: 1.3em;
   margin-top: 40px;
+  max-height: 260px;
+  overflow: scroll;
 }
 
 .participants i {
@@ -426,6 +443,22 @@ small.text-muted {
 
 /*
   =================================
+    Lecture
+  =================================
+*/
+
+.lecture-view-heading {
+  padding-top: 20px;
+}
+
+.button-group {
+  padding-top: 30px;
+  padding-bottom: 30px;
+}
+
+
+/*
+  =================================
     Note List
   =================================
 */
@@ -461,9 +494,10 @@ small.text-muted {
 .deleteNoteButton {
   margin: 0 10px;
   background: #d9534f;
-  width: 20px;
+  width: 21px;
   height: 21px;
   text-align: center;
+  padding: 3px;
   border-radius: 5px;
 }
 
@@ -473,6 +507,7 @@ small.text-muted {
 
 .deleteNoteIcon {
   color: white;
+  float:right;
 }
 
 .audioTimestamp > input[type=number] {
@@ -530,6 +565,14 @@ small.text-muted {
   padding-top: 15px;
   min-height: 90px;
   font-family: inherit;
+  top: 0;
+  z-index: 100;
+  position: fixed;
+  width: 100%;
+}
+
+.navbar-fixed.navbar-default {
+  border: 1px black solid;
 }
 
 .navbar-default {
@@ -546,11 +589,11 @@ a > span.navbar-brand {
   cursor: pointer;
   transition: opacity 0.2s;
   padding: 10px 20px;
+  transition: all .2s ease-in-out;
 }
 
-
 .notebook-entry:hover {
-  opacity: 0.6;
+  transform: scale(1.1);
 }
 
 .notebook-icon {
@@ -559,18 +602,22 @@ a > span.navbar-brand {
 }
 
 .notebook-topic {
+  color: black;
   padding-top: 0.25em;
-  padding-left: 5em;
   font-weight: bold;
 }
 
 .notebook-lecturer {
-  padding-left: 5em;
+  color: black;
 }
 
 .notebook-class {
-  padding-left: 5em;
+  color: black;
   font-style: italic;
+}
+
+div.w3-card-4 {
+  padding: 5px;
 }
 
 .notebook0 {
@@ -776,6 +823,11 @@ input[type=range][orient=vertical] {
   bottom: 30px;
   width: inherit;
 }
+
+.thought-panel-bottom > div.panel-heading:hover {
+  cursor: pointer;
+}
+
 .panel-body {
   padding: 0px;
 }

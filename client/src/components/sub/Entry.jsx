@@ -46,8 +46,9 @@ class Entry extends React.Component {
     // (use map)
     return (
       <div className="col-xs-6 col-sm-4 col-md-3 notebook-entry" >
-        <div className={`w3-card-4 notebook${this.props.classColor}`} onClick={this.clickHandler.bind(this)}>
-          <div className="w3-container">
+        <div className={`w3-card-4 notebook${this.props.classColor}`}>
+          <i className='ion ion-close-round deleteNoteIcon' onClick={this.deleteHandler.bind(this)}></i>
+          <div className="w3-container" onClick={this.clickHandler.bind(this)}>
             <br />
             <div className='notebook-topic'>{`${this.props.entryInfo.topic}`}</div>
             <div className='notebook-lecturer'>{`by ${this.props.entryInfo.lecturer}`}</div>
@@ -55,7 +56,6 @@ class Entry extends React.Component {
             <br />
           </div>
         </div>
-        <span className='deleteNoteButton' onClick={this.deleteHandler.bind(this)}><i className='ion ion-close-round deleteNoteIcon'>DELETE</i></span>
       </div>
     );
 
