@@ -143,8 +143,77 @@ xdescribe('joinRoom', () => {
 
 });
 
-xdescribe('createNewNote', () => {
-  
+describe('createNewNote', () => {
+  const testUser = {
+    id: 4242,
+    facebookId: '123456789519519',
+    name: 'TestUser',
+    email: 'testuser@email.com',
+    pictureUrl: 'www.picture.com/test',
+    gender: 'Male'
+  };
+
+  const testRoom = {
+    id: 5353,
+    pathUrl: 'abcde',
+    topic: 'Toy Problems',
+    className: 'Hack Reactor',
+    lecturer: 'Fred',
+    audioUrl: 'www.audio.com',
+    hostId: 4242
+  };
+
+  const testNote = {
+    thought: false,
+    content: 'Hello World',
+    audioTimestamp: '2432',
+    roomId: 5353,
+    originalUserId: 4242
+  };
+
+  let createdTestNote;
+
+  beforeEach(done => {
+    User.destroy({ where: testUser })
+    .then(() => Room.destroy({ where: testRoom }))
+    .then(() => Note.destroy({ where: testNote }))
+    .then(() => User.create(testUser))
+    .then(() => Room.create(testRoom))
+    .then(() => createNewNote(testNote, (data) => {
+      createdTestNote = data.dataValues;
+      done();
+    }))
+    .catch(err => done(err));
+  });
+
+  afterEach(done => {
+    User.destroy({ where: testUser })
+    .then(() => Room.destroy({ where: testRoom }))
+    .then(() => Note.destroy({ where: testNote }))
+    .then(() => done())
+    .catch(err => done(err));
+  });
+
+  it('should create a new note in the database', (done) => {
+    Note.findOne({ where: testNote })
+    .then((found) => {
+      expect(found).to.not.be.null;
+      done();
+    })
+    .catch(err => done(err));
+  });
+
+  it('should return the note information based on the database', () => {
+    expect(createdTestNote.content).to.equal(testNote.content);
+    expect(createdTestNote.audioTimestamp).to.equal(testNote.audioTimestamp);
+    expect(createdTestNote.thought).to.equal(testNote.thought);
+    expect(createdTestNote.roomId).to.equal(testNote.roomId);
+    expect(createdTestNote.originalUserId).to.equal(testNote.originalUserId);
+
+    expect(createdTestNote.show).to.be.true;
+    expect(createdTestNote.editingUserId).to.equal(testNote.originalUserId);
+  });
+
 });
 
 xdescribe('multiplyNotes', () => {

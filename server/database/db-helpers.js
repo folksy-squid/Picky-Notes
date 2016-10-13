@@ -35,7 +35,7 @@ const createNewNote = (note, cb) => {
   note.show = true;
 
   Note.create(note)
-  .then((note) => { cb(note.dataValues); });
+  .then(cb);
 };
 
 const multiplyNotes = (notes, arrOfClients) => {
