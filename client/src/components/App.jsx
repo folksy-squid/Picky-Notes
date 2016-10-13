@@ -114,9 +114,8 @@ export class App extends React.Component {
             callback={this.callback} />
           {childrenWithProps}
         </div>
-      )
-    }
-    else {
+      );
+    } else {
       html = <div>loading</div>;
     }
 

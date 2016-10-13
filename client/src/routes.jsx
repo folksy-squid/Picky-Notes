@@ -58,10 +58,10 @@ export default (store) => {
   const checkFilter = () => showFilter;
   const leaveNotebookView = (prevState) => {
     showFilter = false;
-  }
+  };
   const enterNotebookView = (nextState, replace) => {
     showFilter = true;
-  }
+  };
 
 
 
