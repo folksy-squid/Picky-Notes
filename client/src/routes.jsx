@@ -14,7 +14,12 @@ import Review from './components/Review.jsx';
 import Main from './components/Main.jsx';
 import App from './components/App.jsx';
 
+
 export default (store) => {
+
+  /*======================================
+  =            AUTHENTICATION            =
+  ======================================*/
 
   const getUserFromCookie = (cookie) => {
     let slicedCookie = cookie.slice(17);
@@ -23,7 +28,6 @@ export default (store) => {
   };
 
   const authCheck = (nextState, replace) => {
-
     if (document.cookie) {
       let user = getUserFromCookie(document.cookie);
 
@@ -46,16 +50,23 @@ export default (store) => {
     }
   };
 
+  /*==============================
+  =            FILTER            =
+  ==============================*/
+
   let showFilter = false;
   const checkFilter = () => showFilter;
-
   const leaveNotebookView = (prevState) => {
     showFilter = false;
   }
-
   const enterNotebookView = (nextState, replace) => {
     showFilter = true;
   }
+
+
+/*==============================
+=            RENDER            =
+==============================*/
 
   return (
     <Route path='/' component={App} >

@@ -10,6 +10,8 @@ import UserReducer from '../reducers/userReducers';
 import {Navbar as Navigation, Nav, NavItem, NavDropdown, MenuItem, FormGroup, FormControl, Modal, Button} from 'react-bootstrap';
 import Dropdown from './sub/Dropdown.jsx'
 import SearchBar from './sub/SearchBar.jsx'
+import Joyride from 'react-joyride';
+
 
 export class Navbar extends React.Component {
   constructor(props) {
@@ -80,7 +82,7 @@ export class Navbar extends React.Component {
             <div className="form-group form__nao">
               <span className="input input--nao">
                 <input className="input__field input__field--nao" type="text" id="input-1" onChange={this.updateInput.bind(this)}/>
-                <label className="input__label input__label--nao" for="input-1">
+                <label className="input__label input__label--nao" htmlFor="input-1">
                   <span className="input__label-content input__label-content--nao">Enter Access Code</span>
                 </label>
                 <svg className="graphic graphic--nao" width="300%" height="100%" viewBox="0 0 1200 60" preserveAspectRatio="none">
@@ -145,6 +147,8 @@ export class Navbar extends React.Component {
     );
 
   }
+
+
 }
 
 const mapStateToProps = (state) => {

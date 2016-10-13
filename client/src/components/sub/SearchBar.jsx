@@ -20,7 +20,7 @@ export class SearchBar extends React.Component {
 
   render() {
     return (
-      <li role="presentation">
+      <li id="step1" role="presentation">
         <Navigation.Form>
           <FormGroup>
             <FormControl type="text" placeholder="Search" onChange={this.getUserInput.bind(this)}/>
@@ -29,6 +29,7 @@ export class SearchBar extends React.Component {
       </li>
     )
   }
+
 }
 
 const mapStateToProps = (state) => {
