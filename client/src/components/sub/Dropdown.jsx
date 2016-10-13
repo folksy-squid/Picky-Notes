@@ -1,5 +1,5 @@
 import React from 'react';
-import {NavDropdown, MenuItem} from 'react-bootstrap'
+import {NavDropdown, MenuItem} from 'react-bootstrap';
 import {connect} from 'react-redux';
 
 import NoteReducer from '../../reducers/noteReducers';
@@ -15,14 +15,14 @@ class Dropdown extends React.Component {
   }
 
   renderListItems () {
-    let allClasses = [<MenuItem key={0} eventKey={5.001}>All</MenuItem>]
+    let allClasses = [<MenuItem key={0} eventKey={5.001}>All</MenuItem>];
     for (let i = 0; i < this.props.entry.classList.length; i++) {
-      let key = Number(`5.${i+1}`)
-      if (i+2 < 10) {
-        key = Number(`5.00${i+1}`)
+      let key = Number(`5.${i + 1}`);
+      if (i + 2 < 10) {
+        key = Number(`5.00${i + 1}`);
       }
       allClasses.push(
-        <MenuItem key={i+1} eventKey={key}>{this.props.entry.classList[i]}</MenuItem>
+        <MenuItem key={i + 1} eventKey={key}>{this.props.entry.classList[i]}</MenuItem>
       );
     }
     return allClasses;
@@ -37,7 +37,7 @@ class Dropdown extends React.Component {
       <NavDropdown onSelect={this.select.bind(this)} title="Filter Class" id="basic-nav-dropdown" eventKey={5}>
         {this.renderListItems()}
       </NavDropdown>
-    )
+    );
   }
 }
 

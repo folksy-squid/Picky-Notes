@@ -5,7 +5,7 @@ const defaultState = {
   selectedClass: 'All'
 };
 
-export default (state=defaultState, action) => {
+export default (state = defaultState, action) => {
 
   if (action.type === 'LOAD_ENTRIES') {
     state.entries = action.lectures;
@@ -26,20 +26,20 @@ export default (state=defaultState, action) => {
     let filtered = [];
     state.original.forEach(notebook => {
       if (notebook.topic.toLowerCase().indexOf(search.toLowerCase()) === -1 && notebook.lecturer.toLowerCase().indexOf(search.toLowerCase()) === -1) { return; }
-      if (notebook.class === state.selectedClass || state.selectedClass === 'All') {
+      if (notebook.className === state.selectedClass || state.selectedClass === 'All') {
         filtered.push(notebook);
       }
     });
     return {
       ...state,
       entries: filtered
-    }
+    };
   }
 
   if (action.type === 'LOAD_CLASSLIST') {
     let classHash = {};
     for (var i = 0; i < state.entries.length; i++) {
-      let className = state.entries[i].class;
+      let className = state.entries[i].className;
       classHash[className] = className;
     }
     for (let key in classHash) {
@@ -47,8 +47,8 @@ export default (state=defaultState, action) => {
     }
     return {
       ...state
-    }
-  };
+    };
+  }
 
 
   if (action.type === 'FILTER_CLASSLIST') {
@@ -60,8 +60,8 @@ export default (state=defaultState, action) => {
     state.selectedClass = className;
     return {
       ...state
-    }
+    };
   }
 
   return {...state};
-}
+};
