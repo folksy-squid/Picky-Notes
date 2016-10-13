@@ -5,50 +5,16 @@ import SearchBar from './sub/SearchBar.jsx';
 import { Link } from 'react-router';
 import {connect} from 'react-redux';
 
-import {getRooms} from '../actions/roomActions.jsx'
-
 import NoteReducer from '../reducers/noteReducers';
 import RoomReducer from '../reducers/roomReducers';
 import UserReducer from '../reducers/userReducers';
+import EntryReducer from '../reducers/entryReducers';
+
+import {loadEntries} from '../actions/entryActions'
 
 export class Notebook extends React.Component {
   constructor (props) {
     super(props);
-    this.state = {
-      selectedClass: 'All',
-      loaded: false
-    };
-  }
-
-  componentWillMount() {
-    const user = this.props.user.information[0];
-    const context = this;
-    $.ajax({
-      method: 'GET',
-      url: `/api/rooms?userId=${user.id}`,
-      success: (entries) => {
-        let lectures = entries.filter((entry) => entry.startTimestamp !== null);
-        lectures.sort((a, b) => b.startTimestamp - a.startTimestamp);
-        context.setState({loaded: true, original: lectures, entries: lectures});
-      }
-    });
-  }
-
-  filterKeyword(search) {
-    let filtered = [];
-    this.state.original.forEach((notebook) => {
-      if (notebook.topic.toLowerCase().indexOf(search.toLowerCase()) === -1 && notebook.lecturer.toLowerCase().indexOf(search.toLowerCase()) === -1) { return; }
-      if (notebook.class === this.state.selectedClass || this.state.selectedClass === 'All') {
-        filtered.push(notebook);
-      }
-    });
-    this.setState({ entries: filtered });
-  }
-
-  filterClass(selectedClass) {
-    let filteredEntries = (selectedClass === 'All') ?
-      this.state.original : this.state.original.filter((entry) => entry.class.toLowerCase() === selectedClass.toLowerCase());
-    this.setState({ entries: filteredEntries, selectedClass: selectedClass});
   }
 
   removeEntry(i) {
@@ -59,23 +25,22 @@ export class Notebook extends React.Component {
 
   render() {
     return (
-      this.state.loaded ? (
       <div className="container">
-        <div className="row notebook-header">
-          <SearchBar entries={this.state.entries} filterClass={this.filterClass.bind(this)} filterKeyword={this.filterKeyword.bind(this)} />
-        </div>
         <div className="row">
-          <EntryList entries={this.state.entries} removeEntry={this.removeEntry.bind(this)}/>
+          <EntryList entries={this.props.entry.entries} removeEntry={this.removeEntry.bind(this)}/>
         </div>
       </div>
-    ) : (<div></div>)
     );
   }
 }
 
 const mapStateToProps = (state) => {
   return {
-    ...state
+    ...state,
+    RoomReducer,
+    UserReducer,
+    NoteReducer,
+    EntryReducer
   };
 };
 

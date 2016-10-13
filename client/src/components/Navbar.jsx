@@ -9,6 +9,7 @@ import RoomReducer from '../reducers/roomReducers';
 import UserReducer from '../reducers/userReducers';
 import {Navbar as Navigation, Nav, NavItem, NavDropdown, MenuItem, FormGroup, FormControl, Modal, Button} from 'react-bootstrap';
 import Dropdown from './sub/Dropdown2.jsx'
+import Searchbar from './sub/Searchbar2.jsx'
 
 export class Navbar extends React.Component {
   constructor(props) {
@@ -121,14 +122,10 @@ export class Navbar extends React.Component {
         <Navigation.Collapse>
           <Nav pullRight>
           {this.props.checkFilter() && (
-            <li role="presentation">
-              <Navigation.Form>
-                <FormGroup>
-                  <FormControl type="text" placeholder="Search" />
-                </FormGroup>
-              </Navigation.Form>
-            </li>
-            <Dropdown2 />
+            <Dropdown />
+          )}
+          {this.props.checkFilter() && (
+            <Searchbar />
           )}
             <NavItem eventKey={1} onClick={this.showModal.bind(this)}>
               Join Room
