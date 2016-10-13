@@ -17,6 +17,7 @@ export class Main extends React.Component {
     this.state = {
       loaded: false
     }
+    console.log('props', props)
   }
 
   componentWillMount() {
@@ -36,11 +37,28 @@ export class Main extends React.Component {
   }
 
   render() {
+
+    const childrenWithProps = React.Children.map(this.props.children,
+      (child) => React.cloneElement(child, {
+        onClickSwitch: this.props.onClickSwitch,
+        addSteps: this.props.addSteps,
+        addToolTip: this.props.addToolTip,
+        joyrideType: this.props.joyrideType,
+        joyrideOverlay: this.props.joyrideOverlay
+      })
+    );
+
     return (
       this.state.loaded ? (
         <div className="main">
-          <Navbar checkFilter={this.props.route.checkFilter}/>
-          {this.props.children}
+          <Navbar
+            onClickSwitch={this.props.onClickSwitch}
+            addSteps={this.props.addSteps}
+            addToolTip={this.props.addToolTip}
+            joyrideType={this.props.joyrideType}
+            joyrideOverlay={this.props.joyrideOverlay}
+            checkFilter={this.props.route.checkFilter} />
+          {childrenWithProps}
         </div>
       ) : (<div></div>)
     );
@@ -48,9 +66,10 @@ export class Main extends React.Component {
 }
 
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state, ownProps) => {
   return {
     ...state,
+    ...ownProps,
     RoomReducer,
     UserReducer,
     NoteReducer,

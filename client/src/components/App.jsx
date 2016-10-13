@@ -25,6 +25,7 @@ export class App extends React.Component {
 
   componentDidUpdate(prevProps, prevState) {
     if (!prevState.ready && this.state.ready) {
+      console.log('should start now');
       this.joyride.start();
     }
   }
@@ -80,15 +81,20 @@ export class App extends React.Component {
 
   render() {
     const state = this.state;
+
+
+
     const childrenWithProps = React.Children.map(this.props.children,
       (child) => React.cloneElement(child, {
         onClickSwitch: this.onClickSwitch,
         addSteps: this.addSteps,
-        addToolTip: this.addToolTip,
+        addToolTip: this.addTooltip,
         joyrideType: state.joyrideType,
         joyrideOverlay: state.joyrideOverlay
       })
     );
+    console.log(React.Children);
+    console.log('childrenwithprops', childrenWithProps);
 
     let html;
 
@@ -97,7 +103,6 @@ export class App extends React.Component {
         <div>
           <Joyride
             ref={c => (this.joyride = c)}
-            steps={steps}
             debug={true}
             steps={state.steps}
             type={state.joyrideType}
@@ -117,11 +122,11 @@ export class App extends React.Component {
       )
     }
     else {
-      html = <Loader />;
+      html = <div>loading</div>;
     }
 
     return html;
   }
 }
 
-export default Connection(App);
+export default App;

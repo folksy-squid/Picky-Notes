@@ -127,7 +127,12 @@ export class Navbar extends React.Component {
             <Dropdown />
           )}
           {this.props.checkFilter() && (
-            <SearchBar />
+            <SearchBar
+              onClickSwitch={this.props.onClickSwitch}
+              addSteps={this.props.addSteps}
+              addToolTip={this.props.addToolTip}
+              joyrideType={this.props.joyrideType}
+              joyrideOverlay={this.props.joyrideOverlay} />
           )}
             <NavItem eventKey={1} onClick={this.showModal.bind(this)}>
               Join Room
@@ -151,9 +156,10 @@ export class Navbar extends React.Component {
 
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state, ownProps) => {
   return {
     ...state,
+    ...ownProps,
     RoomReducer,
     UserReducer,
     NoteReducer,

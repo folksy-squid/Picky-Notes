@@ -14,6 +14,33 @@ export class SearchBar extends React.Component {
     super(props);
   }
 
+  static propTypes = {
+    addSteps: React.PropTypes.func.isRequired,
+    addToolTip: React.PropTypes.func.isRequired,
+    joyrideOverlay: React.PropTypes.bool.isRequired,
+    joyrideType: React.PropTypes.string.isRequired,
+    onClickSwitch: React.PropTypes.func.isRequired
+  }
+
+  componentDidMount() {
+    var data = {
+      title: 'test',
+      text: '<h2 style="margin-bottom: 10px; line-height: 1.6">Now you can open tooltips independently!</h2>And even style them one by one!',
+      selector: '#step1 a',
+      position: 'bottom',
+      event: 'hover',
+      style: {
+        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+        borderRadius: 0,
+        color: '#fff',
+        mainColor: '#ff67b4',
+        textAlign: 'center',
+        width: '29rem'
+      }
+    }
+    // this.props.addToolTip(data)
+  }
+
   getUserInput (e) {
     this.props.dispatch(filterKeyword(e.target.value));
   }
@@ -32,9 +59,11 @@ export class SearchBar extends React.Component {
 
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state, ownProps) => {
+  console.log('ownprops', ownProps);
   return {
     ...state,
+    ...ownProps,
     RoomReducer,
     UserReducer,
     NoteReducer,
