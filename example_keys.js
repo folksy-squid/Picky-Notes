@@ -29,6 +29,13 @@ module.exports = {
       host: 'POSTGRES_CLIENT_HOST',
       port: 'POSTGRES_CLIENT_PORT',
       dbName: 'POSTGRES_CLIENT_DBNAME'
+    },
+    test: {
+      username: 'ubuntu',
+      password: 'password',
+      host: 'localhost',
+      port: '5432',
+      dbName: 'pickynotes'
     }
   },
 };

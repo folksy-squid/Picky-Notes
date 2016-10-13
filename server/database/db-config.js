@@ -2,7 +2,7 @@
 var config = process.env.NODE_ENV || 'dev';
 var { dbName, username, password, host, port } = process.env.NODE_ENV !== 'test' && require('../../keys').db[config];
 if ( process.env.NODE_ENV === 'test') {
-  var { dbName, username, password, host, port } = require('../../example_keys');
+  var { dbName, username, password, host, port } = require('../../example_keys').db.test;
 }
 
 const Sequelize = require('sequelize');
