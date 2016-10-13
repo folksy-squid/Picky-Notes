@@ -5,7 +5,7 @@
   "main": "server/server.js",
   "scripts": {
     "start": "node server/server.js",
-    "test": "npm run test:server && npm run test:client",
+    "test": "npm run test:client && npm run test:server",
     "test:server": "mocha --recursive specs/Server/",
     "test:client": "mocha specs/Client/helpers.js specs/Client/ComponentSpec.js",
     "test:client:watch": "npm run test:client -- --watch",
