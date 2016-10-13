@@ -11,7 +11,7 @@ import UserReducer from '../reducers/userReducers';
 import RoomReducer from '../reducers/roomReducers';
 import NoteReducer from '../reducers/noteReducers';
 
-class Review extends React.Component {
+export class Review extends React.Component {
   constructor (props) {
     super(props);
     this.state = {

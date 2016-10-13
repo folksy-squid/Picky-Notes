@@ -12,11 +12,11 @@ import NoteReducer from '../reducers/noteReducers';
 import Audio from './sub/Audio.jsx';
 import LectureTitle from './sub/LectureTitle.jsx';
 
-class Compile extends React.Component {
+export class Compile extends React.Component {
   constructor (props) {
     super(props);
     this.state = {
-      loaded: true
+      loaded: false
     };
   }
 
@@ -32,7 +32,6 @@ class Compile extends React.Component {
     const pathUrl = this.props.params.roomId;
     const realm = this;
     if (!this.props.room.roomInfo) {
-      this.setState({loaded: false});
       this.props.dispatch(setRoomInfo(pathUrl, user, (err, success) => {
         if (err) {
           realm.context.router.push('/notebook');
@@ -40,6 +39,8 @@ class Compile extends React.Component {
           realm.setState({loaded: true});
         }
       }));
+    } else {
+      this.setState({loaded: true});
     }
   }
 

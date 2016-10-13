@@ -20,6 +20,13 @@ import LectureTitle from '../../client/src/components/sub/LectureTitle.jsx';
 import ShareLink from '../../client/src/components/sub/ShareLink.jsx';
 import ChatBox from '../../client/src/components/sub/ChatBox.jsx';
 import ParticipantList from '../../client/src/components/sub/ParticipantList.jsx';
+import {Lecture} from '../../client/src/components/Lecture';
+import InputBox from '../../client/src/components/sub/InputBox.jsx';
+import LectureBox from '../../client/src/components/sub/LectureBox.jsx';
+import {Compile} from '../../client/src/components/Compile';
+import {Review} from '../../client/src/components/Review';
+import Audio from '../../client/src/components/sub/Audio';
+
 const socket = new mockedSocket;
 
 const profile = { id: '10206258612098067',
@@ -67,6 +74,10 @@ const fakeStore = {
     roomInfo,
     socket,
     participants: [information[0]]
+  },
+  roomNoInfo: {
+    socket,
+    participants: [information[0]]
   }
 };
 
@@ -112,16 +123,65 @@ describe('<Notebook />', () => {
 describe('<Lobby />', () => {
   let router = { push: sinon.stub() };
   const context = {router};
-  let wrapper = shallow(<Lobby params={{roomId: 10000}} user={fakeStore.user} room = { fakeStore.room } />, { context });
+  let wrapper = shallow(<Lobby dispatch={store.dispatch} params={{roomId: 10000}} user={fakeStore.user} room = { fakeStore.roomNoInfo } />, { context });
 
-  it('should load initially', () => {
-    expect(wrapper.state().completed).to.equal(true);
+  it('should not load initially', () => {
+    expect(wrapper.state().completed).to.equal(false);
     expect(wrapper.instance().props.params.roomId).to.equal(10000);
   });
   it('should load lecture title, chatbox, sharelink, and participants list', () => {
+    wrapper = shallow(<Lobby dispatch={store.dispatch} params={{roomId: 10000}} user={fakeStore.user} room = { fakeStore.room } />, { context });
     expect(wrapper.find(LectureTitle).length).to.equal(1);
     expect(wrapper.find(ChatBox).length).to.equal(1);
     expect(wrapper.find(ShareLink).length).to.equal(1);
     expect(wrapper.find(ParticipantList).length).to.equal(1);
   });
+});
+
+describe('<Lecture />', () => {
+  let router = { push: sinon.stub() };
+  const context = {router};
+  let wrapper = shallow(<Lecture dispatch={store.dispatch} params={{roomId: 10000}} user={fakeStore.user} room = { fakeStore.roomNoInfo } />, { context });
+
+  it('should not load initially without roomInfo', () => {
+    expect(wrapper.state().loaded).to.equal(false);
+    expect(wrapper.instance().props.params.roomId).to.equal(10000);
+  });
+  it('should load initially with roomInfo', () => {
+    wrapper = shallow(<Lecture dispatch={store.dispatch} params={{roomId: 10000}} user={fakeStore.user} room = { fakeStore.room} />, { context });
+    expect(wrapper.state().loaded).to.equal(true);
+  });
+  it('should load LectureTitle, LectureBox, InputBox, and ParticipantsList', () => {
+    expect(wrapper.find(LectureTitle).length).to.equal(1);
+    expect(wrapper.find(LectureBox).length).to.equal(1);
+    expect(wrapper.find(InputBox).length).to.equal(1);
+    expect(wrapper.find(ParticipantList).length).to.equal(1);
+  });
+});
+
+describe('<Compile />', () => {
+  let router = { push: sinon.stub() };
+  const context = {router};
+  let wrapper = shallow(<Compile dispatch={store.dispatch} params={{roomId: 10000}} user={fakeStore.user} room = { fakeStore.roomNoInfo } />, { context });
+  it('should not load initially without roomInfo', () => {
+    expect(wrapper.state().loaded).to.equal(false);
+  });
+  it('should load initially with roomInfo', () => {
+    wrapper = shallow(<Compile dispatch={store.dispatch} params={{roomId: 10000}} user={fakeStore.user} room = { fakeStore.room } />, { context });
+    expect(wrapper.state().loaded).to.equal(true);
+  });
+  it('should load Audio, LectureTitle, LectureBox, InputBox, and ParticipantList', () => {
+    expect(wrapper.find(Audio).length).to.equal(1);
+    expect(wrapper.find(LectureTitle).length).to.equal(1);
+    expect(wrapper.find(LectureBox).length).to.equal(1);
+    expect(wrapper.find(InputBox).length).to.equal(1);
+    expect(wrapper.find(ParticipantList).length).to.equal(1);
+  });
+});
+
+describe('<Review />', () => {
+  let router = { push: sinon.stub() };
+  const context = {router};
+  let wrapper = shallow(<Review dispatch={store.dispatch} params={{roomId: 10000}} user={fakeStore.user} room = { fakeStore.roomNoInfo } />, { context });
+
 });

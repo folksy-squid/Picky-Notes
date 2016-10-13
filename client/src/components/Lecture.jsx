@@ -11,14 +11,14 @@ import UserReducer from '../reducers/userReducers';
 import {replaceNotes} from '../actions/noteActions';
 import NoteReducer from '../reducers/noteReducers';
 
-class Lecture extends React.Component {
+export class Lecture extends React.Component {
   constructor (props) {
     super(props);
     this.state = {
       readyButtonDisplay: 'none',
       endLectureDisplay: 'inline-block',
       isHost: false,
-      loaded: true,
+      loaded: false,
       error: ''
     };
   }
@@ -35,7 +35,6 @@ class Lecture extends React.Component {
     this.props.dispatch(replaceNotes([], ()=>{}));
 
     if (!this.props.room.roomInfo) {
-      this.setState({loaded: false});
       this.props.dispatch(setRoomInfo(pathUrl, user, (err, success) => {
         if (err) {
           return this.context.router.push('/notebook');
@@ -53,6 +52,7 @@ class Lecture extends React.Component {
         }));
       }));
     } else {
+      this.setState({loaded: true});
       this.checkHost();
       this.applyListeners();
     }
