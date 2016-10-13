@@ -3,7 +3,6 @@ import {Provider} from 'react-redux';
 import {createStore} from 'redux';
 import mockedSocket from 'socket-io-mock';
 
-
 import { mount, shallow, render } from 'enzyme';
 import {expect, assert} from 'chai';
 import sinon from 'sinon';
