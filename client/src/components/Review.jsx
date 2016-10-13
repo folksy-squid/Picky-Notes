@@ -10,13 +10,14 @@ import Audio from './sub/Audio.jsx';
 import UserReducer from '../reducers/userReducers';
 import RoomReducer from '../reducers/roomReducers';
 import NoteReducer from '../reducers/noteReducers';
-
+import {Panel} from 'react-bootstrap';
 export class Review extends React.Component {
   constructor (props) {
     super(props);
     this.state = {
       loaded: false,
-      thoughtButton: 'Show thoughts'
+      thoughtButton: 'Show thoughts',
+      open: false
     };
   }
   componentWillMount() {
@@ -58,6 +59,7 @@ export class Review extends React.Component {
       });
     }
     this.props.dispatch(showHideThoughts());
+    this.setState({ open: !this.state.open });
   }
 
   render() {
@@ -74,11 +76,10 @@ export class Review extends React.Component {
               <button className="btn btn-md btn-primary" onClick={this.goToCompiledView.bind(this)}>
                 Add / Edit
               </button>
-              <button className="btn btn-md btn-info" onClick={this.toggleThoughts.bind(this)}>
-                {this.state.thoughtButton}
-              </button>
-              <ThoughtList />
             </div>
+            <Panel className="thought-panel-bottom" collapsible expanded={this.state.open} header={this.state.thoughtButton} onClick={this.toggleThoughts.bind(this)}>
+              <ThoughtList />
+            </Panel>
           </div>
         </div>
         <div className="footer reviewFooter slideUp">
