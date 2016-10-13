@@ -58,9 +58,9 @@ beforeEach(done => {
   User.destroy({ where: testUser1 })
   .then(() => User.destroy({ where: testUser2 }))
   .then(() => Room.destroy({ where: testRoom }))
-  .then(() => Note.destroy({ where: testNote1 }))
-  .then(() => Note.destroy({ where: testNote2 }))
-  .then(() => Note.destroy({ where: testNote3 }))
+  .then(() => Note.destroy({ where: { content: 'TestNote1' } }))
+  .then(() => Note.destroy({ where: { content: 'TestNote2' } }))
+  .then(() => Note.destroy({ where: { content: 'TestNote3' } }))
   .then(() => done())
   .catch(done);
 });
@@ -248,28 +248,39 @@ describe('createRoomNotes', () => {
 
   const testNotes = [testNote1, testNote2, testNote3];
 
+  let allNotes = [];
+
   beforeEach(done => {
     User.create(testUser1)
     .then(() => User.create(testUser2))
     .then(() => Room.create(testRoom))
-    .then(() => createRoomNotes(testNotes, 5353, ['4242', '3131'], done))
+    .then(() => createRoomNotes(testNotes, 5353, ['4242', '3131'], grabAllNotes))
     .catch(err => done(err));
+
+    const grabAllNotes = () => {
+      let grabNotes = [];
+      grabNotes.push(Note.findAll({ where: { content: 'TestNote1' }, raw: true }));
+      grabNotes.push(Note.findAll({ where: { content: 'TestNote2' }, raw: true }));
+      grabNotes.push(Note.findAll({ where: { content: 'TestNote3' }, raw: true }));
+      Promise.all(grabNotes)
+      .then(data => {
+        allNotes = data;
+        done();
+      })
+      .catch(err => done(err));
+    };
+
   });
 
-  it('should bulk create all notes', (done) => {
-    let allTests = [];
-    allTests.push(Note.findOne({ where: testNote1, raw: true }));
-    allTests.push(Note.findOne({ where: testNote2, raw: true }));
-    allTests.push(Note.findOne({ where: testNote3, raw: true }));
+  it('should bulk create all notes', () => {
+    expect(allNotes).to.have.lengthOf(3);
+    expect(allNotes[0]).to.have.lengthOf(2);
+    expect(allNotes[1]).to.have.lengthOf(2);
+    expect(allNotes[2]).to.have.lengthOf(1);
+  });
 
-    Promise.all(allTests)
-    .then((data) => {
-      expect(data[0].content).to.equal(testNote1.content);
-      expect(data[1].content).to.equal(testNote2.content);
-      expect(data[2].content).to.equal(testNote3.content);
-      done();
-    })
-    .catch(err => done(err));
+  it('should add roomId to notes', () => {
+    allNotes.forEach(noteArr => noteArr.forEach(note => expect(note.roomId).to.exist));
   });
 
 });
