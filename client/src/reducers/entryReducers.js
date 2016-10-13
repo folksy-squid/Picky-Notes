@@ -42,9 +42,11 @@ export default (state = defaultState, action) => {
       let className = state.entries[i].className;
       classHash[className] = className;
     }
+    let classList = [];
     for (let key in classHash) {
-      state.classList.push(classHash[key]);
+      classList.push(classHash[key]);
     }
+    state.classList = classList;
     return {
       ...state
     };
