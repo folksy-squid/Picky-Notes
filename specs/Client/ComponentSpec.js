@@ -255,7 +255,7 @@ describe('<Review />', () => {
     });
   });
 
-  describe('should load Audio, LectureTitle, NoteList, and ThoughtList when loaded', () => {
+  describe('should load when loaded is true', () => {
     before(() => {
       wrapper.setState({loaded: true});
     });
