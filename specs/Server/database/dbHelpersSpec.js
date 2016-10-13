@@ -2,26 +2,17 @@ const {createNewRoom, generatePathUrl, joinRoom, createNewNote, multiplyNotes, c
 const {User, Room, Note, db} = require('../../../server/database/db-config');
 const expect = require('chai').expect;
 
-/**************Test Data***************/
-const testUser = {
-  id:,
-  facebookId:,
-  name:,
-  email:,
-  pictureUrl:,
-  gender: 'Male'
-};
-const testRoom = {
-  topic: 'Data Structures',
-  className: 'Hack Reactor',
-  lecturer: 'Allen Price',
-  hostId: 42
-};
-/**************************************/
-
 xdescribe('createNewRoom', () => {
 
+  const testRoom = {
+    topic: 'Data Structures',
+    className: 'Hack Reactor',
+    lecturer: 'Allen Price',
+    hostId: 4242
+  };
+
   let createdTestRoom;
+
   /************* Sample Data ************
   { audioUrl: 'audio url',
     timeLength: null,
@@ -36,21 +27,23 @@ xdescribe('createNewRoom', () => {
     startTimestamp: null }
   **************************************/
 
-  beforeEach((done) => {
-    createNewRoom(testRoom, (roomInfo) => {
+  beforeEach(done => {
+    createNewRoom(testRoom, roomInfo => {
       createdTestRoom = roomInfo.dataValues;
       done();
-    });
+    })
+    .catch((err) => done(err));
   });
 
-  afterEach((done) => {
-    Room.destroy({ where: createdTestRoom})
-    .then(() => done());
+  afterEach(done => {
+    Room.destroy({ where: createdTestRoom })
+    .then(() => done())
+    .catch((err) => done(err));
   });
 
   it('should create a new room in the database', () => {
     Room.findOne({ where: testRoom })
-    .then((found) => {
+    .then(found => {
       expect(found).to.exist;
     });
   });
@@ -70,7 +63,6 @@ xdescribe('generatePathUrl', () => {
 
   it('should return a string of length 5 of characters and numbers', () => {
     const testPathUrl = generatePathUrl(testRoom.topic + testRoom.className + testRoom.lecturer + testRoom.hostId);
-    console.log(testPathUrl);
     expect(testPathUrl).to.have.lengthOf(5);
   });
 
@@ -84,21 +76,77 @@ xdescribe('generatePathUrl', () => {
   });
 });
 
-describe('joinRoom', () => {
-  beforeEach((done) => {
+xdescribe('joinRoom', () => {
 
+  const testUser = {
+    id: 4242,
+    facebookId: '123456789519519',
+    name: 'TestUser',
+    email: 'testuser@email.com',
+    pictureUrl: 'www.picture.com/test',
+    gender: 'Male'
+  };
+
+  const testRoom = {
+    id: 5353,
+    pathUrl: 'abcde',
+    topic: 'Toy Problems',
+    className: 'Hack Reactor',
+    lecturer: 'Fred',
+    audioUrl: 'www.audio.com',
+    hostId: 4242
+  };
+
+  let createdTestUser, createdTestRoom, foundRoomInfo;
+
+  beforeEach(done => {
+    User.destroy({ where: testUser })
+    .then(() => Room.destroy({ where: testRoom }))
+    .then(() => User.create(testUser))
+    .then((user) => createdTestUser = user.dataValues)
+    .then(() => Room.create(testRoom))
+    .then((room) => createdTestRoom = room.dataValues)
+    .then(() => joinRoom(testUser.id, testRoom.pathUrl, (data) => {
+      foundRoomInfo = data.dataValues;
+      done();
+    }));
   });
 
-  afterEach((done) => {
-
+  afterEach(done => {
+    User.destroy({ where: testUser })
+    .then(() => Room.destroy({ where: testRoom }))
+    .then(() => done())
+    .catch(err => done(err));
   });
 
-  it('should associate the given user and room via pathUrl', () => {
-
+  it('should associate the given user and room via pathUrl', done => {
+    User.findById(4242)
+    .then(foundUser => foundUser.getRooms({ attributes: [], raw: true }))
+    .then(data => {
+      expect(data[0]).to.exist;
+      expect(data[0]['UserRoom.userId']).to.equal(4242);
+      expect(data[0]['UserRoom.roomId']).to.equal(5353);
+    })
+    .then(() => done())
+    .catch(err => done(err));
   });
+
+  it('should return information about the joined Room', () => {
+    expect(foundRoomInfo).to.exist;
+    expect(foundRoomInfo.id).to.equal(testRoom.id);
+    expect(foundRoomInfo.pathUrl).to.equal(testRoom.pathUrl);
+    expect(foundRoomInfo.topic).to.equal(testRoom.topic);
+    expect(foundRoomInfo.className).to.equal(testRoom.className);
+    expect(foundRoomInfo.lecturer).to.equal(testRoom.lecturer);
+    expect(foundRoomInfo.hostId).to.equal(testRoom.hostId);
+  });
+
 });
 
-xdescribe('createNewNote', () => {});
+xdescribe('createNewNote', () => {
+  
+});
+
 xdescribe('multiplyNotes', () => {
   const notes = [{
     content: 'This is a note for User 0',
@@ -132,6 +180,7 @@ xdescribe('multiplyNotes', () => {
     expect(clients[0]).to.equal('0');
   });
 });
+
 xdescribe('createRoomNotes', () => {});
 xdescribe('showAllNotes', () => {});
 xdescribe('showFilteredNotes', () => {});
