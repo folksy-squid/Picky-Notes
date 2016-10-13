@@ -10,7 +10,7 @@ import Audio from './sub/Audio.jsx';
 import UserReducer from '../reducers/userReducers';
 import RoomReducer from '../reducers/roomReducers';
 import NoteReducer from '../reducers/noteReducers';
-import {Accordion, Panel} from 'react-bootstrap';
+import {Panel} from 'react-bootstrap';
 export class Review extends React.Component {
   constructor (props) {
     super(props);
@@ -59,7 +59,7 @@ export class Review extends React.Component {
       });
     }
     this.props.dispatch(showHideThoughts());
-    this.setState({ open: !this.state.open })
+    this.setState({ open: !this.state.open });
   }
 
   render() {
