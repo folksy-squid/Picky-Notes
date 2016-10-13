@@ -770,3 +770,16 @@ input[type=range][orient=vertical] {
 .navbar {
   border-radius: 0px;
 }
+
+.thought-panel-bottom {
+  padding: 0px;
+  position: fixed;
+  bottom: 30px;
+  width: inherit;
+}
+.panel-body {
+  padding: 0px;
+}
+body {
+  padding-bottom: 30px;
+}
