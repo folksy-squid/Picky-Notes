@@ -50,12 +50,10 @@ export default (store) => {
   const checkFilter = () => showFilter;
 
   const leaveNotebookView = (prevState) => {
-    console.log('leaving');
     showFilter = false;
   }
 
   const enterNotebookView = (nextState, replace) => {
-    console.log('entering');
     showFilter = true;
   }
 

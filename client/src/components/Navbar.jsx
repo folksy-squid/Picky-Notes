@@ -8,8 +8,8 @@ import NoteReducer from '../reducers/noteReducers';
 import RoomReducer from '../reducers/roomReducers';
 import UserReducer from '../reducers/userReducers';
 import {Navbar as Navigation, Nav, NavItem, NavDropdown, MenuItem, FormGroup, FormControl, Modal, Button} from 'react-bootstrap';
-import Dropdown from './sub/Dropdown2.jsx'
-import Searchbar from './sub/Searchbar2.jsx'
+import Dropdown from './sub/Dropdown.jsx'
+import SearchBar from './sub/SearchBar.jsx'
 
 export class Navbar extends React.Component {
   constructor(props) {
@@ -125,7 +125,7 @@ export class Navbar extends React.Component {
             <Dropdown />
           )}
           {this.props.checkFilter() && (
-            <Searchbar />
+            <SearchBar />
           )}
             <NavItem eventKey={1} onClick={this.showModal.bind(this)}>
               Join Room

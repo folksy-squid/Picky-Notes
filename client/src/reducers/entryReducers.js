@@ -16,7 +16,6 @@ export default (state=defaultState, action) => {
   if (action.type === 'FILTER_KEYWORD') {
     let search = action.search;
     let filtered = [];
-    console.log(search);
     state.original.forEach(notebook => {
       if (notebook.topic.toLowerCase().indexOf(search.toLowerCase()) === -1 && notebook.lecturer.toLowerCase().indexOf(search.toLowerCase()) === -1) { return; }
       if (notebook.class === state.selectedClass || state.selectedClass === 'All') {
@@ -46,9 +45,6 @@ export default (state=defaultState, action) => {
 
   if (action.type === 'FILTER_CLASSLIST') {
     let index = Number(action.index.toString().slice(2)) - 1;
-    console.log('index',index)
-    console.log('classlist',state.classList)
-    console.log('classlist',state.classList)
     let className = index > 0 ? state.classList[index] : 'All';
 
     let filteredEntries = (className === 'All') ? state.original : state.original.filter(entry => entry.class.toLowerCase() === className.toLowerCase());
