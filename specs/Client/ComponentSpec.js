@@ -25,6 +25,8 @@ import LectureBox from '../../client/src/components/sub/LectureBox.jsx';
 import {Compile} from '../../client/src/components/Compile';
 import {Review} from '../../client/src/components/Review';
 import Audio from '../../client/src/components/sub/Audio';
+import NoteList from '../../client/src/components/sub/NoteList';
+import ThoughtList from '../../client/src/components/sub/ThoughtList.jsx';
 
 const socket = new mockedSocket;
 
@@ -86,6 +88,9 @@ const mockReducer = function(state = fakeStore, action) {
 
 const store = createStore(mockReducer);
 
+let router = { push: sinon.stub() };
+const context = {router};
+
 describe('<Navbar />', () => {
   let wrapper = shallow(<Navbar />);
   it('should have a navigation element inside', () => {
@@ -107,80 +112,164 @@ describe('<Navbar />', () => {
 
 describe('<Notebook />', () => {
   let wrapper = shallow(<Notebook user={fakeStore.user}/>);
-  it('should not load initially', () => {
-    expect(wrapper.state().loaded).to.equal(false);
-    expect(wrapper.find(SearchBar).length).to.equal(0);
-    expect(wrapper.find(EntryList).length).to.equal(0);
+  describe('should not load on initial load while loaded is false', () => {
+    it('does not load any child components', () => {
+      expect(wrapper.state().loaded).to.equal(false);
+      expect(wrapper.find(SearchBar).length).to.equal(0);
+      expect(wrapper.find(EntryList).length).to.equal(0);
+    });
   });
-  it('should load search bar and entry list', () => {
-    wrapper.setState({loaded: true});
-    expect(wrapper.find(SearchBar).length).to.equal(1);
-    expect(wrapper.find(EntryList).length).to.equal(1);
+  describe('should load when loaded is true', () => {
+    before(() => {
+      wrapper.setState({loaded: true});
+    });
+    it('should load a search bar', () => {
+      expect(wrapper.find(SearchBar).length).to.equal(1);
+    });
+    it('should load an entry list', () => {
+      expect(wrapper.find(EntryList).length).to.equal(1);
+    });
   });
 });
 
 describe('<Lobby />', () => {
-  let router = { push: sinon.stub() };
-  const context = {router};
-  let wrapper = shallow(<Lobby dispatch={store.dispatch} params={{roomId: 10000}} user={fakeStore.user} room = { fakeStore.roomNoInfo } />, { context });
 
-  it('should not load initially', () => {
-    expect(wrapper.state().completed).to.equal(false);
-    expect(wrapper.instance().props.params.roomId).to.equal(10000);
+  let wrapper = shallow(<Lobby dispatch={store.dispatch} params={{roomId: 10000}} user={fakeStore.user} room = { fakeStore.roomNoInfo } />, { context });
+  describe('should not load without roomInfo', () => {
+    it('should not load initially', () => {
+      expect(wrapper.state().completed).to.equal(false);
+      expect(wrapper.find(LectureTitle).length).to.equal(0);
+      expect(wrapper.find(ChatBox).length).to.equal(0);
+      expect(wrapper.find(ShareLink).length).to.equal(0);
+      expect(wrapper.find(ParticipantList).length).to.equal(0);
+    });
   });
-  it('should load lecture title, chatbox, sharelink, and participants list', () => {
-    wrapper = shallow(<Lobby dispatch={store.dispatch} params={{roomId: 10000}} user={fakeStore.user} room = { fakeStore.room } />, { context });
-    expect(wrapper.find(LectureTitle).length).to.equal(1);
-    expect(wrapper.find(ChatBox).length).to.equal(1);
-    expect(wrapper.find(ShareLink).length).to.equal(1);
-    expect(wrapper.find(ParticipantList).length).to.equal(1);
+  describe('should load with roomInfo', () => {
+    before(()=> {
+      wrapper = shallow(<Lobby dispatch={store.dispatch} params={{roomId: 10000}} user={fakeStore.user} room = { fakeStore.room } />, { context });
+    });
+    it('should load a lecture title', () => {
+      expect(wrapper.find(LectureTitle).length).to.equal(1);
+    });
+    it('should load a chatbox', () => {
+      expect(wrapper.find(ChatBox).length).to.equal(1);
+    });
+    it('should load a sharelink', () => {
+      expect(wrapper.find(ShareLink).length).to.equal(1);
+    });
+    it('should load a participants list', () => {
+      expect(wrapper.find(ParticipantList).length).to.equal(1);
+    });
   });
 });
 
 describe('<Lecture />', () => {
-  let router = { push: sinon.stub() };
-  const context = {router};
+
   let wrapper = shallow(<Lecture dispatch={store.dispatch} params={{roomId: 10000}} user={fakeStore.user} room = { fakeStore.roomNoInfo } />, { context });
 
-  it('should not load initially without roomInfo', () => {
-    expect(wrapper.state().loaded).to.equal(false);
-    expect(wrapper.instance().props.params.roomId).to.equal(10000);
+  describe('should not load initially without room Info', () => {
+    it('should not load initially without roomInfo', () => {
+      expect(wrapper.state().loaded).to.equal(false);
+      expect(wrapper.instance().props.params.roomId).to.equal(10000);
+    });
   });
-  it('should load initially with roomInfo', () => {
-    wrapper = shallow(<Lecture dispatch={store.dispatch} params={{roomId: 10000}} user={fakeStore.user} room = { fakeStore.room} />, { context });
-    expect(wrapper.state().loaded).to.equal(true);
-  });
-  it('should load LectureTitle, LectureBox, InputBox, and ParticipantsList', () => {
-    expect(wrapper.find(LectureTitle).length).to.equal(1);
-    expect(wrapper.find(LectureBox).length).to.equal(1);
-    expect(wrapper.find(InputBox).length).to.equal(1);
-    expect(wrapper.find(ParticipantList).length).to.equal(1);
+  describe('should load with roomInfo', () => {
+
+    before(() => {
+      wrapper = shallow(<Lecture dispatch={store.dispatch} params={{roomId: 10000}} user={fakeStore.user} room = { fakeStore.room} />, { context });
+    });
+
+    describe('should set loaded to true with roomInfo', () => {
+      it('should load initially with roomInfo', () => {
+        expect(wrapper.state().loaded).to.equal(true);
+      });
+    });
+
+    describe('should load lecture title, lecture box, input box, and participants list', () => {
+      it('should load a LectureTitle', () => {
+        expect(wrapper.find(LectureTitle).length).to.equal(1);
+      });
+      it('should load a LectureBox', () => {
+        expect(wrapper.find(LectureBox).length).to.equal(1);
+      });
+      it('should load an InputBox', () => {
+        expect(wrapper.find(InputBox).length).to.equal(1);
+      });
+      it('should load a ParticipantsList', () => {
+        expect(wrapper.find(ParticipantList).length).to.equal(1);
+      });
+    });
   });
 });
 
 describe('<Compile />', () => {
-  let router = { push: sinon.stub() };
-  const context = {router};
+
   let wrapper = shallow(<Compile dispatch={store.dispatch} params={{roomId: 10000}} user={fakeStore.user} room = { fakeStore.roomNoInfo } />, { context });
-  it('should not load initially without roomInfo', () => {
-    expect(wrapper.state().loaded).to.equal(false);
+
+  describe('should not load anything without roomInfo', () => {
+    it('should not load initially without roomInfo', () => {
+      expect(wrapper.state().loaded).to.equal(false);
+      expect(wrapper.find(Audio).length).to.equal(0);
+      expect(wrapper.find(LectureTitle).length).to.equal(0);
+      expect(wrapper.find(LectureBox).length).to.equal(0);
+      expect(wrapper.find(InputBox).length).to.equal(0);
+      expect(wrapper.find(ParticipantList).length).to.equal(0);
+    });
   });
-  it('should load initially with roomInfo', () => {
-    wrapper = shallow(<Compile dispatch={store.dispatch} params={{roomId: 10000}} user={fakeStore.user} room = { fakeStore.room } />, { context });
-    expect(wrapper.state().loaded).to.equal(true);
-  });
-  it('should load Audio, LectureTitle, LectureBox, InputBox, and ParticipantList', () => {
-    expect(wrapper.find(Audio).length).to.equal(1);
-    expect(wrapper.find(LectureTitle).length).to.equal(1);
-    expect(wrapper.find(LectureBox).length).to.equal(1);
-    expect(wrapper.find(InputBox).length).to.equal(1);
-    expect(wrapper.find(ParticipantList).length).to.equal(1);
+
+  describe('should load initially with roomInfo', () => {
+    before(() => {
+      wrapper = shallow(<Compile dispatch={store.dispatch} params={{roomId: 10000}} user={fakeStore.user} room = { fakeStore.room } />, { context });
+    });
+    it('should load initially with roomInfo', () => {
+      expect(wrapper.state().loaded).to.equal(true);
+    });
+    it('should load Audio', () => {
+      expect(wrapper.find(Audio).length).to.equal(1);
+    });
+    it('should load lecture title', () => {
+      expect(wrapper.find(LectureTitle).length).to.equal(1);
+    });
+    it('should load lecture box', () => {
+      expect(wrapper.find(LectureBox).length).to.equal(1);
+    });
+    it('should load input box', ()=> {
+      expect(wrapper.find(InputBox).length).to.equal(1);
+    });
+    it('should load participants list', () => {
+      expect(wrapper.find(ParticipantList).length).to.equal(1);
+    });
   });
 });
 
 describe('<Review />', () => {
-  let router = { push: sinon.stub() };
-  const context = {router};
   let wrapper = shallow(<Review dispatch={store.dispatch} params={{roomId: 10000}} user={fakeStore.user} room = { fakeStore.roomNoInfo } />, { context });
 
+  describe('should not load initially without roomInfo', (done) => {
+    it('loaded state should be false and nothing should load', () => {
+      expect(wrapper.state().loaded).to.equal(false);
+      expect(wrapper.find(Audio).length).to.equal(0);
+      expect(wrapper.find(LectureTitle).length).to.equal(0);
+      expect(wrapper.find(NoteList).length).to.equal(0);
+      expect(wrapper.find(ThoughtList).length).to.equal(0);
+    });
+  });
+
+  describe('should load Audio, LectureTitle, NoteList, and ThoughtList when loaded', () => {
+    before(() => {
+      wrapper.setState({loaded: true});
+    });
+    it('should load an audio component', () => {
+      expect(wrapper.find(Audio).length).to.equal(1);
+    });
+    it('should load a lecture title', () => {
+      expect(wrapper.find(LectureTitle).length).to.equal(1);
+    });
+    it('should load a note list ', () => {
+      expect(wrapper.find(NoteList).length).to.equal(1);
+    });
+    it('should load a thought list', () => {
+      expect(wrapper.find(ThoughtList).length).to.equal(1);
+    });
+  });
 });

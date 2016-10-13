@@ -12,7 +12,7 @@ $ = require('jquery'),
 
 $.support.cors = true;
 $.ajaxSettings.xhr = function() {
-    return new XMLHttpRequest();
+  return new XMLHttpRequest();
 };
 Object.keys(document.defaultView).forEach((property) => {
   if (typeof global[property] === 'undefined') {

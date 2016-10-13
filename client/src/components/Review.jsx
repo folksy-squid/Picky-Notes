@@ -20,17 +20,21 @@ export class Review extends React.Component {
     };
   }
   componentWillMount() {
-    var realm = this;
-    var user = this.props.user.information[0];
-    var pathUrl = this.props.params.roomId;
-    this.props.dispatch(setRoomInfo(pathUrl, user, (err, success) => {
-      if (err) {
-        realm.context.router.push('/notebook');
-      } else {
-        realm.setState({loaded: true});
-      }
-    }));
-    this.props.dispatch(showHideThoughts(true));
+    if (this.props.params.roomId && this.props.user.information) {
+      const realm = this;
+      const user = this.props.user.information[0];
+      const pathUrl = this.props.params.roomId;
+      this.props.dispatch(setRoomInfo(pathUrl, user, (err, success) => {
+        if (err) {
+          realm.context.router.push('/notebook');
+        } else {
+          realm.setState({loaded: true});
+        }
+      }));
+      this.props.dispatch(showHideThoughts(true));
+    } else {
+      realm.context.router.push('/');
+    }
   }
 
   static get contextTypes() {
