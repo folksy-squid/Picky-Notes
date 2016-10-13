@@ -37,10 +37,12 @@ export class Compile extends React.Component {
           realm.context.router.push('/notebook');
         } else {
           realm.setState({loaded: true});
+          this.alignInputbox();
         }
       }));
     } else {
       this.setState({loaded: true});
+      this.alignInputbox();
     }
   }
 
@@ -108,8 +110,6 @@ export class Compile extends React.Component {
     const $input = $('.compileInput');
     const $footer = $('.footer');
 
-    console.log(+$container.css('marginLeft').slice(0, -2), +$container.css('paddingLeft').slice(0, -2), $arrow.width(), +$column.css('marginLeft').slice(0, -2), 24)
-
     $input.width( $column.width() - 6 );
     $footer.css({ paddingLeft: +$container.css('marginLeft').slice(0, -2) + +$container.css('paddingLeft').slice(0, -2) - $arrow.width() - +$column.css('marginLeft').slice(0, -2) - 24 });
   }
@@ -117,11 +117,7 @@ export class Compile extends React.Component {
   componentDidMount() {
     this.alignInputbox();
 
-    $( window ).resize(this.alignInputbox.bind(this));
-  }
-
-  componentDidUpdate() {
-    this.alignInputbox();
+    // $( window ).resize(this.alignInputbox.bind(this));
   }
 
 // IF this.props.roomInfo.audioUrl === 'audioUrl', render the audio loading component

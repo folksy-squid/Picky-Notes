@@ -25,7 +25,6 @@ export class App extends React.Component {
 
   componentDidUpdate(prevProps, prevState) {
     if (!prevState.ready && this.state.ready) {
-      console.log('should start now');
       this.joyride.start();
     }
   }
@@ -52,8 +51,8 @@ export class App extends React.Component {
   }
 
   callback(data) {
-    console.log('%ccallback', 'color: #47AAAC; font-weight: bold; font-size: 13px;');
-    console.log(data);
+    // console.log('%ccallback', 'color: #47AAAC; font-weight: bold; font-size: 13px;');
+    // console.log(data);
   }
 
   onClickSwitch(e) {
@@ -82,8 +81,6 @@ export class App extends React.Component {
   render() {
     const state = this.state;
 
-
-
     const childrenWithProps = React.Children.map(this.props.children,
       (child) => React.cloneElement(child, {
         onClickSwitch: this.onClickSwitch,
@@ -93,8 +90,6 @@ export class App extends React.Component {
         joyrideOverlay: state.joyrideOverlay
       })
     );
-    console.log(React.Children);
-    console.log('childrenwithprops', childrenWithProps);
 
     let html;
 
