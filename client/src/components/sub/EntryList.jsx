@@ -1,6 +1,5 @@
 import React from 'react';
 import Entry from './Entry.jsx';
-
 // See below example for rendering with map.
 
 /*
@@ -17,6 +16,4 @@ const EntryList = (props) => (
     {props.entries.map((entry, i) => <Entry key={i} index={i} entry={entry} classColor={entry.id % 5} removeEntry={props.removeEntry}/>)}
   </div>
 );
-
-
 export default EntryList;

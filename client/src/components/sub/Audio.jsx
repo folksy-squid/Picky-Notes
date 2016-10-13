@@ -8,7 +8,7 @@ import {getRoomAudio, setRoomInfo} from '../../actions/roomActions';
 import {highlightNote, setClass, removeTimer} from '../../actions/noteActions';
 import {togglePlay, setPos, setVolume, play, setAudioRateChange, checkWavePos} from '../../actions/waveformActions';
 
-class Audio extends React.Component {
+export class Audio extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -126,7 +126,7 @@ class Audio extends React.Component {
         </div>
         <span className="audioPlayer" style={{visibility: this.state.waveformDisplay}}>
           <i onClick={this.handleTogglePlay.bind(this)} className={`fa ${this.props.waveform.playing ? 'fa-pause-circle' : 'fa-play-circle'} fa-3x text-primary playButton`}></i>
-          
+
           <span>{this.formatTime(this.props.waveform.pos)}</span>
 
           <span className="waveform" ref="wavesurfContainer" onClick={this.handleClick.bind(this)} >

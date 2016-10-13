@@ -2,7 +2,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {getCurrentView} from '../../helpers.js';
 import RoomReducer from '../../reducers/roomReducers';
-class LectureTitle extends React.Component {
+export class LectureTitle extends React.Component {
   constructor(props) {
     super(props);
     this.state = {

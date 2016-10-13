@@ -1,22 +1,21 @@
 import React from 'react';
 import { Link, Router } from 'react-router';
-import LectureTitle from './sub/LectureTitle.jsx';
-import ParticipantList from './sub/ParticipantList.jsx';
-import ChatBox from './sub/ChatBox.jsx';
 import {connect} from 'react-redux';
 import roomReducer from '../reducers/roomReducers';
 import {joinSocketRoom, createAudioStream, startRecording, setRoomInfo} from '../actions/roomActions';
+import LectureTitle from './sub/LectureTitle.jsx';
 import ShareLink from './sub/ShareLink.jsx';
+import ChatBox from './sub/ChatBox.jsx';
+import ParticipantList from './sub/ParticipantList.jsx';
 
-class Lobby extends React.Component {
+export class Lobby extends React.Component {
   constructor(props) {
     super(props);
-    (!props.user) && this.context.router.push('/');
     var pathUrl = props.room.roomInfo ? props.room.roomInfo.pathUrl : props.params.roomId;
     this.state = {
       isHost: false,
       pathUrl: pathUrl,
-      completed: true,
+      completed: false,
       error: '',
     };
   }
@@ -28,10 +27,10 @@ class Lobby extends React.Component {
 
   componentWillMount() {
     // join the socket if there is no room info
+    (!this.props.user) && this.context.router.push('/');
     const user = this.props.user.information[0];
     const pathUrl = this.props.params.roomId;
     if (!this.props.room.roomInfo) {
-      this.setState({completed: false});
       this.props.dispatch(setRoomInfo(pathUrl, user, (err, success) => {
         if (err) {
           return this.context.router.push('/notebook');
@@ -48,6 +47,7 @@ class Lobby extends React.Component {
         }));
       }));
     } else {
+      this.setState({completed: true});
       this.checkHost();
       this.applyListeners();
     }

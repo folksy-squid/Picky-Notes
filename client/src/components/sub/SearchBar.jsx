@@ -1,9 +1,9 @@
 import React from 'react';
-import Connection from '../../Connection.js';
+import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import Dropdown from './Dropdown.jsx';
 
-class SearchBar extends React.Component {
+export class SearchBar extends React.Component {
 
   constructor(props) {
     super(props);
@@ -46,4 +46,10 @@ class SearchBar extends React.Component {
   }
 }
 
-export default Connection(SearchBar);
+const mapStateToProps = (state) => {
+  return {
+    ...state
+  };
+};
+
+export default connect(mapStateToProps)(SearchBar);

@@ -3,7 +3,7 @@ import Connection from '../Connection.js';
 import Navbar from './Navbar.jsx';
 import { Link } from 'react-router';
 
-class Main extends React.Component {
+export class Main extends React.Component {
   constructor (props) {
     super(props);
   }
