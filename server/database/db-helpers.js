@@ -2,56 +2,40 @@
 const md5 = require('js-md5');
 const {User, Room, Note, db} = require('./db-config');
 
-const createNewUser = ({facebookId, name, email, pictureUrl, gender}, cb) => {
-
-  User.findOrCreate({
-    where: {
-      facebookId: facebookId
-    },
-    defaults: {
-      name: name,
-      email: email,
-      pictureUrl: pictureUrl,
-      gender: gender
-    }
-  })
-  // created is true  if new user
-  // created is false if user already exists
-  .spread((user, created) => cb(user, created));
-};
-
 const createNewRoom = ({topic, className, lecturer, hostId}, cb) => {
-  // { topic, class, lecturer, hostId }
-  const pathUrl = md5(topic + className + lecturer + hostId + Math.random()).slice(0, 5);
+
+  const pathUrl = generatePathUrl(topic + className + lecturer + hostId);
 
   Room.create({
     pathUrl: pathUrl,
     topic: topic,
-    class: className,
+    className: className,
     lecturer: lecturer,
     hostId: hostId
   })
   .then(roomInfo => cb(roomInfo));
 };
 
+const generatePathUrl = data => md5(data + Math.random()).slice(0, 5);
+
 const joinRoom = (userId, pathUrl, cb) => {
   User.findById(userId)
   .then(currentUser => {
     Room.findOne({ where: { pathUrl: pathUrl } })
     .then(currentRoom => {
-      currentUser.addRoom(currentRoom);
-      cb(currentRoom);
+      currentUser.addRoom(currentRoom)
+      .then(() => cb(currentRoom));
     });
   });
 };
 
 const createNewNote = (note, cb) => {
-  // content, audioTimestamp, show, roomId, editingUserId, originalUserId
   note.editingUserId = note.originalUserId;
   note.show = true;
 
   Note.create(note)
-  .then((note) => { cb(note.dataValues); });
+  .then(cb)
+  .catch(cb);
 };
 
 const multiplyNotes = (notes, arrOfClients) => {
@@ -110,7 +94,7 @@ const showFilteredNotes = ({userId, roomId}, cb) => {
 const updateNotes = (userId, roomId, allNotes, cb) => {
   let promises = [];
 
-  const updateOneNote = note => {
+  const updateOneNote = (note, userId, roomId) => {
     Note.update(note, { where: {
       id: note.id,
       editingUserId: userId,
@@ -209,8 +193,8 @@ const deleteNotebook = (userId, roomId, cb) => {
 };
 
 module.exports = {
-  createNewUser,
   createNewRoom,
+  generatePathUrl,
   joinRoom,
   showAllNotes,
   showFilteredNotes,
