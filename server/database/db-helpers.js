@@ -23,19 +23,19 @@ const joinRoom = (userId, pathUrl, cb) => {
   .then(currentUser => {
     Room.findOne({ where: { pathUrl: pathUrl } })
     .then(currentRoom => {
-      currentUser.addRoom(currentRoom);
-      cb(currentRoom);
+      currentUser.addRoom(currentRoom)
+      .then(() => cb(currentRoom));
     });
   });
 };
 
 const createNewNote = (note, cb) => {
-  // content, audioTimestamp, show, roomId, editingUserId, originalUserId
   note.editingUserId = note.originalUserId;
   note.show = true;
 
   Note.create(note)
-  .then(cb);
+  .then(cb)
+  .catch(cb);
 };
 
 const multiplyNotes = (notes, arrOfClients) => {

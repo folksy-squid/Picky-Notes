@@ -2,7 +2,70 @@ const {createNewRoom, generatePathUrl, joinRoom, createNewNote, multiplyNotes, c
 const {User, Room, Note, db} = require('../../../server/database/db-config');
 const expect = require('chai').expect;
 
-xdescribe('createNewRoom', () => {
+const testUser1 = {
+  id: 4242,
+  facebookId: '123456789519519',
+  name: 'TestUser1',
+  email: 'testuser1@email.com',
+  pictureUrl: 'www.picture.com/test1',
+  gender: 'Male'
+};
+
+const testUser2 = {
+  id: 3131,
+  facebookId: '0987654321',
+  name: 'TestUser2',
+  email: 'testuser2@email.com',
+  pictureUrl: 'www.picture.com/test2',
+  gender: 'Female'
+};
+
+const testRoom = {
+  id: 5353,
+  pathUrl: 'abcde',
+  topic: 'Toy Problems',
+  className: 'Hack Reactor',
+  lecturer: 'Fred',
+  audioUrl: 'www.audio.com',
+  hostId: 4242
+};
+
+const testNote1 = {
+  content: 'TestNote1',
+  thought: false,
+  audioTimestamp: '2248',
+  show: true,
+  originalUserId: testUser1.id,
+};
+
+const testNote2 = {
+  content: 'TestNote2',
+  thought: false,
+  audioTimestamp: '4605',
+  show: true,
+  originalUserId: testUser2.id,
+};
+
+const testNote3 = {
+  content: 'TestNote3',
+  thought: true,
+  audioTimestamp: '4605',
+  show: true,
+  originalUserId: testUser1.id,
+};
+
+beforeEach(done => {
+  User.destroy({ where: testUser1 })
+  .then(() => User.destroy({ where: testUser2 }))
+  .then(() => Room.destroy({ where: testRoom }))
+  .then(() => Note.destroy({ where: testNote1 }))
+  .then(() => Note.destroy({ where: testNote2 }))
+  .then(() => Note.destroy({ where: testNote3 }))
+  .then(() => done())
+  .catch(done);
+});
+
+describe('createNewRoom', () => {
 
   const testRoom = {
     topic: 'Data Structures',
@@ -13,26 +76,11 @@ xdescribe('createNewRoom', () => {
 
   let createdTestRoom;
 
-  /************* Sample Data ************
-  { audioUrl: 'audio url',
-    timeLength: null,
-    id: 10,
-    pathUrl: '68eee',
-    topic: 'Data Structures',
-    className: 'Hack Reactor',
-    lecturer: 'Allen Price',
-    hostId: 42,
-    updatedAt: 2016-10-12T22:54:38.651Z,
-    createdAt: 2016-10-12T22:54:38.651Z,
-    startTimestamp: null }
-  **************************************/
-
   beforeEach(done => {
     createNewRoom(testRoom, roomInfo => {
       createdTestRoom = roomInfo.dataValues;
       done();
-    })
-    .catch((err) => done(err));
+    });
   });
 
   afterEach(done => {
@@ -57,7 +105,7 @@ xdescribe('createNewRoom', () => {
   });
 });
 
-xdescribe('generatePathUrl', () => {
+describe('generatePathUrl', () => {
 
   let testPathUrl;
 
@@ -76,46 +124,19 @@ xdescribe('generatePathUrl', () => {
   });
 });
 
-xdescribe('joinRoom', () => {
-
-  const testUser = {
-    id: 4242,
-    facebookId: '123456789519519',
-    name: 'TestUser',
-    email: 'testuser@email.com',
-    pictureUrl: 'www.picture.com/test',
-    gender: 'Male'
-  };
-
-  const testRoom = {
-    id: 5353,
-    pathUrl: 'abcde',
-    topic: 'Toy Problems',
-    className: 'Hack Reactor',
-    lecturer: 'Fred',
-    audioUrl: 'www.audio.com',
-    hostId: 4242
-  };
+describe('joinRoom', () => {
 
   let createdTestUser, createdTestRoom, foundRoomInfo;
 
   beforeEach(done => {
-    User.destroy({ where: testUser })
-    .then(() => Room.destroy({ where: testRoom }))
-    .then(() => User.create(testUser))
+    User.create(testUser1)
     .then((user) => createdTestUser = user.dataValues)
     .then(() => Room.create(testRoom))
     .then((room) => createdTestRoom = room.dataValues)
-    .then(() => joinRoom(testUser.id, testRoom.pathUrl, (data) => {
+    .then(() => joinRoom(testUser1.id, testRoom.pathUrl, (data) => {
       foundRoomInfo = data.dataValues;
       done();
-    }));
-  });
-
-  afterEach(done => {
-    User.destroy({ where: testUser })
-    .then(() => Room.destroy({ where: testRoom }))
-    .then(() => done())
+    }))
     .catch(err => done(err));
   });
 
@@ -144,53 +165,25 @@ xdescribe('joinRoom', () => {
 });
 
 describe('createNewNote', () => {
-  const testUser = {
-    id: 4242,
-    facebookId: '123456789519519',
-    name: 'TestUser',
-    email: 'testuser@email.com',
-    pictureUrl: 'www.picture.com/test',
-    gender: 'Male'
-  };
-
-  const testRoom = {
-    id: 5353,
-    pathUrl: 'abcde',
-    topic: 'Toy Problems',
-    className: 'Hack Reactor',
-    lecturer: 'Fred',
-    audioUrl: 'www.audio.com',
-    hostId: 4242
-  };
 
   const testNote = {
+    content: 'TestNote',
     thought: false,
-    content: 'Hello World',
-    audioTimestamp: '2432',
-    roomId: 5353,
-    originalUserId: 4242
+    audioTimestamp: '2248',
+    originalUserId: 4242,
+    roomId: 5353
   };
 
   let createdTestNote;
 
   beforeEach(done => {
-    User.destroy({ where: testUser })
-    .then(() => Room.destroy({ where: testRoom }))
-    .then(() => Note.destroy({ where: testNote }))
-    .then(() => User.create(testUser))
+    Note.destroy({ where: testNote })
+    .then(() => User.create(testUser1))
     .then(() => Room.create(testRoom))
-    .then(() => createNewNote(testNote, (data) => {
+    .then(() => createNewNote(testNote, data => {
       createdTestNote = data.dataValues;
       done();
     }))
-    .catch(err => done(err));
-  });
-
-  afterEach(done => {
-    User.destroy({ where: testUser })
-    .then(() => Room.destroy({ where: testRoom }))
-    .then(() => Note.destroy({ where: testNote }))
-    .then(() => done())
     .catch(err => done(err));
   });
 
@@ -210,13 +203,14 @@ describe('createNewNote', () => {
     expect(createdTestNote.roomId).to.equal(testNote.roomId);
     expect(createdTestNote.originalUserId).to.equal(testNote.originalUserId);
 
+    // defaults from note creation
     expect(createdTestNote.show).to.be.true;
     expect(createdTestNote.editingUserId).to.equal(testNote.originalUserId);
   });
 
 });
 
-xdescribe('multiplyNotes', () => {
+describe('multiplyNotes', () => {
   const notes = [{
     content: 'This is a note for User 0',
     show: true,
@@ -250,7 +244,35 @@ xdescribe('multiplyNotes', () => {
   });
 });
 
-xdescribe('createRoomNotes', () => {});
+describe('createRoomNotes', () => {
+
+  const testNotes = [testNote1, testNote2, testNote3];
+
+  beforeEach(done => {
+    User.create(testUser1)
+    .then(() => User.create(testUser2))
+    .then(() => Room.create(testRoom))
+    .then(() => createRoomNotes(testNotes, 5353, ['4242', '3131'], done))
+    .catch(err => done(err));
+  });
+
+  it('should bulk create all notes', (done) => {
+    let allTests = [];
+    allTests.push(Note.findOne({ where: testNote1, raw: true }));
+    allTests.push(Note.findOne({ where: testNote2, raw: true }));
+    allTests.push(Note.findOne({ where: testNote3, raw: true }));
+
+    Promise.all(allTests)
+    .then((data) => {
+      expect(data[0].content).to.equal(testNote1.content);
+      expect(data[1].content).to.equal(testNote2.content);
+      expect(data[2].content).to.equal(testNote3.content);
+      done();
+    })
+    .catch(err => done(err));
+  });
+
+});
 xdescribe('showAllNotes', () => {});
 xdescribe('showFilteredNotes', () => {});
 xdescribe('updateNotes', () => {});
