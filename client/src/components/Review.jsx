@@ -66,13 +66,15 @@ class Review extends React.Component {
             <NoteList />
           </div>
           <div className="col-sm-3">
-            <button className="btn btn-md btn-primary" onClick={this.goToCompiledView.bind(this)}>
-              Add / Edit
-            </button>
-            <button className="btn btn-md btn-info" onClick={this.toggleThoughts.bind(this)}>
-              {this.state.thoughtButton}
-            </button>
-            <ThoughtList />
+            <div className="fixed-div">
+              <button className="btn btn-md btn-primary" onClick={this.goToCompiledView.bind(this)}>
+                Add / Edit
+              </button>
+              <button className="btn btn-md btn-info" onClick={this.toggleThoughts.bind(this)}>
+                {this.state.thoughtButton}
+              </button>
+              <ThoughtList />
+            </div>
           </div>
         </div>
         <div className="footer reviewFooter slideUp">

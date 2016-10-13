@@ -96,7 +96,8 @@ class Lecture extends React.Component {
     this.props.dispatch(stopRecording());
   }
 
-  componentDidMount() {
+  alignInputbox() {
+    if (!this.state.loaded) { return; }
     const $footer = $('.footer');
     const $column = $('.col-xs-9');
     const $container = $('.container');
@@ -104,11 +105,15 @@ class Lecture extends React.Component {
 
     $form.width( $column.width() );
     $footer.css({ paddingLeft: +$container.css('marginLeft').slice(0, -2) + +$container.css('paddingLeft').slice(0, -2) });
+  }
 
-    $( window ).resize(function() {
-      $form.width( $column.width() );
-      $footer.css({ paddingLeft: +$container.css('marginLeft').slice(0, -2) + +$container.css('paddingLeft').slice(0, -2) });
-    });
+  componentDidMount() {
+    this.alignInputbox();
+    $( window ).resize(this.alignInputbox.bind(this));
+  }
+
+  componentDidUpdate() {
+    this.alignInputbox();
   }
 
   render() {

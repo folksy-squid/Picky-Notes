@@ -99,38 +99,28 @@ class Compile extends React.Component {
     return time;
   }
 
-  componentDidMount() {
+  alignInputbox() {
     if (!this.state.loaded) { return; }
-    const $arrow = $('.ion-arrow-right-c');
-    const $column = $('.col-xs-9');
-    const $form = $('.compileForm');
-    const $footer = $('.footer');
-    
-    $form.width( $column.width() );
-    $footer.css({ paddingLeft: +$container.css('marginLeft').slice(0, -2) + +$container.css('paddingLeft').slice(0, -2) - $arrow.width() - +$column.css('marginLeft').slice(0, -2) - 24 });
-
-    $( window ).resize(() => {
-      const $arrow = $('.ion-arrow-right-c');
-      const $column = $('.col-xs-9');
-      const $container = $('.container');
-      const $input = $('.compileInput');
-      const $footer = $('.footer');
-
-      $input.width( $column.width() - 6 );
-      $footer.css({ paddingLeft: +$container.css('marginLeft').slice(0, -2) + +$container.css('paddingLeft').slice(0, -2) - $arrow.width() - +$column.css('marginLeft').slice(0, -2) - 24 });
-    }); 
-  }
-
-  componentDidUpdate() {
-    if (!this.state.loaded) { return; }
-    const $arrow = $('.ion-arrow-right-c');
+    const $arrow = $('.inputArrow');
     const $column = $('.col-xs-9');
     const $container = $('.container');
     const $input = $('.compileInput');
     const $footer = $('.footer');
+
+    console.log(+$container.css('marginLeft').slice(0, -2), +$container.css('paddingLeft').slice(0, -2), $arrow.width(), +$column.css('marginLeft').slice(0, -2), 24)
     
     $input.width( $column.width() - 6 );
     $footer.css({ paddingLeft: +$container.css('marginLeft').slice(0, -2) + +$container.css('paddingLeft').slice(0, -2) - $arrow.width() - +$column.css('marginLeft').slice(0, -2) - 24 });
+  }
+
+  componentDidMount() {
+    this.alignInputbox();
+
+    $( window ).resize(this.alignInputbox.bind(this)); 
+  }
+
+  componentDidUpdate() {
+    this.alignInputbox();
   }
 
 // IF this.props.roomInfo.audioUrl === 'audioUrl', render the audio loading component
@@ -145,8 +135,10 @@ class Compile extends React.Component {
             <LectureBox />
           </div>
           <div className="col-xs-3">
-            <button className="btn btn-md btn-success" onClick={this.reviewNotesHandler.bind(this)}>Save & Review</button>
+            <div className="fixed-div">
+              <button className="btn btn-md btn-success" onClick={this.reviewNotesHandler.bind(this)}>Save & Review</button>
               <ParticipantList />
+            </div>
           </div>
         </div>
       </div>

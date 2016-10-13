@@ -88,7 +88,7 @@ class InputBox extends React.Component {
     if (getCurrentView(this.props.routing.locationBeforeTransitions.pathname) === 'compile') {
       return (
         <span className="compileForm" >
-          <i className='ion ion-arrow-right-c fa-2x' style={{ color: '#872100' }}></i>
+          <i className='ion ion-arrow-right-c fa-2x inputArrow' style={{ color: '#872100' }}></i>
           <input ref="inputNote" className="compileInput" type="text" onKeyUp={this.keyUpHandler.bind(this)} autoFocus/>
           {this.state.showInsertPos && <span className="insertTimestamp">{this.formatTime(this.state.insertPos)}</span>}
         </span>

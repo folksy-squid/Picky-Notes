@@ -13,7 +13,7 @@ body {
 
 .fixed-div {
   position: fixed;
-  top: 100px;
+  transform: translateY(0%);
 }
 
 .container-fluid {

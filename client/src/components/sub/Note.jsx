@@ -92,6 +92,10 @@ class Note extends React.Component {
     this.setState({ editTimestamp: false });
   }
 
+  unEditContent() {
+    this.setState({ editContent: false });
+  }
+
   render() {
 
     const noteClass = () => {
@@ -118,7 +122,7 @@ class Note extends React.Component {
             {this.state.editContent ?
               <span className={`content ${classColor(`${this.props.classColor}`)}`}>
                 <form onSubmit={this.editContentHandler.bind(this)}>
-                  <input ref="noteInput" type="text" defaultValue={this.props.noteInfo.content} />
+                  <input ref="noteInput" type="text" defaultValue={this.props.noteInfo.content} onBlur={this.unEditContent.bind(this)} autoFocus/>
                 </form>
               </span>
               :
