@@ -21,7 +21,7 @@ export class LectureTitle extends React.Component {
       view = (
         <div className="review-header">
         <h4 className="lectureTitle">
-        {this.props.room.roomInfo.topic} by {this.props.room.roomInfo.lecturer}
+          {this.props.room.roomInfo.topic} by {this.props.room.roomInfo.lecturer}
         </h4>
         <h4 className="review-date">
         {this.state.createdAt}
@@ -29,6 +29,19 @@ export class LectureTitle extends React.Component {
         </div>
       );
     }
+    else if (getCurrentView(pathname) === 'lecture') {
+      view = (
+      <div>
+        <h4 className="lectureTitle lecture-view-heading">
+          {this.props.room.roomInfo.topic}
+        </h4>
+        <h5>
+          by {this.props.room.roomInfo.lecturer}
+        </h5>
+      </div>
+      );
+    }
+
     return view;
   }
 }

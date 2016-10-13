@@ -121,19 +121,21 @@ export class Lecture extends React.Component {
       this.state.loaded ? (
       <div>
         <div className="container">
-          <LectureTitle />
           <div className="row">
             <div className="col-xs-9" >
               <LectureBox />
             </div>
             <div className="col-xs-3">
               <div className="fixed-div">
-                {this.state.isHost && (<button className="btn btn-md btn-danger" style={{display: this.state.endLectureDisplay}} onClick={this.endLecture.bind(this)}>
-                  Stop Recording
-                </button>)}
-                <button className="btn btn-md btn-success" style={{display: this.state.readyButtonDisplay}} onClick={this.sendReady.bind(this)}>
-                  Ready
-                </button>
+                <LectureTitle />
+                <div className="button-group">
+                  {this.state.isHost && (<button className="btn btn-md btn-danger" style={{display: this.state.endLectureDisplay}} onClick={this.endLecture.bind(this)}>
+                    Stop Recording
+                  </button>)}
+                  <button className="btn btn-md btn-success" style={{display: this.state.readyButtonDisplay}} onClick={this.sendReady.bind(this)}>
+                    Ready
+                  </button>
+                </div>
                 <ParticipantList checkHostLecture={this.checkHost.bind(this)} hideReadyButton={this.hideReadyButton.bind(this)}/>
               </div>
             </div>

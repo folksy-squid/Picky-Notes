@@ -26,15 +26,9 @@ class LectureBox extends React.Component {
 
   render() {
     let view = (
-      <div className="lecture-box">
-        <ul className="nav nav-tabs">
-          <li className="active">
-            <h4>Notes & Thoughts</h4>
-          </li>
-        </ul>
-        <div>
-          <NoteList />
-        </div>
+      <div className="lecture-box lecture-view-heading">
+        <h4>Notes & Thoughts</h4>
+        <NoteList />
       </div>
     );
 

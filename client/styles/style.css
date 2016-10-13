@@ -319,6 +319,10 @@ h2.new-room-title {
   flex-direction: column;
 }
 
+.lobby > .row {
+  margin-top: 20px;
+}
+
 .panel-item {
   margin-top: 25px;
   margin-bottom: 10px;
@@ -341,15 +345,22 @@ h2.new-room-title {
   height: 20%;
 }
 
+.media-list {
+  margin-bottom: 0px;
+}
+
 #message-list {
-  height: 80%;
+  height: 84%;
   overflow: scroll;
+}
+
+.chatbox > .panel-footer {
+  border: 1px solid #dddddd;
 }
 
 .message-picture {
   max-width: 80px;
   height: auto;
-  border-radius: 5px;
 }
 
 .message-body {
@@ -386,6 +397,8 @@ small.text-muted {
 .participants {
   font-size: 1.3em;
   margin-top: 40px;
+  max-height: 260px;
+  overflow: scroll;
 }
 
 .participants i {
@@ -427,6 +440,22 @@ small.text-muted {
   font-size: 12px;
   vertical-align: middle;
 }
+
+/*
+  =================================
+    Lecture
+  =================================
+*/
+
+.lecture-view-heading {
+  padding-top: 20px;
+}
+
+.button-group {
+  padding-top: 30px;
+  padding-bottom: 30px;
+}
+
 
 /*
   =================================

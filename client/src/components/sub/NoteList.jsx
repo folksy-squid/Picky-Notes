@@ -29,6 +29,9 @@ class NoteList extends React.Component {
     if (this.props.room.socket) {
       this.props.room.socket.on('add note success', (note) => {
         this.props.dispatch(addNote(note));
+        if (this.state.view === 'lecture') {
+          this.autoScrollDown();
+        }
       });
     }
     if (this.state.view === 'lecture') {
@@ -38,6 +41,11 @@ class NoteList extends React.Component {
     } else if (this.state.view === 'review') {
       this.getReviewNotes(userId, roomId);
     }
+  }
+
+  autoScrollDown() {
+    let noteList = document.getElementsByClassName('note-list')[0];
+    $(window).scrollTop(noteList.scrollHeight);
   }
 
   sendStatus() {

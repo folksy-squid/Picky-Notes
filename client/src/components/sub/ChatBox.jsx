@@ -45,7 +45,7 @@ class ChatBox extends Component {
     <div className="chatbox panel panel-default">
       <div className="panel-heading">
         <h4>
-          Chat here:
+          Chatterbox
         </h4>
       </div>
       <div className="panel-body" id="message-list">
