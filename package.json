@@ -10,9 +10,7 @@
     "test:client": "mocha specs/Client/helpers.js specs/Client/ComponentSpec.js",
     "test:client:watch": "npm run test:client -- --watch",
     "client": "export NODE_ENV='client' && node server/server.js --ignore components",
-    "dev": "export NODE_ENV='dev' && (nodemon server/server.js & webpack --watch)",
-    "postinstall": "cd node_modules/lame && npm install"
-
+    "dev": "export NODE_ENV='dev' && (nodemon server/server.js & webpack --watch)"
   },
   "repository": {
     "type": "git",
