@@ -1,54 +1,73 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import { Link } from 'react-router';
-import Dropdown from './Dropdown.jsx';
+import {Navbar as Navigation, FormGroup, FormControl} from 'react-bootstrap'
+import {connect} from 'react-redux';
+
+import NoteReducer from '../../reducers/noteReducers';
+import RoomReducer from '../../reducers/roomReducers';
+import UserReducer from '../../reducers/userReducers';
+import EntryReducer from '../../reducers/entryReducers';
+
+import {filterKeyword} from '../../actions/entryActions';
 
 export class SearchBar extends React.Component {
-
   constructor(props) {
     super(props);
-    this.state = {
-      allClasses: []
-    };
   }
 
-  componentWillMount() {
-    this.getClassList();
+  static propTypes = {
+    addSteps: React.PropTypes.func.isRequired,
+    addToolTip: React.PropTypes.func.isRequired,
+    joyrideOverlay: React.PropTypes.bool.isRequired,
+    joyrideType: React.PropTypes.string.isRequired,
+    onClickSwitch: React.PropTypes.func.isRequired
+  }
+
+  componentDidMount() {
+    var data = {
+      title: 'test',
+      text: '<h2 style="margin-bottom: 10px; line-height: 1.6">Now you can open tooltips independently!</h2>And even style them one by one!',
+      selector: '#step1 a',
+      position: 'bottom',
+      event: 'hover',
+      style: {
+        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+        borderRadius: 0,
+        color: '#fff',
+        mainColor: '#ff67b4',
+        textAlign: 'center',
+        width: '29rem'
+      }
+    }
+    // this.props.addToolTip(data)
   }
 
   getUserInput (e) {
-    this.props.filterKeyword(e.target.value);
+    this.props.dispatch(filterKeyword(e.target.value));
   }
-
-  getClassList () {
-    var classList = {};
-    var result = [];
-    for (var i = 0; i < this.props.entries.length; i++) {
-      var className = this.props.entries[i].class;
-      classList[className] = className;
-    }
-    for (var key in classList) {
-      this.state.allClasses.push(classList[key]);
-    }
-  }
-
-  /* <Dropdown list={this.state.allClasses} filterClass={this.props.filterClass} /> */
 
   render() {
     return (
-      <form className="navbar-form" role="search">
-        <div className="form-group">
-          <input type="text" className="form-control" placeholder="Search!" onChange={this.getUserInput.bind(this)} />
-        </div>
-        <Dropdown list={this.state.allClasses} filterClass={this.props.filterClass} />
-      </form>
-    );
+      <li id="step1" role="presentation">
+        <Navigation.Form>
+          <FormGroup>
+            <FormControl type="text" placeholder="Search" onChange={this.getUserInput.bind(this)}/>
+          </FormGroup>
+        </Navigation.Form>
+      </li>
+    )
   }
+
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state, ownProps) => {
+  console.log('ownprops', ownProps);
   return {
-    ...state
+    ...state,
+    ...ownProps,
+    RoomReducer,
+    UserReducer,
+    NoteReducer,
+    EntryReducer
   };
 };
 

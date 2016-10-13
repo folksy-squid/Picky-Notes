@@ -4,7 +4,14 @@ import {connect} from 'react-redux';
 import {IndexLinkContainer, LinkContainer} from 'react-router-bootstrap';
 import {joinSocketRoom} from '../actions/roomActions';
 import {logOut} from '../actions/userActions';
+import NoteReducer from '../reducers/noteReducers';
+import RoomReducer from '../reducers/roomReducers';
+import UserReducer from '../reducers/userReducers';
 import {Navbar as Navigation, Nav, NavItem, NavDropdown, MenuItem, FormGroup, FormControl, Modal, Button} from 'react-bootstrap';
+import Dropdown from './sub/Dropdown.jsx'
+import SearchBar from './sub/SearchBar.jsx'
+import Joyride from 'react-joyride';
+
 
 export class Navbar extends React.Component {
   constructor(props) {
@@ -57,7 +64,7 @@ export class Navbar extends React.Component {
   }
 
   render() {
-
+    console.log('checkfilter', this.props.checkFilter);
     let close = () => this.setState({ show: false });
 
     /*=============================
@@ -75,7 +82,7 @@ export class Navbar extends React.Component {
             <div className="form-group form__nao">
               <span className="input input--nao">
                 <input className="input__field input__field--nao" type="text" id="input-1" onChange={this.updateInput.bind(this)}/>
-                <label className="input__label input__label--nao" for="input-1">
+                <label className="input__label input__label--nao" htmlFor="input-1">
                   <span className="input__label-content input__label-content--nao">Enter Access Code</span>
                 </label>
                 <svg className="graphic graphic--nao" width="300%" height="100%" viewBox="0 0 1200 60" preserveAspectRatio="none">
@@ -116,15 +123,26 @@ export class Navbar extends React.Component {
         </Navigation.Header>
         <Navigation.Collapse>
           <Nav pullRight>
-            <NavItem active={false} eventKey={1} onClick={this.showModal.bind(this)}>
+          {this.props.checkFilter() && (
+            <Dropdown />
+          )}
+          {this.props.checkFilter() && (
+            <SearchBar
+              onClickSwitch={this.props.onClickSwitch}
+              addSteps={this.props.addSteps}
+              addToolTip={this.props.addToolTip}
+              joyrideType={this.props.joyrideType}
+              joyrideOverlay={this.props.joyrideOverlay} />
+          )}
+            <NavItem eventKey={1} onClick={this.showModal.bind(this)}>
               Join Room
             </NavItem>
             <LinkContainer to="/new">
-              <NavItem active={false} eventKey={2}>
+              <NavItem eventKey={2}>
                 New Room
               </NavItem>
             </LinkContainer>
-            <NavItem active={false} eventKey={3} href="/" onClick={this.logout.bind(this)}>
+            <NavItem eventKey={3} href="/" onClick={this.logout.bind(this)}>
               Logout
             </NavItem>
           </Nav>
@@ -134,11 +152,17 @@ export class Navbar extends React.Component {
     );
 
   }
+
+
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state, ownProps) => {
   return {
-    ...state
+    ...state,
+    ...ownProps,
+    RoomReducer,
+    UserReducer,
+    NoteReducer,
   };
 };
 

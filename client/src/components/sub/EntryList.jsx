@@ -13,7 +13,8 @@ import Entry from './Entry.jsx';
 
 const EntryList = (props) => (
   <div className="container-fluid">
-    {props.entries.map((entry, i) => <Entry key={i} index={i} entry={entry} classColor={entry.id % 5} removeEntry={props.removeEntry}/>)}
+    {props.entries.map((entry, i) => <Entry key={i} index={i} entryInfo={entry} classColor={entry.id % 5} removeEntry={props.removeEntry}/>)}
   </div>
 );
+
 export default EntryList;

@@ -22,9 +22,9 @@ class Entry extends React.Component {
       data: JSON.stringify({pathUrl}),
       success: (res) => {
         if (res.active) {
-          this.context.router.push(`/lecture/${this.props.entry.pathUrl}`);
+          this.context.router.push(`/lecture/${this.props.entryInfo.pathUrl}`);
         } else {
-          this.context.router.push(`/review/${this.props.entry.pathUrl}`);
+          this.context.router.push(`/review/${this.props.entryInfo.pathUrl}`);
         }
       }
     });
@@ -32,7 +32,8 @@ class Entry extends React.Component {
 
   deleteHandler() {
     let userId = this.props.user.information[0].id;
-    let roomId = this.props.entry.id;
+    let roomId = this.props.entryInfo.id;
+    console.log('roomId', roomId, this.props);
     $.ajax({
       method: 'DELETE',
       url: `/api/rooms?userId=${userId}&roomId=${roomId}`,
@@ -48,9 +49,9 @@ class Entry extends React.Component {
         <div className={`w3-card-4 notebook${this.props.classColor}`} onClick={this.clickHandler.bind(this)}>
           <div className="w3-container">
             <br />
-            <div className='notebook-topic'>{`${this.props.entry.topic}`}</div>
-            <div className='notebook-lecturer'>{`by ${this.props.entry.lecturer}`}</div>
-            <div className='notebook-class'>{`${this.props.entry.class}`}</div>
+            <div className='notebook-topic'>{`${this.props.entryInfo.topic}`}</div>
+            <div className='notebook-lecturer'>{`by ${this.props.entryInfo.lecturer}`}</div>
+            <div className='notebook-class'>{`${this.props.entryInfo.class}`}</div>
             <br />
           </div>
         </div>

@@ -6,11 +6,13 @@ import note from './noteReducers';
 import user from './userReducers';
 import room from './roomReducers';
 import waveform from './waveformReducers';
+import entry from './entryReducers';
 
 export default combineReducers({
   user,
   note,
   room,
   routing,
-  waveform
+  waveform,
+  entry
 });

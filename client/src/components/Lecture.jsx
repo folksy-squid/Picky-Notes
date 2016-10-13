@@ -141,7 +141,7 @@ export class Lecture extends React.Component {
         </div>
         <span className="footer compileFooter slideUp" >
           <InputBox />
-        </span> 
+        </span>
       </div>
       ) : (<h2>{this.state.error}</h2>)
     );
