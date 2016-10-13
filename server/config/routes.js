@@ -119,7 +119,7 @@ module.exports = (app, express, io) => {
     response.sendFile(path.resolve(__dirname, '../../client/styles/w3schools.css'));
   });
 
-  app.get('*/w3schools.css', function (request, response) {
+  app.get('*/joyride.css', function (request, response) {
     response.sendFile(path.resolve(__dirname, '../../client/styles/joyride.css'));
   });
 
