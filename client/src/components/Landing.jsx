@@ -23,7 +23,7 @@ class Landing extends React.Component {
                 <h1>Picky Notes</h1>
               </a>
               <hr></hr>
-              <p>
+              <p className="landing-para">
                 A collaborative note taking application that reinforces active learning through note comparison.
               </p>
               <a href="#landing1" className="landing1-link" style={{textDecoration: 'none'}}>
@@ -52,7 +52,7 @@ class Landing extends React.Component {
             What
           </h1>
           <hr />
-          <p>
+          <p className="landing-para">
           Picky Notes is a collaborative note taking application that allows students to discover where their understanding may differ from others around them.
           We believe a stronger connection is formed between concepts by linking written notes with the audio associated in the lecture.
           </p>
@@ -82,7 +82,7 @@ class Landing extends React.Component {
           screenshots go here
         </div>
         <div id="landing4" className="landing-section">
-          <p>
+          <p className="landing-para">
           Created with &lt;3 by Sean Ng, Derek Liu, Marco Chan, and Kunal Rathi
           </p>
         </div>
