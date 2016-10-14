@@ -14,14 +14,6 @@ export class SearchBar extends React.Component {
     super(props);
   }
 
-  static propTypes = {
-    addSteps: React.PropTypes.func.isRequired,
-    addToolTip: React.PropTypes.func.isRequired,
-    joyrideOverlay: React.PropTypes.bool.isRequired,
-    joyrideType: React.PropTypes.string.isRequired,
-    onClickSwitch: React.PropTypes.func.isRequired
-  }
-
   componentDidMount() {
     var data = {
       title: 'test',
