@@ -60,62 +60,77 @@ class Landing extends React.Component {
           </h1>
           <hr style={{'border': '3px black solid'}}/>
           <div className="container-fluid">
-            <div className="col-sm-6 col-md-4">
+            <div className="col-sm-6">
               <h5>
                 1. Create/join a lecture
               </h5>
+              <video autoPlay loop className="landing2-video">
+                <source src="https://media.giphy.com/media/3o6Zt5Lz9jCnnahaEM/source.mp4" type="video/mp4" />
+              </video>
               <p>
                 Share the link with your friends and discuss your thoughts around the lecture.
               </p>
             </div>
-            <div className="col-sm-6 col-md-4">
+            <div className="col-sm-6">
               <h5>
                 2. Start recording
               </h5>
+              <video autoPlay loop className="landing2-video">
+                <source src="https://media.giphy.com/media/l0MYRxAs6qxLpqHhm/source.mp4" type="video/mp4" />
+              </video>
               <p>
-                Verbatim
+                Picky Notes will associate the audio with your notes.
               </p>
             </div>
-            <div className="col-sm-6 col-md-4">
+            <div className="col-sm-6">
               <h5>
                 3. Take notes
               </h5>
+              <video autoPlay loop className="landing2-video">
+                <source src="https://media.giphy.com/media/3o7TKCAZy9ckJW5n7q/source.mp4" type="video/mp4" />
+              </video>
               <p>
                 Using markdown language. You can also take private notes (called thoughts).
               </p>
             </div>
-            <div className="col-sm-6 col-md-4">
+            <div className="col-sm-6">
               <h5>
                 4. Edit your notes
               </h5>
+              <video autoPlay loop className="landing2-video">
+                <source src="https://media.giphy.com/media/l4pM6kunZAv1xvXKU/source.mp4" type="video/mp4" />
+              </video>
               <p>
-                After the lecture has ended, you can modify or add notes and assign them to a timestamp.
+                Modify or add notes and assign them to a timestamp.
               </p>
             </div>
-            <div className="col-sm-6 col-md-4">
+            <div className="col-sm-6">
               <h5>
                 5. Pick your favorite notes
               </h5>
+              <video autoPlay loop className="landing2-video">
+                <source src="https://media.giphy.com/media/3oI9Jzk3lYfhAVqBmo/source.mp4" type="video/mp4" />
+              </video>
               <p>
-                After the lecture has ended, you can modify or add notes and assign them to a timesatmp.
+                Select the notes and thoughts you want to store in your notebook
               </p>
             </div>
-            <div className="col-sm-6 col-md-4">
+            <div className="col-sm-6">
               <h5>
                 6. Review
               </h5>
+              <video autoPlay loop className="landing2-video">
+                <source src="https://media.giphy.com/media/3oI9JuF2Ix3U6iWXx6/source.mp4" type="video/mp4" />
+              </video>
               <p>
-                After the lecture has ended, you can modify or add notes and assign them to a timesatmp.
+                Look back at your notes and listen to what was said at the time of note taking.
               </p>
             </div>
           </div>
         </div>
         <div id="landing3" className="landing-section">
-          screenshots go here
-        </div>
-        <div id="landing4" className="landing-section">
-          <p className="landing-para">
-          Created with &lt;3 by Sean Ng, Derek Liu, Marco Chan, and Kunal Rathi
+          <p>
+            Created at Hack Reactor by Sean Ng, Derek Liu, Marco Chan, and Kunal Rathi
           </p>
         </div>
       </div>
