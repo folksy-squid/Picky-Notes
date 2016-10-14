@@ -32,7 +32,7 @@ module.exports = {
   module: {
     loaders: [{
       test: /\.jsx?$/,
-      exclude: /node_modules/,
+      // exclude: /node_modules/,
       loaders: ['react-hot', 'babel'],
       include: APP_DIR
     },
