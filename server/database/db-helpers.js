@@ -169,19 +169,8 @@ const deleteNotes = (noteIds, cb) => {
   });
 
   Promise.all(promises)
-  .then(
-    data => cb(null, data),
-    cb
-  );
+  .then( data => cb(null, data), cb );
 };
-
- const deleteANote = (id, cb) => {
-   Note.destroy({ where: {id} })
-   .then(
-     data => cb(null, data),
-     cb
-   );
- };
 
 const getRoomParticipants = (pathUrl, cb) => {
   Room.findOne({
@@ -219,6 +208,5 @@ module.exports = {
   saveTimeLength,
   getAudioForRoom,
   deleteNotes,
-  deleteANote,
   deleteNotebook,
 };

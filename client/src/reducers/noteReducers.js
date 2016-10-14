@@ -3,7 +3,7 @@ const defaultState = {
   notes: [],
   deleted: [],
   showThoughts: false
-}
+};
 export default (state = defaultState, action) => {
   if (action.type === 'SUBMIT_NOTE') {
     action.socket.emit('new note', {content: action.content, thought: action.thought});
@@ -160,7 +160,7 @@ export default (state = defaultState, action) => {
     }
     return {...state};
   }
-  if (action.type ==='SET_WAVEFORM') {
+  if (action.type === 'SET_WAVEFORM') {
     return {
       ...state,
       waveform: action.waveform

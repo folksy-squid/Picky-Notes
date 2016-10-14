@@ -1,5 +1,5 @@
 /*jshint esversion: 6 */
-const {createNewRoom, joinRoom, createNewNote, showAllNotes, showFilteredNotes, updateNotes, getAllUserRooms, getRoom, saveAudioToRoom, getAudioForRoom, deleteNotes, deleteNotebook, deleteANote} = require ('../database/db-helpers');
+const {createNewRoom, joinRoom, createNewNote, showAllNotes, showFilteredNotes, updateNotes, getAllUserRooms, getRoom, saveAudioToRoom, getAudioForRoom, deleteNotes, deleteNotebook} = require ('../database/db-helpers');
 const passport = require('./passport');
 const path = require('path');
 const audioUpload = require('./audioUpload');
@@ -96,17 +96,6 @@ module.exports = (app, express, io) => {
     .delete((req, res) => {
       deleteNotes(req.body, error => {
         if (error) {
-          res.status(404).send(error);
-        }
-        res.status(204).send();
-      });
-    });
-
-  // Delete a note.
-  app.route('/api/notes/:userId/:roomId/:noteId')
-    .delete((req, res) => {
-      deleteANote(req.params.noteId, err =>{
-        if (err) {
           res.status(404).send(error);
         }
         res.status(204).send();

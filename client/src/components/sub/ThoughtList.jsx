@@ -22,7 +22,7 @@ const ThoughtList = (props) => {
     time += seconds < 10 ? '0' + seconds : seconds;
 
     return time;
-  }
+  };
 
   let deleteThought = (thought) => {
     props.dispatch(deleteNote(thought.id, true));
@@ -31,7 +31,9 @@ const ThoughtList = (props) => {
     let noteId = thought.id;
     $.ajax({
       method: 'DELETE',
-      url: `/api/notes/${userId}/${roomId}/${noteId}`
+      url: `/api/notes/${userId}/${roomId}`,
+      contentType: 'application/json',
+      data: JSON.stringify([noteId])
     });
   };
 
