@@ -209,11 +209,13 @@ hr {
   padding: 40px 15px 0 15px;
 }
 
+h5 {
+  font-family: 'Maven Pro', sans-serif;
+}
 
 .col-md-4 > h5 {
   font-size: 23px;
   text-align: center;
-  font-family: 'Maven Pro', sans-serif;
 }
 
 #landing3 {
@@ -453,7 +455,7 @@ h2.new-room-title {
 
 #message-list {
   height: 84%;
-  /*overflow: scroll;*/
+  overflow: scroll;
 }
 
 .chatbox > .panel-footer {
@@ -589,6 +591,9 @@ h4 .LectureTitle .lecture-view-heading {
   padding-bottom: 7px;
 }
 
+.lecture.note {
+  padding-left: 0px;
+}
 
 .note > .content {
   margin-left: 15px;
@@ -944,8 +949,6 @@ input[type=range][orient=vertical] {
 
 .highlighted {
   background-color: 'black';
-}body {
-  padding-bottom: 30px;
 }
 
 .w3-container {

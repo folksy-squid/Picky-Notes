@@ -49,7 +49,7 @@ class NoteList extends React.Component {
   }
 
   sendStatus() {
-    const wavePos = (this.props.note.waveform) ? (this.props.note.waveform.getCurrentTime()) : 0;
+    let wavePos = (this.props.note.waveform) ? (this.props.note.waveform.getCurrentTime()) : 0;
     const timestamps = this.props.note.audioTimestampArray;
     var actionState;
     if (this.props.waveform.playing) {
@@ -64,7 +64,6 @@ class NoteList extends React.Component {
         }
 
         let upcomingNoteIndex = i;
-        let wavePos = this.props.note.waveform.getCurrentTime();
 
         const updateNote = (idx) => {
           let audioTimestamps = this.props.note.audioTimestampArray;

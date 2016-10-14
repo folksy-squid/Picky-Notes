@@ -59,7 +59,6 @@ function scaleBannerVideoSize(element) {
 function clickTransit() {
   $(".landing1-link").click(function(e){
     e.preventDefault();
-    console.log('clicking here.');
     let href = $(this).attr('href');
     let offset = $(href).offset().top;
 

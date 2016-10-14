@@ -26,7 +26,6 @@ function setNavWidth() {
     $('.navbar-right li > a').css({'font-size':16+'px'});
     $('.page-content').css({'padding-top':90+'px'});
   } else if (windowWidth > 768 && windowWidth <= 995) {
-    console.log('please teach me why')
     $('div.main > div.page-content').css({'padding-top':135+'px'});
   } else if (windowWidth < 768){
     $('.page-content').css({'padding-top':90+'px'});

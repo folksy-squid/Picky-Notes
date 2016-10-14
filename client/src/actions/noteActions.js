@@ -31,7 +31,7 @@ export const editTimestamp = (noteId, newTimestamp) => {
   };
 };
 
-export const deleteNote = (noteId, thought, perm) => {
+export const deleteNote = (noteId, thought) => {
   return {
     type: 'DELETE_NOTE',
     noteId,

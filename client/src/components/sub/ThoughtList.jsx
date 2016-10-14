@@ -26,19 +26,14 @@ const ThoughtList = (props) => {
 
   let deleteThought = (thought) => {
     props.dispatch(deleteNote(thought.id, true));
-    console.log('thought', thought);
     let userId = props.user.information[0].id;
     let roomId = props.room.roomInfo.id;
     let noteId = thought.id;
-    console.log(userId, 'roomId', roomId);
     $.ajax({
       method: 'DELETE',
       url: `/api/notes/${userId}/${roomId}/${noteId}`
-    })
-    .done((req, res)=>{
-      console.log('successful deletion', res);
-    })
-  }
+    });
+  };
 
   let thoughtView = props.note.justThoughts.map((thought, i)=>(
     <div key={i} className="review thought">

@@ -5,7 +5,7 @@ module.exports = (db, Sequelize) => {
       allowNull: false
     },
     topic: Sequelize.TEXT,
-    class: Sequelize.TEXT,
+    className: Sequelize.TEXT,
     lecturer: Sequelize.TEXT,
     audioUrl: {
       type: Sequelize.TEXT,
