@@ -2,40 +2,56 @@
 const md5 = require('js-md5');
 const {User, Room, Note, db} = require('./db-config');
 
-const createNewRoom = ({topic, className, lecturer, hostId}, cb) => {
+const createNewUser = ({facebookId, name, email, pictureUrl, gender}, cb) => {
 
-  const pathUrl = generatePathUrl(topic + className + lecturer + hostId);
+  User.findOrCreate({
+    where: {
+      facebookId: facebookId
+    },
+    defaults: {
+      name: name,
+      email: email,
+      pictureUrl: pictureUrl,
+      gender: gender
+    }
+  })
+  // created is true  if new user
+  // created is false if user already exists
+  .spread((user, created) => cb(user, created));
+};
+
+const createNewRoom = ({topic, className, lecturer, hostId}, cb) => {
+  // { topic, class, lecturer, hostId }
+  const pathUrl = md5(topic + className + lecturer + hostId + Math.random()).slice(0, 5);
 
   Room.create({
     pathUrl: pathUrl,
     topic: topic,
-    className: className,
+    class: className,
     lecturer: lecturer,
     hostId: hostId
   })
   .then(roomInfo => cb(roomInfo));
 };
 
-const generatePathUrl = data => md5(data + Math.random()).slice(0, 5);
-
 const joinRoom = (userId, pathUrl, cb) => {
   User.findById(userId)
   .then(currentUser => {
     Room.findOne({ where: { pathUrl: pathUrl } })
     .then(currentRoom => {
-      currentUser.addRoom(currentRoom)
-      .then(() => cb(currentRoom));
+      currentUser.addRoom(currentRoom);
+      cb(currentRoom);
     });
   });
 };
 
 const createNewNote = (note, cb) => {
+  // content, audioTimestamp, show, roomId, editingUserId, originalUserId
   note.editingUserId = note.originalUserId;
   note.show = true;
 
   Note.create(note)
-  .then(cb)
-  .catch(cb);
+  .then((note) => { cb(note.dataValues); });
 };
 
 const multiplyNotes = (notes, arrOfClients) => {
@@ -194,8 +210,8 @@ const deleteNotebook = (userId, roomId, cb) => {
 };
 
 module.exports = {
+  createNewUser,
   createNewRoom,
-  generatePathUrl,
   joinRoom,
   showAllNotes,
   showFilteredNotes,

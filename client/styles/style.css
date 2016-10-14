@@ -8,7 +8,6 @@
 
 body {
   font-family: 'Maven Pro', sans-serif;
-  padding-bottom: 90px;
 }
 
 div.main > div.page-content {
@@ -153,23 +152,74 @@ h4 {
   position: absolute;
 }
 
-
 .title-container > a > h1 {
-  font-size: 7em;
+  font-size: 66px;
   font-family: 'Crafty Girls', cursive;
   color: white;
-  margin-bottom: 85px;
   text-decoration: none;
+}
+
+p {
+  color: white;
+  font-size: 18px;
+  margin: 0 auto;
+  max-width: 617px;
+  margin-bottom: 50px;
+  text-align: center;
+}
+
+hr {
+  margin: 34px auto;
+  border: 3px solid white;
+  max-width: 50px;
+  border-radius: 5px;
 }
 
 .cover-footer {
   padding: 9px 31px;
-  margin: 10px 100px;
+  margin: 10px 140px;
   border-radius: 30px;
   border: 1px solid white;
   background: rgba(0, 0, 0, 0.7);
-  font-size: 34px;
+  font-size: 22px;
   font-family: 'Maven Pro', sans-serif;
+}
+
+#landing1 {
+  height: 350px;
+  background-color: #212F3D;
+}
+
+#landing1 > h1 {
+  color: white;
+}
+
+#landing2 {
+  height: 550px;
+  background-color: white;
+}
+
+#landing2 > h1 {
+  color: black;
+}
+
+#landing3 {
+  height: 450px;
+}
+
+#landing4 {
+  height: 120px;
+  background-color: #212F3D;
+}
+
+.landing-section {
+  padding-top: 35px;
+}
+
+.landing-subheading {
+  text-align: center;
+  font-family: 'Maven Pro', sans-serif;
+  font-size: 42px;
 }
 
 /*
