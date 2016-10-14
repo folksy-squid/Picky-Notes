@@ -37,30 +37,34 @@ export class Audio extends React.Component {
   componentWillUnmount() {
     window.clearInterval(this.state.interval);
   }
-
+  //  takes a state of the player, either 'playing' or 'paused', and generates highlighting of notes.
   sendStatus(actionState) {
+    //  gets current time of waveform and the current timestamp array
     const timestamps = this.props.note.audioTimestampArray;
     const wavePos = this.props.note.waveform.getCurrentTime();
+    //  gets next note timestamp after current wave position
     for (var i = 0; i < timestamps.length; i++) {
       if (timestamps[i] > wavePos) {
+        //  clears old timeout if exists
         if (window.timer) {
           window.clearTimeout(window.timer);
         }
-
         let upcomingNoteIndex = i;
-        let wavePos = this.props.note.waveform.getCurrentTime();
-
+        //  self-calling settimeout which updates highlighting based on next note
         const updateNote = (idx) => {
           let audioTimestamps = this.props.note.audioTimestampArray;
+          //  assigns highlighting to note 'idx'
           this.props.dispatch(setClass(idx));
 
           let diff = audioTimestamps[idx + 1] - wavePos;
           wavePos = wavePos + diff;
           idx++;
+          //  calculates next timestamp and then reassigns timeout
           if (audioTimestamps[idx] > -1) {
             window.timer = window.setTimeout(updateNote.bind(this, idx), diff * 1000);
           }
         };
+        //  if paused, just assign current highlight. else, trigger self-calling settimeout
         let idx = upcomingNoteIndex - 1 < 0 ? 0 : upcomingNoteIndex - 1;
         if (actionState === 'paused') {
           this.props.dispatch(setClass(idx));
