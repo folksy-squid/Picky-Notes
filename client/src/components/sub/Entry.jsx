@@ -16,7 +16,7 @@ class Entry extends React.Component {
   clickHandler() {
     const pathUrl = this.props.entryInfo.pathUrl;
     $.ajax({
-      method: 'POST',
+      method: 'GET',
       url: '/api/room/status',
       contentType: 'application/json',
       data: JSON.stringify({pathUrl}),

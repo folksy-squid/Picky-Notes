@@ -6,12 +6,14 @@ const audioUpload = require('./audioUpload');
 
 module.exports = (app, express, io) => {
 
+  /******************** Authentication Endpoints ********************/
+
   // Facebook OAuth
   app.get('/auth/facebook',
     passport.authenticate('facebook', {
       scope: ['public_profile', 'email', 'user_about_me', 'user_friends']
-    }));
-
+    })
+  );
   // Facebook OAuth Callback
   app.get('/auth/facebook/callback',
     passport.authenticate('facebook', { failureRedirect: '/login' }),
@@ -20,16 +22,19 @@ module.exports = (app, express, io) => {
         res.redirect('/');                    // redirect to homepage (notebook view)
       }
   );
-
   // Logout
   app.get('/logout', function(req, res) {
     req.logout();       // destroy session/cookie
     res.redirect('/');  // redirerect to homepage (landing view)
   });
 
-  // User Info Update
+  /********************************************************************/
+
+  /******************** User Information Endpoints ********************/
+
   app.route('/api/users/:userId')
     .get((req, res) => {
+      // Retrieve All Rooms belonging to User
       getAllUserRooms(req.params.userId, (allUserRooms) => res.send(allUserRooms));
     });
     /***** Later Features To Add for User Profiles *****/
@@ -40,15 +45,19 @@ module.exports = (app, express, io) => {
     //   res.send('Delete user #' + req.params.userId);
     // });
 
-  // Lectures/Rooms
+  /********************************************************************/
+
+  /******************** Room Information Endpoints ********************/
+
   app.route('/api/rooms/')
     .post((req, res) => {
       if (req.query.pathUrl) {
-        // Have user join the room at 'pathUrl'
+        // Have user join the room at pathUrl
+        // And send back room info back to client-side
         joinRoom(req.body.userId, req.query.pathUrl, (currentRoom) => res.send(currentRoom));
       } else {
-        // create and return hash for room path Url
-        createNewRoom(req.body, (roomInfo) => res.send(roomInfo));
+        // create room from data from user and send back new room info
+        req.body ? createNewRoom(req.body, (roomInfo) => res.send(roomInfo)) : res.status(404).send();
       }
     })
     .get((req, res) => {
@@ -57,24 +66,33 @@ module.exports = (app, express, io) => {
     })
     .delete((req, res) => {
       // delete notebook for specific user at roomId
+      // (used for notebook view to delete notebook)
       deleteRoom(req.query.userId, req.query.roomId, (found) => {
         if (!found) { res.status(400).send('Room Not Found'); }
         res.status(204).send();
       });
     });
 
-  app.post('/api/room/status', (req, res) => {
+  app.get('/api/room/status', (req, res) => {
     // check for active lecture (socket room) and return status
     res.status(201).send({active: !!io.sockets.adapter.rooms[req.body.pathUrl]});
   });
+
+  /*********************************************************************/
+
+  /******************** Audio Information Endpoints *********************/
 
   app.get('/api/audio/:pathUrl', (req, res) => {
     // retrieve audio url from database for room at pathUrl
     getAudioForRoom(req.params.pathUrl, audioUrl => res.send(audioUrl));
   });
 
-  // Note Creation
+  /*********************************************************************/
+
+  /******************** Note Information Endpoints *********************/
+
   app.post('/api/notes/create', (req, res) => {
+    // Note Creation
     // pass the notes in cache (redis) to database (postgres)
     createNewNote(req.body, newNote => res.send(newNote));
   });
@@ -104,6 +122,11 @@ module.exports = (app, express, io) => {
         res.status(204).send();
       });
     });
+
+
+  /*********************************************************************/
+
+  /*********************** Static File Endpoints ***********************/
 
   app.get('*/index.bundle.js', function (request, response) {
     response.sendFile(path.resolve(__dirname, '../../dist/index.bundle.js'));
