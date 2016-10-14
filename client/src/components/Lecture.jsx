@@ -78,7 +78,6 @@ export class Lecture extends React.Component {
     let host = this.props.room.participants[0];
     let user = this.props.user.information[0];
     host.id === user.id && (!this.state.isHost) && this.setState({isHost: true});
-
   }
 
   hideReadyButton() {
@@ -120,7 +119,7 @@ export class Lecture extends React.Component {
     return (
       this.state.loaded ? (
       <div>
-        <div className="container">
+        <div className="container lecture">
           <div className="row">
             <div className="col-xs-9" >
               <LectureBox />
