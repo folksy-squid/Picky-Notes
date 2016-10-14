@@ -1,5 +1,5 @@
 import React from 'react';
-import {NavDropdown, MenuItem} from 'react-bootstrap';
+import {NavDropdown, MenuItem} from 'react-bootstrap'
 import {connect} from 'react-redux';
 
 import NoteReducer from '../../reducers/noteReducers';
@@ -34,7 +34,7 @@ class Dropdown extends React.Component {
       <NavDropdown onSelect={this.select.bind(this)} title="Filter Class" id="basic-nav-dropdown">
         {this.renderListItems()}
       </NavDropdown>
-    );
+    )
   }
 }
 

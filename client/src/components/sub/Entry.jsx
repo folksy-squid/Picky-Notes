@@ -52,7 +52,7 @@ class Entry extends React.Component {
             <br />
             <div className='notebook-topic'>{`${this.props.entryInfo.topic}`}</div>
             <div className='notebook-lecturer'>{`by ${this.props.entryInfo.lecturer}`}</div>
-            <div className='notebook-class'>{`${this.props.entryInfo.className}`}</div>
+            <div className='notebook-class'>{`${this.props.entryInfo.class}`}</div>
             <br />
           </div>
         </div>

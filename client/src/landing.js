@@ -18,8 +18,8 @@ function init() {
 }
 
 function scaleVideoContainer() {
-  var height = $(window).height() + 5;
-  var unitHeight = parseInt(height) + 'px';
+  let height = $(window).height() + 5;
+  let unitHeight = parseInt(height) + 'px';
   $('.homepage-hero-module').css('height',unitHeight);
   $('#landing1').css('height',unitHeight);
 }
@@ -33,14 +33,14 @@ function initBannerVideoSize(element) {
 }
 
 function scaleBannerVideoSize(element) {
-  var windowWidth = $(window).width(),
+  let windowWidth = $(window).width(),
   windowHeight = $(window).height() + 5,
   videoWidth,
   videoHeight;
 
   $(element).each(function(){
 
-    var videoAspectRatio = $(this).data('height')/$(this).data('width');
+    let videoAspectRatio = $(this).data('height')/$(this).data('width');
 
     $(this).width(windowWidth);
 
@@ -60,8 +60,8 @@ function clickTransit() {
   $(".landing1-link").click(function(e){
     e.preventDefault();
     console.log('clicking here.');
-    var href = $(this).attr('href');
-    var offset = $(href).offset().top;
+    let href = $(this).attr('href');
+    let offset = $(href).offset().top;
 
     $("html, body").animate({
       scrollTop: offset
