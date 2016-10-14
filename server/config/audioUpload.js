@@ -31,7 +31,6 @@ const params = {
 
 module.exports = {
   startUploading: (stream, path, cb) =>{
-    console.log('stream!', stream);
 
     params['Key'] = path;
     params['Body'] = fs.createReadStream(stream);

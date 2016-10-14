@@ -103,7 +103,7 @@ export class Audio extends React.Component {
     };
   }
 
-  handleReady() {
+  handleReady(arg1) {
     this.setState({waveformDisplay: 'visible', loadingDisplay: 'none'});
   }
 

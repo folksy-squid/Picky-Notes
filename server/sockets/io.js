@@ -144,13 +144,12 @@ module.exports = (listen) => {
     });
 
     socket.on('upload stream', largeChunk => {
-      console.log(largeChunk);
       const pathUrl = socket.pathUrl;
       const filePath = `audio/${pathUrl}`;
 
       fs.appendFile(filePath, Buffer.concat(largeChunk), err => {
         if (err) { return console.log(err); }
-        console.log('write file success!');
+        console.log('append file success!');
       });
     });
 
@@ -172,7 +171,6 @@ module.exports = (listen) => {
             console.log('Error persisted. Stop trying to upload again.', err);
           } else {
             saveAudioToRoom(pathUrl, data.Location, () => {
-              console.log('saved audioUrl to database');
               fs.unlink(outputFile, () => {
                 console.log('successfully deleted .mp3 audio from filesystem');
               });
@@ -192,7 +190,7 @@ module.exports = (listen) => {
           console.log('formatting finished!');
           uploadToAWS();
           fs.unlink(originalFile, () => {
-            console.log('successfully deleted .ogg audio from filesystem');
+            console.log('successfully deleted original audio file from filesystem');
           });
         })
         .on('error', err => {
