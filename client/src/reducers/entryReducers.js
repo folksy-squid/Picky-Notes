@@ -54,10 +54,10 @@ export default (state = defaultState, action) => {
 
 
   if (action.type === 'FILTER_CLASSLIST') {
-    let index = Number(action.index.toString().slice(2)) - 1;
-    let className = index > 0 ? state.classList[index] : 'All';
+    let index = action.index - 1;
+    let className = index > -1 ? state.classList[index] : 'All';
 
-    let filteredEntries = (className === 'All') ? state.original : state.original.filter(entry => entry.class.toLowerCase() === className.toLowerCase());
+    let filteredEntries = (className === 'All') ? state.original : state.original.filter(entry => entry.className.toLowerCase() === className.toLowerCase());
     state.entries = filteredEntries;
     state.selectedClass = className;
     return {

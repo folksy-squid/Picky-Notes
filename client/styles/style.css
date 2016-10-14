@@ -590,13 +590,14 @@ a > span.navbar-brand {
 
 .notebook-entry {
   cursor: pointer;
-  transition: opacity 0.2s;
+  opacity: 0.7;
   padding: 10px 20px;
   transition: all .2s ease-in-out;
 }
 
 .notebook-entry:hover {
   transform: scale(1.1);
+  opacity: 1.0;
 }
 
 .notebook-icon {
@@ -622,7 +623,7 @@ a > span.navbar-brand {
   font-style: italic;
   font-size: 0.8em;
   text-align: right;
-  margin-bottom: -10px;
+  margin-bottom: -0.5em;
   padding-top: 7px;
 }
 
@@ -631,22 +632,27 @@ div.w3-card-4 {
 }
 
 .notebook0 {
+  /*background-color: rgba(239, 68, 146, 0.8);*/
   background-color: rgb(239, 68, 146);
 }
 
 .notebook1 {
+  /*background-color: rgba(255, 146, 67, 0.8);*/
   background-color: rgb(255, 146, 67);
 }
 
 .notebook2 {
+  /*background-color: rgba(253, 217, 0, 0.8);*/
   background-color: rgb(253, 217, 0);
 }
 
 .notebook3 {
+  /*background-color: rgba(184, 209, 92, 0.8);*/
   background-color: rgb(184, 209, 92);
 }
 
 .notebook4 {
+  /*background-color: rgba(12, 188, 227, 0.8);*/
   background-color: rgb(12, 188, 227);
 }
 

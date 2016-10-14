@@ -1347,7 +1347,8 @@ input[type=checkbox].w3-check:disabled+.w3-validate, input[type=radio].w3-radio:
 }
 
 .w3-container {
-  padding: 0.01em 16px
+  padding: 0.01em 1.0em;
+  margin: -0.5em 0em;
 }
 
 .w3-panel {
