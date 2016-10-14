@@ -10,11 +10,11 @@ module.exports = {
   },
   db: {
     dev: {
-      username: 'POSTGRES_DEV_USERNAME',
-      password: 'POSTGRES_DEV_PASSWORD',
-      host: 'POSTGRES_DEV_HOST',
-      port: 'POSTGRES_DEV_PORT',
-      dbName: 'POSTGRES_DEV_DBNAME'
+      username: 'ubuntu',
+      password: 'password',
+      host: 'localhost',
+      port: '5432',
+      dbName: 'pickynotes'
     },
     production: {
       username: 'POSTGRES_PRODUCTION_USERNAME',

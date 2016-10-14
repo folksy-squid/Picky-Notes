@@ -15,34 +15,25 @@
 - Node v6.6
 - Redis v3.2.x
 - Postgresql v9.5.x
+- ffmpeg
+- yarn (`npm install yarn -g`)
 
 ##Installation
+IMPORTANT: Save a copy of the example keys file as 'keys.js'
 
 From within the root directory:
-
 ```
-npm install
-npm install -g webpack
-```
-After psql has been installed:
-
-```
-psql -d postgres;
-CREATE USER ubuntu WITH PASSWORD 'password';
-CREATE DATABASE pickynotes;
+./database.setup.bash
+yarn
 ```
 
 ## Usage
 
-```
-webpack
-redis-server
-npm start
-```
+start postgres server and redis server (changes depending on OS)
 
-### Roadmap
-
-View the project roadmap [here](LINK_TO_PROJECT_ISSUES)
+```
+webpack & npm start
+```
 
 ## Team
 
