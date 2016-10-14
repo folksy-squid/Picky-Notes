@@ -5,42 +5,40 @@ const path = require('path');
 const audioUpload = require('./audioUpload');
 
 module.exports = (app, express, io) => {
-  // Facebook OAuth
 
+  // Facebook OAuth
   app.get('/auth/facebook',
     passport.authenticate('facebook', {
       scope: ['public_profile', 'email', 'user_about_me', 'user_friends']
     }));
 
+  // Facebook OAuth Callback
   app.get('/auth/facebook/callback',
     passport.authenticate('facebook', { failureRedirect: '/login' }),
       (req, res) => {
-        res.cookie('authenticate', req.session.passport);
-        res.redirect('/');
+        res.cookie('authenticate', req.session.passport); // set authenticated cookie
+        res.redirect('/');                    // redirect to homepage (notebook view)
       }
   );
 
+  // Logout
   app.get('/logout', function(req, res) {
-    req.logout();
-    res.redirect('/');
+    req.logout();       // destroy session/cookie
+    res.redirect('/');  // redirerect to homepage (landing view)
   });
 
   // User Info Update
   app.route('/api/users/:userId')
     .get((req, res) => {
-      if (req.query.pathUrl) {
-        // can be optimized with promises... nice to have later
-        getRoom(req.query.pathUrl, req.params.userId, (room) => res.send(room));
-      } else {
-        res.send('Retrieve the info for user #' + req.params.userId);
-      }
-    })
-    .put((req, res) => {
-      res.send('Update the info for user #' + req.params.userId);
-    })
-    .delete((req, res) => {
-      res.send('Delete user #' + req.params.userId);
+      getAllUserRooms(req.params.userId, (allUserRooms) => res.send(allUserRooms));
     });
+    /***** Later Features To Add for User Profiles *****/
+    // .put((req, res) => {
+    //   res.send('Update the info for user #' + req.params.userId);
+    // })
+    // .delete((req, res) => {
+    //   res.send('Delete user #' + req.params.userId);
+    // });
 
   app.route('/api/rooms/')
     .post((req, res) => {
@@ -53,7 +51,8 @@ module.exports = (app, express, io) => {
       }
     })
     .get((req, res) => {
-      getAllUserRooms(req.query.userId, (allUserRooms) => res.send(allUserRooms));
+      // can be optimized with promises... nice to have later
+      getRoom(req.query.pathUrl, req.query.userId, (room) => res.send(room));
     })
     .delete((req, res) => {
       deleteNotebook(req.query.userId, req.query.roomId, (found) => {
