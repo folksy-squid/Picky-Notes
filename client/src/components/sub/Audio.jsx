@@ -26,6 +26,16 @@ export class Audio extends React.Component {
     this.handlePosChange = this.handlePosChange.bind(this);
   }
 
+  componentWillMount() {    
+    this.props.dispatch(getRoomAudio(this.props.room.roomInfo.pathUrl, (err, success) => {    
+      if (err) {    
+        this.setState({loaded: false});   
+      } else {    
+        this.setState({loaded: true});    
+      }   
+    }));    
+  }
+
   componentWillUnmount() {
     window.clearInterval(this.state.interval);
   }
