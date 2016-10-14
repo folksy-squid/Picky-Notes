@@ -164,9 +164,7 @@ const getAudioForRoom = (pathUrl, cb) => {
 };
 
 const deleteNotes = (noteIds, cb) => {
-  const promises = noteIds.map((id) => {
-    return Note.destroy({ where: {id} });
-  });
+  const promises = noteIds.map(id => Note.destroy({ where: {id} }));
 
   Promise.all(promises)
   .then( data => cb(null, data), cb );

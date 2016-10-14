@@ -33,45 +33,45 @@ module.exports = (app, express, io) => {
   /******************** User Information Endpoints ********************/
 
   app.route('/api/users/:userId')
-    .get((req, res) => {
-      // Retrieve All Rooms belonging to User
-      getAllUserRooms(req.params.userId, (allUserRooms) => res.send(allUserRooms));
-    });
-    /***** Later Features To Add for User Profiles *****/
-    // .put((req, res) => {
-    //   res.send('Update the info for user #' + req.params.userId);
-    // })
-    // .delete((req, res) => {
-    //   res.send('Delete user #' + req.params.userId);
-    // });
+  .get((req, res) => {
+    // Retrieve All Rooms belonging to User
+    getAllUserRooms(req.params.userId, (allUserRooms) => res.send(allUserRooms));
+  });
+  /***** Later Features To Add for User Profiles *****/
+  // .put((req, res) => {
+  //   res.send('Update the info for user #' + req.params.userId);
+  // })
+  // .delete((req, res) => {
+  //   res.send('Delete user #' + req.params.userId);
+  // });
 
   /********************************************************************/
 
   /******************** Room Information Endpoints ********************/
 
   app.route('/api/rooms/')
-    .post((req, res) => {
-      if (req.query.pathUrl) {
-        // Have user join the room at pathUrl
-        // And send back room info back to client-side
-        joinRoom(req.body.userId, req.query.pathUrl, (currentRoom) => res.send(currentRoom));
-      } else {
-        // create room from data from user and send back new room info
-        req.body ? createNewRoom(req.body, (roomInfo) => res.send(roomInfo)) : res.status(404).send();
-      }
-    })
-    .get((req, res) => {
-      // retrieve specific room information at PathUrl for the user
-      getRoom(req.query.pathUrl, req.query.userId, (room) => res.send(room));
-    })
-    .delete((req, res) => {
-      // delete notebook for specific user at roomId
-      // (used for notebook view to delete notebook)
-      deleteRoom(req.query.userId, req.query.roomId, (found) => {
-        if (!found) { res.status(400).send('Room Not Found'); }
-        res.status(204).send();
-      });
+  .post((req, res) => {
+    if (req.query.pathUrl) {
+      // Have user join the room at pathUrl
+      // And send back room info back to client-side
+      joinRoom(req.body.userId, req.query.pathUrl, (currentRoom) => res.send(currentRoom));
+    } else {
+      // create room from data from user and send back new room info
+      req.body ? createNewRoom(req.body, (roomInfo) => res.send(roomInfo)) : res.status(404).send();
+    }
+  })
+  .get((req, res) => {
+    // retrieve specific room information at PathUrl for the user
+    getRoom(req.query.pathUrl, req.query.userId, (room) => res.send(room));
+  })
+  .delete((req, res) => {
+    // delete notebook for specific user at roomId
+    // (used for notebook view to delete notebook)
+    deleteRoom(req.query.userId, req.query.roomId, (found) => {
+      if (!found) { res.status(400).send('Room Not Found'); }
+      res.status(204).send();
     });
+  });
 
   app.get('/api/room/status', (req, res) => {
     // check for active lecture (socket room) and return status
@@ -98,34 +98,34 @@ module.exports = (app, express, io) => {
   });
 
   app.route('/api/notes/:userId/:roomId')
-    .get((req, res) => {
-      if (req.query.filter === 'show') {
-        // for Review View
-        // if query comes with show, send client only notes that have prop of 'show: true'
-        showFilteredNotes(req.params, allNotes => res.send(allNotes));
-      } else {
-        // for Compile view
-        // send client all note associated to room
-        showAllNotes(req.params, allNotes => res.send(allNotes));
-      }
-    })
-    .put((req, res) => {
-      // Note Editing
-      // accepts in req.body an array of notes to update
-      // [{id, show, content}]
-      updateNotes(req.params, req.body, (err) => {
-        if (err) { res.status(400).send({ text: 'Bad Update Note Request', error: err }); }
-        res.status(204).send();
-      });
-    })
-    .delete((req, res) => {
-      deleteNotes(req.body, error => {
-        if (error) {
-          res.status(404).send(error);
-        }
-        res.status(204).send();
-      });
+  .get((req, res) => {
+    if (req.query.filter === 'show') {
+      // for Review View
+      // if query comes with show, send client only notes that have prop of 'show: true'
+      showFilteredNotes(req.params, allNotes => res.send(allNotes));
+    } else {
+      // for Compile view
+      // send client all note associated to room
+      showAllNotes(req.params, allNotes => res.send(allNotes));
+    }
+  })
+  .put((req, res) => {
+    // Note Editing
+    // accepts in req.body an array of notes to update
+    // [{id, show, content}]
+    updateNotes(req.params, req.body, (err) => {
+      if (err) { res.status(400).send({ text: 'Bad Update Note Request', error: err }); }
+      res.status(204).send();
     });
+  })
+  .delete((req, res) => {
+    // Note Deletion
+    // accepts in req.body an array of note ids to delete
+    deleteNotes(req.body, err => {
+      if (err) { res.status(404).send(err); }
+      res.status(204).send();
+    });
+  });
 
   /*********************************************************************/
 
