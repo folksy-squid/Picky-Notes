@@ -33,7 +33,6 @@ class Entry extends React.Component {
   deleteHandler() {
     let userId = this.props.user.information[0].id;
     let roomId = this.props.entryInfo.id;
-    console.log('roomId', roomId, this.props);
     $.ajax({
       method: 'DELETE',
       url: `/api/rooms?userId=${userId}&roomId=${roomId}`,

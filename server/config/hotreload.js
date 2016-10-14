@@ -10,7 +10,6 @@ const compiler = webpack(webpackconfig);
 
 //hot module reloading middleware
 module.exports = (app) => {
-  console.log('running hotreload!');
   app.use(webpackDevMiddleware(compiler, {
     publicPath: webpackconfig.output.publicPath,
     noInfo: true,

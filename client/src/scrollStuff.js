@@ -17,7 +17,6 @@ $(document).ready(function() {
 });
 
 function setNavWidth() {
-  console.log('setting...');
   let windowWidth = $(window).width();
   if (windowWidth > 1200) {
     $('.navbar-right li > a').css({'font-size':18+'px'});

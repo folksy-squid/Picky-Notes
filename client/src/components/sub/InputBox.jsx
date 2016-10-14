@@ -55,7 +55,6 @@ class InputBox extends React.Component {
         contentType: 'application/json',
         data: JSON.stringify(note),
         success: (savedNote) => {
-          console.log(savedNote);
           this.props.dispatch(addNote(savedNote));
           this.props.dispatch(removeArrow());
           this.refs.inputNote.value = '';
