@@ -42,7 +42,6 @@ export class Navbar extends React.Component {
   }
 
   updateInput(e) {
-    console.log(e.target.value);
     this.setState({value: e.target.value});
   }
 
