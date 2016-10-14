@@ -25,13 +25,6 @@ div.main > div.page-content {
   padding-right: 0px;
 }
 
-.title-container > a > h1 {
-  font-size: 8em;
-  font-family: 'Crafty Girls', cursive;
-  color: white;
-  text-decoration: none;
-}
-
 a:hover {
   text-decoration: none;
 }
@@ -155,9 +148,28 @@ h4 {
 .video-container .title-container {
   z-index: 1000;
   text-align: center;
-  top: 35%;
+  top: 28%;
   width: 100%;
   position: absolute;
+}
+
+
+.title-container > a > h1 {
+  font-size: 7em;
+  font-family: 'Crafty Girls', cursive;
+  color: white;
+  margin-bottom: 85px;
+  text-decoration: none;
+}
+
+.cover-footer {
+  padding: 9px 31px;
+  margin: 10px 100px;
+  border-radius: 30px;
+  border: 1px solid white;
+  background: rgba(0, 0, 0, 0.7);
+  font-size: 34px;
+  font-family: 'Maven Pro', sans-serif;
 }
 
 /*
