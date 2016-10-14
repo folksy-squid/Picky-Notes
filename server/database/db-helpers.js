@@ -21,7 +21,7 @@ const generatePathUrl = data => md5(data + Math.random()).slice(0, 5);
 const joinRoom = (userId, pathUrl, cb) => {
   User.findById(userId)
   .then(currentUser => {
-    Room.findOne({ where: { pathUrl: pathUrl } })
+    Room.findOne({ where: { pathUrl } })
     .then(currentRoom => {
       currentUser.addRoom(currentRoom)
       .then(() => cb(currentRoom));
@@ -92,68 +92,56 @@ const showFilteredNotes = ({userId, roomId}, cb) => {
 };
 
 const updateNotes = ({userId, roomId}, allNotes, cb) => {
-  let promises = [];
 
-  const updateOneNote = note => {
-    Note.update(note, { where: {
-      id: note.id,
-      editingUserId: userId,
-      roomId: roomId
-    } });
-    // .then(data => console.log('notes deleted:', data));
-  };
+  const promises = allNotes.map( note =>
+    Note.update(note, {
+      where: {
+        id: note.id,
+        editingUserId: userId,
+        roomId: roomId
+      }
+    })
+  );
 
-  for (let i = 0; i < allNotes.length; i++) {
-    promises.push(updateOneNote(allNotes[i]));
-  }
-
-  Promise.all(promises).then((data) => {
-    cb(null);
-  }, error => {
-    console.log('ERROR', error);
-    cb(error);
-  });
+  Promise.all(promises).then(data => cb(null), cb);
 };
 
 const findRoom = (pathUrl, cb) => {
-  Room.findOne({ where: {pathUrl: pathUrl} })
-  .then(cb);
+  Room.findOne({ where: { pathUrl } })
+  .then(cb).catch(cb);
 };
 
 const getAllUserRooms = (userId, cb) => {
   User.findById(userId)
-  .then((user) => user.getRooms({raw: true}))
-  .then(cb);
+  .then(user => user.getRooms())
+  .then(cb).catch(cb);
 };
 
 const getRoom = (pathUrl, userId, cb) => {
   User.findById(userId)
-  .then((user) => user.getRooms({where: {pathUrl: pathUrl}, raw: true}))
-  .then((room) => {
-    // can be optimized with promises... nice to have later
-    getRoomParticipants(pathUrl, ({users}) => {
-      cb({ roomInfo: room[0], participants: users });
-    });
-  });
+  .then((user) => user.getRooms({where: {pathUrl}, raw: true}))
+  // should be optimized with promises..
+  .then((room) => getRoomParticipants(pathUrl, ({users}) => cb({ roomInfo: room[0], participants: users })))
+  .catch(cb);
 };
 
 const saveAudioToRoom = (pathUrl, audioUrl, cb) => {
-  Room.update({audioUrl: audioUrl}, {where: {pathUrl: pathUrl}})
-  .then(cb);
+  Room.update({audioUrl}, {where: { pathUrl }})
+  .then(cb).catch(cb);
 };
 
 const saveStartTimestamp = (pathUrl, startTimestamp) => {
-  Room.update({startTimestamp}, {where: {pathUrl}});
+  Room.update({startTimestamp}, {where: { pathUrl }});
 };
 
 const saveTimeLength = (pathUrl, endTimestamp) => {
 
-  Room.findOne({where: {pathUrl}})
+  Room.findOne({where: { pathUrl }})
   .then(room => callback(room.startTimestamp));
 
-  var callback = (start) => {
+  var callback = start => {
     let timeLength = endTimestamp - start;
-    Room.update({timeLength}, {where: {pathUrl}});
+    Room.update({ timeLength }, {where: { pathUrl }});
   };
 
 };
@@ -164,7 +152,7 @@ const getAudioForRoom = (pathUrl, cb) => {
 };
 
 const deleteNotes = (noteIds, cb) => {
-  const promises = noteIds.map(id => Note.destroy({ where: {id} }));
+  const promises = noteIds.map( id => Note.destroy({ where: { id } }));
 
   Promise.all(promises)
   .then( data => cb(null, data), cb );
@@ -179,13 +167,13 @@ const getRoomParticipants = (pathUrl, cb) => {
       through: { attributes: [] }
     }
   })
-  .then(cb);
+  .then(cb).catch(cb);
 };
 
 const deleteRoom = (userId, roomId, cb) => {
   User.findById(userId)
   .then((user) => user.removeRoom(roomId))
-  .then(cb);
+  .then(cb).catch(cb);
 };
 
 module.exports = {
