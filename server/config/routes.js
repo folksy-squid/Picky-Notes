@@ -1,5 +1,5 @@
 /*jshint esversion: 6 */
-const {createNewRoom, joinRoom, createNewNote, showAllNotes, showFilteredNotes, updateNotes, getAllUserRooms, getRoom, saveAudioToRoom, getAudioForRoom, deleteNotes, deleteRoom} = require ('../database/db-helpers');
+const {createNewRoom, joinRoom, createNewNote, showAllNotes, showFilteredNotes, updateNotes, getAllUserRooms, getRoom, saveAudioToRoom, findRoom, deleteNotes, deleteRoom} = require ('../database/db-helpers');
 const passport = require('./passport');
 const path = require('path');
 const audioUpload = require('./audioUpload');
@@ -83,7 +83,7 @@ module.exports = (app, express, io) => {
 
   app.get('/api/audio/:pathUrl', (req, res) => {
     // retrieve audio url from database for room at pathUrl
-    getAudioForRoom(req.params.pathUrl, audioUrl => res.send(audioUrl));
+    findRoom(req.params.pathUrl, room => res.send(room.audioUrl));
   });
 
   /*********************************************************************/

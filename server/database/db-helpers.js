@@ -20,17 +20,21 @@ const createNewRoom = ({topic, className, lecturer, hostId}, cb) => {
   .then(roomInfo => cb(roomInfo));
 };
 
+// generate PathUrl hash with md5
 const generatePathUrl = data => md5(data + Math.random()).slice(0, 5);
 
+// save audio url from S3 to room in database
 const saveAudioToRoom = (pathUrl, audioUrl, cb) => {
   Room.update({audioUrl}, {where: { pathUrl }})
   .then(cb).catch(cb);
 };
 
+// at start of lecture, save the start time-stamp to reference for time length
 const saveStartTimestamp = (pathUrl, startTimestamp) => {
   Room.update({startTimestamp}, {where: { pathUrl }});
 };
 
+// calculate the length of the lecture based on the end of lecture
 const saveTimeLength = (pathUrl, endTimestamp) => {
   findRoom(pathUrl, room => {
     let timeLength = endTimestamp - room.startTimestamp;
@@ -38,11 +42,7 @@ const saveTimeLength = (pathUrl, endTimestamp) => {
   });
 };
 
-const getAudioForRoom = (pathUrl, cb) => {
-  Room.findOne({ where: { pathUrl }, raw: true})
-  .then(room => cb(room.audioUrl));
-};
-
+// helper function to find room info
 const findRoom = (pathUrl, cb) => {
   Room.findOne({ where: { pathUrl } })
   .then(cb).catch(cb);
@@ -201,7 +201,6 @@ module.exports = {
   createNewNote,
   saveStartTimestamp,
   saveTimeLength,
-  getAudioForRoom,
   deleteNotes,
   deleteRoom,
 };
