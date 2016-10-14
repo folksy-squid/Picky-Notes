@@ -1,117 +1,134 @@
 /*jshint esversion: 6 */
-const {createNewRoom, joinRoom, createNewNote, showAllNotes, showFilteredNotes, updateNotes, getAllUserRooms, getRoom, saveAudioToRoom, getAudioForRoom, deleteNotes, deleteNotebook, deleteANote} = require ('../database/db-helpers');
+const {createNewRoom, joinRoom, createNewNote, showAllNotes, showFilteredNotes, updateNotes, getAllUserRooms, getRoom, saveAudioToRoom, findRoom, deleteNotes, deleteRoom} = require ('../database/db-helpers');
 const passport = require('./passport');
 const path = require('path');
 const audioUpload = require('./audioUpload');
 
 module.exports = (app, express, io) => {
-  // Facebook OAuth
 
+  /******************** Authentication Endpoints ********************/
+
+  // Facebook OAuth
   app.get('/auth/facebook',
     passport.authenticate('facebook', {
       scope: ['public_profile', 'email', 'user_about_me', 'user_friends']
-    }));
-
-  app.get('/auth/facebook/callback',
-    passport.authenticate('facebook', { failureRedirect: '/login' }),
-      (req, res) => {
-        res.cookie('authenticate', req.session.passport);
-        res.redirect('/');
-      }
+    })
   );
-
-  app.get('/logout', function(req, res) {
-    req.logout();
-    res.redirect('/');
+  // Facebook OAuth Callback
+  app.get('/auth/facebook/callback',
+    passport.authenticate('facebook', { failureRedirect: '/login' }), (req, res) => {
+      res.cookie('authenticate', req.session.passport); // set authenticated cookie
+      res.redirect('/');                    // redirect to homepage (notebook view)
+    }
+  );
+  // Logout
+  app.get('/logout', (req, res) => {
+    req.logout();       // destroy session/cookie
+    res.redirect('/');  // redirerect to homepage (landing view)
   });
 
-  // User Info Update
+  /********************************************************************/
+
+  /******************** User Information Endpoints ********************/
+
   app.route('/api/users/:userId')
-    .get((req, res) => {
-      if (req.query.pathUrl) {
-        // can be optimized with promises... nice to have later
-        getRoom(req.query.pathUrl, req.params.userId, (room) => res.send(room));
-      } else {
-        res.send('Retrieve the info for user #' + req.params.userId);
-      }
-    })
-    .put((req, res) => {
-      res.send('Update the info for user #' + req.params.userId);
-    })
-    .delete((req, res) => {
-      res.send('Delete user #' + req.params.userId);
-    });
+  .get((req, res) => {
+    // Retrieve All Rooms belonging to User
+    getAllUserRooms(req.params.userId, allUserRooms => res.send(allUserRooms));
+  });
+  /***** Later Features To Add for User Profiles *****/
+  // .put((req, res) => {
+  //   res.send('Update the info for user #' + req.params.userId);
+  // })
+  // .delete((req, res) => {
+  //   res.send('Delete user #' + req.params.userId);
+  // });
+
+  /********************************************************************/
+
+  /******************** Room Information Endpoints ********************/
 
   app.route('/api/rooms/')
-    .post((req, res) => {
-      if (req.query.pathUrl) {
-        // Have user join the room at 'pathUrl'
-        joinRoom(req.body.userId, req.query.pathUrl, (currentRoom) => res.send(currentRoom));
-      } else {
-        // create and return hash for room path Url
-        createNewRoom(req.body, (roomInfo) => res.send(roomInfo));
-      }
-    })
-    .get((req, res) => {
-      getAllUserRooms(req.query.userId, (allUserRooms) => res.send(allUserRooms));
-    })
-    .delete((req, res) => {
-      deleteNotebook(req.query.userId, req.query.roomId, (found) => {
-        if (!found) { res.status(400).send('Room Not Found'); }
-        res.status(204).send();
-      });
+  .post((req, res) => {
+    if (req.query.pathUrl) {
+      // Have user join the room at pathUrl
+      // And send back room info back to client-side
+      joinRoom(req.body.userId, req.query.pathUrl, (currentRoom) => res.send(currentRoom));
+    } else {
+      // create room from data from user and send back new room info
+      req.body ? createNewRoom(req.body, (roomInfo) => res.send(roomInfo)) : res.status(404).send();
+    }
+  })
+  .get((req, res) => {
+    // retrieve specific room information at PathUrl for the user
+    getRoom(req.query.pathUrl, req.query.userId, room => res.send(room));
+  })
+  .delete((req, res) => {
+    // delete notebook for specific user at roomId
+    // (used for notebook view to delete notebook)
+    deleteRoom(req.query.userId, req.query.roomId, found => {
+      if (!found) { res.status(400).send('Room Not Found'); }
+      res.status(204).send();
     });
+  });
 
-  app.post('/api/room/status', (req, res) => {
+  app.get('/api/room/status', (req, res) => {
+    // check for active lecture (socket room) and return status
     res.status(201).send({active: !!io.sockets.adapter.rooms[req.body.pathUrl]});
   });
 
+  /*********************************************************************/
+
+  /******************** Audio Information Endpoints *********************/
+
   app.get('/api/audio/:pathUrl', (req, res) => {
-    getAudioForRoom(req.params.pathUrl, audioUrl => res.send(audioUrl));
+    // retrieve audio url from database for room at pathUrl
+    findRoom(req.params.pathUrl, room => res.send(room.audioUrl));
   });
 
-  // Note Creation
+  /*********************************************************************/
+
+  /******************** Note Information Endpoints *********************/
+
   app.post('/api/notes/create', (req, res) => {
+    // Note Creation
     // pass the notes in cache (redis) to database (postgres)
     createNewNote(req.body, newNote => res.send(newNote));
   });
 
-  // Note Editing
   app.route('/api/notes/:userId/:roomId')
-    .get((req, res) => {
-      if (req.query.filter === 'show') {
-        showFilteredNotes(req.params, allNotes => res.send(allNotes));
-      } else {
-        showAllNotes(req.params, allNotes => res.send(allNotes));
-      }
-    })
-    .put((req, res) => {
-      // accepts in req.body an array of notes to update
-      // [{id, show, content}]
-      updateNotes(req.params.userId, req.params.roomId, req.body, (err) => {
-        if (err) { res.status(400).send({ text: 'Bad Update Note Request', error: err }); }
-        res.status(204).send();
-      });
-    })
-    .delete((req, res) => {
-      deleteNotes(req.body, error => {
-        if (error) {
-          res.status(404).send(error);
-        }
-        res.status(204).send();
-      });
+  .get((req, res) => {
+    if (req.query.filter === 'show') {
+      // for Review View
+      // if query comes with show, send client only notes that have prop of 'show: true'
+      showFilteredNotes(req.params, allNotes => res.send(allNotes));
+    } else {
+      // for Compile view
+      // send client all note associated to room
+      showAllNotes(req.params, allNotes => res.send(allNotes));
+    }
+  })
+  .put((req, res) => {
+    // Note Editing
+    // accepts in req.body an array of notes to update
+    // [{id, show, content}]
+    updateNotes(req.params, req.body, err => {
+      if (err) { res.status(400).send({ text: 'Bad Update Note Request', error: err }); }
+      res.status(204).send();
     });
+  })
+  .delete((req, res) => {
+    // Note Deletion
+    // accepts in req.body an array of note ids to delete
+    deleteNotes(req.body, err => {
+      if (err) { res.status(404).send(err); }
+      res.status(204).send();
+    });
+  });
 
-  // Delete a note.
-  app.route('/api/notes/:userId/:roomId/:noteId')
-    .delete((req, res) => {
-      deleteANote(req.params.noteId, err =>{
-        if (err) {
-          res.status(404).send(error);
-        }
-        res.status(204).send();
-      });
-    });
+  /*********************************************************************/
+
+  /*********************** Static File Endpoints ***********************/
 
   app.get('*/index.bundle.js', function (request, response) {
     response.sendFile(path.resolve(__dirname, '../../dist/index.bundle.js'));
@@ -133,11 +150,8 @@ module.exports = (app, express, io) => {
     response.sendFile(path.resolve(__dirname, '../../client/styles/w3schools.css'));
   });
 
-  app.get('*/joyride.css', function (request, response) {
-    response.sendFile(path.resolve(__dirname, '../../client/styles/joyride.css'));
-  });
-
   app.get('*', function(request, response) {
     response.sendFile(path.resolve(__dirname, '../../client', 'index.html'));
   });
+  /*********************************************************************/
 };

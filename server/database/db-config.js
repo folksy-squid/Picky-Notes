@@ -5,6 +5,8 @@ if ( process.env.NODE_ENV === 'test') {
   var { dbName, username, password, host, port } = require('../../example_keys').db.test;
 }
 
+/********************************* Database Configuration *********************************/
+
 const Sequelize = require('sequelize');
 
 const db = new Sequelize(`postgres://${username}:${password}@${host}:${port}/${dbName}`, { logging: false });

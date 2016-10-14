@@ -14,17 +14,17 @@ class Entry extends React.Component {
   }
 
   clickHandler() {
-    const pathUrl = this.props.entry.pathUrl;
+    const pathUrl = this.props.entryInfo.pathUrl;
     $.ajax({
-      method: 'POST',
+      method: 'GET',
       url: '/api/room/status',
       contentType: 'application/json',
       data: JSON.stringify({pathUrl}),
       success: (res) => {
         if (res.active) {
-          this.context.router.push(`/lecture/${this.props.entryInfo.pathUrl}`);
+          this.context.router.push(`/lecture/${pathUrl}`);
         } else {
-          this.context.router.push(`/review/${this.props.entryInfo.pathUrl}`);
+          this.context.router.push(`/review/${pathUrl}`);
         }
       }
     });

@@ -115,7 +115,7 @@ module.exports = (listen) => {
         addNote(socket, note, (result) => socket.emit('add note success', result));
         return;
       }
-      socket.emit('add note error', 'Note does not exist you asshat');
+      socket.emit('add note error', 'Note does not exist');
     });
 
     socket.on('user reconnect', () => {

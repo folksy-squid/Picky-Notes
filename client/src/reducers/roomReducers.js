@@ -155,7 +155,7 @@ export default (state = {}, action) => {
   if (action.type === 'SET_ROOM_INFO') {
     $.ajax({
       method: 'GET',
-      url: `/api/users/${action.user.id}?pathUrl=${action.pathUrl}`,
+      url: `/api/rooms?userId=${action.user.id}&pathUrl=${action.pathUrl}`,
       success: (res) => {
         if (res === 'error') {
           action.cb(res);

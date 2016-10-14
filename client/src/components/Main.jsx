@@ -24,7 +24,7 @@ export class Main extends React.Component {
     const context = this;
     $.ajax({
       method: 'GET',
-      url: `/api/rooms?userId=${user.id}`
+      url: `/api/users/${user.id}`
     })
     .then(entries => {
       let lectures = entries.filter((entry) => entry.startTimestamp !== null);
