@@ -91,7 +91,7 @@ const showFilteredNotes = ({userId, roomId}, cb) => {
   .then(allNotes => cb(allNotes));
 };
 
-const updateNotes = (userId, roomId, allNotes, cb) => {
+const updateNotes = ({userId, roomId}, allNotes, cb) => {
   let promises = [];
 
   const updateOneNote = note => {

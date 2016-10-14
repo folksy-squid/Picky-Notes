@@ -97,19 +97,23 @@ module.exports = (app, express, io) => {
     createNewNote(req.body, newNote => res.send(newNote));
   });
 
-  // Note Editing
   app.route('/api/notes/:userId/:roomId')
     .get((req, res) => {
       if (req.query.filter === 'show') {
+        // for Review View
+        // if query comes with show, send client only notes that have prop of 'show: true'
         showFilteredNotes(req.params, allNotes => res.send(allNotes));
       } else {
+        // for Compile view
+        // send client all note associated to room
         showAllNotes(req.params, allNotes => res.send(allNotes));
       }
     })
     .put((req, res) => {
+      // Note Editing
       // accepts in req.body an array of notes to update
       // [{id, show, content}]
-      updateNotes(req.params.userId, req.params.roomId, req.body, (err) => {
+      updateNotes(req.params, req.body, (err) => {
         if (err) { res.status(400).send({ text: 'Bad Update Note Request', error: err }); }
         res.status(204).send();
       });
