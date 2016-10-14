@@ -16,14 +16,13 @@ module.exports = (app, express, io) => {
   );
   // Facebook OAuth Callback
   app.get('/auth/facebook/callback',
-    passport.authenticate('facebook', { failureRedirect: '/login' }),
-      (req, res) => {
-        res.cookie('authenticate', req.session.passport); // set authenticated cookie
-        res.redirect('/');                    // redirect to homepage (notebook view)
-      }
+    passport.authenticate('facebook', { failureRedirect: '/login' }), (req, res) => {
+      res.cookie('authenticate', req.session.passport); // set authenticated cookie
+      res.redirect('/');                    // redirect to homepage (notebook view)
+    }
   );
   // Logout
-  app.get('/logout', function(req, res) {
+  app.get('/logout', (req, res) => {
     req.logout();       // destroy session/cookie
     res.redirect('/');  // redirerect to homepage (landing view)
   });
@@ -35,7 +34,7 @@ module.exports = (app, express, io) => {
   app.route('/api/users/:userId')
   .get((req, res) => {
     // Retrieve All Rooms belonging to User
-    getAllUserRooms(req.params.userId, (allUserRooms) => res.send(allUserRooms));
+    getAllUserRooms(req.params.userId, allUserRooms => res.send(allUserRooms));
   });
   /***** Later Features To Add for User Profiles *****/
   // .put((req, res) => {
@@ -62,12 +61,12 @@ module.exports = (app, express, io) => {
   })
   .get((req, res) => {
     // retrieve specific room information at PathUrl for the user
-    getRoom(req.query.pathUrl, req.query.userId, (room) => res.send(room));
+    getRoom(req.query.pathUrl, req.query.userId, room => res.send(room));
   })
   .delete((req, res) => {
     // delete notebook for specific user at roomId
     // (used for notebook view to delete notebook)
-    deleteRoom(req.query.userId, req.query.roomId, (found) => {
+    deleteRoom(req.query.userId, req.query.roomId, found => {
       if (!found) { res.status(400).send('Room Not Found'); }
       res.status(204).send();
     });
@@ -113,7 +112,7 @@ module.exports = (app, express, io) => {
     // Note Editing
     // accepts in req.body an array of notes to update
     // [{id, show, content}]
-    updateNotes(req.params, req.body, (err) => {
+    updateNotes(req.params, req.body, err => {
       if (err) { res.status(400).send({ text: 'Bad Update Note Request', error: err }); }
       res.status(204).send();
     });
