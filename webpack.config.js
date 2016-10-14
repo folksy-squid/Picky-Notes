@@ -25,15 +25,17 @@ module.exports = {
   // },
   plugins: [
     // optimizes the order and efficiency of module usage
-    // new webpack.optimize.OccurrenceOrderPlugin(),
+    new webpack.optimize.OccurrenceOrderPlugin(),
     // allows changes to be replaced 'hot-modularly'. >> A middleware within your server
-    new webpack.HotModuleReplacementPlugin(),
+    new webpack.optimize.DedupePlugin(),
+    new webpack.optimize.UglifyJsPlugin(),
+    new webpack.HotModuleReplacementPlugin()
   ],
   module: {
     loaders: [{
       test: /\.jsx?$/,
-      // exclude: /node_modules/,
-      loaders: ['react-hot', 'babel'],
+      exclude: /node_modules/,
+      loaders: ['babel'],
       include: APP_DIR
     },
     {
