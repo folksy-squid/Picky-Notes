@@ -123,7 +123,6 @@ module.exports = (app, express, io) => {
       });
     });
 
-
   /*********************************************************************/
 
   /*********************** Static File Endpoints ***********************/
@@ -148,11 +147,8 @@ module.exports = (app, express, io) => {
     response.sendFile(path.resolve(__dirname, '../../client/styles/w3schools.css'));
   });
 
-  app.get('*/joyride.css', function (request, response) {
-    response.sendFile(path.resolve(__dirname, '../../client/styles/joyride.css'));
-  });
-
   app.get('*', function(request, response) {
     response.sendFile(path.resolve(__dirname, '../../client', 'index.html'));
   });
+  /*********************************************************************/
 };
