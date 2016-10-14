@@ -99,8 +99,8 @@ const updateNotes = (userId, roomId, allNotes, cb) => {
       id: note.id,
       editingUserId: userId,
       roomId: roomId
-    } })
-    .then((data) => console.log('notes deleted:', data));
+    } });
+    // .then(data => console.log('notes deleted:', data));
   };
 
   for (let i = 0; i < allNotes.length; i++) {
