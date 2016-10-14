@@ -6,10 +6,10 @@ const {User, Room, Note, db} = require('./db-config');
 /****************************** Room Helpers ******************************/
 const createNewRoom = ({topic, className, lecturer, hostId}, cb) => {
 
-  // generate unique PathUrl
+  /********* Generate unique PathUrl *********/
   const pathUrl = generatePathUrl(topic + className + lecturer + hostId);
 
-  // Create Room
+  /********* Create Room *********/
   Room.create({
     pathUrl: pathUrl,
     topic: topic,
@@ -20,21 +20,21 @@ const createNewRoom = ({topic, className, lecturer, hostId}, cb) => {
   .then(roomInfo => cb(roomInfo));
 };
 
-// generate PathUrl hash with md5
+/******* Generate PathUrl hash with md5 ********/
 const generatePathUrl = data => md5(data + Math.random()).slice(0, 5);
 
-// save audio url from S3 to room in database
+/********** Save audio url from S3 to room in database ********/
 const saveAudioToRoom = (pathUrl, audioUrl, cb) => {
   Room.update({audioUrl}, {where: { pathUrl }})
   .then(cb).catch(cb);
 };
 
-// at start of lecture, save the start time-stamp to reference for time length
+/******* At start of lecture, save the start time-stamp to reference for time length ******/
 const saveStartTimestamp = (pathUrl, startTimestamp) => {
   Room.update({startTimestamp}, {where: { pathUrl }});
 };
 
-// calculate the length of the lecture based on the end of lecture
+/******** Calculate the length of the lecture based on the end of lecture *******/
 const saveTimeLength = (pathUrl, endTimestamp) => {
   findRoom(pathUrl, room => {
     let timeLength = endTimestamp - room.startTimestamp;
@@ -42,12 +42,13 @@ const saveTimeLength = (pathUrl, endTimestamp) => {
   });
 };
 
-// helper function to find room info
+/******** Helper function to find room info ********/
 const findRoom = (pathUrl, cb) => {
   Room.findOne({ where: { pathUrl } })
   .then(cb).catch(cb);
 };
 
+/***** Get all users associated with the room *********/
 const getRoomParticipants = (pathUrl, cb) => {
   Room.findOne({
     attributes: [],
@@ -64,41 +65,44 @@ const getRoomParticipants = (pathUrl, cb) => {
 
 /****************************** Note Helpers ******************************/
 
+/******** Create new notes from compile view into the database ********/
 const createNewNote = (note, cb) => {
   note.editingUserId = note.originalUserId;
   note.show = true;
 
   Note.create(note)
-  .then(cb)
-  .catch(cb);
+  .then(cb).catch(cb);
 };
 
+/******** Create copy of each note for all users *********/
 const multiplyNotes = (notes, arrOfClients) => {
   let multipliedNotes = [];
   for (let i = 0; i < notes.length; i++) {
     for (let j = 0; j < arrOfClients.length; j++) {
       if (notes[i].originalUserId !== Number(arrOfClients[j]) && !notes[i].thought) {
-        var copy = JSON.parse(JSON.stringify(notes[i]));
-        copy.editingUserId = arrOfClients[j];
-        copy.show = false;
-        multipliedNotes.push(copy);
+        var copy = JSON.parse(JSON.stringify(notes[i]));    // create copy of the note
+        copy.editingUserId = arrOfClients[j];               // change editing user id
+        copy.show = false;                                  // default show to false for notes
+        multipliedNotes.push(copy);                         // store edited notes
       }
     }
-    multipliedNotes.push(notes[i]);
+    multipliedNotes.push(notes[i]);                         // store original notes
   }
-  return multipliedNotes;
+  return multipliedNotes;                                   // return all notes
 };
 
+/********Take notes from cache and save into database **********/
 const createRoomNotes = (notes, roomId, arrOfClients, cb) => {
   notes = notes.map(note => {
-    note.roomId = roomId;
+    note.roomId = roomId;                     // map room id to all notes
     return note;
   });
-  notes = multiplyNotes(notes, arrOfClients);
-  Note.bulkCreate(notes)
+  notes = multiplyNotes(notes, arrOfClients); // multiply notes for each user
+  Note.bulkCreate(notes)                      // bulk create notes
   .then(() => cb());
 };
 
+/******** Return all notes belonging to User *********/
 const showAllNotes = ({userId, roomId}, cb) => {
   Note.findAll({
     where: { editingUserId: userId },
@@ -111,6 +115,7 @@ const showAllNotes = ({userId, roomId}, cb) => {
   .then(allNotes => cb(allNotes));
 };
 
+/********* Return all selected notes belonging to user *********/
 const showFilteredNotes = ({userId, roomId}, cb) => {
   Note.findAll({
     where: {
@@ -126,8 +131,8 @@ const showFilteredNotes = ({userId, roomId}, cb) => {
   .then(allNotes => cb(allNotes));
 };
 
+/********* Batch update all notes *********/
 const updateNotes = ({userId, roomId}, allNotes, cb) => {
-
   const promises = allNotes.map( note =>
     Note.update(note, {
       where: {
@@ -141,7 +146,9 @@ const updateNotes = ({userId, roomId}, allNotes, cb) => {
   Promise.all(promises).then(data => cb(null), cb);
 };
 
+/********* Batch delete notes *********/
 const deleteNotes = (noteIds, cb) => {
+  // pass in an array of note ids and promisify the delete actions
   const promises = noteIds.map( id => Note.destroy({ where: { id } }));
 
   Promise.all(promises)
@@ -152,12 +159,13 @@ const deleteNotes = (noteIds, cb) => {
 
 /****************************** User Helpers ******************************/
 
+/********* Get all Rooms associated with User *********/
 const getAllUserRooms = (userId, cb) => {
   User.findById(userId)
   .then(user => user.getRooms())
   .then(cb).catch(cb);
 };
-
+/********* Get Specific Room Info *********/
 const getRoom = (pathUrl, userId, cb) => {
   User.findById(userId)
   .then((user) => user.getRooms({where: {pathUrl}, raw: true}))
@@ -166,6 +174,7 @@ const getRoom = (pathUrl, userId, cb) => {
   .catch(cb);
 };
 
+/********* Associate User to Room *********/
 const joinRoom = (userId, pathUrl, cb) => {
   User.findById(userId)
   .then(currentUser => {
@@ -177,6 +186,7 @@ const joinRoom = (userId, pathUrl, cb) => {
   });
 };
 
+/********* Delete Room Association from User *********/
 const deleteRoom = (userId, roomId, cb) => {
   User.findById(userId)
   .then((user) => user.removeRoom(roomId))
