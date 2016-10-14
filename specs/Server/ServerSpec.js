@@ -80,57 +80,57 @@ describe('/api/rooms/', () => {
     });
   });
 
-  describe('Room Joining /api/rooms/:pathUrl', () => {
-    describe('POST', () => {
-      it('should have user join the room', () => {});
-      it('', () => {});
-    });
-  });
-
-  describe('Room Status /api/room/status', () => {
-    it('', () => {});
-  });
-
-});
-
-describe('/api/users', () => {
-  beforeEach(() => {});
-  afterEach(() => {});
-
-  describe('All Users in Rooms /api/users/rooms/:userId', () => {
-    describe('GET', () => {
-      it('should return all users and rooms', () => {});
-    });
-  });
+  // describe('Room Joining /api/rooms/:pathUrl', () => {
+  //   describe('POST', () => {
+  //     it('should have user join the room', () => {});
+  //     it('', () => {});
+  //   });
+  // });
+  //
+  // describe('Room Status /api/room/status', () => {
+  //   it('', () => {});
+  // });
 
 });
 
-describe('/api/notes', () => {
-  beforeEach(() => {});
-  afterEach(() => {});
-
-  describe('Note Creation', () => {
-    describe('/api/notes/create', () => {
-      it('', () => {});
-      it('', () => {});
-    });
-  });
-  describe('Note Editing', () => {
-    describe('/api/notes/:userId/:roomId', () => {
-      it('', () => {});
-      it('', () => {});
-    });
-  });
-});
-
-describe('/api/audio', () => {
-  beforeEach(() => {});
-  afterEach(() => {});
-
-  describe('Audio Retrieval', () => {
-    describe('GET /api/audio/:pathUrl', () => {
-      it('', () => {});
-    });
-  });
-
-});
+// xdescribe('/api/users', () => {
+//   beforeEach(() => {});
+//   afterEach(() => {});
+//
+//   describe('All Users in Rooms /api/users/rooms/:userId', () => {
+//     describe('GET', () => {
+//       it('should return all users and rooms', () => {});
+//     });
+//   });
+//
+// });
+//
+// xdescribe('/api/notes', () => {
+//   beforeEach(() => {});
+//   afterEach(() => {});
+//
+//   describe('Note Creation', () => {
+//     describe('/api/notes/create', () => {
+//       it('', () => {});
+//       it('', () => {});
+//     });
+//   });
+//   describe('Note Editing', () => {
+//     describe('/api/notes/:userId/:roomId', () => {
+//       it('', () => {});
+//       it('', () => {});
+//     });
+//   });
+// });
+//
+// xdescribe('/api/audio', () => {
+//   beforeEach(() => {});
+//   afterEach(() => {});
+//
+//   describe('Audio Retrieval', () => {
+//     describe('GET /api/audio/:pathUrl', () => {
+//       it('', () => {});
+//     });
+//   });
+//
+// });

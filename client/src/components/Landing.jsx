@@ -8,7 +8,6 @@ class Landing extends React.Component {
 
   componentDidMount() {
     setTimeout(() => {
-      console.log('load it now.');
       init();
     }, 600);
   }

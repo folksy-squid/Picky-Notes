@@ -23,7 +23,7 @@ var promisifiedOldGUM = function(constraints) {
   return new Promise(function(resolve, reject) {
     getUserMedia.call(navigator, constraints, resolve, reject);
   });
-    
+
 };
 
 // Older browsers might not implement mediaDevices at all, so we set an empty object first
@@ -53,7 +53,6 @@ const createSocketRoom = (state, host, pathUrl, createRoom) => {
   // then set up io to know where the server is
   socket.emit('create room', pathUrl, host);
   socket.on('create room success', () => {
-    console.log('successfully created socket room');
     createRoom(pathUrl);
   });
   return socket;

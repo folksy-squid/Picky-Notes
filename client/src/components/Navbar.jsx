@@ -22,11 +22,12 @@ export class Navbar extends React.Component {
       value: null
     };
   }
-  // static get contextTypes() {
-  //   return {
-  //     router: React.PropTypes.object.isRequired,
-  //   };
-  // }
+
+  static get contextTypes() {
+    return {
+      router: React.PropTypes.object.isRequired,
+    };
+  }
 
   logout() {
     this.props.dispatch(logOut());
@@ -54,9 +55,9 @@ export class Navbar extends React.Component {
       if (err) {
         console.log(err);
       } else if (args[2] === 'lecture') {
-        this.props.dispatch(push(`/lecture/${realm.state.value}`));
+        this.context.router.push(`/lecture/${pathUrl}`);
       } else {
-        this.props.dispatch(push(`/lobby/${realm.state.value}`));
+        this.context.router.push(`/lobby/${pathUrl}`);
       }
     };
     this.props.dispatch(joinSocketRoom(pathUrl, user, joinedRoom));

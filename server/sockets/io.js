@@ -130,7 +130,6 @@ module.exports = (listen) => {
 
     socket.on('disconnect', () => {
       if (socket.host) {
-        console.log('lecture host disconnected');
         io.in(socket.pathUrl).emit('host disconnected');
         endLecture();
       }
@@ -149,7 +148,6 @@ module.exports = (listen) => {
 
       fs.appendFile(filePath, Buffer.concat(largeChunk), err => {
         if (err) { return console.log(err); }
-        console.log('append file success!');
       });
     });
 
@@ -197,7 +195,6 @@ module.exports = (listen) => {
           console.log(err);
         })
         .run();
-
       });
     });
 

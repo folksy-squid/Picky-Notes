@@ -351,24 +351,24 @@ describe('showAllNotes', () => {
   });
 });
 
-describe('updateNotes', () => {
-  beforeEach((done) => {
-    User.create(testUser1)
-    .then(() => Room.create(testRoom))
-    .then(() => Note.create(testNote1))
-    .then(() => Note.create(testNote2))
-    .then(() => done());
-  });
-});
+// describe('updateNotes', () => {
+//   beforeEach((done) => {
+//     User.create(testUser1)
+//     .then(() => Room.create(testRoom))
+//     .then(() => Note.create(testNote1))
+//     .then(() => Note.create(testNote2))
+//     .then(() => done());
+//   });
+// });
 // describe('updateOneNote', () => {});
-xdescribe('findRoom', () => {});
-xdescribe('getAllUserRooms', () => {});
-xdescribe('getRoom', () => {});
-xdescribe('saveAudioToRoom', () => {});
-xdescribe('createNewNote', () => {});
-xdescribe('saveStartTimestamp', () => {});
-xdescribe('saveTimeLength', () => {});
-xdescribe('getAudioForRoom', () => {});
-xdescribe('deleteNotes', () => {});
-xdescribe('getROomParticipants', () => {});
-xdescribe('deleteNotebook', () => {});
+// xdescribe('findRoom', () => {});
+// xdescribe('getAllUserRooms', () => {});
+// xdescribe('getRoom', () => {});
+// xdescribe('saveAudioToRoom', () => {});
+// xdescribe('createNewNote', () => {});
+// xdescribe('saveStartTimestamp', () => {});
+// xdescribe('saveTimeLength', () => {});
+// xdescribe('getAudioForRoom', () => {});
+// xdescribe('deleteNotes', () => {});
+// xdescribe('getROomParticipants', () => {});
+// xdescribe('deleteNotebook', () => {});
