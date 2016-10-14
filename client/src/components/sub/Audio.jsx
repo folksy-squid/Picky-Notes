@@ -12,26 +12,18 @@ export class Audio extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      loaded: 'false',
       waveformDisplay: 'hidden',
       loadingDisplay: 'block',
       loadVal: 0,
       clicked: false,
-      currentTime: 0
+      currentTime: 0,
     };
+    // set default audio length to approximate length saved in room.
     this.audioLength = this.formatTime(this.props.room.roomInfo.timeLength / 1000);
+
+    // bind functions for effiency
     this.handleClick = this.handleClick.bind(this);
     this.handlePosChange = this.handlePosChange.bind(this);
-  }
-
-  componentWillMount() {
-    this.props.dispatch(getRoomAudio(this.props.room.roomInfo.pathUrl, (err, success) => {
-      if (err) {
-        this.setState({loaded: false});
-      } else {
-        this.setState({loaded: true});
-      }
-    }));
   }
 
   componentWillUnmount() {
@@ -76,6 +68,7 @@ export class Audio extends React.Component {
     }
   }
 
+  // change playing value in the redux store to true or false
   handleTogglePlay() {
     if (this.props.waveform.playing) {
       this.sendStatus('paused');
@@ -85,6 +78,7 @@ export class Audio extends React.Component {
     this.props.dispatch(togglePlay());
   }
 
+  // Calls sendStatus when the waveform is clicked
   handlePosChange(e) {
     // this.props.dispatch(setPos(e.originalArgs ? e.originalArgs[0] : +e.target.value));
     if (this.state.clicked === true) {
@@ -97,6 +91,12 @@ export class Audio extends React.Component {
     }
   }
 
+  /*  
+    once the waveform has loaded the audio file
+      - change audioLength to the actual audio length
+      - make the waveform visible and hide the placeholder message
+      - set an interval to update the current time  
+  */
   handleReady(arg1) {
     this.audioLength = this.formatTime( arg1.wavesurfer.getDuration() );
     this.props.dispatch(setWaveform(arg1.wavesurfer));
@@ -110,10 +110,15 @@ export class Audio extends React.Component {
     this.props.dispatch(setVolume(+e.target.value));
   }
 
+  // set the loading value of the audio file
   handleLoading(e) {
     this.setState({loadVal: e.originalArgs[0]});
   }
 
+  /* 
+    stop updating currentTime when audio file is done playing
+    set waveform position to 0 to replay audio on play button click
+  */
   onFinish() {
     this.props.dispatch(removeTimer());
     this.props.dispatch({type: 'STOP_PLAY'});
@@ -124,6 +129,7 @@ export class Audio extends React.Component {
     window.setTimeout(this.setState.bind(this, {clicked: true}), 10);
   }
 
+  // format seconds with decimals to mm:ss or hh:mm:ss
   formatTime(decimalSeconds) {
     let seconds = ~~decimalSeconds;
     let minutes = ~~(seconds / 60);
@@ -155,15 +161,31 @@ export class Audio extends React.Component {
     let msg = '';
 
     if (url === 'audio url') {
-      msg = 'Uploading audio. Please check back later.';
+      // if audio is still being proccessed 
+      msg = 'Processing audio Please check back later';
     } else {
+      // if audio url was received
       if (this.state.loadVal === 100) {
+        // if audio was loaded but still rendering waveform
         msg = 'Drawing waveform';
       } else {
+        // if audio file is still being loaded
         msg = 'Loading audio file ' + this.state.loadVal;
       }
     }
 
+    /*
+      This will exclusively display the loading message or the audio player itself.
+      
+      The loading message is described above.
+
+      The audio player contains
+        - play/pause button
+        - current time of the audio
+        - the waveform
+        - the total time/length of the audio
+        - the volume control
+    */
     return (
       <span className="audioContainer">
         <div style={{ display: this.state.loadingDisplay, position: 'absolute' }}>
@@ -172,9 +194,9 @@ export class Audio extends React.Component {
         <span className="audioPlayer" style={{visibility: this.state.waveformDisplay}}>
           <i onClick={this.handleTogglePlay.bind(this)} className={`fa ${this.props.waveform.playing ? 'fa-pause-circle' : 'fa-play-circle'} fa-3x text-primary playButton`}></i>
 
-          <span>{this.formatTime(this.state.currentTime)}</span>
+          <span className="currentTimestamp">{this.formatTime(this.state.currentTime)}</span>
 
-          <span className="waveform" ref="wavesurfContainer" onClick={this.handleClick.bind(this)} >
+          <span className="waveform" ref="wavesurfContainer" onClick={this.handleClick} >
             <Wavesurfer
               volume={this.props.waveform.volume}
               pos={this.props.waveform.pos}
@@ -185,7 +207,6 @@ export class Audio extends React.Component {
               onReady={this.handleReady.bind(this)}
               onLoading={this.handleLoading.bind(this)}
               onFinish={this.onFinish.bind(this)}
-              isLoaded={this.state.shouldBeLoaded}
             />
           </span>
 

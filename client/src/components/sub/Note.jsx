@@ -15,21 +15,18 @@ class Note extends React.Component {
     };
   }
 
-  saveNote(note) {
-    // this can be invoked when in the compiled view
-    // send it to the redis cache
-  }
-
   playNote(e) {
     // this can be invoked when in the review view
     this.props.dispatch(setPos(Number(this.props.noteInfo.audioTimestamp) / 1000));
     this.props.dispatch(play());
   }
 
+  // selecting or deselecting a note will toggle the show property
   toggleNoteHandler(e) {
     this.props.dispatch(toggleNote(this.props.noteInfo.id));
   }
 
+  // format milliseconds to mm:ss or hh:mm:ss
   formatTime(milliseconds) {
     let seconds = ~~(milliseconds / 1000);
     let minutes = ~~(seconds / 60);
@@ -44,6 +41,7 @@ class Note extends React.Component {
     return time;
   }
 
+  // turn the note text into an editable inputbox
   contentClickHandler() {
     this.setState({editContent: true});
   }
@@ -52,23 +50,28 @@ class Note extends React.Component {
     e.preventDefault();
     const newText = this.refs.noteInput.value;
     if (newText.trim() !== '' && newText.value !== this.props.noteInfo.content) {
+      // if the note different and not filled with whitespace, send the note to be updated in the database
       this.props.dispatch(editNote(this.props.noteInfo.id, newText));
     }
+    // change the inputbox back to text
     this.setState({ editContent: false });
   }
 
   deleteHandler() {
+    // remove the note so it is not displayed
     this.props.dispatch(deleteNote(this.props.noteInfo.id, this.props.noteInfo.thought));
+
+    // highlight the correct note when a note is deleted
     setTimeout(() => {
       const wavePos = this.props.note.waveform.getCurrentTime();
       const timestamps = this.props.note.audioTimestampArray;
-      var actionState;
+      let actionState;
       if (this.props.waveform.playing) {
         actionState = 'playing';
       } else {
         actionState = 'paused';
       }
-      for (var i = 0; i < timestamps.length; i++) {
+      for (let i = 0; i < timestamps.length; i++) {
         if (timestamps[i] > wavePos) {
           if (window.timer) {
             window.clearTimeout(window.timer);
@@ -77,7 +80,7 @@ class Note extends React.Component {
           let upcomingNoteIndex = i;
           let wavePos = this.props.note.waveform.getCurrentTime();
 
-          const updateNote = (idx) => {
+          const updateNote = idx => {
             let audioTimestamps = this.props.note.audioTimestampArray;
             this.props.dispatch(setClass(idx));
 
@@ -99,10 +102,12 @@ class Note extends React.Component {
     }, 10);
   }
 
+  // turn the timestamp into editable inputboxes
   timestampClickHandler() {
     this.setState({ editTimestamp: true });
   }
 
+  // convert hours, mins, and secs to milliseconds and update to that time
   editTimestampHandler(e) {
     e.preventDefault();
     let newTimestamp = (+this.refs.editMin.value * 60 + +this.refs.editSec.value) * 1000;
@@ -115,6 +120,8 @@ class Note extends React.Component {
     this.setState({ editTimestamp: false });
   }
 
+
+  // onBlur, save/update the note content
   exitEditHandler() {
     const newText = this.refs.noteInput.value;
     if (newText.trim() !== '' && newText.value !== this.props.noteInfo.content) {
@@ -124,7 +131,7 @@ class Note extends React.Component {
   }
 
   render() {
-
+    // apply the appropriate classes to the notes
     const noteClass = () => {
       let retVal = this.props.view + ' note';
       if (this.props.noteInfo.thought) {
@@ -139,7 +146,25 @@ class Note extends React.Component {
       return (<div></div>);
     }
 
-    var view;
+    /*
+      Compile:
+        - checkbox
+        - editable content/text
+        - editable timestamp
+        - delete button
+        * colored by author
+
+      Lecture:
+        - content
+        - timestamp
+
+      Review:
+        - play button
+        - content
+    */
+
+
+    let view;
 
     if (this.props.view === 'compile') {
       const classColor = (i) => 'participant' + i;
