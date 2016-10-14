@@ -32,7 +32,7 @@ module.exports = {
   module: {
     loaders: [{
       test: /\.jsx?$/,
-      // exclude: /node_modules/,
+      exclude: /node_modules/,
       loaders: ['react-hot', 'babel'],
       include: APP_DIR
     },
@@ -43,6 +43,10 @@ module.exports = {
     {
       test: /\.json$/,
       loader: 'json'
+    },
+    {
+      test: /masonry|imagesloaded|fizzy\-ui\-utils|desandro\-|outlayer|get\-size|doc\-ready|eventie|eventemitter/,
+      loader: 'imports?define=>false&this=>window'
     }]
   }
 };

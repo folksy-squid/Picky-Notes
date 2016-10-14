@@ -351,7 +351,7 @@ h2.new-room-title {
 
 #message-list {
   height: 84%;
-  overflow: scroll;
+  /*overflow: scroll;*/
 }
 
 .chatbox > .panel-footer {
@@ -407,7 +407,7 @@ small.text-muted {
 .participants {
   font-size: 1.3em;
   max-height: 260px;
-  overflow: scroll;
+  /*overflow: scroll;*/
 }
 
 .participants i {
@@ -591,7 +591,7 @@ a > span.navbar-brand {
 .notebook-entry {
   cursor: pointer;
   opacity: 0.7;
-  padding: 10px 20px;
+  padding: 10px 10px;
   transition: all .2s ease-in-out;
 }
 
@@ -849,4 +849,10 @@ input[type=range][orient=vertical] {
 }
 body {
   padding-bottom: 30px;
+}
+
+.w3-container {
+  /*width: 200px;*/
+  word-wrap: break-word;
+  /*overflow: hidden;*/
 }

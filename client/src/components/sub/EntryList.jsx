@@ -1,5 +1,6 @@
 import React from 'react';
 import Entry from './Entry.jsx';
+var Masonry = require('react-masonry-component');
 // See below example for rendering with map.
 
 /*
@@ -10,10 +11,20 @@ import Entry from './Entry.jsx';
 </div>
 */
 
+const masonryOptions = {
+  columnWidth: 280
+}
+
 
 const EntryList = (props) => (
-  <div className="container-fluid">
-    {props.entries.map((entry, i) => <Entry key={i} index={i} entryInfo={entry} classColor={entry.id % 5} removeEntry={props.removeEntry}/>)}
+  <div className="grid">
+    <Masonry
+      options= {masonryOptions}
+      disableImagesLoaded={false} // default false
+      updateOnEachImageLoad={false} // default false and works only if disableImagesLoaded is false
+      >
+      {props.entries.map((entry, i) => <Entry key={i} index={i} entryInfo={entry} classColor={entry.id % 5} removeEntry={props.removeEntry}/>)}
+    </Masonry>
   </div>
 );
 
