@@ -33,7 +33,7 @@ class Landing extends React.Component {
           </div>
         </div>
       </div>
-    )
+    );
   }
 }
 

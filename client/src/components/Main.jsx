@@ -16,8 +16,7 @@ export class Main extends React.Component {
     super(props);
     this.state = {
       loaded: false
-    }
-    console.log('props', props)
+    };
   }
 
   componentWillMount() {
@@ -30,9 +29,9 @@ export class Main extends React.Component {
     .then(entries => {
       let lectures = entries.filter((entry) => entry.startTimestamp !== null);
       lectures = lectures.sort((a, b) => b.startTimestamp - a.startTimestamp);
-      context.props.dispatch(loadEntries(lectures))
+      context.props.dispatch(loadEntries(lectures));
       context.props.dispatch(loadClassList());
-      context.setState({loaded: true})
+      context.setState({loaded: true});
     });
   }
 

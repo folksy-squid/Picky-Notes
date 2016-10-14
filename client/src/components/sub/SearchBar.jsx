@@ -60,7 +60,6 @@ export class SearchBar extends React.Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
-  console.log('ownprops', ownProps);
   return {
     ...state,
     ...ownProps,

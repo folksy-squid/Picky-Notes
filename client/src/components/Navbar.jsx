@@ -8,8 +8,8 @@ import NoteReducer from '../reducers/noteReducers';
 import RoomReducer from '../reducers/roomReducers';
 import UserReducer from '../reducers/userReducers';
 import {Navbar as Navigation, Nav, NavItem, NavDropdown, MenuItem, FormGroup, FormControl, Modal, Button} from 'react-bootstrap';
-import Dropdown from './sub/Dropdown.jsx'
-import SearchBar from './sub/SearchBar.jsx'
+import Dropdown from './sub/Dropdown.jsx';
+import SearchBar from './sub/SearchBar.jsx';
 import Joyride from 'react-joyride';
 
 
@@ -111,7 +111,7 @@ export class Navbar extends React.Component {
     return (
       <Navigation>
         <Navigation.Header>
-          <IndexLinkContainer to="/">
+          <IndexLinkContainer to="/notebook">
             <a href='#'>
               <Navigation.Brand>
                 Picky Notes

@@ -15,14 +15,11 @@ class Dropdown extends React.Component {
   }
 
   renderListItems () {
-    let allClasses = [<MenuItem key={0} eventKey={5.001}>All</MenuItem>];
+    let allClasses = [<MenuItem key={-1} eventKey={-1}>All</MenuItem>];
     for (let i = 0; i < this.props.entry.classList.length; i++) {
-      let key = Number(`5.${i + 1}`);
-      if (i + 2 < 10) {
-        key = Number(`5.00${i + 1}`);
-      }
+      let key = i + 1;
       allClasses.push(
-        <MenuItem key={i + 1} eventKey={key}>{this.props.entry.classList[i]}</MenuItem>
+        <MenuItem key={key} eventKey={key}>{this.props.entry.classList[i]}</MenuItem>
       );
     }
     return allClasses;
@@ -34,7 +31,7 @@ class Dropdown extends React.Component {
 
   render() {
     return (
-      <NavDropdown onSelect={this.select.bind(this)} title="Filter Class" id="basic-nav-dropdown" eventKey={5}>
+      <NavDropdown onSelect={this.select.bind(this)} title="Filter Class" id="basic-nav-dropdown">
         {this.renderListItems()}
       </NavDropdown>
     );

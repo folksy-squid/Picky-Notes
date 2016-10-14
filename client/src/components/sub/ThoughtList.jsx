@@ -13,7 +13,7 @@ const ThoughtList = (props) => {
 
   return props.note.showThoughts ? (
     <div className="thought-list">
-      <Infinite containerHeight={window.innerHeight - 300} elementHeight={(window.innerHeight - 300) / (props.note.justThoughts.length-1)}>
+      <Infinite containerHeight={window.innerHeight - 300} elementHeight={(window.innerHeight - 300) / (props.note.justThoughts.length - 1)}>
         {thoughtView}
       </Infinite>
     </div>

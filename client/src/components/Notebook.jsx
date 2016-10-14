@@ -9,7 +9,7 @@ import RoomReducer from '../reducers/roomReducers';
 import UserReducer from '../reducers/userReducers';
 import EntryReducer from '../reducers/entryReducers';
 
-import {loadEntries, removeEntry} from '../actions/entryActions'
+import {loadEntries, removeEntry} from '../actions/entryActions';
 
 export class Notebook extends React.Component {
   constructor (props) {

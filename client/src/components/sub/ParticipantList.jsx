@@ -68,10 +68,10 @@ class ParticipantList extends React.Component {
           Participants ({participantLength}/10)
         </h4>
         {participants.map(({name, readyStatus}, i) =>
-        <div key={i}>
-          <i className={`fa fa-user ${classColor(`${i}`)}`} aria-hidden="true"></i>
-          <span className={`${classColor(`${i}`)}`}>{`${name} ${i === 0 && this.state.view !== 'compile' ? '(Host)' : ''}`}</span>&nbsp;
-          <span className={`btn-ready ${classColor(`${i}`)}`} style={{display: this.state.readyStatusDisplay}}>{readyStatus ? 'Ready' : 'Not Ready'}</span>
+        <div key={i} className={classColor(`${i}`)}>
+          <i className="fa fa-user" aria-hidden="true"></i>
+          <span>{`${name} ${i === 0 && this.state.view !== 'compile' ? '(Host)' : ''}`}</span>&nbsp;
+          <span className="btn-ready" style={{display: this.state.readyStatusDisplay}}>{readyStatus ? 'Ready' : 'Not Ready'}</span>
         </div>)}
       </div>
     );

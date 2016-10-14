@@ -373,6 +373,16 @@ small.text-muted {
 
 /*
   =================================
+    Lecture
+  =================================
+*/
+
+.lecture > .row {
+  padding-top: 20px
+}
+
+/*
+  =================================
     LectureTitle
   =================================
 */
@@ -396,7 +406,6 @@ small.text-muted {
 
 .participants {
   font-size: 1.3em;
-  margin-top: 40px;
   max-height: 260px;
   overflow: scroll;
 }
@@ -447,15 +456,9 @@ small.text-muted {
   =================================
 */
 
-.lecture-view-heading {
-  padding-top: 20px;
+h4 .LectureTitle .lecture-view-heading {
+  padding-top: 0px;
 }
-
-.button-group {
-  padding-top: 30px;
-  padding-bottom: 30px;
-}
-
 
 /*
   =================================
@@ -587,13 +590,14 @@ a > span.navbar-brand {
 
 .notebook-entry {
   cursor: pointer;
-  transition: opacity 0.2s;
+  opacity: 0.7;
   padding: 10px 20px;
   transition: all .2s ease-in-out;
 }
 
 .notebook-entry:hover {
   transform: scale(1.1);
+  opacity: 1.0;
 }
 
 .notebook-icon {
@@ -603,17 +607,24 @@ a > span.navbar-brand {
 
 .notebook-topic {
   color: black;
-  padding-top: 0.25em;
+  padding: 0.1em;
+  font-size: 1.5em;
   font-weight: bold;
 }
 
 .notebook-lecturer {
   color: black;
+  font-size: 1em;
+  padding: 0.1em;
 }
 
 .notebook-class {
   color: black;
   font-style: italic;
+  font-size: 0.8em;
+  text-align: right;
+  margin-bottom: -0.5em;
+  padding-top: 7px;
 }
 
 div.w3-card-4 {
@@ -621,22 +632,27 @@ div.w3-card-4 {
 }
 
 .notebook0 {
+  /*background-color: rgba(239, 68, 146, 0.8);*/
   background-color: rgb(239, 68, 146);
 }
 
 .notebook1 {
+  /*background-color: rgba(255, 146, 67, 0.8);*/
   background-color: rgb(255, 146, 67);
 }
 
 .notebook2 {
+  /*background-color: rgba(253, 217, 0, 0.8);*/
   background-color: rgb(253, 217, 0);
 }
 
 .notebook3 {
+  /*background-color: rgba(184, 209, 92, 0.8);*/
   background-color: rgb(184, 209, 92);
 }
 
 .notebook4 {
+  /*background-color: rgba(12, 188, 227, 0.8);*/
   background-color: rgb(12, 188, 227);
 }
 
