@@ -26,7 +26,6 @@ class InputBox extends React.Component {
             return this.props.dispatch(setArrow(i - 1));
           }
         }
-
         return this.props.dispatch(setArrow(this.props.note.audioTimestampArray.length - 1));
       }
     } else if (e.target.value.trim() === '' && this.state.showInsertPos) {
