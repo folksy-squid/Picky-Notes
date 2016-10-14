@@ -69,12 +69,10 @@ export const getNotesFromRoom = (pathUrl, user, cb) => {
   };
 };
 
-export const setClass = (index, wavePos, actionState) => {
+export const setClass = (index) => {
   return {
     type: 'SET_CLASS',
-    index,
-    wavePos,
-    actionState
+    index
   };
 };
 
@@ -101,5 +99,12 @@ export const showHideThoughts = (load) => {
   return {
     type: 'SHOW_HIDE_THOUGHTS',
     load
+  };
+};
+
+export const setWaveform = (waveform) => {
+  return {
+    type: 'SET_WAVEFORM',
+    waveform
   };
 };

@@ -60,7 +60,7 @@ class Note extends React.Component {
   deleteHandler() {
     this.props.dispatch(deleteNote(this.props.noteInfo.id, this.props.noteInfo.thought));
     setTimeout(() => {
-      const wavePos = this.props.waveform.pos;
+      const wavePos = this.props.note.waveform.getCurrentTime();
       const timestamps = this.props.note.audioTimestampArray;
       var actionState;
       if (this.props.waveform.playing) {
@@ -70,8 +70,31 @@ class Note extends React.Component {
       }
       for (var i = 0; i < timestamps.length; i++) {
         if (timestamps[i] > wavePos) {
-          return this.props.dispatch(setClass(i, wavePos, actionState));
-        }
+          if (window.timer) {
+            window.clearTimeout(window.timer);
+          }
+
+          let upcomingNoteIndex = i;
+          let wavePos = this.props.note.waveform.getCurrentTime();
+
+          const updateNote = (idx) => {
+            let audioTimestamps = this.props.note.audioTimestampArray;
+            this.props.dispatch(setClass(idx));
+
+            let diff = audioTimestamps[idx + 1] - wavePos;
+            wavePos = wavePos + diff;
+            idx++;
+            if (audioTimestamps[idx] > -1) {
+              window.timer = window.setTimeout(updateNote.bind(this, idx), diff * 1000);
+            }
+          };
+          let idx = upcomingNoteIndex - 1 < 0 ? 0 : upcomingNoteIndex - 1;
+          if (actionState === 'paused') {
+            this.props.dispatch(setClass(idx));
+          } else {
+            updateNote(idx);
+          }
+        } 
       }
     }, 10);
   }

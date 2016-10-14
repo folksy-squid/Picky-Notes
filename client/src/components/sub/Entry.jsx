@@ -45,7 +45,7 @@ class Entry extends React.Component {
     // Render an Entry component for each entry
     // (use map)
     return (
-      <div className="col-xs-6 col-sm-4 col-md-3 notebook-entry" >
+      <div className="col-xs-6 col-sm-4 col-md-3 notebook-entry" style={{width: '280px'}}>
         <div className={`w3-card-4 notebook${this.props.classColor}`}>
           <i className='ion ion-close-round deleteNoteIcon' onClick={this.deleteHandler.bind(this)}></i>
           <div className="w3-container" onClick={this.clickHandler.bind(this)}>
