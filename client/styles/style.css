@@ -197,6 +197,10 @@ hr {
   background-color: white;
 }
 
+#landing2 p {
+  min-height: 70px;
+}
+
 #landing2 > h1 {
   color: black;
 }

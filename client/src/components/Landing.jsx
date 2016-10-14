@@ -112,7 +112,7 @@ class Landing extends React.Component {
                 <source src="https://media.giphy.com/media/3oI9Jzk3lYfhAVqBmo/source.mp4" type="video/mp4" />
               </video>
               <p>
-                What should we write in here?
+                Select the notes and thoughts you want to store in your notebook
               </p>
             </div>
             <div className="col-sm-6">
