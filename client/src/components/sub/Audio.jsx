@@ -5,7 +5,7 @@ import Wavesurfer from 'react-wavesurfer';
 import WaveformReducer from '../../reducers/waveformReducers';
 import RoomReducer from '../../reducers/roomReducers';
 import {getRoomAudio, setRoomInfo} from '../../actions/roomActions';
-import {highlightNote, setClass, removeTimer} from '../../actions/noteActions';
+import {highlightNote, setClass, removeTimer, setWaveform} from '../../actions/noteActions';
 import {togglePlay, setPos, setVolume, play, setAudioRateChange, checkWavePos} from '../../actions/waveformActions';
 
 export class Audio extends React.Component {
@@ -17,6 +17,7 @@ export class Audio extends React.Component {
       loadingDisplay: 'block',
       loadVal: 0,
       clicked: false,
+      currentTime: 0
     };
     this.audioLength = this.formatTime(this.props.room.roomInfo.timeLength / 1000);
     this.handleClick = this.handleClick.bind(this);
@@ -33,19 +34,40 @@ export class Audio extends React.Component {
     }));
   }
 
-  handleAudioRateChange(e) {
-    this.props.dispatch(setAudioRateChange(+e.target.value));
-    // this.setState({
-    //   audioRate: +e.target.value
-    // });
+  componentWillUnmount() {
+    window.clearInterval(this.state.interval);
   }
 
   sendStatus(actionState) {
-    const wavePos = this.props.waveform.pos;
     const timestamps = this.props.note.audioTimestampArray;
+    const wavePos = this.props.note.waveform.getCurrentTime();
     for (var i = 0; i < timestamps.length; i++) {
       if (timestamps[i] > wavePos) {
-        return this.props.dispatch(setClass(i, wavePos, actionState));
+        if (window.timer) {
+          window.clearTimeout(window.timer);
+        }
+
+        let upcomingNoteIndex = i;
+        let wavePos = this.props.note.waveform.getCurrentTime();
+
+        const updateNote = (idx) => {
+          let audioTimestamps = this.props.note.audioTimestampArray;
+          this.props.dispatch(setClass(idx));
+
+          let diff = audioTimestamps[idx + 1] - wavePos;
+          wavePos = wavePos + diff;
+          idx++;
+          if (audioTimestamps[idx] > -1) {
+            window.timer = window.setTimeout(updateNote.bind(this, idx), diff * 1000);
+          }
+        };
+        let idx = upcomingNoteIndex - 1 < 0 ? 0 : upcomingNoteIndex - 1;
+        if (actionState === 'paused') {
+          this.props.dispatch(setClass(idx));
+        } else {
+          updateNote(idx);
+        }
+        return;
       }
     }
   }
@@ -60,7 +82,7 @@ export class Audio extends React.Component {
   }
 
   handlePosChange(e) {
-    this.props.dispatch(setPos(e.originalArgs ? e.originalArgs[0] : +e.target.value));
+    // this.props.dispatch(setPos(e.originalArgs ? e.originalArgs[0] : +e.target.value));
     if (this.state.clicked === true) {
       this.setState({clicked: false});
       if (this.props.waveform.playing) {
@@ -71,41 +93,13 @@ export class Audio extends React.Component {
     }
   }
 
-  throttle(func, wait, options) {
-    var context, args, result;
-    var timeout = null;
-    var previous = 0;
-    if (!options) { options = {}; }
-    var later = function() {
-      previous = options.leading === false ? 0 : Date.now();
-      timeout = null;
-      result = func.apply(context, args);
-      if (!timeout) { context = args = null; }
-    };
-    return function() {
-      var now = Date.now();
-      if (!previous && options.leading === false) { previous = now; }
-      var remaining = wait - (now - previous);
-      context = this;
-      args = arguments;
-      if (remaining <= 0 || remaining > wait) {
-        if (timeout) {
-          clearTimeout(timeout);
-          timeout = null;
-        }
-        previous = now;
-        result = func.apply(context, args);
-        if (!timeout) { context = args = null; }
-      } else if (!timeout && options.trailing !== false) {
-        timeout = setTimeout(later, remaining);
-      }
-      return result;
-    };
-  }
-
   handleReady(arg1) {
     this.audioLength = this.formatTime( arg1.wavesurfer.getDuration() );
+    this.props.dispatch(setWaveform(arg1.wavesurfer));
     this.setState({waveformDisplay: 'visible', loadingDisplay: 'none'});
+    this.setState ({interval: setInterval(() => {
+      this.setState({currentTime: this.props.note.waveform.getCurrentTime()});
+    }, 100)});
   }
 
   handleVolumeChange(e) {
@@ -161,7 +155,7 @@ export class Audio extends React.Component {
         <span className="audioPlayer" style={{visibility: this.state.waveformDisplay}}>
           <i onClick={this.handleTogglePlay.bind(this)} className={`fa ${this.props.waveform.playing ? 'fa-pause-circle' : 'fa-play-circle'} fa-3x text-primary playButton`}></i>
 
-          <span>{this.formatTime(this.props.waveform.pos)}</span>
+          <span>{this.formatTime(this.state.currentTime)}</span>
 
           <span className="waveform" ref="wavesurfContainer" onClick={this.handleClick.bind(this)} >
             <Wavesurfer

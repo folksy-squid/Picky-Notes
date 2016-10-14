@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {addNote, submitNote, setArrow, removeArrow} from '../../actions/noteActions.js';
+import {addNote, submitNote, setArrow, removeArrow, getWavePos} from '../../actions/noteActions.js';
 import NoteReducer from '../../reducers/noteReducers';
 import RoomReducer from '../../reducers/roomReducers';
 import {getCurrentView} from '../../helpers.js';
@@ -16,8 +16,7 @@ class InputBox extends React.Component {
 
   keyUpHandler(e) {
     if (e.target.value.trim() !== '' && !this.state.showInsertPos) {
-
-      let insertPos = this.props.waveform.pos;
+      let insertPos = this.props.note.waveform.getCurrentTime();
       let timestamps = this.props.note.audioTimestampArray;
       this.setState({ showInsertPos: true, insertPos });
 

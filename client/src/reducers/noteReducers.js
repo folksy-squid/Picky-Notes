@@ -126,34 +126,11 @@ export default (state = defaultState, action) => {
   }
 
   if (action.type === 'SET_CLASS') {
-
-    if (window.timer) {
-      window.clearTimeout(window.timer);
-    }
-
-    let upcomingNoteIndex = action.index;
-    let wavePos = action.wavePos;
-
-    const updateNote = (idx) => {
-      let audioTimestamps = state.audioTimestampArray;
-      state.justNotes.forEach(note => note['highlight'] = null);
-      state.justNotes[idx]['highlight'] = true;
-      let diff = audioTimestamps[idx + 1] - wavePos;
-      wavePos = wavePos + diff;
-      idx++;
-      if (audioTimestamps[idx] > -1) {
-        window.timer = window.setTimeout(updateNote.bind(this, idx), diff * 1000);
-      }
+    state.justNotes.forEach(note => note['highlight'] = null);
+    state.justNotes[action.index]['highlight'] = true;
+    return {
+      ...state
     };
-    let idx = upcomingNoteIndex - 1 < 0 ? 0 : upcomingNoteIndex - 1;
-    if (action.actionState === 'paused') {
-      state.justNotes.forEach(note => note['highlight'] = null);
-      state.justNotes[idx]['highlight'] = true;
-    } else {
-      updateNote(idx);
-    }
-
-    return state;
   }
 
   if (action.type === 'REMOVE_TIMER') {
@@ -183,7 +160,14 @@ export default (state = defaultState, action) => {
       state.showThoughts = !state.showThoughts;
     }
     return {...state};
-  };
+  }
+  if (action.type ==='SET_WAVEFORM') {
+    return {
+      ...state,
+      waveform: action.waveform
+    };
+  }
+
 
   return {...state};
 };

@@ -23,7 +23,7 @@ class NoteList extends React.Component {
     };
   }
 
-  componentWillMount() {
+  componentDidMount() {
     const userId = this.props.user.information[0].id;
     const roomId = this.props.room.roomInfo.id;
     if (this.props.room.socket) {
@@ -49,7 +49,7 @@ class NoteList extends React.Component {
   }
 
   sendStatus() {
-    const wavePos = this.props.waveform.pos;
+    const wavePos = (this.props.note.waveform) ? (this.props.note.waveform.getCurrentTime()) : 0;
     const timestamps = this.props.note.audioTimestampArray;
     var actionState;
     if (this.props.waveform.playing) {
@@ -59,7 +59,30 @@ class NoteList extends React.Component {
     }
     for (var i = 0; i < timestamps.length; i++) {
       if (timestamps[i] > wavePos) {
-        return this.props.dispatch(setClass(i, wavePos, actionState));
+        if (window.timer) {
+          window.clearTimeout(window.timer);
+        }
+
+        let upcomingNoteIndex = i;
+        let wavePos = this.props.note.waveform.getCurrentTime();
+
+        const updateNote = (idx) => {
+          let audioTimestamps = this.props.note.audioTimestampArray;
+          this.props.dispatch(setClass(idx));
+
+          let diff = audioTimestamps[idx + 1] - wavePos;
+          wavePos = wavePos + diff;
+          idx++;
+          if (audioTimestamps[idx] > -1) {
+            window.timer = window.setTimeout(updateNote.bind(this, idx), diff * 1000);
+          }
+        };
+        let idx = upcomingNoteIndex - 1 < 0 ? 0 : upcomingNoteIndex - 1;
+        if (actionState === 'paused') {
+          this.props.dispatch(setClass(idx));
+        } else {
+          updateNote(idx);
+        }
       }
     }
   }
@@ -142,11 +165,7 @@ class NoteList extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    ...state,
-    NoteReducer,
-    RoomReducer,
-    UserReducer,
-    WaveformReducer
+    ...state
   };
 };
 
