@@ -130,6 +130,7 @@ dist/
 
 ### audio files ###
 audio/*.mp3
+audio/*.webm
 
 ### Redis ###
 # Ignore redis binary dump (dump.rdb) files
