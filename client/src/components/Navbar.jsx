@@ -111,7 +111,7 @@ export class Navbar extends React.Component {
     return (
       <Navigation>
         <Navigation.Header>
-          <IndexLinkContainer to="/">
+          <IndexLinkContainer to="/notebook">
             <a href='#'>
               <Navigation.Brand>
                 Picky Notes
