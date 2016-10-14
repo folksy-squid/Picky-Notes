@@ -104,6 +104,7 @@ export class Audio extends React.Component {
   }
 
   handleReady(arg1) {
+    this.audioLength = this.formatTime( arg1.wavesurfer.getDuration() );
     this.setState({waveformDisplay: 'visible', loadingDisplay: 'none'});
   }
 
