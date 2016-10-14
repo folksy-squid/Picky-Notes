@@ -2,10 +2,14 @@
 const md5 = require('js-md5');
 const {User, Room, Note, db} = require('./db-config');
 
+
+/****************************** Room Helpers ******************************/
 const createNewRoom = ({topic, className, lecturer, hostId}, cb) => {
 
+  // generate unique PathUrl
   const pathUrl = generatePathUrl(topic + className + lecturer + hostId);
 
+  // Create Room
   Room.create({
     pathUrl: pathUrl,
     topic: topic,
@@ -18,16 +22,47 @@ const createNewRoom = ({topic, className, lecturer, hostId}, cb) => {
 
 const generatePathUrl = data => md5(data + Math.random()).slice(0, 5);
 
-const joinRoom = (userId, pathUrl, cb) => {
-  User.findById(userId)
-  .then(currentUser => {
-    Room.findOne({ where: { pathUrl } })
-    .then(currentRoom => {
-      currentUser.addRoom(currentRoom)
-      .then(() => cb(currentRoom));
-    });
+const saveAudioToRoom = (pathUrl, audioUrl, cb) => {
+  Room.update({audioUrl}, {where: { pathUrl }})
+  .then(cb).catch(cb);
+};
+
+const saveStartTimestamp = (pathUrl, startTimestamp) => {
+  Room.update({startTimestamp}, {where: { pathUrl }});
+};
+
+const saveTimeLength = (pathUrl, endTimestamp) => {
+  findRoom(pathUrl, room => {
+    let timeLength = endTimestamp - room.startTimestamp;
+    Room.update({ timeLength }, {where: { pathUrl }});
   });
 };
+
+const getAudioForRoom = (pathUrl, cb) => {
+  Room.findOne({ where: { pathUrl }, raw: true})
+  .then(room => cb(room.audioUrl));
+};
+
+const findRoom = (pathUrl, cb) => {
+  Room.findOne({ where: { pathUrl } })
+  .then(cb).catch(cb);
+};
+
+const getRoomParticipants = (pathUrl, cb) => {
+  Room.findOne({
+    attributes: [],
+    where: { pathUrl },
+    include: {
+      model: User,
+      through: { attributes: [] }
+    }
+  })
+  .then(cb).catch(cb);
+};
+
+/**************************************************************************/
+
+/****************************** Note Helpers ******************************/
 
 const createNewNote = (note, cb) => {
   note.editingUserId = note.originalUserId;
@@ -106,10 +141,16 @@ const updateNotes = ({userId, roomId}, allNotes, cb) => {
   Promise.all(promises).then(data => cb(null), cb);
 };
 
-const findRoom = (pathUrl, cb) => {
-  Room.findOne({ where: { pathUrl } })
-  .then(cb).catch(cb);
+const deleteNotes = (noteIds, cb) => {
+  const promises = noteIds.map( id => Note.destroy({ where: { id } }));
+
+  Promise.all(promises)
+  .then( data => cb(null, data), cb );
 };
+
+/**************************************************************************/
+
+/****************************** User Helpers ******************************/
 
 const getAllUserRooms = (userId, cb) => {
   User.findById(userId)
@@ -125,49 +166,15 @@ const getRoom = (pathUrl, userId, cb) => {
   .catch(cb);
 };
 
-const saveAudioToRoom = (pathUrl, audioUrl, cb) => {
-  Room.update({audioUrl}, {where: { pathUrl }})
-  .then(cb).catch(cb);
-};
-
-const saveStartTimestamp = (pathUrl, startTimestamp) => {
-  Room.update({startTimestamp}, {where: { pathUrl }});
-};
-
-const saveTimeLength = (pathUrl, endTimestamp) => {
-
-  Room.findOne({where: { pathUrl }})
-  .then(room => callback(room.startTimestamp));
-
-  var callback = start => {
-    let timeLength = endTimestamp - start;
-    Room.update({ timeLength }, {where: { pathUrl }});
-  };
-
-};
-
-const getAudioForRoom = (pathUrl, cb) => {
-  Room.findOne({ where: { pathUrl }, raw: true})
-  .then(room => cb(room.audioUrl));
-};
-
-const deleteNotes = (noteIds, cb) => {
-  const promises = noteIds.map( id => Note.destroy({ where: { id } }));
-
-  Promise.all(promises)
-  .then( data => cb(null, data), cb );
-};
-
-const getRoomParticipants = (pathUrl, cb) => {
-  Room.findOne({
-    attributes: [],
-    where: { pathUrl },
-    include: {
-      model: User,
-      through: { attributes: [] }
-    }
-  })
-  .then(cb).catch(cb);
+const joinRoom = (userId, pathUrl, cb) => {
+  User.findById(userId)
+  .then(currentUser => {
+    Room.findOne({ where: { pathUrl } })
+    .then(currentRoom => {
+      currentUser.addRoom(currentRoom)
+      .then(() => cb(currentRoom));
+    });
+  });
 };
 
 const deleteRoom = (userId, roomId, cb) => {
@@ -175,6 +182,8 @@ const deleteRoom = (userId, roomId, cb) => {
   .then((user) => user.removeRoom(roomId))
   .then(cb).catch(cb);
 };
+
+/**************************************************************************/
 
 module.exports = {
   createNewRoom,
