@@ -15,6 +15,7 @@ const listen = app.listen(port, () => {
   process.env.NODE_ENV !== 'test' && db.sync();
 });
 
+// initialize server-side sockets
 const ioServer = require('./sockets/io.js')(listen);
 
 
