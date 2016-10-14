@@ -1,5 +1,5 @@
 /*jshint esversion: 6 */
-const {createNewRoom, joinRoom, createNewNote, showAllNotes, showFilteredNotes, updateNotes, getAllUserRooms, getRoom, saveAudioToRoom, getAudioForRoom, deleteNotes, deleteNotebook} = require ('../database/db-helpers');
+const {createNewRoom, joinRoom, createNewNote, showAllNotes, showFilteredNotes, updateNotes, getAllUserRooms, getRoom, saveAudioToRoom, getAudioForRoom, deleteNotes, deleteRoom} = require ('../database/db-helpers');
 const passport = require('./passport');
 const path = require('path');
 const audioUpload = require('./audioUpload');
@@ -40,6 +40,7 @@ module.exports = (app, express, io) => {
     //   res.send('Delete user #' + req.params.userId);
     // });
 
+  // Lectures/Rooms
   app.route('/api/rooms/')
     .post((req, res) => {
       if (req.query.pathUrl) {
@@ -56,17 +57,19 @@ module.exports = (app, express, io) => {
     })
     .delete((req, res) => {
       // delete notebook for specific user at roomId
-      deleteNotebook(req.query.userId, req.query.roomId, (found) => {
+      deleteRoom(req.query.userId, req.query.roomId, (found) => {
         if (!found) { res.status(400).send('Room Not Found'); }
         res.status(204).send();
       });
     });
 
   app.post('/api/room/status', (req, res) => {
+    // check for active lecture (socket room) and return status
     res.status(201).send({active: !!io.sockets.adapter.rooms[req.body.pathUrl]});
   });
 
   app.get('/api/audio/:pathUrl', (req, res) => {
+    // retrieve audio url from database for room at pathUrl
     getAudioForRoom(req.params.pathUrl, audioUrl => res.send(audioUrl));
   });
 
