@@ -96,7 +96,6 @@ module.exports = (app, express, io) => {
     .delete((req, res) => {
       deleteNotes(req.body, error => {
         if (error) {
-          console.log(error);
           res.status(404).send(error);
         }
         res.status(204).send();
@@ -108,7 +107,6 @@ module.exports = (app, express, io) => {
     .delete((req, res) => {
       deleteANote(req.params.noteId, err =>{
         if (err) {
-          console.log(error);
           res.status(404).send(error);
         }
         res.status(204).send();

@@ -1,5 +1,5 @@
 import React from 'react';
-import {Navbar as Navigation, FormGroup, FormControl} from 'react-bootstrap'
+import {Navbar as Navigation, FormGroup, FormControl} from 'react-bootstrap';
 import {connect} from 'react-redux';
 
 import NoteReducer from '../../reducers/noteReducers';
@@ -12,14 +12,6 @@ import {filterKeyword} from '../../actions/entryActions';
 export class SearchBar extends React.Component {
   constructor(props) {
     super(props);
-  }
-
-  static propTypes = {
-    addSteps: React.PropTypes.func.isRequired,
-    addToolTip: React.PropTypes.func.isRequired,
-    joyrideOverlay: React.PropTypes.bool.isRequired,
-    joyrideType: React.PropTypes.string.isRequired,
-    onClickSwitch: React.PropTypes.func.isRequired
   }
 
   componentDidMount() {

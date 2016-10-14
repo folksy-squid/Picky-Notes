@@ -148,7 +148,6 @@ export default (state = defaultState, action) => {
   }
 
   if (action.type === 'REMOVE_ARROW') {
-    console.log('removing arrows');
     state.justNotes.forEach(note => delete note['arrow']);
     return {...state};
   }
