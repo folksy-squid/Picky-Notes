@@ -2,7 +2,7 @@ import React from 'react';
 import { Link, Router } from 'react-router';
 import {connect} from 'react-redux';
 import roomReducer from '../reducers/roomReducers';
-import {joinSocketRoom, createAudioStream, startRecording, setRoomInfo} from '../actions/roomActions';
+import {joinSocketRoom, startRecording, setRoomInfo} from '../actions/roomActions';
 import LectureTitle from './sub/LectureTitle.jsx';
 import ShareLink from './sub/ShareLink.jsx';
 import ChatBox from './sub/ChatBox.jsx';
@@ -73,7 +73,7 @@ export class Lobby extends React.Component {
     if (this.state.isHost) {
       // if current client is the host, set Socket as Host Socket
       socket.emit('lecture host');
-      this.props.dispatch(createAudioStream(() => this.props.dispatch(startRecording()) ));
+      this.props.dispatch(startRecording());
     }
     socket.emit('lecture start');
 

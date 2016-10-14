@@ -54,6 +54,7 @@
     "aws-sdk": "^2.6.6",
     "body-parser": "^1.15.2",
     "express": "^4.14.0",
+    "fluent-ffmpeg": "^2.1.0",
     "forever": "^0.15.2",
     "ioredis": "^2.4.0",
     "js-md5": "^0.4.1",

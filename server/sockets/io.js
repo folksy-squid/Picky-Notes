@@ -2,12 +2,11 @@
 const {joinRoom, addNote, isAllReady, saveAllNotes, saveStartTime, saveLectureTimeLength, uploadAudio, getUserNotes, getTimestampFromRoom} = require('./io-helpers');
 const {findRoom, saveAudioToRoom} = require('../database/db-helpers');
 const {startUploading, endUploading} = require('../config/audioUpload.js');
-const lame = require('lame');
 const fs = require('fs');
+var ffmpeg = require('fluent-ffmpeg');
 
 module.exports = (listen) => {
   const io = require('socket.io').listen(listen);
-  const ss = require('socket.io-stream');
 
   const rooms = io.sockets.adapter.rooms;
   const connected = io.sockets.connected;
@@ -144,17 +143,22 @@ module.exports = (listen) => {
       }
     });
 
-    // Audio Streaming to Server
-    ss(socket).on('start stream', (stream) => {
-
-      // define pathUrl, filePath of mp3, and create write stream
+    socket.on('upload stream', largeChunk => {
+      console.log(largeChunk);
       const pathUrl = socket.pathUrl;
-      const filePath = `audio/${pathUrl}.mp3`;
-      const outputFile = fs.createWriteStream(filePath);
+      const filePath = `audio/${pathUrl}`;
 
-      // define mp3 LAME encoder properties
-      const encoder = new lame.Encoder({ channels: 1, bitDepth: 16 });
-      console.log('inside stream');
+      fs.appendFile(filePath, Buffer.concat(largeChunk), err => {
+        if (err) { return console.log(err); }
+        console.log('write file success!');
+      });
+    });
+
+    socket.on('stop stream', lastChunk => {
+      console.log('saving and formatting to mp3');
+      const pathUrl = socket.pathUrl;
+      const originalFile = `audio/${pathUrl}`;
+      const outputFile = `audio/${pathUrl}.mp3`;
 
       const uploadToAWS = () => {
         var count = 0;
@@ -163,32 +167,43 @@ module.exports = (listen) => {
             console.log('error in uploading stream, retrying.', err);
             if (count < 5) {
               count++;
-              return startUploading(filePath, pathUrl, endStreamCB);
+              return startUploading(outputFile, pathUrl, endStreamCB);
             }
             console.log('Error persisted. Stop trying to upload again.', err);
           } else {
             saveAudioToRoom(pathUrl, data.Location, () => {
               console.log('saved audioUrl to database');
-              fs.unlink(filePath, () => {
-                console.log('successfully deleted audio from filesystem');
+              fs.unlink(outputFile, () => {
+                console.log('successfully deleted .mp3 audio from filesystem');
               });
             });
           }
         };
-
-        encoder.end(null, null, startUploading(filePath, pathUrl, endStreamCB));
+        startUploading(outputFile, pathUrl, endStreamCB);
       };
 
-      // pipe from stream, through encoder, to the outputFile
-      stream.pipe(encoder).pipe(outputFile);
+      fs.appendFile(originalFile, Buffer.concat(lastChunk), err => {
+        if (err) { return console.log(err); }
+        console.log('write file success!');
 
-      // when stream has ended, attempt to upload to S3
-      stream.on('end', uploadToAWS);
+        ffmpeg(fs.createReadStream(originalFile)).format('mp3')
+        .output(outputFile)
+        .on('end', () => {
+          console.log('formatting finished!');
+          uploadToAWS();
+          fs.unlink(originalFile, () => {
+            console.log('successfully deleted .ogg audio from filesystem');
+          });
+        })
+        .on('error', err => {
+          console.log(err);
+        })
+        .run();
 
-      // when stream ends unexpectedly, attempt to upload to S3
-      stream.on('close', uploadToAWS);
-
+      });
     });
+
   });
+
   return io;
 };

@@ -1,6 +1,46 @@
 /*jshint esversion: 6 */
-// need to import socket streams
-import ss from 'socket.io-stream';
+
+/*
+  ==========================================
+    mediaDevices.getUserMedia Polyfill
+  ==========================================
+*/
+var promisifiedOldGUM = function(constraints) {
+
+  // First get ahold of getUserMedia, if present
+  var getUserMedia = ( navigator.getUserMedia ||
+                       navigator.webkitGetUserMedia ||
+                       navigator.mozGetUserMedia ||
+                       navigator.msGetUserMedia);
+
+  // Some browsers just don't implement it - return a rejected promise with an error
+  // to keep a consistent interface
+  if (!getUserMedia) {
+    return Promise.reject(new Error('getUserMedia is not implemented in this browser'));
+  }
+
+  // Otherwise, wrap the call to the old navigator.getUserMedia with a Promise
+  return new Promise(function(resolve, reject) {
+    getUserMedia.call(navigator, constraints, resolve, reject);
+  });
+    
+};
+
+// Older browsers might not implement mediaDevices at all, so we set an empty object first
+if (navigator.mediaDevices === undefined) {
+  navigator.mediaDevices = {};
+}
+
+// Some browsers partially implement mediaDevices. We can't just assign an object
+// with getUserMedia as it would overwrite existing properties.
+// Here, we will just add the getUserMedia property if it's missing.
+if (navigator.mediaDevices.getUserMedia === undefined) {
+  navigator.mediaDevices.getUserMedia = promisifiedOldGUM;
+}
+
+const constraints = { audio: true };
+let largeChunk = [];
+let interval = null;
 
 const createSocketRoom = (state, host, pathUrl, createRoom) => {
   if (state.socket) {
@@ -19,17 +59,6 @@ const createSocketRoom = (state, host, pathUrl, createRoom) => {
   return socket;
 };
 
-let audioStream;
-
-const convertoFloat32ToInt16 = buffer => {
-  let l = buffer.length;
-  let buf = new Int16Array(l);
-
-  while (l--) {
-    buf[l] = buffer[l] * (0xFFFF - 0.5) + 0.5;    //convert to 16 bit
-  }
-  return buf.buffer;
-};
 
 export default (state = {}, action) => {
   if (action.type === 'CREATE_ROOM') {
@@ -140,76 +169,49 @@ export default (state = {}, action) => {
     });
   }
 
-  if (action.type === 'CREATE_STREAM_TO_SERVER') {
-    // initiate audio stream
-    state.stream = ss.createStream();
-    // connect socket.io stream to server-side
-    ss(state.socket).emit('start stream', state.stream);
-    // initalize recording state
-    state.recording = false;
+  if (action.type === 'START_RECORDING') {
 
-    // on success of grabbing audio from browser...
-    const audioSuccess = e => {
-      const audioContext = window.AudioContext || window.webkitAudioContext;
-      const context = new audioContext();
-      // const lowPassfilter = context.createBiquadFilter();
-      //   lowPassfilter.Q.value = 10;
-      //   lowPassfilter.frequency.value = 100;
-      //   lowPassfilter.type = 'lowpass';
+    // create audio stream from microphone
+    navigator.mediaDevices.getUserMedia(constraints)
+    .then((stream) => {
 
-      // const compressor = context.createDynamicsCompressor();
-      //   compressor.ratio.value = 12;
-      //   compressor.attack.value = 0;
-      //   compressor.release.value = 0.5;
-      // assign current audioStream to stop later
-      audioStream = e;
+      // record audio stream with MediaRecorder
+      state.mediaRecorder = new MediaRecorder(stream);
+      state.mediaRecorder.start();
 
-      // the sample rate is in context.sampleRate
-      const audioInput = context.createMediaStreamSource(e);
-
-      var bufferSize = 16384;
-      const recorder = context.createScriptProcessor(bufferSize, 1, 1);
-
-      // when processing audio during recording
-      recorder.onaudioprocess = e => {
-        // if currently not in recording state, return
-        if (!state.recording) { return; }
-        // if currently recording, send audio through socket.io stream to server
-        var left = e.inputBuffer.getChannelData(0);
-        state.stream.write(new ss.Buffer(convertoFloat32ToInt16(left)));
+      // push blobs/data into largeChunk
+      state.mediaRecorder.ondataavailable = function(e) {
+        largeChunk.push(e.data);
       };
 
-      // connections
-      audioInput.connect(recorder);
-      // compressor.connect(recorder);
-      // highPassfilter.connect(lowPassfilter);
-      // highPassfilter.connect(recorder);
-      recorder.connect(context.destination);
-      action.cb && action.cb();
-    };
+      // Send largeChunks of data to the server through socket
+      interval = setInterval(() => {
+        state.socket.emit('upload stream', largeChunk);
+        largeChunk = [];
+      }, 10000);
 
 
-    // grab User Media depending on client-side browser
-    if (!navigator.getUserMedia) {
-      navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia ||
-      navigator.mozGetUserMedia || navigator.msGetUserMedia;
-    }
-    // error if unable to grab User Media from browser
-    if (navigator.getUserMedia) {
-      navigator.getUserMedia({ audio: true }, audioSuccess, e => console.log('Error capturing audio.'));
-    } else {
-      console.log('getUserMedia not supported in this browser.');
-    }
-  }
+      // When recording stops, stop the interval and
+      // send the last chunk of data
+      state.mediaRecorder.onstop = function(e) {
+        clearInterval(interval);
+        interval = null;
 
-  if (action.type === 'START_RECORDING') {
-    state.recording = true;
+        state.socket.emit('stop stream', largeChunk);
+        largeChunk = [];
+      };
+
+    })
+    .catch(error => {
+      console.log(error);
+    });
+
   }
 
   if (action.type === 'STOP_RECORDING') {
-    state.recording = false;
-    audioStream.getTracks()[0].stop();
-    state.stream.end();
+    if (!state.mediaRecorder) { return; }
+    state.mediaRecorder.stop();
+    state.mediaRecorder = null;
   }
 
   if (action.type === 'GET_AUDIO_FROM_ROOM') {
