@@ -868,6 +868,9 @@ div.w3-card-4 {
   flex: 1;
 }
 
+.currentTimestamp {
+  text-align: center;
+}
 
 input[type=checkbox] {
   margin-right: 10px;
