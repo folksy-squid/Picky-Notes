@@ -36,10 +36,8 @@ class Landing extends React.Component {
                 </span>
               </a>
             </div>
-            <div className="filter"></div>
-            <video autoPlay loop className="fillWidth">
+            <video autoPlay loop style= {{display: 'block', width: '100%', height: '100%', objectFit  : 'cover', position: 'absolute', top: '0', left: '0'}}>
               <source src="https://s3-us-west-2.amazonaws.com/coverr/mp4/abcd.mp4" type="video/mp4" />Your browser does not support the video tag. I suggest you upgrade your browser.
-              <source src="https://s3-us-west-2.amazonaws.com/coverr/mp4/abcd.mp4" type="video/webm" />Your browser does not support the video tag. I suggest you upgrade your browser.
             </video>
             <div className="poster hidden">
               <img src="https://s3-us-west-2.amazonaws.com/coverr/poster/abcd.jpg" alt="" />

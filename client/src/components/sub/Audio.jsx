@@ -41,7 +41,7 @@ export class Audio extends React.Component {
   sendStatus(actionState) {
     //  gets current time of waveform and the current timestamp array
     const timestamps = this.props.note.audioTimestampArray;
-    const wavePos = this.props.note.waveform.getCurrentTime();
+    let wavePos = this.props.note.waveform.getCurrentTime();
     //  gets next note timestamp after current wave position
     for (var i = 0; i < timestamps.length; i++) {
       if (timestamps[i] > wavePos) {
