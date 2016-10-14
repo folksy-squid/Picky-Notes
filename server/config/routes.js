@@ -51,10 +51,11 @@ module.exports = (app, express, io) => {
       }
     })
     .get((req, res) => {
-      // can be optimized with promises... nice to have later
+      // retrieve specific room information at PathUrl for the user
       getRoom(req.query.pathUrl, req.query.userId, (room) => res.send(room));
     })
     .delete((req, res) => {
+      // delete notebook for specific user at roomId
       deleteNotebook(req.query.userId, req.query.roomId, (found) => {
         if (!found) { res.status(400).send('Room Not Found'); }
         res.status(204).send();
