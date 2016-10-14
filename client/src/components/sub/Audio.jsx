@@ -147,10 +147,23 @@ export class Audio extends React.Component {
       cursorColor: 'rgba(100, 50, 50, 1)',
       normalize: true
     };
+    const url = this.props.room.roomInfo.audioUrl;
+    let msg = '';
+
+    if (url === 'audio url') {
+      msg = 'Uploading audio. Please check back later.';
+    } else {
+      if (this.state.loadVal === 100) {
+        msg = 'Drawing waveform';
+      } else {
+        msg = 'Loading audio file ' + this.state.loadVal;
+      }
+    }
+
     return (
       <span className="audioContainer">
         <div style={{ display: this.state.loadingDisplay, position: 'absolute' }}>
-          LOADING AUDIO FILE {this.state.loadVal}
+          {msg}
         </div>
         <span className="audioPlayer" style={{visibility: this.state.waveformDisplay}}>
           <i onClick={this.handleTogglePlay.bind(this)} className={`fa ${this.props.waveform.playing ? 'fa-pause-circle' : 'fa-play-circle'} fa-3x text-primary playButton`}></i>
