@@ -64,6 +64,9 @@ class Landing extends React.Component {
               <h5>
                 1. Create/join a lecture
               </h5>
+              <video className="landing2-video">
+
+              </video>
               <p>
                 Share the link with your friends and discuss your thoughts around the lecture.
               </p>
@@ -72,14 +75,20 @@ class Landing extends React.Component {
               <h5>
                 2. Start recording
               </h5>
+              <video className="landing2-video">
+
+              </video>
               <p>
-                Verbatim
+                Picky Notes will link the audio with the time you started typing your notes.
               </p>
             </div>
             <div className="col-sm-6 col-md-4">
               <h5>
                 3. Take notes
               </h5>
+              <video className="landing2-video">
+
+              </video>
               <p>
                 Using markdown language. You can also take private notes (called thoughts).
               </p>
@@ -88,24 +97,33 @@ class Landing extends React.Component {
               <h5>
                 4. Edit your notes
               </h5>
+              <video className="landing2-video">
+
+              </video>
               <p>
-                After the lecture has ended, you can modify or add notes and assign them to a timestamp.
+                Modify or add notes and assign them to a timestamp.
               </p>
             </div>
             <div className="col-sm-6 col-md-4">
               <h5>
                 5. Pick your favorite notes
               </h5>
+              <video className="landing2-video">
+
+              </video>
               <p>
-                After the lecture has ended, you can modify or add notes and assign them to a timesatmp.
+                What should we write in here?
               </p>
             </div>
             <div className="col-sm-6 col-md-4">
               <h5>
                 6. Review
               </h5>
+              <video className="landing2-video">
+
+              </video>
               <p>
-                After the lecture has ended, you can modify or add notes and assign them to a timesatmp.
+                Look back at your notes and listen to what was said at the time of note taking.
               </p>
             </div>
           </div>
