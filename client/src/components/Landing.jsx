@@ -62,21 +62,56 @@ class Landing extends React.Component {
             How
           </h1>
           <hr style={{'border': '3px black solid'}}/>
-          <div className="row">
-            <div className="col-xs-3">
-              1. Start recording
+          <div className="container-fluid">
+            <div className="col-sm-6 col-md-4">
+              <h5>
+                1. Create/join a lecture
+              </h5>
+              <p>
+                Share the link with your friends and discuss your thoughts around the lecture.
+              </p>
             </div>
-            <div className="col-xs-3">
-              2. Start taking notes, or commenting your thoughts, using Markdown
+            <div className="col-sm-6 col-md-4">
+              <h5>
+                2. Start recording
+              </h5>
+              <p>
+                Verbatim
+              </p>
             </div>
-            <div className="col-xs-3">
-              3. Pick your favorite notes from a group of friends
+            <div className="col-sm-6 col-md-4">
+              <h5>
+                3. Take notes
+              </h5>
+              <p>
+                Using markdown language. You can also take private notes (called thoughts).
+              </p>
             </div>
-            <div className="col-xs-3">
-              4. Review your notes
+            <div className="col-sm-6 col-md-4">
+              <h5>
+                4. Edit your notes
+              </h5>
+              <p>
+                After the lecture has ended, you can modify or add notes and assign them to a timestamp.
+              </p>
+            </div>
+            <div className="col-sm-6 col-md-4">
+              <h5>
+                5. Pick your favorite notes
+              </h5>
+              <p>
+                After the lecture has ended, you can modify or add notes and assign them to a timesatmp.
+              </p>
+            </div>
+            <div className="col-sm-6 col-md-4">
+              <h5>
+                6. Review
+              </h5>
+              <p>
+                After the lecture has ended, you can modify or add notes and assign them to a timesatmp.
+              </p>
             </div>
           </div>
-
         </div>
         <div id="landing3" className="landing-section">
           screenshots go here

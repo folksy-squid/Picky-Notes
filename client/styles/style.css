@@ -1,4 +1,4 @@
-@import 'https://fonts.googleapis.com/css?family=Crafty+Girls|Maven+Pro|Alegreya';
+@import 'https://fonts.googleapis.com/css?family=Crafty+Girls|Maven+Pro';
 
 /*
   =================================
@@ -54,6 +54,8 @@ h4 {
 .panel {
   padding-bottom: 15px;
 }
+
+
 
 .modal-container {
   position: relative;
@@ -195,7 +197,6 @@ hr {
 }
 
 #landing2 {
-  height: 550px;
   background-color: white;
 }
 
@@ -203,8 +204,21 @@ hr {
   color: black;
 }
 
+#landing2 > div > div {
+  height: 300px;
+  padding: 40px 15px 0 15px;
+}
+
+
+.col-md-4 > h5 {
+  font-size: 23px;
+  text-align: center;
+  font-family: 'Maven Pro', sans-serif;
+}
+
 #landing3 {
   height: 450px;
+  background-color: #212F3D;
 }
 
 #landing4 {
@@ -221,6 +235,32 @@ hr {
   font-family: 'Maven Pro', sans-serif;
   font-size: 42px;
 }
+
+/*
+  =================================
+    Navbar
+  =================================
+*/
+
+.navbar {
+  border-radius: 0px;
+}
+
+.thought-panel-bottom {
+  padding: 0px;
+  position: fixed;
+  bottom: 30px;
+  width: inherit;
+}
+
+.thought-panel-bottom > div.panel-heading:hover {
+  cursor: pointer;
+}
+
+.panel-body {
+  padding: 0px;
+}
+
 
 /*
   =================================
@@ -904,34 +944,7 @@ input[type=range][orient=vertical] {
 
 .highlighted {
   background-color: 'black';
-}
-
-
-/*
-  =================================
-    Navbar
-  =================================
-*/
-
-.navbar {
-  border-radius: 0px;
-}
-
-.thought-panel-bottom {
-  padding: 0px;
-  position: fixed;
-  bottom: 30px;
-  width: inherit;
-}
-
-.thought-panel-bottom > div.panel-heading:hover {
-  cursor: pointer;
-}
-
-.panel-body {
-  padding: 0px;
-}
-body {
+}body {
   padding-bottom: 30px;
 }
 
