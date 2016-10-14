@@ -1,5 +1,5 @@
 import React from 'react';
-import {Navbar as Navigation, FormGroup, FormControl} from 'react-bootstrap'
+import {Navbar as Navigation, FormGroup, FormControl} from 'react-bootstrap';
 import {connect} from 'react-redux';
 
 import NoteReducer from '../../reducers/noteReducers';
