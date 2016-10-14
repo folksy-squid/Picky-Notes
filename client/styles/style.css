@@ -117,33 +117,30 @@ h4 {
     display: block !important;
 }
 .video-container {
-    position: relative;
-    bottom: 0%;
-    left: 0%;
-    height: 100%;
+    position: absolute;
+
     width: 100%;
+    height: 100%;
     overflow: hidden;
     background: #000;
 }
+
 .video-container .poster img {
     width: 100%;
-    bottom: 0;
     top: 0;
     position: absolute;
 }
-.video-container .filter {
-    z-index: 100;
-    position: absolute;
-    background: rgba(0, 0, 0, 0.4);
-    width: 100%;
-}
+
 .video-container video {
-    position: absolute;
+    object-fit: fill;
     z-index: 0;
-    bottom: 0;
-}
-.video-container video.fillWidth {
-    width: 100%;
+    background-size: 100% 100%;
+    top: 0px;
+    left: 0px; /* fixed to left. Replace it by right if you want.*/
+    min-width: 100%;
+    min-height: 100%;
+    width: auto;
+    height: auto;
 }
 
 .video-container .title-container {
@@ -151,7 +148,7 @@ h4 {
   text-align: center;
   top: 28%;
   width: 100%;
-  position: absolute;
+  position: relative;
 }
 
 .title-container > a > h1 {
