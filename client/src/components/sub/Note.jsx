@@ -115,7 +115,11 @@ class Note extends React.Component {
     this.setState({ editTimestamp: false });
   }
 
-  unEditContent() {
+  exitEditHandler() {
+    const newText = this.refs.noteInput.value;
+    if (newText.trim() !== '' && newText.value !== this.props.noteInfo.content) {
+      this.props.dispatch(editNote(this.props.noteInfo.id, newText));
+    }
     this.setState({ editContent: false });
   }
 
@@ -145,7 +149,7 @@ class Note extends React.Component {
             {this.state.editContent ?
               <span className={`content ${classColor(`${this.props.classColor}`)}`}>
                 <form onSubmit={this.editContentHandler.bind(this)}>
-                  <input ref="noteInput" type="text" defaultValue={this.props.noteInfo.content} onBlur={this.unEditContent.bind(this)} autoFocus/>
+                  <input ref="noteInput" type="text" defaultValue={this.props.noteInfo.content} onBlur={this.exitEditHandler.bind(this)} autoFocus/>
                 </form>
               </span>
               :

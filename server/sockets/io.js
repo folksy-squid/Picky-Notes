@@ -145,7 +145,7 @@ module.exports = (listen) => {
 
     socket.on('upload stream', largeChunk => {
       const pathUrl = socket.pathUrl;
-      const filePath = `audio/${pathUrl}`;
+      const filePath = `audio/${pathUrl}.webm`;
 
       fs.appendFile(filePath, Buffer.concat(largeChunk), err => {
         if (err) { return console.log(err); }
@@ -156,7 +156,7 @@ module.exports = (listen) => {
     socket.on('stop stream', lastChunk => {
       console.log('saving and formatting to mp3');
       const pathUrl = socket.pathUrl;
-      const originalFile = `audio/${pathUrl}`;
+      const originalFile = `audio/${pathUrl}.webm`;
       const outputFile = `audio/${pathUrl}.mp3`;
 
       const uploadToAWS = () => {

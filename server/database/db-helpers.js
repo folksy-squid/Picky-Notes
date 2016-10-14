@@ -94,12 +94,13 @@ const showFilteredNotes = ({userId, roomId}, cb) => {
 const updateNotes = (userId, roomId, allNotes, cb) => {
   let promises = [];
 
-  const updateOneNote = (note, userId, roomId) => {
+  const updateOneNote = note => {
     Note.update(note, { where: {
       id: note.id,
       editingUserId: userId,
       roomId: roomId
     } });
+    // .then(data => console.log('notes deleted:', data));
   };
 
   for (let i = 0; i < allNotes.length; i++) {
@@ -108,9 +109,9 @@ const updateNotes = (userId, roomId, allNotes, cb) => {
 
   Promise.all(promises).then((data) => {
     cb(null);
-  }, err => {
+  }, error => {
     console.log('ERROR', error);
-    cb(err);
+    cb(error);
   });
 };
 

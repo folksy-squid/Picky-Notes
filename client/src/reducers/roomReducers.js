@@ -211,6 +211,7 @@ export default (state = {}, action) => {
   if (action.type === 'STOP_RECORDING') {
     if (!state.mediaRecorder) { return; }
     state.mediaRecorder.stop();
+    state.mediaRecorder.stream.getTracks()[0].stop();
     state.mediaRecorder = null;
   }
 
