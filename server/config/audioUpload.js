@@ -26,12 +26,11 @@ const s3 = new AWS.S3({
 const params = {
   Bucket: 'picky-notes',
   ACL: 'public-read',
-  ContentType: 'audio/wav'
+  ContentType: 'audio/mp3'
 };
 
 module.exports = {
   startUploading: (stream, path, cb) =>{
-    console.log('stream!', stream);
 
     params['Key'] = path;
     params['Body'] = fs.createReadStream(stream);
