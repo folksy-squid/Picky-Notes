@@ -16,7 +16,7 @@ class InputBox extends React.Component {
 
   keyUpHandler(e) {
     if (e.target.value.trim() !== '' && !this.state.showInsertPos) {
-      if(this.props.note.waveform) {
+      if (this.props.note.waveform) {
         let insertPos = this.props.note.waveform.getCurrentTime() || 0;
         let timestamps = this.props.note.audioTimestampArray;
         this.setState({ showInsertPos: true, insertPos });
