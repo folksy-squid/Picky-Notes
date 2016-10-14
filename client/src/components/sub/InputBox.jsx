@@ -16,17 +16,19 @@ class InputBox extends React.Component {
 
   keyUpHandler(e) {
     if (e.target.value.trim() !== '' && !this.state.showInsertPos) {
-      let insertPos = this.props.note.waveform.getCurrentTime();
-      let timestamps = this.props.note.audioTimestampArray;
-      this.setState({ showInsertPos: true, insertPos });
+      if(this.props.note.waveform) {
+        let insertPos = this.props.note.waveform.getCurrentTime() || 0;
+        let timestamps = this.props.note.audioTimestampArray;
+        this.setState({ showInsertPos: true, insertPos });
 
-      for (var i = 0; i < timestamps.length; i++) {
-        if (timestamps[i] > insertPos) {
-          return this.props.dispatch(setArrow(i - 1));
+        for (var i = 0; i < timestamps.length; i++) {
+          if (timestamps[i] > insertPos) {
+            return this.props.dispatch(setArrow(i - 1));
+          }
         }
-      }
 
-      return this.props.dispatch(setArrow(this.props.note.audioTimestampArray.length - 1));
+        return this.props.dispatch(setArrow(this.props.note.audioTimestampArray.length - 1));
+      }
     } else if (e.target.value.trim() === '' && this.state.showInsertPos) {
       this.props.dispatch(removeArrow());
       this.setState({ showInsertPos: false });
