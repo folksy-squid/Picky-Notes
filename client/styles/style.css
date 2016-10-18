@@ -221,7 +221,7 @@ h5 {
   font-family: 'Maven Pro', sans-serif;
 }
 
-.col-sm-6 > h5 {
+.col-md-6 > h5 {
   font-size: 23px;
   text-align: center;
 }
