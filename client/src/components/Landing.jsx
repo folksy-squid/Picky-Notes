@@ -60,7 +60,7 @@ class Landing extends React.Component {
           </h1>
           <hr style={{'border': '3px black solid'}}/>
           <div className="container-fluid">
-            <div className="col-sm-6">
+            <div className="col-md-6">
               <h5>
                 1. Create/join a lecture
               </h5>
@@ -71,7 +71,7 @@ class Landing extends React.Component {
                 Share the link with your friends and discuss your thoughts around the lecture.
               </p>
             </div>
-            <div className="col-sm-6">
+            <div className="col-md-6">
               <h5>
                 2. Start recording
               </h5>
@@ -82,7 +82,7 @@ class Landing extends React.Component {
                 Picky Notes will associate the audio with your notes.
               </p>
             </div>
-            <div className="col-sm-6">
+            <div className="col-md-6">
               <h5>
                 3. Take notes
               </h5>
@@ -93,7 +93,7 @@ class Landing extends React.Component {
                 Using markdown language. You can also take private notes (called thoughts).
               </p>
             </div>
-            <div className="col-sm-6">
+            <div className="col-md-6">
               <h5>
                 4. Edit your notes
               </h5>
@@ -104,7 +104,7 @@ class Landing extends React.Component {
                 Modify or add notes and assign them to a timestamp.
               </p>
             </div>
-            <div className="col-sm-6">
+            <div className="col-md-6">
               <h5>
                 5. Pick your favorite notes
               </h5>
@@ -115,7 +115,7 @@ class Landing extends React.Component {
                 Select the notes and thoughts you want to store in your notebook
               </p>
             </div>
-            <div className="col-sm-6">
+            <div className="col-md-6">
               <h5>
                 6. Review
               </h5>
