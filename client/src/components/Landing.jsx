@@ -64,7 +64,7 @@ class Landing extends React.Component {
               <h5>
                 1. Create/join a lecture
               </h5>
-              <video autoPlay loop className="landing2-video">
+              <video controls autoPlay loop className="landing2-video">
                 <source src="https://media.giphy.com/media/3o6Zt5Lz9jCnnahaEM/source.mp4" type="video/mp4" />
               </video>
               <p>
@@ -75,7 +75,7 @@ class Landing extends React.Component {
               <h5>
                 2. Start recording
               </h5>
-              <video autoPlay loop className="landing2-video">
+              <video controls autoPlay loop className="landing2-video">
                 <source src="https://media.giphy.com/media/l0MYRxAs6qxLpqHhm/source.mp4" type="video/mp4" />
               </video>
               <p>
@@ -86,7 +86,7 @@ class Landing extends React.Component {
               <h5>
                 3. Take notes
               </h5>
-              <video autoPlay loop className="landing2-video">
+              <video controls autoPlay loop className="landing2-video">
                 <source src="https://media.giphy.com/media/3o7TKCAZy9ckJW5n7q/source.mp4" type="video/mp4" />
               </video>
               <p>
@@ -97,7 +97,7 @@ class Landing extends React.Component {
               <h5>
                 4. Edit your notes
               </h5>
-              <video autoPlay loop className="landing2-video">
+              <video controls autoPlay loop className="landing2-video">
                 <source src="https://media.giphy.com/media/l4pM6kunZAv1xvXKU/source.mp4" type="video/mp4" />
               </video>
               <p>
@@ -108,7 +108,7 @@ class Landing extends React.Component {
               <h5>
                 5. Pick your favorite notes
               </h5>
-              <video autoPlay loop className="landing2-video">
+              <video controls autoPlay loop className="landing2-video">
                 <source src="https://media.giphy.com/media/3oI9Jzk3lYfhAVqBmo/source.mp4" type="video/mp4" />
               </video>
               <p>
@@ -119,7 +119,7 @@ class Landing extends React.Component {
               <h5>
                 6. Review
               </h5>
-              <video autoPlay loop className="landing2-video">
+              <video controls autoPlay loop className="landing2-video">
                 <source src="https://media.giphy.com/media/3oI9JuF2Ix3U6iWXx6/source.mp4" type="video/mp4" />
               </video>
               <p>
