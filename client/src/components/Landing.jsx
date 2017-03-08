@@ -37,10 +37,10 @@ class Landing extends React.Component {
               </a>
             </div>
             <video autoPlay loop style= {{display: 'block', width: '100%', height: '100%', objectFit  : 'cover', position: 'absolute', top: '0', left: '0'}}>
-              <source src="https://s3-us-west-2.amazonaws.com/coverr/mp4/abcd.mp4" type="video/mp4" />Your browser does not support the video tag. I suggest you upgrade your browser.
+              <source src="https://coverr.co/s3/mp4/abcd.mp4" type="video/mp4" />Your browser does not support the video tag. I suggest you upgrade your browser.
             </video>
             <div className="poster hidden">
-              <img src="https://s3-us-west-2.amazonaws.com/coverr/poster/abcd.jpg" alt="" />
+              <img src="https://s3.amazonaws.com/coverr-public/poster/abcd.jpg" alt="" />
             </div>
           </div>
         </div>
