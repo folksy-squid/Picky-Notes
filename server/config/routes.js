@@ -11,7 +11,7 @@ module.exports = (app, express, io) => {
   // Facebook OAuth
   app.get('/auth/facebook',
     passport.authenticate('facebook', {
-      scope: ['public_profile', 'email', 'user_about_me', 'user_friends']
+      scope: ['public_profile', 'email', 'user_gender', 'user_friends']
     })
   );
   // Facebook OAuth Callback

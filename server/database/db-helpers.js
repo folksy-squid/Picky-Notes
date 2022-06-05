@@ -161,13 +161,13 @@ const deleteNotes = (noteIds, cb) => {
 
 /********* Get all Rooms associated with User *********/
 const getAllUserRooms = (userId, cb) => {
-  User.findById(userId)
+  User.findByPk(userId)
   .then(user => user.getRooms())
   .then(cb).catch(cb);
 };
 /********* Get Specific Room Info *********/
 const getRoom = (pathUrl, userId, cb) => {
-  User.findById(userId)
+  User.findByPk(userId)
   .then((user) => user.getRooms({where: {pathUrl}, raw: true}))
   // should be optimized with promises..
   .then((room) => getRoomParticipants(pathUrl, ({users}) => cb({ roomInfo: room[0], participants: users })))
@@ -176,7 +176,7 @@ const getRoom = (pathUrl, userId, cb) => {
 
 /********* Associate User to Room *********/
 const joinRoom = (userId, pathUrl, cb) => {
-  User.findById(userId)
+  User.findByPk(userId)
   .then(currentUser => {
     Room.findOne({ where: { pathUrl } })
     .then(currentRoom => {
@@ -188,7 +188,7 @@ const joinRoom = (userId, pathUrl, cb) => {
 
 /********* Delete Room Association from User *********/
 const deleteRoom = (userId, roomId, cb) => {
-  User.findById(userId)
+  User.findByPk(userId)
   .then((user) => user.removeRoom(roomId))
   .then(cb).catch(cb);
 };

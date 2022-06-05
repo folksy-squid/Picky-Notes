@@ -36,6 +36,7 @@ passport.use(new FacebookStrategy({
     done(null, user);
   })
   .catch( (err) => {
+    console.log(err)
     done(err);
   });
 }));
